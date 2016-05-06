@@ -1,0 +1,1406 @@
+//
+//  LiveStreamVC.swift
+//  SeeItLiveThailand
+//
+//  Created by weerapons suwanchatree on 12/22/2558 BE.
+//  Copyright © 2558 weerapons suwanchatree. All rights reserved.
+//
+
+import UIKit
+import CoreLocation
+//mport SocketIOClientSwift
+
+
+class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelegate,UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate,UITableViewDelegate,UITableViewDataSource
+{
+    
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    
+    
+    var comments = NSMutableArray()
+    //    @IBOutlet var previewView: UIView!
+    @IBOutlet var connectBtn: UIButton!
+    
+    
+    
+    var streamView:UIView?
+    var popUpView:UIView?
+    var popUpViewTop:UIView?
+    var popUpViewBot:UIView?
+    var popUpViewCen:UIView?
+    var popUpViewRight:UIView?
+    var popUpViewLeft:UIView?
+    var popUpViewChat:UIView?
+    
+    
+    var tableView : UITableView?
+    
+    
+    var streamButton:UIButton?
+    var startStreamBtn:UIButton?
+    var stopStreamBtn:UIButton?
+    var closeBtn:UIButton?
+    var changeCamBtn:UIButton?
+    var flashBtn:UIButton?
+    
+    var commentScroll:UIScrollView?
+    var commentText:UITextView?
+    var commentProfileImage:UIImage?
+    var commentProfileName:UITextView?
+    
+    var topCenView:UIView?
+    var titleIconImg:UIImageView?
+    var titleLbl:UILabel?
+    var titleTxt:UITextField?
+    
+    var selectCatLbl:UILabel?
+    var categoryTxt:UITextField?
+    var selectCatBtn:UIButton?
+    var categoryPickerView:UIPickerView?
+    //    var catArray : [String] = ["Other","Travel","Education","Event","News"]
+    var catID = 1
+    var count = 0
+    var qualityLbl:UILabel?
+    var qualityTxt:UITextField?
+    var selectQualityBtn:UIButton?
+    var shareBtn:UIButton?
+    var qualityPickerView:UIPickerView?
+    var qualityArray : [String] = ["High","Medium","Low"]
+    var countDownLbl:UILabel?
+    var locationPinImg : UIImageView?
+    var locationLbl : UILabel?
+    
+    var slider:UISlider?
+    // These number values represent each slider position
+    var numbers = [1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] //Add your values here
+    var oldIndex = 0
+    
+    var detailLiveLbl : UILabel?
+    var timeDetail : UILabel?
+    
+    
+    var streamURL:String?
+    var streamKey:String?
+    var StreamName:String?
+    
+    let recordBar = UIView()
+    var rcGrapY = CGFloat()
+    var rcBarH = CGFloat()
+    var rcButtonW = CGFloat()
+    let cameraManager = CameraManager()
+    
+    //chat tableview cell
+    var imgUserChat = UIImageView()
+    var lblUserName = UILabel()
+    var lblTextChat = UILabel()
+    
+    var imgUserChatRect = CGRect()
+    var lblUserNameRect = CGRect()
+    var lblTextChatRect = CGRect()
+    
+    
+    //ojc top view
+    var locateLbl = UILabel()
+    var locateImg = UIImageView()
+    var lovecountLbl = UILabel()
+    var loveiconImg = UIImageView()
+    var viewcountLbl = UILabel()
+    var viewiconImg = UIImageView()
+    var titletopLbl = UILabel()
+    var liveiconImg = UIImageView()
+    
+    // obj bot view
+    @IBOutlet var chatBtn : UIButton?
+    @IBOutlet var shareLiveBtn : UIButton?
+    var shareListView = UIView()
+    @IBOutlet var facebookBtn : UIButton?
+    @IBOutlet var googleBtn : UIButton?
+    @IBOutlet var tweeterBtn : UIButton?
+    @IBOutlet var linekBtn : UIButton?
+    @IBOutlet var copyLinkBtn : UIButton?
+    
+    
+    
+    
+    //rect
+    
+    
+    var topCenViewRect = CGRect()
+    var titleIconImgRect = CGRect()
+    var titleLblRect = CGRect()
+    var titleTxtRect = CGRect()
+    var selectCatLblRect = CGRect()
+    var categoryTxtRect = CGRect()
+    var selectCatBtnRect = CGRect()
+    var qualityLblRect = CGRect()
+    var qualityTxtRect = CGRect()
+    var countDownRect = CGRect()
+    var selectQualityBtnRect = CGRect()
+    var locationPinImgRect = CGRect()
+    var locationLblRect = CGRect()
+    var detailLiveLblRect = CGRect()
+    var timeDetailRect = CGRect()
+    var shareBtnRect = CGRect()
+    var font = CGFloat()
+    var categoryPickerViewRect = CGRect()
+    var qualityPickerViewRect = CGRect()
+    var streamViewRect = CGRect()
+    var popUpViewRect = CGRect()
+    var popUpViewTopRect = CGRect()
+    var popUpViewBotRect = CGRect()
+    var popUpViewRightRect = CGRect()
+    var popUpViewLeftRect = CGRect()
+    var popUpViewCenRect = CGRect()
+    var popUpViewChatRect = CGRect()
+    
+    // rect top
+    var locateLblRect = CGRect()
+    var locateImgRect = CGRect()
+    var lovecountLblRect = CGRect()
+    var loveiconImgRect = CGRect()
+    var viewcountLblRect = CGRect()
+    var viewiconImgRect = CGRect()
+    var titletopLblRect = CGRect()
+    var liveiconImgRect = CGRect()
+    
+    
+    // obj bot view Rect
+    var chatBtnRect = CGRect()
+    var shareLiveBtnRect = CGRect()
+    var shareListViewRect = CGRect()
+    var facebookBtnRect = CGRect()
+    var googleBtnRect = CGRect()
+    var tweeterBtnRect = CGRect()
+    var linekBtnRect = CGRect()
+    var copyLinkBtnRect = CGRect()
+    
+    var sliderRect = CGRect()
+    var changeCamBtnRect = CGRect()
+    var flashBtnRect = CGRect()
+    
+    var closeBtnRect = CGRect()
+    var streamButtonRect = CGRect()
+    var startStreamBtnRect = CGRect()
+    
+    var cellH = CGFloat()
+    
+    var session:VCSimpleSession = VCSimpleSession(videoSize: CGSize(width: 1280, height: 720), frameRate: 30, bitrate: 1000000, useInterfaceOrientation: false, cameraState: VCCameraState.Back , aspectMode:VCAspectMode.AspectModeFit)
+    //    var session:VCSimpleSession = VCSimpleSession()
+    
+    
+    //    var alertView = CustomIOS7AlertView()
+    var popupView = UIView()
+    //    var popup = popupStream()
+    var liveBtn = UIButton()
+    var textButton = UILabel()
+    //  @IBOutlet weak var stopBtn: UIButton!
+    
+    func stopStream(sender: UIButton) {
+        
+        print("Stop Streaming")
+        if(session.rtmpSessionState == .Started)
+        {
+            session.endRtmpSession()
+        }
+        
+        self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func startStream(sender:UIButton){
+        self.popUpViewBot!.hidden = false
+        self.popUpViewTop?.hidden = false
+        self.chatBtn?.hidden = false
+        //        self.shareLiveBtn?.hidden = false
+        
+        print("getQualityStream \(getQualityStream(qualityTxt!.text!))")
+        print("qualityLbl!.text! \(qualityTxt!.text!)")
+        print("GO Streaming")
+        
+        //        let timer = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
+        //        popUpViewTop!.hidden = true
+        popUpViewCen!.hidden  = true
+        let formatter: NSDateFormatter = NSDateFormatter()
+        formatter.dateFormat = "YYYY-MM-dd HH:mm:ss"
+        let dateTime: String = formatter.stringFromDate(NSDate())
+        
+        
+        //        alertView.close()
+        //        self.previewView.addSubview(stopBtn)
+        
+        switch session.rtmpSessionState {
+        case .None, .PreviewStarted, .Ended, .Error:
+            // session.startRtmpSessionWithURL("rtmp://10.49.0.107:1935/pon", andStreamKey: "myStream")  Name+Sur_2016_01_31
+            let stream = UserManager()
+            let title:String = (titleTxt!.text != "" ) ? titleTxt!.text! : "\(appDelegate.first_name) \(appDelegate.last_name)_\(appDelegate.date)"
+            print("Title : \(title) Category ID : \(catID)")
+            stream.getStreamURL(title,categoryID: catID, note: "",dateTime: dateTime) { (error , result , message) in
+                
+                print("result stream \(result)")
+                print("message stream \(message)")
+                if(error != nil)
+                {
+                    print("Error : \(error)")
+                }else{
+                    print("Error : \(error)")
+                    print("message : \(message)")
+                    print("data : \(result["urls"]!["rtmp"]!)")
+                    self.streamURL = (result["urls"]!["rtmp"] as! String)
+                    print("streamURLALL :\(self.streamURL)")
+                    print("StreamID : \(result["id"])")
+                    let key = self.streamURL?.characters.split{$0 == "/"}.map(String.init)
+                    print("AllKey : \(key)")
+                    self.streamKey = key![3]
+                    self.streamURL = self.streamURL!.stringByReplacingOccurrencesOfString("/\(self.streamKey!)", withString: "")
+                    print("StreamURL : \(self.streamURL!)")
+                    print("Key : \(self.streamKey!)")
+                    
+                    self.titletopLbl.text = (result["title"] as! String)
+                    self.setSocket(result["id"] as! Int)
+                    self.session.startRtmpSessionWithURL(self.streamURL!, andStreamKey: self.streamKey!)
+                    
+                    
+                }
+                
+            }
+            //        session.startRtmpSessionWithURL("rtmp://streaming.touch-ics.com:1935/live", andStreamKey: "myStream")
+            
+        default:
+            //            self.dismissViewControllerAnimated(true, completion: nil)
+            //            self.presentationController.dis
+            print("Stop Streaming")
+            self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
+            session.endRtmpSession()
+            break
+        }
+        //        print("Stop Streaming")
+        //        self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
+        
+        
+    }
+    
+    override func viewDidLoad() {
+        
+        super.viewDidLoad()
+        appDelegate.isChat = false
+        appDelegate.isShare = false
+        
+        self.initialSize()
+        self.initial()
+        self.getLocationName()
+        
+        
+        print("IS CHAT didload ::: \(appDelegate.isChat) ")
+        //self.initSocket()
+        
+        //        slider = UISlider(frame: self.view.bounds)
+        //        self.view.addSubview(slider!)
+        
+        // slider values go from 0 to the number of values in your numbers array
+        //        var numberOfSteps = Float(numbers.count - 1)
+        slider!.maximumValue = 20;
+        slider!.minimumValue = 0;
+        
+        slider!.transform = CGAffineTransformMakeRotation(CGFloat(-M_PI_2))
+        // As the slider moves it will continously call the -valueChanged:
+        slider!.continuous = true; // false makes it call only once you let go
+        slider!.addTarget(self, action: "valueChanged:", forControlEvents: .ValueChanged)
+        UIApplication.sharedApplication().idleTimerDisabled = true
+        
+        
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        self.view!.addGestureRecognizer(tap)
+        //popUpViewCen!.addGestureRecognizer(tap)
+        
+        //        fullView = [[UIView alloc] initWithFrame:CGRectMake(0,0,[[UIScreen mainScreen] applicationFrame].size.width,[[UIScreen mainScreen] applicationFrame].size.height+100)];
+        
+        
+        
+        
+        self.session.previewView.frame = streamView!.frame
+        streamView!.backgroundColor = UIColor.blueColor()
+        self.session.delegate = self
+        self.streamView!.addSubview(session.previewView)
+        
+        self.session.orientationLocked = false
+        
+        
+        //        self.previewView.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height)
+        // self.previewView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
+        
+        //        alertView.show()
+        //hide keyboard alert
+        //        let tapV: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        //        self.view!.addGestureRecognizer(tapV)
+        //        alertView.addGestureRecognizer(tap)
+        
+        
+        
+        
+        
+    }
+    
+    func initial(){
+        
+        
+        streamView = UIView(frame: streamViewRect)
+        popUpView = UIView(frame: popUpViewRect)
+        popUpViewTop = UIView(frame: popUpViewTopRect)
+        popUpViewTop!.backgroundColor = UIColor.blackColor()
+        popUpViewTop!.alpha = 0.7
+        locateLbl = UILabel(frame: locateLblRect)
+        locateLbl.text = self.appDelegate.locationName
+        locateLbl.textColor = UIColor.whiteColor()
+        locateLbl.font = UIFont(name: "Helvetica" , size: font)
+        popUpViewTop!.addSubview(locateLbl)
+        locateLbl.text = "No Location found!"
+        
+        locateImg = UIImageView(frame : locateImgRect)
+        locateImg.image = UIImage(named:"pin_2.png")
+        popUpViewTop!.addSubview(locateImg)
+        
+        lovecountLbl = UILabel(frame: lovecountLblRect)
+        lovecountLbl.text = "0"
+        lovecountLbl.textColor = UIColor.whiteColor()
+        lovecountLbl.font = UIFont(name: "Helvetica" , size: font)
+        popUpViewTop!.addSubview(lovecountLbl)
+        
+        loveiconImg = UIImageView(frame :  loveiconImgRect)
+        loveiconImg.image = UIImage(named:"love_noti.png")
+        popUpViewTop!.addSubview(loveiconImg)
+        
+        viewcountLbl = UILabel(frame: viewcountLblRect)
+        viewcountLbl.text = "0"
+        viewcountLbl.textColor = UIColor.whiteColor()
+        viewcountLbl.font = UIFont(name: "Helvetica" , size: font)
+        popUpViewTop!.addSubview(viewcountLbl)
+        
+        viewiconImg = UIImageView(frame :  viewiconImgRect)
+        viewiconImg.image = UIImage(named:"view_2.png")
+        popUpViewTop!.addSubview(viewiconImg)
+        
+        
+        liveiconImg  = UIImageView(frame :  liveiconImgRect)
+        liveiconImg.image = UIImage(named:"live_now_s.png")
+        popUpViewTop!.addSubview(liveiconImg)
+        
+        titletopLbl  = UILabel(frame: titletopLblRect)
+        titletopLbl.text = "LIVE"
+        titletopLbl.textColor = UIColor.whiteColor()
+        titletopLbl.font = UIFont(name: "Helvetica" , size: 20 )
+        popUpViewTop!.addSubview(titletopLbl)
+        
+        
+        
+        popUpViewBot = UIView(frame: popUpViewBotRect)
+        popUpViewBot!.backgroundColor = UIColor.clearColor()
+        
+        chatBtn = UIButton(frame : chatBtnRect)
+        chatBtn!.setImage(UIImage(named: "chat.png"), forState: UIControlState.Normal)
+        chatBtn!.addTarget(self, action: #selector(LiveStreamVC.startChat(_:)), forControlEvents: .TouchUpInside)
+        popUpViewBot!.addSubview(chatBtn!)
+        
+        shareLiveBtn = UIButton(frame : shareLiveBtnRect)
+        shareLiveBtn!.setImage(UIImage(named: "share_2.png"), forState: UIControlState.Normal)
+        shareLiveBtn!.addTarget(self, action: #selector(LiveStreamVC.startShare(_:)), forControlEvents: .TouchUpInside)
+        popUpViewBot!.addSubview(shareLiveBtn!)
+        
+        shareListView = UIView(frame : shareListViewRect)
+        shareListView.backgroundColor = UIColor.clearColor()
+        popUpViewBot!.addSubview(shareListView)
+        shareListView.hidden = true
+        
+        facebookBtn = UIButton(frame : facebookBtnRect)
+        facebookBtn!.layer.cornerRadius = facebookBtnRect.size.width/2
+        facebookBtn!.clipsToBounds = true
+        facebookBtn!.backgroundColor = UIColor.grayColor()
+        shareListView.addSubview(facebookBtn!)
+        
+        googleBtn = UIButton(frame : googleBtnRect)
+        googleBtn!.layer.cornerRadius = googleBtnRect.size.width/2
+        googleBtn!.clipsToBounds = true
+        googleBtn!.backgroundColor = UIColor.grayColor()
+        shareListView.addSubview(googleBtn!)
+        
+        tweeterBtn = UIButton(frame : tweeterBtnRect)
+        tweeterBtn!.layer.cornerRadius = tweeterBtnRect.size.width/2
+        tweeterBtn!.clipsToBounds = true
+        tweeterBtn!.backgroundColor = UIColor.grayColor()
+        shareListView.addSubview(tweeterBtn!)
+        
+        linekBtn = UIButton(frame : linekBtnRect)
+        linekBtn!.layer.cornerRadius = linekBtnRect.size.width/2
+        linekBtn!.clipsToBounds = true
+        linekBtn!.backgroundColor = UIColor.grayColor()
+        shareListView.addSubview(linekBtn!)
+        
+        copyLinkBtn = UIButton(frame : copyLinkBtnRect)
+        copyLinkBtn!.layer.cornerRadius = copyLinkBtnRect.size.width/2
+        copyLinkBtn!.clipsToBounds = true
+        copyLinkBtn!.backgroundColor = UIColor.grayColor()
+        shareListView.addSubview(copyLinkBtn!)
+        
+        
+        //******      popUpViewBot?.addSubview(tableView!)
+        
+        popUpViewChat = UIView(frame : popUpViewChatRect)
+        popUpViewChat!.backgroundColor = UIColor.blackColor()
+        popUpViewChat!.alpha = 0.7
+        popUpViewChat!.layer.cornerRadius = 10
+        popUpViewChat!.clipsToBounds = true
+        popUpView!.addSubview(popUpViewChat!)
+        popUpViewChat!.hidden = true
+        
+        tableView = UITableView(frame: popUpViewChat!.bounds)
+        tableView!.delegate = self
+        tableView!.dataSource = self
+        tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
+        tableView!.backgroundColor = UIColor.clearColor()
+        
+        popUpViewChat!.addSubview(tableView!)
+        
+        
+        //        commentScroll?.contentSize = CGSizeMake(UIScreen.mainScreen().bounds.size.height-200, 150)
+        //        commentScroll?.backgroundColor = UIColor.blueColor()
+        //        commentScroll?.showsVerticalScrollIndicator = true
+        //        commentScroll?.scrollEnabled = true
+        //        commentScroll?.userInteractionEnabled = true
+        
+        //        popUpViewBot?.addSubview(commentScroll!)
+        
+        
+        
+        popUpViewRight = UIView(frame: popUpViewRightRect)
+        popUpViewLeft = UIView(frame: popUpViewLeftRect)
+        
+        popUpViewLeft!.backgroundColor = UIColor.clearColor()
+        popUpViewRight!.backgroundColor = UIColor.clearColor()
+        
+        //        popUpViewLeft!.backgroundColor = UIColor.redColor()
+        
+        
+        let popUpViewCenX:CGFloat = UIScreen.mainScreen().bounds.size.height/1.7
+        let popUpViewCenY:CGFloat = UIScreen.mainScreen().bounds.size.width/1.6
+        
+        print("popUpViewCenY ::: \(popUpViewCenY)");
+        
+        popUpViewCen = UIView(frame: popUpViewCenRect)
+        popUpViewCen!.backgroundColor = UIColor.blackColor()
+        popUpViewCen!.layer.cornerRadius = 10
+        popUpViewCen!.alpha = 0.7
+        
+        
+        slider = UISlider(frame: sliderRect)
+        changeCamBtn = UIButton(frame : changeCamBtnRect)
+        flashBtn = UIButton(frame :flashBtnRect)
+        
+        
+        changeCamBtn!.setImage(UIImage(named: "ic_flip_camera.png"), forState: .Normal)
+        changeCamBtn!.addTarget(self, action: "changeCameraDevice:", forControlEvents: .TouchUpInside)
+        
+        
+        
+        flashBtn!.setImage(UIImage(named: "ic_flash2.png"), forState: .Normal)
+        flashBtn!.addTarget(self, action: "toggleFlash:", forControlEvents: .TouchUpInside)
+        
+        
+        popUpViewLeft!.addSubview(slider!)
+        
+        topCenView = UIView(frame: topCenViewRect)
+        topCenView!.backgroundColor = UIColor.whiteColor()
+        topCenView!.layer.cornerRadius = 5
+        
+        
+        titleIconImg = UIImageView(frame: titleIconImgRect)
+        titleIconImg!.image = UIImage(named: "icon_title.png")
+        //titleIconImg!.frame =
+        //        labelImg!.backgroundColor = UIColor.purpleColor()
+        
+        titleLbl = UILabel(frame: titleLblRect)
+        titleLbl!.text = "Title :"
+        titleLbl!.textColor = UIColor .grayColor()
+        titleLbl!.font = UIFont.systemFontOfSize(font)
+        //titleLbl!.frame =
+        //        labelLbl!.backgroundColor = UIColor.purpleColor()
+        
+        titleTxt = UITextField(frame: titleTxtRect)
+        titleTxt!.text = ""
+        titleTxt!.font = UIFont.systemFontOfSize(font)
+        //titleTxt!.frame =
+        
+        selectCatLbl = UILabel(frame: selectCatLblRect)
+        selectCatLbl!.text = "Select Category"
+        selectCatLbl!.textColor = UIColor.whiteColor()
+        selectCatLbl!.font = UIFont.boldSystemFontOfSize(font)
+        popUpViewCen!.addSubview(selectCatLbl!)
+        
+        categoryTxt = UITextField(frame: categoryTxtRect)
+        categoryTxt!.text = (appDelegate.categoryData[0]["category_name_en"] as! String)
+        categoryTxt!.font = UIFont.systemFontOfSize(font)
+        categoryTxt!.layer.cornerRadius = 5
+        categoryTxt!.clipsToBounds = true
+        categoryTxt!.enabled = false
+        categoryTxt!.backgroundColor = UIColor.whiteColor()
+        popUpViewCen!.addSubview(categoryTxt!)
+        
+        
+        selectCatBtn = UIButton(frame: selectCatBtnRect)
+        let img:UIImageView? = UIImageView(frame:selectCatBtn!.bounds)
+        img!.image = UIImage(named:"Plus-50.png")
+        selectCatBtn!.addSubview(img!)
+        selectCatBtn!.backgroundColor = UIColor.clearColor()
+        selectCatBtn!.addTarget(self, action: "initialCatPickerView:", forControlEvents: .TouchUpInside)
+        popUpViewCen!.addSubview(selectCatBtn!)
+        
+        
+        qualityLbl = UILabel(frame: qualityLblRect)
+        qualityLbl!.text = "Select Quality"
+        qualityLbl!.textColor = UIColor.whiteColor()
+        qualityLbl!.font = UIFont.boldSystemFontOfSize(font)
+        //    popUpViewCen!.addSubview(qualityLbl!)
+        
+        qualityTxt = UITextField(frame: qualityTxtRect)
+        qualityTxt!.text = qualityArray[0]
+        qualityTxt!.font = UIFont.systemFontOfSize(font)
+        qualityTxt!.layer.cornerRadius = 5
+        qualityTxt!.clipsToBounds = true
+        qualityTxt!.enabled = false
+        qualityTxt!.backgroundColor = UIColor.whiteColor()
+        //    popUpViewCen!.addSubview(qualityTxt!)
+        
+        shareBtn = UIButton(frame: shareBtnRect)
+        let shareImg:UIImageView? = UIImageView(frame:shareBtn!.bounds)
+        shareImg!.image = UIImage(named:"ic_share21.png")
+        shareBtn!.addSubview(shareImg!)
+        shareBtn!.backgroundColor = UIColor.clearColor()
+        shareBtn!.tag = 5
+        shareBtn!.addTarget(self, action: #selector(LiveStreamVC.shareMyLive(_:)), forControlEvents: .TouchUpInside)
+        //    popUpViewBot!.addSubview(shareBtn!)
+        
+        
+        selectQualityBtn = UIButton(frame:selectQualityBtnRect)
+        let imgQty:UIImageView? = UIImageView(frame:selectCatBtn!.bounds)
+        imgQty!.image = UIImage(named:"Plus-50.png")
+        selectQualityBtn!.addSubview(imgQty!)
+        selectQualityBtn!.backgroundColor = UIColor.clearColor()
+        selectQualityBtn!.addTarget(self, action: "initialQualityPickerView:", forControlEvents: .TouchUpInside)
+        //    popUpViewCen!.addSubview(selectQualityBtn!)
+        
+        
+        
+        categoryPickerView = UIPickerView(frame: categoryPickerViewRect)
+        categoryPickerView!.layer.cornerRadius = 5
+        categoryPickerView!.delegate = self
+        categoryPickerView!.dataSource = self
+        categoryPickerView!.backgroundColor = UIColor.whiteColor()
+        categoryPickerView!.hidden = true
+        popUpViewCen!.addSubview(categoryPickerView!)
+        
+        
+        qualityPickerView = UIPickerView(frame: qualityPickerViewRect)
+        qualityPickerView!.layer.cornerRadius = 5
+        qualityPickerView!.delegate = self
+        qualityPickerView!.dataSource = self
+        qualityPickerView!.backgroundColor = UIColor.whiteColor()
+        qualityPickerView!.hidden = true
+        //    popUpViewCen!.addSubview(qualityPickerView!)
+        
+        
+        
+        locationPinImg = UIImageView(frame: locationPinImgRect)
+        locationPinImg!.image = UIImage(named: "ic_pin_cctv.png")
+        popUpViewCen!.addSubview(locationPinImg!)
+        
+        locationLbl = UILabel(frame: locationLblRect)
+        
+        //        if(appDelegate.locationName == nil)
+        //        {
+        //            print("Location Name \(appDelegate.locationName)")
+        locationLbl!.text = "No Location found!"
+        //        }else
+        //        {
+        //            locationLbl!.text = appDelegate.locationName
+        //        }
+        
+        locationLbl!.font = UIFont.systemFontOfSize(font)
+        locationLbl!.textColor = UIColor.whiteColor()
+        locationLbl!.alpha = 0.5
+        popUpViewCen!.addSubview(locationLbl!)
+        
+        detailLiveLbl = UILabel(frame: detailLiveLblRect)
+        detailLiveLbl!.text = "Your account can live with"
+        detailLiveLbl!.font = UIFont.systemFontOfSize(font)
+        detailLiveLbl!.textColor = UIColor.whiteColor()
+        detailLiveLbl!.textAlignment = NSTextAlignment.Right
+        detailLiveLbl!.alpha = 0.5
+        popUpViewCen!.addSubview(detailLiveLbl!)
+        
+        timeDetail = UILabel(frame: timeDetailRect)
+        timeDetail!.text = "Ulimited"
+        timeDetail!.font = UIFont.boldSystemFontOfSize(font)
+        timeDetail!.textColor = UIColor.whiteColor()
+        popUpViewCen!.addSubview(timeDetail!)
+        
+        
+        
+        closeBtn = UIButton(frame: closeBtnRect)
+        closeBtn!.setImage(UIImage(named: "ic_action_cancel.png"), forState: .Normal)
+        closeBtn!.addTarget(self, action: "stopStream:", forControlEvents: .TouchUpInside)
+        //        closeBtn!.backgroundColor = UIColor.blackColor()
+        
+        streamButton = UIButton(frame: streamButtonRect)
+        startStreamBtn = UIButton(frame: startStreamBtnRect)
+        
+        
+        
+        
+        //  stopStreamBtn = UIButton(frame: CGRectMake(0, 0, 100,100))
+        
+        
+        //        streamButton!.setImage(UIImage(named: "ic_start.png"), forState: .Normal)
+        //        streamButton!.frame = CGRectMake(streamView!.frame.size.width - 120 ,streamView!.frame.size.height - 120 ,90, 90)
+        
+        streamButton!.setImage(UIImage(named: "ic_start.png"), forState: .Normal)
+        startStreamBtn!.setTitle("Live", forState: UIControlState.Normal)
+        startStreamBtn!.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        startStreamBtn!.titleLabel!.textAlignment = NSTextAlignment.Center
+        startStreamBtn!.addTarget(self, action: "startStream:", forControlEvents: .TouchUpInside)
+        //        startStreamBtn!.addTarget(self, action: "testBtn:", forControlEvents: .TouchUpInside)
+        
+        
+        //        textButton.frame = CGRectMake(0 ,streamButton!.frame.size.height/2-10 ,streamButton!.frame.size.width, 30)
+        //        textButton.text = "Starting"
+        //        textButton.textAlignment = NSTextAlignment.Center
+        //        textButton.font = UIFont.systemFontOfSize(20)
+        //        textButton.textColor = UIColor.whiteColor()
+        //
+        //
+        //        streamView!.backgroundColor = UIColor.redColor()
+        //        streamView!.alpha = 0.5
+        
+        
+        self.streamButton!.addSubview(textButton)
+        
+        topCenView!.addSubview(titleIconImg!)
+        topCenView!.addSubview(titleLbl!)
+        topCenView!.addSubview(titleTxt!)
+        self.popUpViewCen!.addSubview(topCenView!)
+        
+        
+        //        self.popUpViewBot!.hidden = true
+        self.chatBtn?.hidden = true
+        self.shareLiveBtn?.hidden = true
+        //        self.popUpViewTop?.hidden = true
+        
+        self.popUpView!.addSubview(popUpViewTop!)
+        self.popUpView!.addSubview(popUpViewBot!)
+        
+        self.popUpViewTop!.addSubview(closeBtn!)
+        self.popUpViewBot!.addSubview(streamButton!)
+        self.popUpViewBot!.addSubview(startStreamBtn!)
+        self.popUpViewRight!.addSubview(changeCamBtn!)
+        self.popUpViewRight!.addSubview(flashBtn!)
+        
+        
+        
+        
+        
+        self.popUpView!.addSubview(popUpViewRight!)
+        self.popUpView!.addSubview(popUpViewLeft!)
+        self.popUpView!.addSubview(popUpViewCen!)
+        
+        
+        
+        self.view!.addSubview(streamView!)
+        self.view!.addSubview(popUpView!)
+        
+        
+        
+        
+    }
+    func initialSize(){
+        let scx:CGFloat = 768.0/360.0
+        let scy:CGFloat = 1024.0/480.0
+        
+        
+        var popUpViewCenX = CGFloat()
+        var popUpViewCenY = CGFloat()
+        
+        
+        if (UIDevice.currentDevice().userInterfaceIdiom == .Pad){
+            font = 14*scy
+            cellH = 80*scy
+            popUpViewCenX = UIScreen.mainScreen().bounds.size.height/(1.7*scy)
+            popUpViewCenY = UIScreen.mainScreen().bounds.size.width/(1.6*scx)
+            streamViewRect = CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.height, UIScreen.mainScreen().bounds.size.width)
+            popUpViewRect =  CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.height, UIScreen.mainScreen().bounds.size.width)
+            popUpViewTopRect =  CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.height, 40*scx)
+            popUpViewBotRect = CGRectMake(70*scy, UIScreen.mainScreen().bounds.size.width-(150*scx), UIScreen.mainScreen().bounds.size.height-(140*scy), 150*scx)
+            
+            popUpViewRightRect = CGRectMake(streamViewRect.size.width-(100*scx),0*scy,100*scx, streamViewRect.size.height)
+            popUpViewLeftRect = CGRectMake(0*scx,0*scy,100*scx, streamViewRect.size.height)
+            
+            popUpViewCenRect = CGRectMake(100*scy,popUpViewCenY/2, UIScreen.mainScreen().bounds.size.height-(200*scy),UIScreen.mainScreen().bounds.size.width/2 + (20*scx))
+            
+            sliderRect = CGRectMake(popUpViewLeftRect.width/2-(100*scx),popUpViewLeftRect.height/2-(25*scy),200*scx,50*scy)
+            changeCamBtnRect = CGRectMake(popUpViewRightRect.size.width/2 - (40*scx) ,popUpViewRightRect.size.height-180*scy ,80*scx, 80*scy)
+            flashBtnRect = CGRectMake(popUpViewRightRect.size.width/2 - (40*scx) ,popUpViewRightRect.size.height - (250*scy) ,80*scx, 80*scy)
+            
+            closeBtnRect = CGRectMake(popUpViewRightRect.size.width-(40*scx),0*scy ,40*scx, 40*scy)
+            streamButtonRect = CGRectMake(popUpViewRightRect.size.width/2 - (40*scx) ,popUpViewRightRect.size.height - (90*scy) ,80*scx, 80*scy)
+            startStreamBtnRect = CGRectMake(popUpViewRightRect.size.width/2 - (40*scx) ,popUpViewRightRect.size.height - (90*scy) ,80*scx, 80*scy)
+            
+            topCenViewRect = CGRectMake(10*scx, 10*scy, popUpViewCenRect.size.width-(20*scx), 40*scy)
+            titleIconImgRect = CGRectMake(10*scx,topCenViewRect.size.height/2-(10*scy),(20*scx), (20*scy))
+            
+            titleLblRect = CGRectMake(40*scx,topCenViewRect.size.height/2-(15*scy),50*scx,30*scy)
+            titleTxtRect = CGRectMake(90*scx,topCenViewRect.size.height/2-(15*scy),topCenViewRect.size.width - (90*scx),30*scy)
+            selectCatLblRect = CGRectMake(10*scx,60*scy,topCenViewRect.size.width/2,30*scy)
+            categoryTxtRect = CGRectMake(topCenViewRect.size.width/2 + (10*scx),60*scy,topCenViewRect.size.width/2,30*scy)
+            selectCatBtnRect = CGRectMake(topCenViewRect.size.width - (20*scx),60*scy,30*scx,30*scy)
+            qualityLblRect = CGRectMake(10*scx,90*scy,topCenViewRect.size.width/2,30*scy)
+            qualityTxtRect = CGRectMake(topCenViewRect.size.width/2 + (10*scx),90*scy,topCenViewRect.size.width/2,30*scy)
+            selectQualityBtnRect =  CGRectMake(topCenViewRect.size.width - (20*scx),90*scy,30*scx,30*scy)
+            locationPinImgRect = CGRectMake(10*scx,130*scy,30*scx,35*scy)
+            locationLblRect = CGRectMake(50*scx,135*scy,topCenViewRect.size.width - (50*scx),30*scy)
+            detailLiveLblRect = CGRectMake(0*scx,popUpViewCenRect.size.height - (30*scy),popUpViewCenRect.size.width-(popUpViewCenRect.size.width/3),30*scy)
+            timeDetailRect = CGRectMake(popUpViewCenRect.size.width-(popUpViewCenRect.size.width/3),popUpViewCenRect.size.height - (30*scy),popUpViewCenRect.size.width-(popUpViewCenRect.size.width/3),30*scy)
+            categoryPickerViewRect = CGRectMake(topCenViewRect.size.width/2 + (10*scx),80*scy,topCenViewRect.size.width/2,100*scy)
+            qualityPickerViewRect = CGRectMake(topCenViewRect.size.width/2 + (10*scx),120*scy,topCenViewRect.size.width/2,100*scy)
+            shareBtnRect = CGRectMake(UIScreen.mainScreen().bounds.size.height/2-popUpViewCenX/2,0*scy,50*scx,50*scy)
+            
+            popUpViewChatRect = CGRectMake(45, 45 , streamViewRect.size.width/2 - 30 , streamViewRect.size.height - 120);
+        }
+        else{
+            font = 14
+            cellH = 45
+            popUpViewCenX = UIScreen.mainScreen().bounds.size.height/1.7
+            popUpViewCenY = UIScreen.mainScreen().bounds.size.width/1.6
+            streamViewRect = CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.height, UIScreen.mainScreen().bounds.size.width)
+            popUpViewRect =  CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.height, UIScreen.mainScreen().bounds.size.width)
+            popUpViewTopRect =  CGRectMake(0, 0, streamViewRect.size.width, 40)
+            popUpViewBotRect = CGRectMake(0, streamViewRect.size.height - 70, streamViewRect.size.width , 70)
+            
+            popUpViewRightRect = CGRectMake(streamViewRect.size.width - 70,40,70, streamViewRect.size.height - 110)
+            popUpViewLeftRect = CGRectMake(0,40,40, streamViewRect.size.height - 110)
+            popUpViewCenRect = CGRectMake(streamViewRect.size.width/2-popUpViewCenX/2, 45 , popUpViewCenX, streamViewRect.size.height - 120)
+            
+            
+            
+            sliderRect = CGRectMake(popUpViewLeftRect.width/2-100,popUpViewLeftRect.height/2-25,200,50)
+            changeCamBtnRect = CGRectMake(popUpViewRightRect.size.width - 65 ,popUpViewRightRect.size.height - 65 ,60, 60)
+            flashBtnRect = CGRectMake(popUpViewRightRect.size.width - 65 , popUpViewRightRect.size.height - 130 ,60, 60)
+            
+            streamButtonRect = CGRectMake(popUpViewBotRect.size.width - 65 ,5 ,60, 60)
+            startStreamBtnRect = CGRectMake(popUpViewBotRect.size.width - 65 ,5,60, 60)
+            
+            topCenViewRect = CGRectMake(10, 10, popUpViewCenRect.size.width-20, 40)
+            titleIconImgRect = CGRectMake(10,topCenViewRect.size.height/2-10,20, 20)
+            
+            titleLblRect = CGRectMake(40,topCenViewRect.size.height/2-15,50,30)
+            titleTxtRect = CGRectMake(90,topCenViewRect.size.height/2-15,topCenViewRect.size.width - 90,30)
+            selectCatLblRect = CGRectMake(10,60,topCenViewRect.size.width/2,30)
+            categoryTxtRect = CGRectMake(topCenViewRect.size.width/2+10,60,topCenViewRect.size.width/2,30)
+            selectCatBtnRect = CGRectMake(topCenViewRect.size.width - 20,60,30,30)
+            qualityLblRect = CGRectMake(10,90,topCenViewRect.size.width/2,30)
+            qualityTxtRect = CGRectMake(topCenViewRect.size.width/2+10,90,topCenViewRect.size.width/2,30)
+            selectQualityBtnRect =  CGRectMake(topCenViewRect.size.width - 20,90,30,30)
+            locationPinImgRect = CGRectMake(10,130,30,35)
+            locationLblRect = CGRectMake(50,135,topCenViewRect.size.width - 50,30)
+            detailLiveLblRect = CGRectMake(0,popUpViewCenRect.size.height-30,popUpViewCenRect.size.width-(popUpViewCenRect.size.width/3),30)
+            timeDetailRect = CGRectMake(popUpViewCenRect.size.width-(popUpViewCenRect.size.width/3),popUpViewCenRect.size.height-30,popUpViewCenRect.size.width-(popUpViewCenRect.size.width/3),30)
+            categoryPickerViewRect = CGRectMake(topCenViewRect.size.width/2+10,80,topCenViewRect.size.width/2,100)
+            qualityPickerViewRect = CGRectMake(topCenViewRect.size.width/2+10,120,topCenViewRect.size.width/2,100)
+            shareBtnRect = CGRectMake(UIScreen.mainScreen().bounds.size.height/2-popUpViewCenX/2,0,50,50)
+            
+            imgUserChatRect = CGRectMake(2, 2, 40 , 40)
+            lblUserNameRect = CGRectMake((imgUserChatRect.size.width + imgUserChatRect.origin.x)+2, 2, 70 , 30)
+            lblTextChatRect = CGRectMake(lblUserNameRect.origin.x + lblUserNameRect.size.width + 2 , 2, popUpViewBotRect.size.width - 150, 30)
+            
+            popUpViewChatRect = CGRectMake(45, 60 , streamViewRect.size.width/2 - 30 , streamViewRect.size.height - 150);
+            
+            // top rect
+            closeBtnRect = CGRectMake(popUpViewTopRect.size.width - 35 ,5,30, 30)
+            locateLblRect = CGRectMake(popUpViewTopRect.size.width - 100 , popUpViewTopRect.size.height/2 - 15 , 60 ,30)
+            locateImgRect = CGRectMake(popUpViewTopRect.size.width - 120 , popUpViewTopRect.size.height/2 - 10 , 20 , 20)
+            lovecountLblRect = CGRectMake(popUpViewTopRect.size.width - 160 , popUpViewTopRect.size.height/2 - 15 , 40 ,30)
+            loveiconImgRect = CGRectMake(popUpViewTopRect.size.width - 180 , popUpViewTopRect.size.height/2 - 10 , 20 , 20)
+            viewcountLblRect = CGRectMake(popUpViewTopRect.size.width - 220 , popUpViewTopRect.size.height/2 - 15 , 40 ,30)
+            viewiconImgRect = CGRectMake(popUpViewTopRect.size.width - 245, popUpViewTopRect.size.height/2 - 10 , 20 , 20)
+            titletopLblRect = CGRectMake( 40 , popUpViewTopRect.size.height/2 - 15 , popUpViewTopRect.size.width/2 - 40 , 30)
+            liveiconImgRect = CGRectMake(5 , popUpViewTopRect.size.height/2 - 15 , 30 , 30)
+            
+            // view bottom
+            chatBtnRect = CGRectMake(50 , popUpViewBotRect.size.height/2 - 20 , 40 , 40)
+            shareLiveBtnRect = CGRectMake(105 , popUpViewBotRect.size.height/2 - 20 , 40 , 40)
+            shareListViewRect = CGRectMake(150 , popUpViewBotRect.size.height/2 - 30 , popUpViewBotRect.size.width - 250 , 60)
+            facebookBtnRect = CGRectMake(10 , shareListViewRect.size.height/2 - 20 , 40 ,40 )
+            googleBtnRect = CGRectMake(55,shareListViewRect.size.height/2 - 20 ,40,40)
+            tweeterBtnRect = CGRectMake(100,shareListViewRect.size.height/2 - 20 ,40,40)
+            linekBtnRect = CGRectMake(145,shareListViewRect.size.height/2 - 20 ,40,40)
+            copyLinkBtnRect = CGRectMake(190,shareListViewRect.size.height/2 - 20 ,40,40)
+            
+        }
+        
+        
+    }
+    func getQualityStream(qualityName:String) ->CGSize
+    {
+        switch qualityName
+        {
+        case "FULLHD":
+            return CGSize(width: 1920, height: 1080)
+        case "High" :
+            return CGSize(width: 1280, height: 720)
+        case "Medium" :
+            return CGSize(width: 640, height: 480)
+        case "Low" :
+            return CGSize(width: 480, height: 360)
+        default :
+            return CGSize(width: 640, height: 480)
+        }
+    }
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return comments.count
+    }
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        
+        let cell  = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
+        cell.backgroundColor = UIColor.clearColor()
+        cell.alpha = 0.5
+        
+        let view = UIView(frame:CGRectMake(imgUserChatRect.size.width + 10,2,cell.contentView.bounds.size.width - 4 ,cell.contentView.bounds.size.height - 4))
+        view.backgroundColor = UIColor.whiteColor()
+        view.layer.cornerRadius = 5
+        view.clipsToBounds = true
+        cell.contentView.addSubview(view)
+        
+        //        var cm = Commentator()
+        let cm = comments.objectAtIndex(indexPath.row) as! Commentator
+        
+        
+        imgUserChat = UIImageView(frame:imgUserChatRect)
+        //        imgUserChat.image = UIImage(named: "image1.jpg")
+        imgUserChat.image = UIImage(data: NSData(contentsOfURL: NSURL(string: cm.profile_picture)!)!)
+        cell.contentView.addSubview(imgUserChat)
+        
+        lblUserName = UILabel(frame :lblUserNameRect)
+        //        lblUserName.text = "User test"
+        lblUserName.text = cm.first_name
+        lblUserName.font = UIFont(name:  "Helvetica", size: font)
+        lblUserName.textAlignment = NSTextAlignment.Justified
+        lblUserName.sizeToFit()
+        
+        cell.contentView.addSubview(lblUserName)
+        
+        lblTextChat = UILabel(frame: lblTextChatRect)
+        //        lblTextChat.text = "helloDRETSYSYS"
+        lblTextChat.text = cm.comment_content
+        
+        lblTextChat.font = UIFont(name:  "Helvetica", size: font)
+        lblTextChat.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        lblTextChat.numberOfLines = 0 ;
+        lblTextChat.textAlignment = NSTextAlignment.Justified
+        lblTextChat.sizeToFit()
+        cell.contentView.addSubview(lblTextChat)
+        
+        return cell
+    }
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if (lblUserName.bounds.size.height + 2 <= cellH) {
+            return cellH;
+        }
+        else{
+            return lblTextChat.bounds.size.height + 5;
+        }
+        
+    }
+    func initialCatPickerView(sender:UIButton){
+        
+        print("Show PickerView")
+        
+        categoryPickerView!.hidden = false
+        
+    }
+    func initialQualityPickerView(sender:UIButton){
+        
+        print("Show PickerView")
+        
+        qualityPickerView!.hidden = false
+        
+    }
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if(pickerView .isEqual(categoryPickerView)){
+            //            return catArray.count;
+            return appDelegate.categoryData.count;
+        }
+        else
+        {
+            return qualityArray.count
+        }
+    }
+    
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if(pickerView .isEqual(categoryPickerView)){
+            
+            
+            //            return catArray[row]
+            //            print("category_name_en \(appDelegate.categoryData[row]["category_name_en"])")
+            return (appDelegate.categoryData[row]["category_name_en"] as! String);
+        }
+        else{
+            return qualityArray[row]
+        }
+    }
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int)
+    {
+        if(pickerView .isEqual(categoryPickerView)){
+            //            categoryTxt!.text = catArray[row]
+            categoryTxt!.text = (appDelegate.categoryData[row]["category_name_en"] as! String)
+            catID = Int(appDelegate.categoryData[row]["id"] as! String)!
+            print("catID = \(catID)")
+            pickerView.hidden = true
+        }
+        else{
+            qualityTxt!.text = qualityArray[row]
+            pickerView.hidden = true
+        }
+        
+    }
+    func dismissKeyboard() {
+        print("dismissKeyboard");
+        qualityPickerView!.hidden = true
+        categoryPickerView!.hidden = true
+        self.view.endEditing(true)
+        
+    }
+    func startChat( sender : UIButton) {
+        
+        //        popUpViewChat!.hidden = false
+        
+        print("IS CHAT ::: \(appDelegate.isChat)")
+        
+        if (!appDelegate.isChat) {
+            
+            appDelegate.isChat = true
+            popUpViewChat!.hidden = false
+        }
+        else{
+            appDelegate.isChat = false
+            popUpViewChat!.hidden = true
+            
+        }
+        
+        popUpViewChat?.reloadInputViews()
+        //appDelegate.isChat = false
+        
+        //   print("IS CHAT ::: \(appDelegate.isChat)")
+        
+    }
+    func startShare(sender : UIButton) {
+        
+        print("IS SHARE ::: \(appDelegate.isShare)")
+        if (!appDelegate.isShare) {
+            
+            appDelegate.isShare = true
+            shareLiveBtn?.setImage(UIImage(named: "close.png"), forState: UIControlState.Normal)
+            shareListView.hidden = false
+            // popUpViewChat!.hidden = true
+            
+        }
+        else{
+            appDelegate.isShare = false
+            shareLiveBtn?.setImage(UIImage(named: "share_2.png"), forState: UIControlState.Normal)
+            shareListView.hidden = true
+            //  popUpViewChat!.hidden = false
+        }
+        
+        // popUpViewChat?.reloadInputViews()
+    }
+    func customIOS7AlertViewButtonTouchUpInside(alertView: CustomIOS7AlertView, buttonIndex: Int) {
+        //print("DELEGATE: Button '\(buttons[buttonIndex])' touched")
+        //alertView.close()
+    }
+    
+    
+    
+    func createPopupView() -> UIView {
+        
+        popupView.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width - 50, UIScreen.mainScreen().bounds.size.height - 50)
+        
+        popupView.backgroundColor = UIColor.blackColor()
+        //   popupView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
+        
+        //        popup=NSBundle.mainBundle().loadNibNamed("popupStreaming", owner: self, options: nil)[0] as! popupStream
+        //        popup.frame = popupView.bounds
+        //        popup.TitleTxt.delegate = self
+        //        popup.TitleTxt.text = "no title"
+        //        popup.closeBtn.addTarget(self, action: "closepopup:", forControlEvents: .TouchUpInside)
+        //
+        //        popup.changCamBtn.addTarget(self, action: "changeCameraDevice:", forControlEvents: .TouchUpInside)
+        //        popup.startBtn.addTarget(self, action: "startstream:", forControlEvents: .TouchUpInside)
+        //        popupView.addSubview(popup)
+        
+        // containerView.addSubview(subView1)
+        return popupView
+    }
+    func changeCameraDevice(sender: UIButton) {
+        
+        
+        switch (session.cameraState) {
+            
+            
+        case VCCameraState.Front:
+            session.cameraState = VCCameraState.Back;
+            //            self.previewView.transform = CGAffineTransformMakeScale(1.0, 1.0);
+            break;
+            
+        case VCCameraState.Back:
+            session.cameraState = VCCameraState.Front;
+            //            self.previewView.transform = CGAffineTransformMakeScale(-1.0, 1.0);
+            break;
+        default:
+            break;
+        }
+    }
+    
+    func closepopup(sender:UIButton){
+        //        alertView.close()
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    
+    //    override func didReceiveMemoryWarning() {
+    //        super.didReceiveMemoryWarning()
+    //        // Dispose of any resources that can be recreated.
+    //    }
+    
+    deinit {
+        connectBtn = nil
+        //        previewView = nil
+        session.delegate = nil;
+    }
+    func connectionStatusChanged(sessionState: VCSessionState) {
+        print("session state \(session.rtmpSessionState.hashValue)")
+        switch session.rtmpSessionState {
+            
+        case .Starting:
+            //                    self.textButton.text = "Starting"
+            startStreamBtn!.setTitle("Starting", forState: UIControlState.Normal)
+            //connectBtn.setTitle("Connecting", forState: .Normal)
+            
+            break
+        case .Started:
+            //                    self.textButton.text = "STOP"
+            startStreamBtn!.setTitle("STOP", forState: UIControlState.Normal)
+            //            startStreamBtn!.addTarget(self, action: Selector("stopStream"), forControlEvents: .TouchUpInside)
+            break
+        default:
+            //                    self.textButton.text = "STOP"
+            //            startStreamBtn!.setTitle("STOP!", forState: UIControlState.Normal)
+            //            startStreamBtn!.addTarget(self, action: Selector("stopStream"), forControlEvents: .TouchUpInside)
+            break
+        }
+    }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        //hide Status bar
+        return true;
+    }
+    override func shouldAutorotate() -> Bool {
+        return false
+    }
+    
+    
+    override func viewWillDisappear(animated: Bool) {
+        // Remove observer of self.
+        
+        //        NSNotificationCenter.defaultCenter().removeObserver(self)
+        
+        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        
+        appDelegate.isLiveVC = true
+        appDelegate.isChat = true
+        appDelegate.isChat = true
+        //        let value = UIInterfaceOrientation.LandscapeLeft.rawValue
+        //        UIDevice.currentDevice().setValue(value, forKey: "orientation")
+        titleTxt!.text = "\(appDelegate.first_name) \(appDelegate.last_name)_\(appDelegate.date)"
+        self.titletopLbl.text = "\(appDelegate.first_name) \(appDelegate.last_name)_\(appDelegate.date)"
+        //        UIApplication.sharedApplication().statusBarOrientation = .LandscapeRight
+        //        self.setNeedsStatusBarAppearanceUpdate()
+        //        UIApplication.sharedApplication().setStatusBarOrientation(.LandscapeRight, animated: false)
+        //
+        
+        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        
+        print("End viewwillDisappear")
+        appDelegate.isLiveVC = false
+        appDelegate.isChat = false
+        
+        //        self.popUpViewBot?.hidden = true
+        //        let value = UIInterfaceOrientation.LandscapeRight.rawValue
+        //        UIDevice.currentDevice().setValue(value, forKey: "orientation")
+        //        UIApplication.sharedApplication().setStatusBarOrientation(.LandscapeRight, animated: false)
+        
+        
+        
+    }
+    override func viewDidDisappear(animated: Bool) {
+        
+    }
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        
+    }
+    
+    //    func dismissPickerView() {
+    //
+    //        qualityPickerView!.hidden = true
+    //        categoryPickerView!.hidden = true
+    //
+    //    }
+    //    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+    //        print("supportedInterfaceOrientations")
+    //        return UIInterfaceOrientationMask.LandscapeRight
+    //    }
+    
+    
+    
+    func toggleFlash(sender:UIButton) {
+        let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
+        if (device.hasTorch) {
+            do {
+                try device.lockForConfiguration()
+                if (device.torchMode == AVCaptureTorchMode.On) {
+                    device.torchMode = AVCaptureTorchMode.Off
+                    flashBtn!.setImage(UIImage(named: "ic_flash2.png"), forState: .Normal)
+                } else {
+                    do {
+                        try device.setTorchModeOnWithLevel(1.0)
+                        flashBtn!.setImage(UIImage(named: "ic_flash.png"), forState: .Normal)
+                    } catch {
+                        print(error)
+                    }
+                }
+                device.unlockForConfiguration()
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    
+    override func preferredInterfaceOrientationForPresentation() -> UIInterfaceOrientation
+    {
+        return UIInterfaceOrientation.LandscapeRight
+    }
+    //    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+    //        return [UIInterfaceOrientationMask.Portrait, UIInterfaceOrientationMask.Landscape, UIInterfaceOrientationMask.LandscapeLeft, UIInterfaceOrientationMask.LandscapeRight, UIInterfaceOrientationMask.PortraitUpsideDown]
+    //    }
+    func timePlus(){
+        //setting the delay time 60secs.
+        let delay = 60 * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue()) {
+            //call the method which have the steps after delay.
+            self.stepsAfterDelay()
+        }
+    }
+    func stepsAfterDelay(){
+        //your code after delay takes place here...
+    }
+    func update() {
+        
+        if(count > 0)
+        {
+            //            countDownLabel.text = String(count++)
+        }
+        
+    }
+    
+    func shareMyLive(sender: AnyObject) {
+        //        var tapRecognizer: UITapGestureRecognizer = (sender as! UITapGestureRecognizer)
+        
+        NSLog("Tag %ld", sender.tag)
+        
+        
+        
+        let firstActivityItem = "Text you want"
+        let secondActivityItem : NSURL = NSURL(string: "http//:www.google.com")!
+        // If you want to put an image
+        let image : UIImage = UIImage(named: "ic_flash2.png")!
+        
+        let activityViewController : UIActivityViewController = UIActivityViewController(
+            activityItems: [firstActivityItem, secondActivityItem, image], applicationActivities: nil)
+        
+        
+        //        activityViewController.rotatingHeaderView()
+        // This lines is for the popover you need to show in iPad
+        activityViewController.popoverPresentationController?.sourceView = (sender as! UIButton)
+        
+        // This line remove the arrow of the popover to show in iPad
+        activityViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection()
+        
+        activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
+        
+        // Anything you want to exclude
+        activityViewController.excludedActivityTypes = [
+            UIActivityTypePostToWeibo,
+            UIActivityTypePrint,
+            UIActivityTypeAssignToContact,
+            UIActivityTypeSaveToCameraRoll,
+            UIActivityTypeAddToReadingList,
+            UIActivityTypePostToFlickr,
+            UIActivityTypePostToVimeo,
+            UIActivityTypePostToTencentWeibo
+        ]
+        
+        self.presentViewController(activityViewController, animated: true, completion: nil)
+        
+        
+        
+    }
+    
+    func valueChanged(sender: UISlider) {
+        session.videoZoomFactor = 1.0+(slider!.value)/4
+        print("zoomFac : \(1.0+(slider!.value)/4)")
+    }
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.LandscapeRight
+        
+    }
+    
+    func setSocket(roomID:Int) {
+        print("room ID \(roomID)")
+        let socket = SocketIOClient(socketURL: NSURL(string: SocketURL)!, options: [.Log(true), .ForcePolling(true)])
+        socket.joinNamespace("/websocket")
+        socket.on("ack-connected") {data, ack in
+            socket.emit("join", "streamlive/\(roomID)")
+            print("socket connected")
+            
+        }
+        
+        socket.on("lovescount:update") {data, ack in
+            print("lovescount:update :  \(data)")
+            print("lovescount:update ::: \(data[0]["data"]!!["loves_count"] as! String)")
+            self.lovecountLbl.text = data[0]["data"]!!["loves_count"] as? String
+        }
+        socket.on("watchedcount:update") { data, ack in
+            print("watchedcount:update ::: \(data[0]["data"]!!["watchedCount"] as! String)")
+            self.viewcountLbl.text = data[0]["data"]!!["watchedCount"] as? String
+        }
+        socket.on("comment:new") { data, ack in
+            print("comment:new ::: \(data[0]["data"]!!["comment_content"] as! String)")
+            
+            let comment = Commentator()
+            comment.comment_content = data[0]["data"]!!["comment_content"] as? String
+            comment.first_name = data[0]["data"]!!["commentator"]!!["first_name"] as? String
+            comment.profile_picture = data[0]["data"]!!["commentator"]!!["profile_picture"] as! String
+            self.comments.addObject(comment)
+            self.tableView?.reloadData()
+            //            self.lblTextChat.text = data[0]["data"]!!["comment_content"] as? String
+            //            self.lblUserName.text = data[0]["data"]!!["commentator"]!!["first_name"] as? String
+            //            self.imgUserChat.image = UIImage(data: NSData(contentsOfURL: NSURL(string: data[0]["data"]!!["commentator"]!!["profile_picture"] as! String)!)!)
+        }
+        
+        socket.connect()
+    }
+    func initSocket()
+    {
+        
+        let url = NSURL(fileURLWithPath: "http://192.168.9.117:3008")
+        
+        let socket = SocketIOClient(socketURL: url)
+        socket.on("ack-connected") {data, ack in
+            /// Join room.
+            socket.emit("join", "demo/room-1")
+            
+            /// Leave room.
+            /// socket.emit("leave", "user/anonymous")
+        }
+        socket.connect()
+        
+        
+        
+        socket.on("message:new") {data, ack in
+            
+            print("message : \(data)")
+            //            if let cur = data[0] as? Double {
+            //                socket.emitWithAck("canUpdate", cur)(timeoutAfter: 0) {data in
+            //                    socket.emit("update", ["amount": cur + 2.50])
+            //                }
+            //
+            //                ack.with("Got your currentAmount", "dude")
+            //            }
+        }
+        /// Setup channel:event handlers.
+        
+        //        socket.on("message:new") {data, ack in
+        //            print("New message: \(data?[0])")
+        //        }
+        //        socket.on("message:read") {data, ack in
+        //            print("Read message: \(data?[0])")
+        //        }
+        //        socket.on("message:update") {data, ack in
+        //            print("Update message: \(data?[0])")
+        //        }
+        //        socket.on("message:delete") {data, ack in
+        //            print("Delete message: \(data?[0])")
+        //        }
+    }
+    func  getLocationName() {
+        // Add below code to get address for touch coordinates.
+        let geoCoder = CLGeocoder()
+        let location = CLLocation(latitude: appDelegate.latitute, longitude: appDelegate.longitude)
+        
+        geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) -> Void in
+            
+            // Place details
+            var placeMark: CLPlacemark!
+            placeMark = placemarks?[0]
+            
+            // Address dictionary
+            print(placeMark.addressDictionary)
+            
+            // Location name
+            if let locationName = placeMark.addressDictionary!["Name"] as? NSString {
+                print(locationName)
+            }
+            
+            // Street address
+            if let street = placeMark.addressDictionary!["Thoroughfare"] as? NSString {
+                print(street)
+            }
+            
+            // City
+            if let city = placeMark.addressDictionary!["City"] as? NSString {
+                print(city)
+                self.locateLbl.text = city as String
+                
+                self.locationLbl!.text = city as String
+            }
+            
+            // Zip code
+            if let zip = placeMark.addressDictionary!["ZIP"] as? NSString {
+                print(zip)
+            }
+            
+            // Country
+            if let country = placeMark.addressDictionary!["Country"] as? NSString {
+                print(country)
+            }
+            
+        })
+        
+    }
+}

@@ -1,0 +1,1 @@
+KKGRIDVIEW_OTHER_LDFLAGS = -l"stdc++" -framework "QuartzCore"
