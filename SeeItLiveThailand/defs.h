@@ -29,7 +29,7 @@
 //#define PromotionURL @"http://10.10.0.27/seeitlive_thailand/"
 //#define StreamingHistoryURL @"http://10.10.0.27/seeitlive_thailand/api/liveStreamHistories"
 //#define StreamingLiveURL @"http://10.10.0.27/seeitlive_thailand/api/liveStreamChannels?hasStreaming=Y"
-
+////////
 
 #define CouponURL @"http://www.seeitlivethailand.com/coupon"
 #define BlogURL @"http://www.seeitlivethailand.com/blogs"
