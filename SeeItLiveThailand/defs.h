@@ -1,4 +1,3 @@
-//test1
 
 //#define RoiApiURL @"http://office.touch-ics.com:81/framework/api/rois"
 #define RoiApiURL @"http://www.seeitlivethailand.com/api/rois"
