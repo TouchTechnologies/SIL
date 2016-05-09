@@ -191,17 +191,40 @@
     
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
     CGFloat height = [UIScreen mainScreen].bounds.size.height;
-  
+    CGFloat scy = (1024.0/480.0);
+    CGFloat scx = (768.0/360.0);
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         
-        fontSize = 16.0 * SCALING_X;
-        titleHeight = 45.0 * SCALING_Y;
-        titleWidth = 320 * SCALING_X;
-        indicatorHeight = 5.0 * SCALING_Y;
-        rcBarH = 70.0* SCALING_Y;
-        rcGrapY = 200.0* SCALING_Y;
-        rcButtonW = 50.0* SCALING_X;
-        //indicatorWidth = self.view.bounds.size.width* SCALING_X;
+        fontSize = 16.0 * scx;
+        titleHeight = 45.0 * scy;
+        titleWidth = width/(1.4 * scx);
+        indicatorHeight = 5.0 * scy;
+        rcBarH = 70.0* scy;
+        rcGrapY = 200.0* scy;
+        rcButtonW = 50.0* scx;
+       
+        NSLog(@"else");
+        parentGrab = 120.0*scx;
+        cellSize = CGSizeMake((width/ 2) - (15*scx), 230*scy);
+        paddingSize = CGSizeMake(10.f*scx, 10.f*scy);
+        imgPHW01 = 40.0*scy;
+        imgPHW02 = 25.0*scy;
+        imgLiveRect = CGRectMake(5*scx, 5*scy, 60*scx, 20*scy);
+        // indicatorWidth = self.view.bounds.size.width;
+        onAirViewRect = CGRectMake(0*scx, 0*scy, width, 240*scy);
+        
+        
+        liveStatusViewRect = CGRectMake(0*scx, 0*scy,width , 40*scy);
+        collectionViewRect = CGRectMake(0*scx, 0*scy , width, onAirViewRect.size.height);
+        
+        previewScrollViewRect =  CGRectMake(0*scx, 0*scy,width , 200*scy);
+        
+        imgLiveiconRect = CGRectMake(10*scx , liveStatusViewRect.size.height/2 - (15*scy), 30*scx, 30*scy);
+        lblLiveNowRect = CGRectMake(imgLiveiconRect.origin.x + imgLiveiconRect.size.width + (10*scx) , liveStatusViewRect.size.height/2 - (10*scy) , width/2 , 20*scy);
+        
+        imgOnairCountRect = CGRectMake(liveStatusViewRect.size.width - (60*scx), liveStatusViewRect.size.height/2 - (10*scy), 20*scx, 20*scy);
+        
+        lblOnairCountRect = CGRectMake(liveStatusViewRect.size.width - (45*scx), imgOnairCountRect.origin.y - (5*scy), 40*scx, 20*scy);
     } else {
         
         fontSize = 16.0;
@@ -245,16 +268,13 @@
    
     UICollectionViewFlowLayout *layout=[[UICollectionViewFlowLayout alloc] init];
     [layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-        collectionView = [[UICollectionView alloc] initWithFrame:collectionViewRect collectionViewLayout:layout];
+    collectionView = [[UICollectionView alloc] initWithFrame:collectionViewRect collectionViewLayout:layout];
     collectionView.backgroundColor = [UIColor whiteColor];
     collectionView.pagingEnabled = YES;
     [collectionView setShowsHorizontalScrollIndicator:NO];
     [layout setMinimumLineSpacing :0];
     [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
- 
     [scrollView addSubview:collectionView];
- 
-  
     
     CGRect parentFrame = onAirViewRect;
    // __weak StreamLiveViewController *weakSelf = self;
@@ -665,11 +685,34 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     NSString *identifier = @"cell";
+    CGFloat scy = (1024.0/480.0);
+    CGFloat scx = (768.0/360.0);
+    CGRect bottonViewItemRect;
       AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     item  = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     item.backgroundColor = [UIColor redColor];
     Streaming *stream = [self.streamList objectAtIndex:[indexPath item]];
     
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        imgSnapshotRect = CGRectMake(10*scx, 0*scy, item.contentView.bounds.size.width - (20 *scx), item.contentView.bounds.size.height - (40*scy) );
+        imgWatermarkRect = CGRectMake(imgSnapshotRect.size.width/2 - (25*scx),imgSnapshotRect.size.height/2 - (25*scy), 50*scx, 50*scy);
+        imgAvartarRect = CGRectMake(imgSnapshotRect.size.width - (55*scx), imgSnapshotRect.size.height - (55*scy), 50*scx, 50*scy);
+        lblTitleliveRect = CGRectMake(10*scx , imgSnapshot.bounds.size.height - (25*scy), 200*scx, 20*scy);
+        bottonViewItemRect = CGRectMake(0*scx, item.bounds.size.height - (40*scy), item.bounds.size.width, 40*scy);
+        imgViewRect = CGRectMake(10*scx , bottonViewItemRect.size.height - (30*scy), 20*scx, 20*scy);
+        lblViewCountRect = CGRectMake(40*scx , bottonViewItemRect.size.height - (30*scy), 50*scx, 20*scy);
+        
+    }
+    else{
+        imgSnapshotRect = CGRectMake(10, 0, item.contentView.bounds.size.width - 20 , item.contentView.bounds.size.height - 40 );
+        imgWatermarkRect = CGRectMake(imgSnapshotRect.size.width/2 - 25,imgSnapshotRect.size.height/2 - 25, 50, 50);
+        imgAvartarRect = CGRectMake(imgSnapshotRect.size.width - 55, imgSnapshotRect.size.height - 55, 50, 50);
+        lblTitleliveRect = CGRectMake(10 , imgSnapshot.bounds.size.height - 25, 200, 20);
+        bottonViewItemRect = CGRectMake(0, item.bounds.size.height - 40, item.bounds.size.width, 40);
+        imgViewRect = CGRectMake(10 , bottonViewItemRect.size.height - 30, 20, 20);
+        lblViewCountRect = CGRectMake(40 , bottonViewItemRect.size.height - 30, 50, 20);
+    }
   
 
     item.tag = [indexPath item];
@@ -697,8 +740,9 @@
         
     }
     
-    imgSnapshot = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, item.contentView.bounds.size.width - 20 , item.contentView.bounds.size.height - 40 )];
+    imgSnapshot = [[UIImageView alloc] initWithFrame:imgSnapshotRect];
     imgSnapshot.hnk_cacheFormat = format;
+   // [imgSnapshot setContentMode:UIViewContentModeScaleAspectFit];
     imgSnapshot.layer.cornerRadius = 5 ;
     imgSnapshot.clipsToBounds = TRUE;
     imgSnapshot.backgroundColor = [UIColor grayColor];
@@ -706,7 +750,7 @@
     
 
     
-    imgWatermark = [[UIImageView alloc] initWithFrame:CGRectMake(imgSnapshot.bounds.size.width/2 - 25, imgSnapshot.bounds.size.height/2 - 25, 50, 50)];
+    imgWatermark = [[UIImageView alloc] initWithFrame:imgWatermarkRect];
     imgWatermark.contentMode = UIViewContentModeScaleAspectFit;
     imgWatermark.image = [UIImage imageNamed:@"play.png"];
     imgWatermark.tag = [indexPath item];
@@ -723,7 +767,7 @@
     NSURL *url = [NSURL URLWithString:stream.snapshot];
     [imgSnapshot hnk_setImageFromURL:url placeholder:imgPH];
     
-    imgAvartar = [[UIImageView alloc] initWithFrame:CGRectMake(imgSnapshot.bounds.size.width - 55, imgSnapshot.bounds.size.height - 55, 50, 50)];
+    imgAvartar = [[UIImageView alloc] initWithFrame:imgAvartarRect];
     imgAvartar.layer.borderWidth = 2;
     imgAvartar.layer.borderColor = [UIColor whiteColor].CGColor;
     imgAvartar.layer.cornerRadius = imgAvartar.bounds.size.width/2 ;
@@ -747,21 +791,21 @@
     [imgAvartar hnk_setImageFromURL:avatar placeholder:[UIImage imageNamed:@"anonymous.png"]];
 
     
-    lblTitlelive = [[UILabel alloc] initWithFrame:CGRectMake(10 , imgSnapshot.bounds.size.height - 25, 200, 20)];
+    lblTitlelive = [[UILabel alloc] initWithFrame:lblTitleliveRect];
     lblTitlelive.text = stream.streamTitle;
     lblTitlelive.textColor = [UIColor whiteColor];
     lblTitlelive.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 2 ];
     [imgSnapshot addSubview:lblTitlelive];
     
-    UIView *bottonViewItem = [[UIView alloc] initWithFrame:CGRectMake(0, item.bounds.size.height - 40, item.bounds.size.width, 40)];
+    UIView *bottonViewItem = [[UIView alloc] initWithFrame:bottonViewItemRect];
     bottonViewItem.backgroundColor = [UIColor redColor];
     [item.contentView addSubview:bottonViewItem];
     
-    imgView = [[UIImageView alloc] initWithFrame:CGRectMake(10 , bottonViewItem.bounds.size.height - 30, 20, 20)];
+    imgView = [[UIImageView alloc] initWithFrame:imgViewRect];
     imgView.image = [UIImage imageNamed:@"view_2.png"];
     [bottonViewItem addSubview:imgView];
     
-    lblViewCount = [[UILabel alloc] initWithFrame:CGRectMake(40 , bottonViewItem.bounds.size.height - 30, 50, 20)];
+    lblViewCount = [[UILabel alloc] initWithFrame:lblViewCountRect];
     [lblViewCount setText:stream.streamTotalView];
     lblViewCount.textColor = [UIColor whiteColor];
     lblViewCount.font = [UIFont fontWithName:@"Helvetica" size:fontSize-2];

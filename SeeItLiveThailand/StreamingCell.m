@@ -68,26 +68,26 @@
 
        // frame = CGRectMake(0, 0, cWidth, 400);
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            fontSize = 13.0 * scx;
-            imgSnapshotRect = CGRectMake(0, 0, cWidth, cHeight/2 + (30 * scy));
+            fontSize = 13.0 * scy;
+            imgSnapshotRect = CGRectMake(5*scx, 70* scy, cWidth - (10*scx), cHeight - cHeight/(2.5* scy));
+            imgAvatarRect = CGRectMake(5*scx, 10* scy, 50*scx, 50 * scy);
             
-            lblPlaceRect = CGRectMake(2*scx, imgSnapshotRect.size.height +(1*scy) , cWidth - (2*scx), 20*scy);
-            lblCategorytitleRect = CGRectMake(2*scx,imgSnapshotRect.size.height +(22*scy) , 30*scx, 20*scy);
-            lblCreateByRect = CGRectMake(30*scx, imgSnapshotRect.size.height +(22*scy) , cWidth - (32*scx), 20*scy);
+            lblPlaceRect = CGRectMake(2*scx, imgSnapshotRect.size.height - (20* scy) , imgSnapshotRect.size.width - (4*scx), 20* scy);
+            lblCategorytitleRect = CGRectMake(70*scx,imgAvatarRect.size.height/2 + (10* scy) , 100*scx, 20* scy);
+            lblCreateByRect = CGRectMake(70*scx , imgAvatarRect.size.height/2 - (10* scy) , cWidth - (32*scx), 20* scy);
+            
+            imgViewiconRect = CGRectMake(10*scx, self.bounds.size.height - (35* scy) , 20*scx, 20* scy);
+            lblViewcountRect = CGRectMake(35*scx, self.bounds.size.height - (35* scy), 40*scx, 20* scy);
+            imgcommentIConRect = CGRectMake(80*scx , self.bounds.size.height - (35* scy) ,20*scx, 20* scy);
+            lblcommentCountRect = CGRectMake(105*scx , self.bounds.size.height - (35* scy),40*scx, 20* scy);
+            imgLoveiconRect = CGRectMake(150*scx, self.bounds.size.height - (35* scy), 20*scx , 20* scy);
+            lblLoveCountRect = CGRectMake(175*scx, self.bounds.size.height - (35* scy) , 40*scx, 20* scy);
+            
+            shareLiveStreamBtnRect = CGRectMake(0*scx, 0* scy, 30*scx, 30* scy);
             
             
-            imgViewiconRect = CGRectMake(2*scx, imgSnapshotRect.size.height + (43*scy) , 20*scx, 20*scy);
-            lblViewcountRect = CGRectMake(30*scx, imgSnapshotRect.size.height +(43*scy) , 50*scx, 20*scy);
-
-            
-            lblcommentCountRect = CGRectMake(30*scx, imgSnapshotRect.size.height +(64*scy),50*scx, 20*scy);
-            imgcommentIConRect = CGRectMake(2*scx, imgSnapshotRect.size.height +(64*scy),20*scx, 20*scy);
-            
-            shareLiveStreamBtnRect = CGRectMake(0, 0, 30, 30);
-            
-            imgLoveiconRect = CGRectMake(80*scx, imgSnapshotRect.size.height +(43*scy), 20*scx, 20*scy);
-            lblLoveCountRect = CGRectMake(110*scx, imgSnapshotRect.size.height +(43*scy) , 50*scx, 20*scy);
-            imgShareIconRect = CGRectMake(80*scx, imgSnapshotRect.size.height +(64*scy), 20*scx, 20*scy);
+            btnLoveRect = CGRectMake(self.bounds.size.width - (50*scx),10* scy,40*scx,40* scy);
+            imgShareIconRect = CGRectMake(self.bounds.size.width - (40*scx), self.bounds.size.height - (40* scy) , 25*scx , 25* scy);
 
 
         
