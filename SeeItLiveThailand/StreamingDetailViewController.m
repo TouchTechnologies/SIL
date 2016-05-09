@@ -127,6 +127,8 @@
     
     CGRect moreBtnRect;
     CGRect liveAroundBtnRect;
+    
+    CGRect playerRect;
     // object
     
     UIFont *font;
@@ -277,9 +279,12 @@
         
     }
     else{
-        self.player.view.frame = CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height/3); //self.view.bounds;
+        self.player.view.frame = playerRect; //self.view.bounds;
         NSLog(@"NOT FULLSCREEN");
         self.player.view.doneButton.frame = doneButtonPortRect;
+        UIImage *back = [[UIImage alloc] init];
+        back = [UIImage imageNamed:@"back.png"];
+        [ self.player.view.doneButton setImage:back forState:UIControlStateNormal];
 
     }
     self.player.view.playerControlsAutoHideTime = @1000;
@@ -294,14 +299,14 @@
     
     propViewPort = [[UIView alloc] initWithFrame:propViewPortRect];
     propViewPort.backgroundColor = [UIColor blackColor];
-    [scrollView addSubview:propViewPort];
-    [scrollView addSubview:self.player.view];
+    [self.view addSubview:propViewPort];
+    [self.view addSubview:self.player.view];
     
     
     topView = [[UIView alloc] initWithFrame:topViewPortRect];
     topView.backgroundColor = [UIColor blackColor];
     [topView addSubview:self.player.view.doneButton];
-    [self.player.view addSubview:topView];
+    [self.view addSubview:topView];
     
     font = [UIFont fontWithName:@"Helvetica" size:fontSize];
     steamingTitle = [[UILabel alloc] initWithFrame:vdoLabelPortRect];
@@ -655,27 +660,30 @@
         
         
         CGFloat imgHeight;
+        CGFloat width = [[UIScreen mainScreen] bounds].size.width ;
+        CGFloat height = [[UIScreen mainScreen] bounds].size.height;
+        
         //UIImage *playBig = [UIImage imageNamed:@"VKVideoPlayer_play_big.png"];
         
         imgHeight = 30.0;
        
     
         
-        topViewPortRect = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, 100);
-        
-        lblcategoryDescRect = CGRectMake(10 , topViewPortRect.size.height/2 + 5, 60, 15);
-        lblcategoryTypeRect = CGRectMake(lblcategoryDescRect.origin.x + 60 , topViewPortRect.size.height/2 + 5, topViewPortRect.size.width/2, 15);
+        topViewPortRect = CGRectMake(0, 0, width, 50);
+        playerRect = CGRectMake(0, 50, width, 200);
+       
         
         imgPinPortRect = CGRectMake(10,topViewPortRect.size.height/2 - 13, 25, 25);
        
-        doneButtonPortRect = CGRectMake(10, topViewPortRect.size.height/2 - 50 , 40, 40);
-        vdoLabelPortRect = CGRectMake(10 ,topViewPortRect.size.height/2 - 18 , 200, 20);
-        
-        propViewPortRect = CGRectMake(0, self.view.bounds.size.height -  self.view.bounds.size.height/3 , self.view.bounds.size.width, 70);
+        doneButtonPortRect = CGRectMake(10, topViewPortRect.size.height/2 - 10 , 30, 30);
+        vdoLabelPortRect = CGRectMake(doneButtonPortRect.size.width + 10 ,topViewPortRect.size.height/2 - 10 , 200, 20);
+        lblcategoryDescRect = CGRectMake(doneButtonPortRect.size.width + 10 , topViewPortRect.size.height/2 + 8, 60, 15);
+        lblcategoryTypeRect = CGRectMake(lblcategoryDescRect.origin.x + 60 , topViewPortRect.size.height/2 + 8, topViewPortRect.size.width/2, 15);
+        propViewPortRect = CGRectMake(0,250, self.view.bounds.size.width, 50);
         imgLivePortRect = CGRectMake(20, 2, 35, 35);
         
-        lblLocationDescRect = CGRectMake(10 , propViewPortRect.size.height - 25, 60, 15);
-        lblLocationLivePortRect = CGRectMake(lblLocationDescRect.origin.x + 60,  propViewPortRect.size.height - 25, self.view.bounds.size.width - (lblLocationDescRect.origin.x + 50), 15);
+        lblLocationDescRect = CGRectMake(10 , propViewPortRect.size.height - 20, 60, 15);
+        lblLocationLivePortRect = CGRectMake(lblLocationDescRect.origin.x + 60,  propViewPortRect.size.height - 20, self.view.bounds.size.width - (lblLocationDescRect.origin.x + 50), 15);
         
         shareBtnPortRect = CGRectMake(propViewPortRect.size.width - 35 ,  10 , 25 , 25);
         shareimgPortRect = CGRectMake(0, 0, shareBtnPortRect.size.width, shareBtnPortRect.size.height);

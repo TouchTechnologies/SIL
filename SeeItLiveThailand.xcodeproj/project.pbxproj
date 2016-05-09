@@ -223,6 +223,8 @@
 		F35D29B61CAD0E9B007916FD /* MYTapGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = F35D29B51CAD0E9B007916FD /* MYTapGestureRecognizer.m */; };
 		F36AABC51C8E74CE000B7BFE /* Minus-50.png in Resources */ = {isa = PBXBuildFile; fileRef = F36AABC31C8E74CE000B7BFE /* Minus-50.png */; };
 		F36AABC61C8E74CE000B7BFE /* Plus-50.png in Resources */ = {isa = PBXBuildFile; fileRef = F36AABC41C8E74CE000B7BFE /* Plus-50.png */; };
+		F36F70AF1CE0353E009238D1 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = F36F70AE1CE0353E009238D1 /* back.png */; };
+		F36F70B11CE042BB009238D1 /* sent.png in Resources */ = {isa = PBXBuildFile; fileRef = F36F70B01CE042BB009238D1 /* sent.png */; };
 		F3848DDB1C8457C200054F63 /* DetailProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F3848DDA1C8457C200054F63 /* DetailProfileViewController.m */; };
 		F3848DDE1C8457DD00054F63 /* UserLiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F3848DDD1C8457DD00054F63 /* UserLiveViewController.m */; };
 		F391752D1CA25E84004CCC5B /* ic_exit_checkin.png in Resources */ = {isa = PBXBuildFile; fileRef = F391752C1CA25E84004CCC5B /* ic_exit_checkin.png */; };
@@ -641,6 +643,8 @@
 		F35D29B51CAD0E9B007916FD /* MYTapGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYTapGestureRecognizer.m; sourceTree = "<group>"; };
 		F36AABC31C8E74CE000B7BFE /* Minus-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Minus-50.png"; path = "Image/Minus-50.png"; sourceTree = "<group>"; };
 		F36AABC41C8E74CE000B7BFE /* Plus-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Plus-50.png"; path = "Image/Plus-50.png"; sourceTree = "<group>"; };
+		F36F70AE1CE0353E009238D1 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = back.png; path = Image/back.png; sourceTree = "<group>"; };
+		F36F70B01CE042BB009238D1 /* sent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sent.png; path = Image/sent.png; sourceTree = "<group>"; };
 		F3848DD91C8457C200054F63 /* DetailProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailProfileViewController.h; sourceTree = "<group>"; };
 		F3848DDA1C8457C200054F63 /* DetailProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailProfileViewController.m; sourceTree = "<group>"; };
 		F3848DDC1C8457DD00054F63 /* UserLiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserLiveViewController.h; sourceTree = "<group>"; };
@@ -1059,6 +1063,7 @@
 		36785B341C29258F004E77BE /* Image */ = {
 			isa = PBXGroup;
 			children = (
+				F36F70AE1CE0353E009238D1 /* back.png */,
 				F32985B81CD88FAD00C72901 /* iconCategory */,
 				F318B88A1CD3480E00FCC0BF /* anonymous.png */,
 				F3D321821CCF2C140002CE8E /* Left-25.png */,
@@ -1390,6 +1395,7 @@
 		F39BC3911CB6329A001F3020 /* realtimeChat */ = {
 			isa = PBXGroup;
 			children = (
+				F36F70B01CE042BB009238D1 /* sent.png */,
 				F3F1AB301CCA0D2A00BB1437 /* love11.png */,
 				F3F1AB2C1CCA0C2C00BB1437 /* massege.png */,
 				F3F1AB2D1CCA0C2C00BB1437 /* play.png */,
@@ -1627,6 +1633,7 @@
 				36785B801C29260C004E77BE /* icon_logo.png in Resources */,
 				F3CBDDF61CA3D488008E12E8 /* maker.png in Resources */,
 				36785B641C29260C004E77BE /* bg_default.png in Resources */,
+				F36F70B11CE042BB009238D1 /* sent.png in Resources */,
 				36785B6C1C29260C004E77BE /* history.png in Resources */,
 				F3F414681CA0F25E00F2A962 /* ic_map_checkin.png in Resources */,
 				36785BB21C292E6F004E77BE /* bg_newlogin.png in Resources */,
@@ -1714,6 +1721,7 @@
 				36785B741C29260C004E77BE /* icon_C1.png in Resources */,
 				36785BC31C292E6F004E77BE /* ic_newlogin.png in Resources */,
 				361C92421C80636D002742F5 /* studentdb.sqlite in Resources */,
+				F36F70AF1CE0353E009238D1 /* back.png in Resources */,
 				F39BC39B1CB63320001F3020 /* chat.png in Resources */,
 				36785ADA1C2911A3004E77BE /* Main.storyboard in Resources */,
 				36785BBD1C292E6F004E77BE /* ic_new_mylivestream_newmore.png in Resources */,

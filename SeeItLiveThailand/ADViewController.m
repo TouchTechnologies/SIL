@@ -189,7 +189,8 @@
 
 - (void)initialSize {
     
-    CGFloat width;
+    CGFloat width = [UIScreen mainScreen].bounds.size.width;
+    CGFloat height = [UIScreen mainScreen].bounds.size.height;
   
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         
@@ -205,7 +206,7 @@
         
         fontSize = 16.0;
         titleHeight = 45.0;
-        titleWidth = self.view.bounds.size.width/2 + 15;
+        titleWidth = width/1.4 ;
         indicatorHeight = 5.0;
         rcBarH = 70.0;
         rcGrapY = 200.0;
@@ -428,7 +429,7 @@
     _pageControl.iFirstVisiblePageNumber = 0;
     
     _pageControl.iTitleViewHeight = titleHeight;
-        _pageControl.iPageIndicatorHeight = indicatorHeight;
+    _pageControl.iPageIndicatorHeight = indicatorHeight;
     _pageControl.fontTitleTabText =  [UIFont fontWithName:@"Helvetica" size:fontSize];
     
     _pageControl.bEnablePagesEndBounceEffect = NO;

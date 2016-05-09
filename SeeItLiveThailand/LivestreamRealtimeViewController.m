@@ -443,8 +443,10 @@
     [chatView addSubview:chatboxTxt];
     
     sendchatBtn = [[UIButton alloc] initWithFrame:sendchatBtnPortRect];
-    sendchatBtn.titleLabel.text = @"send";
-    sendchatBtn.backgroundColor = [UIColor greenColor];
+    UIImage *sendImg = [[UIImage alloc] init];
+    sendImg = [UIImage imageNamed:@"sent.png"];
+    [sendchatBtn setImage:sendImg forState:UIControlStateNormal];
+    sendchatBtn.backgroundColor = [UIColor blackColor];
     sendchatBtn.layer.cornerRadius = 5;
     sendchatBtn.clipsToBounds = TRUE;
     [chatView addSubview:sendchatBtn];
@@ -525,7 +527,7 @@
         textchatLblRect = CGRectMake(0, 0, chatplaceViewRect.size.width, 20);
         userChatLblRect = CGRectMake(0, chatplaceViewRect.size.height - 20 , self.view.bounds.size.width, 20);
         chatboxTxtPortRect = CGRectMake(20, chatTblPortRect.origin.y + chatTblPortRect.size.height + 10, self.view.bounds.size.width - 100, 30);
-        sendchatBtnPortRect = CGRectMake(chatboxTxtPortRect.origin.x + chatboxTxtPortRect.size.width,  chatTblPortRect.origin.y + chatTblPortRect.size.height + 10, 30 , 30);
+        sendchatBtnPortRect = CGRectMake(chatboxTxtPortRect.origin.x + chatboxTxtPortRect.size.width + 5,  chatTblPortRect.origin.y + chatTblPortRect.size.height + 15, 50 , 20);
 
         cellH = 50;
         
