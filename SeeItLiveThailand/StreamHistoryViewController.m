@@ -31,7 +31,7 @@
 #import "LivestreamRealtimeViewController.h"
 #import "SBScrollView.h"
 
-@interface StreamHistoryViewController () <UIAlertViewDelegate,UIGestureRecognizerDelegate>
+@interface StreamHistoryViewController () <UIAlertViewDelegate,UIGestureRecognizerDelegate,UIScrollViewDelegate,UIApplicationDelegate>
 {
     CGSize cellSize;
     CGSize paddingSize;
@@ -82,6 +82,8 @@
     [self.view setBackgroundColor:[UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1.0]];
     [self initialSize];
     [self initial];
+    scrollView.delegate = self;
+    NSLog(@"StreamHistoryViewController");
 //    
 //   [[NSNotificationCenter defaultCenter] addObserver:self
 //                                            selector:@selector(refreshList:)
@@ -722,6 +724,24 @@
     }
     
 }
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    NSLog(@"scrollViewDidScroll");
+    // Get new record from here
+}
+-(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    NSLog(@"scrollViewDidEndScrollingAnimation");
+    
+}
+-(void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
+{
+    NSLog(@"scrollViewDidScrollToTop");
+}
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    NSLog(@"scrollViewWillBeginDragging");
+}
+
 -(NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
 {
     return UIInterfaceOrientationMaskPortrait;

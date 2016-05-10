@@ -10,9 +10,11 @@
 #import "CategoryListViewController.h"
 #import "Streaming.h"
 #import "DataManager.h"
+#import "AppDelegate.h"
 
 @interface CategoryTypeViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
+    AppDelegate *appDelegate;
     UITableView *tableview;
     UITableViewCell *cell;
 
@@ -51,6 +53,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
+//    NSLog(@"appCattDATA %@",appDelegate.categoryData);
     [self initialSize];
     [self initial];
     tableview.delegate = self;
@@ -87,40 +91,40 @@
     __weak CategoryTypeViewController *weakSelf = self;
     
     
-    [[DataManager shareManager] getStreamingWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
-        
-        
-              if (success) {
-        
-            weakSelf.streamList = streamRecords;
-            NSLog(@"STREAMLIST COUNT :::: %ld", weakSelf.streamList.count);
-                  stream =  [weakSelf.streamList objectAtIndex:stream.categoryID];
-                  
-                  
-                  
-        } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Not connect" message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
-            /*
-             CGFloat xLbl = (weakSelf.view.bounds.size.width / 2) - 100;
-             UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(xLbl, 20, 200, 25)];
-             lblTitle.text = NotConnect;
-             lblTitle.textAlignment = NSTextAlignmentCenter;
-             [weakSelf.view addSubview:lblTitle];
-             */
-            //NSLog(@"%@",error);
-        }
-
-    }];
+//    [[DataManager shareManager] getStreamingWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
+//        
+//        
+//              if (success) {
+//        
+//            weakSelf.streamList = streamRecords;
+//            NSLog(@"STREAMLIST COUNT :::: %ld", weakSelf.streamList.count);
+////                  stream =  [weakSelf.streamList objectAtIndex:stream.categoryID];
+//                  
+//                  
+//                  
+//        } else {
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Not connect" message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//            [alert show];
+//            /*
+//             CGFloat xLbl = (weakSelf.view.bounds.size.width / 2) - 100;
+//             UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(xLbl, 20, 200, 25)];
+//             lblTitle.text = NotConnect;
+//             lblTitle.textAlignment = NSTextAlignmentCenter;
+//             [weakSelf.view addSubview:lblTitle];
+//             */
+//            //NSLog(@"%@",error);
+//        }
+//
+//    }];
     
 
 
 }
 - (void)initial
 {
-    iconCate = [NSArray arrayWithObjects:@"travel.png",@"culture1.png"
-                @"event.png", @"news.png", @"lifestyle.png",@"other.png",@"Music.png", nil];
-    lblCateType = [NSArray arrayWithObjects:@"Travel",@"Culture",@"Event",@"News",@"Lifestyle",@"Other",@"Music", nil];
+//    iconCate = [NSArray arrayWithObjects:@"travel.png",@"culture1.png"
+//                @"event.png", @"news.png", @"lifestyle.png",@"other.png",@"Music.png", nil];
+//    lblCateType = [NSArray arrayWithObjects:@"Travel",@"Culture",@"Event",@"News",@"Lifestyle",@"Other",@"Music", nil];
    
     tableview = [[UITableView alloc] initWithFrame:tableviewRect];
     tableview.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0];
@@ -130,7 +134,7 @@
     [self.view addSubview:tableview];
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-       return iconCate.count;
+       return appDelegate.categoryData.count;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
      CategoryListViewController *category = [self.storyboard instantiateViewControllerWithIdentifier:@"categorylist"];
@@ -143,7 +147,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
   //  stream.categoryID = [self.streamList objectAtIndex:[indexPath row]];
-    NSLog(@"CATEGORY ID:::%@", stream.categoryID );
+//    NSLog(@"CATEGORY ID:::%@", stream.categoryID );
     
    
     bgCellView = [[UIView alloc] initWithFrame:bgCellViewRect];
@@ -153,14 +157,15 @@
     [cell.contentView addSubview:bgCellView];
     
     imgCategory = [[UIImageView alloc] initWithFrame:imgCategoryRect];
-    imgCategory.image = [UIImage imageNamed:[iconCate objectAtIndex:[indexPath row]]];
+//    imgCategory.image = [UIImage imageNamed:[iconCate objectAtIndex:[indexPath row]]];
+    imgCategory.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:appDelegate.categoryData[indexPath.row][@"icon_category"]]]];
     imgCategory.contentMode = UIViewContentModeScaleAspectFit;
   // imgCategory.layer.cornerRadius = imgCategoryRect.size.height/2;
   //  imgCategory.clipsToBounds = YES;
     [cell.contentView addSubview:imgCategory];
     
     lblCategoryType =[[UILabel alloc] initWithFrame:lblCategoryTypeRect];
-    lblCategoryType.text = [lblCateType objectAtIndex:[indexPath row]];
+    lblCategoryType.text = appDelegate.categoryData[indexPath.row][@"category_name_en"] ;
     lblCategoryType.font = [UIFont fontWithName:@"Helvetica" size: fontSize];
     [cell.contentView addSubview:lblCategoryType];
     
@@ -173,7 +178,7 @@
     lblLivevideoCount = [[UILabel alloc] initWithFrame:lblLivevideoCountRect];
     lblLivevideoCount.font = [UIFont fontWithName:@"Helvetica" size:fontSize-2];
     lblLivevideoCount.textColor = [UIColor redColor];
-    lblLivevideoCount.text = @"35";
+    lblLivevideoCount.text = [NSString stringWithFormat:@"%ld",[appDelegate.categoryData[indexPath.row][@"count_stream"] integerValue]];
     [cell.contentView addSubview:lblLivevideoCount];
     return cell;
 
