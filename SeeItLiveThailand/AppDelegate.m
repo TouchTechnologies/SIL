@@ -29,7 +29,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
 
-    [self initSocket];
+//    [self initSocket];
     //[Util copyFile:@"studentdb.sqlite"];
     [Util copyFile:@"SIL_db.sqlite"];
     
