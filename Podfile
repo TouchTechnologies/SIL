@@ -32,6 +32,7 @@ target 'SeeItLiveThailand' do
     pod 'FBSDKLoginKit'
     #webview
     pod 'SVWebViewController'
+#    pod 'SVPullToRefresh'
 end
 
 target 'SeeItLiveThailandTests' do

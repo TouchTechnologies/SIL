@@ -12,7 +12,6 @@
 #import "Streaming.h"
 #import "DataManager.h"
 #import "SBScrollView.h"
-
 #import "defs.h"
 
 #import "Haneke.h"
@@ -32,8 +31,10 @@
 #define SCALING_X (768.0/360.0);
 @interface CategoryListViewController ()<ADPageControlDelegate>
 {
-ADPageControl *_pageControl;
-BOOL isLazy;
+    ADPageControl *_pageControl;
+    AppDelegate *appDelegate;
+    BOOL isLazy;
+    
     CGSize cellSize;
     CGSize paddingSize;
     CGFloat parentGrab;
@@ -77,7 +78,7 @@ BOOL isLazy;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     scrollView.delegate = self;
     [self initialSize];
     [self setupPageControl];
@@ -208,7 +209,7 @@ BOOL isLazy;
     
     
     ADPageModel *TravelModel = [[ADPageModel alloc] init];
-    TravelModel.strPageTitle = @"Travel";
+    TravelModel.strPageTitle = appDelegate.categoryData[0][@"category_name_en"];
     TravelModel.iPageNumber = 0;
     //historyModel.viewController = streamHistory;
     TravelModel.bShouldLazyLoad = YES;
@@ -216,38 +217,38 @@ BOOL isLazy;
     
     //Live
     ADPageModel *CultureModel = [[ADPageModel alloc] init];
-    CultureModel.strPageTitle = @"Culture";
+    CultureModel.strPageTitle = appDelegate.categoryData[1][@"category_name_en"];
     CultureModel.iPageNumber = 1;
     CultureModel.bShouldLazyLoad = YES;
     
     
     
     ADPageModel *EventModel = [[ADPageModel alloc] init];
-    EventModel.strPageTitle = @"Event";
+    EventModel.strPageTitle = appDelegate.categoryData[2][@"category_name_en"];
     EventModel.iPageNumber = 2;
     //historyModel.viewController = streamHistory;
     EventModel.bShouldLazyLoad = YES;
     
     ADPageModel *NewsModel = [[ADPageModel alloc] init];
-    NewsModel.strPageTitle = @"News";
+    NewsModel.strPageTitle = appDelegate.categoryData[3][@"category_name_en"];
     NewsModel.iPageNumber = 3;
     //historyModel.viewController = streamHistory;
     NewsModel.bShouldLazyLoad = YES;
 
     ADPageModel *LifestyleModel = [[ADPageModel alloc] init];
-    LifestyleModel.strPageTitle = @"Lifestyle";
+    LifestyleModel.strPageTitle = appDelegate.categoryData[4][@"category_name_en"];
     LifestyleModel.iPageNumber = 4;
     //historyModel.viewController = streamHistory;
     LifestyleModel.bShouldLazyLoad = YES;
 
     ADPageModel *OtherModel = [[ADPageModel alloc] init];
-    OtherModel.strPageTitle = @"Other";
+    OtherModel.strPageTitle = appDelegate.categoryData[5][@"category_name_en"];
     OtherModel.iPageNumber = 5;
     //historyModel.viewController = streamHistory;
     OtherModel.bShouldLazyLoad = YES;
 
     ADPageModel *MusicModel = [[ADPageModel alloc] init];
-    MusicModel.strPageTitle = @"Music";
+    MusicModel.strPageTitle = appDelegate.categoryData[6][@"category_name_en"];
     MusicModel.iPageNumber = 6;
     //historyModel.viewController = streamHistory;
     MusicModel.bShouldLazyLoad = YES;
@@ -398,7 +399,7 @@ BOOL isLazy;
 
 - (KKGridViewCell *)gridView:(KKGridView *)gridView cellForItemAtIndexPath:(KKIndexPath *)indexPath
 {
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     CGFloat scy = (1024.0/480.0);
     CGFloat scx = (768.0/360.0);
     CGFloat imgWidth = cell.frame.size.width;

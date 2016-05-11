@@ -649,7 +649,7 @@
         {
             [appDelegate.categoryData addObject:category];
         }
-//        NSLog(@"AllCat %@",appDelegate.categoryData);
+        NSLog(@"AllCat %@",appDelegate.categoryData);
         
     }];
 }

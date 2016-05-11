@@ -14,7 +14,7 @@
 //Dev
 #define service @"http://192.168.9.117/seeitlivethailand/"
 #define PromotionURL @"http://192.168.9.117/seeitlivethailand"
-#define StreamingHistoryURL @"http://192.168.9.117/seeitlivethailand/api/liveStreamHistories"
+#define StreamingHistoryURL @"http://192.168.9.117/seeitlivethailand/api/stream/histories?filtersPage=1&filterLimit=10"
 #define StreamingLiveURL @"http://192.168.9.117/seeitlivethailand/api/liveStreamChannels?hasStreaming=Y"
 #define SocketURL @"http://192.168.9.117:3008"
 
