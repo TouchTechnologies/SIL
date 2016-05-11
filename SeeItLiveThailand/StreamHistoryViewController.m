@@ -30,6 +30,7 @@
 #import "LiveStreamingCell.h"
 #import "LivestreamRealtimeViewController.h"
 #import "SBScrollView.h"
+#import "SVPullToRefresh.h"
 
 @interface StreamHistoryViewController () <UIAlertViewDelegate,UIGestureRecognizerDelegate,UIScrollViewDelegate,UIApplicationDelegate>
 {
@@ -83,6 +84,17 @@
     [self initialSize];
     [self initial];
     scrollView.delegate = self;
+     __weak StreamHistoryViewController *weakSelf = self;
+    
+    [_gridView addPullToRefreshWithActionHandler:^{
+        [weakSelf insertRowAtTop];
+    }];
+    
+    // setup infinite scrolling
+    [_gridView addInfiniteScrollingWithActionHandler:^{
+        [weakSelf insertRowAtBottom];
+    }];
+    
     NSLog(@"StreamHistoryViewController");
 //    
 //   [[NSNotificationCenter defaultCenter] addObserver:self
@@ -95,7 +107,48 @@
 //                                               object:nil];
     //[self initialTest];
 }
+- (void)viewDidAppear:(BOOL)animated {
+    [_gridView triggerPullToRefresh];
+}
+#pragma mark - Actions
 
+- (void)setupDataSource {
+//    self.dataSource = [NSMutableArray array];
+//    for(int i=0; i<15; i++)
+//        [self.dataSource addObject:[NSDate dateWithTimeIntervalSinceNow:-(i*90)]];
+}
+
+- (void)insertRowAtTop {
+    __weak StreamHistoryViewController *weakSelf = self;
+    NSLog(@"insertRowAtTop");
+    
+    int64_t delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//        [weakSelf.tableView beginUpdates];
+//        [weakSelf.dataSource insertObject:[NSDate date] atIndex:0];
+//        [weakSelf.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];
+//        [weakSelf.tableView endUpdates];
+        
+        [weakSelf.gridView.pullToRefreshView stopAnimating];
+    });
+}
+
+
+- (void)insertRowAtBottom {
+    __weak StreamHistoryViewController *weakSelf = self;
+    NSLog(@"insertRowAtBottom");
+    int64_t delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//        [weakSelf.tableView beginUpdates];
+//        [weakSelf.dataSource addObject:[weakSelf.dataSource.lastObject dateByAddingTimeInterval:-90]];
+//        [weakSelf.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:weakSelf.dataSource.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+//        [weakSelf.tableView endUpdates];
+        
+        [weakSelf.gridView.infiniteScrollingView stopAnimating];
+    });
+}
 
 - (void)initialTest {
     
@@ -277,11 +330,6 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -725,21 +773,21 @@
     
 }
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    NSLog(@"scrollViewDidScroll");
+//    NSLog(@"scrollViewDidScroll");
     // Get new record from here
 }
 -(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
-    NSLog(@"scrollViewDidEndScrollingAnimation");
+//    NSLog(@"scrollViewDidEndScrollingAnimation");
     
 }
 -(void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
 {
-    NSLog(@"scrollViewDidScrollToTop");
+//    NSLog(@"scrollViewDidScrollToTop");
 }
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    NSLog(@"scrollViewWillBeginDragging");
+//    NSLog(@"scrollViewWillBeginDragging");
 }
 
 -(NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window

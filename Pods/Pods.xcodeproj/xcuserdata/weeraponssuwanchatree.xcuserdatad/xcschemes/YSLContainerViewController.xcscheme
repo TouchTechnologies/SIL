@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DF516E1FC7958146CE1147F3"
+               BlueprintIdentifier = "B3A1BBC03D4D8D8A1A48C8C7"
                BuildableName = "libYSLContainerViewController.a"
                BlueprintName = "YSLContainerViewController"
                ReferencedContainer = "container:Pods.xcodeproj">

@@ -24,12 +24,7 @@
 //#define StreamingHistoryURL @"http://203.151.189.172/seeitlivethailand/api/liveStreamHistories"
 //#define StreamingLiveURL @"http://203.151.189.172/seeitlivethailand/api/liveStreamChannels?hasStreaming=Y"
 //#define SocketURL @"http://192.168.9.117:3008"
-//devBoss
-//#define service @"http://10.10.0.27/seeitlive_thailand/"
-//#define PromotionURL @"http://10.10.0.27/seeitlive_thailand/"
-//#define StreamingHistoryURL @"http://10.10.0.27/seeitlive_thailand/api/liveStreamHistories"
-//#define StreamingLiveURL @"http://10.10.0.27/seeitlive_thailand/api/liveStreamChannels?hasStreaming=Y"
-////////  ///////
+
 
 #define CouponURL @"http://www.seeitlivethailand.com/coupon"
 #define BlogURL @"http://www.seeitlivethailand.com/blogs"
