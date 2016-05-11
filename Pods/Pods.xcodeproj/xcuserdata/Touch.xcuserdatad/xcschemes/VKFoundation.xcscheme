@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0595B3EC7DE572AA3598C15D"
+               BlueprintIdentifier = "4825D397C6FD5C50C190A91B"
                BuildableName = "libVKFoundation.a"
                BlueprintName = "VKFoundation"
                ReferencedContainer = "container:Pods.xcodeproj">

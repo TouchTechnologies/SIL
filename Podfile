@@ -16,6 +16,7 @@ target 'SeeItLiveThailand' do
     #IntroView
     pod 'EAIntroView'
     pod 'SMPageControl'
+    #############
     
     #check app Version
     pod 'Harpy'

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "033FE66A14BC6A3A820B1041"
+               BlueprintIdentifier = "98CE6D79C23AA1A90EECE2F4"
                BuildableName = "libKKGridView.a"
                BlueprintName = "KKGridView"
                ReferencedContainer = "container:Pods.xcodeproj">
