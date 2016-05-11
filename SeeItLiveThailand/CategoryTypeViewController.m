@@ -66,7 +66,14 @@
     CGFloat height = self.view.bounds.size.height;
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-    
+        cellH = 80*scy;
+        fontSize = 14*scy;
+        tableviewRect =CGRectMake(0*scx, 0*scy, self.view.bounds.size.width, self.view.bounds.size.height - (120*scy));
+        bgCellViewRect = CGRectMake(5*scx, 5 *scy , width - (10*scx) , cellH - (10*scy));
+        imgCategoryRect = CGRectMake(10*scx, bgCellViewRect.size.height/2 - (25*scy), 60*scx, 60*scy) ;
+        lblCategoryTypeRect = CGRectMake(imgCategoryRect.origin.x + imgCategoryRect.size.width + (10*scx) , bgCellViewRect.size.height/2 - (20*scy), width - lblCategoryTypeRect.origin.x , 20*scy);
+        lblLivevideoRect = CGRectMake(imgCategoryRect.origin.x + imgCategoryRect.size.width + (10*scx) ,  bgCellViewRect.size.height/2 + (5*scy), 70*scx, 20*scy);
+        lblLivevideoCountRect = CGRectMake(lblLivevideoRect.origin.x + lblLivevideoRect.size.width , bgCellViewRect.size.height/2 + (5*scy), 100*scx, 20*scy);
     }
     else{
         cellH = 80;

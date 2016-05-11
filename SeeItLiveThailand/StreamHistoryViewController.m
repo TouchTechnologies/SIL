@@ -62,6 +62,7 @@
     
     UIImageView *imgOnAir;
     CGRect imgOnAirRect;
+    CGRect gridViewRect;
     
     
 }
@@ -125,17 +126,20 @@
     CGFloat scx = (768.0/360.0);
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
     CGFloat height = [UIScreen mainScreen].bounds.size.height;
+    parentFrame = self.view.bounds;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         
-        parentGrab = 120.0 * scx;
+        parentGrab = 120.0 * scy;
         cellSize = CGSizeMake((self.view.frame.size.width / 2) - (15 * scx), (230 * scy));
         paddingSize = CGSizeMake((10.0 * scx), (10.0 * scy));
         rcBarH = 90.0 * scy;
-        rcGrapY = (180 * scy) + 20;
+        rcGrapY = 200 * scy;
         rcButtonW = 80.0 * scx;
-        imgPHW01 = 40.0 * scx;
-        imgPHW02 = 25.0 * scx;
-        
+        imgPHW01 = 40.0 * scy;
+        imgPHW02 = 25.0 * scy;
+        onAirViewRect = CGRectMake(0*scx, 0*scy, self.view.frame.size.width, 240*scy);
+        scrollViewRect = CGRectMake(0*scx, 0*scy, width, height);
+        gridViewRect = CGRectMake(0*scx, 240*scy , width, height);
         
     } else {
         cellH = 300;
@@ -149,6 +153,7 @@
         imgPHW02 = 25.0;
         onAirViewRect = CGRectMake(0, 0, self.view.frame.size.width, 240);
         scrollViewRect = CGRectMake(0, 0, width, height);
+        gridViewRect = CGRectMake(0, 240 , width, height);
     }
 }
 
@@ -182,7 +187,7 @@
     
     [self.gridView removeFromSuperview];
     
-    parentFrame = self.view.bounds;
+    
     
 //    onAirView = [[UIView alloc] initWithFrame:onAirViewRect];
 //    onAirView.backgroundColor = [UIColor redColor];
@@ -190,7 +195,8 @@
     
     
  //   self.gridView = [[KKGridView alloc] initWithFrame:CGRectMake(parentFrame.origin.x, parentFrame.origin.y, parentFrame.size.width, (weakSelf.streamList.count*(cellH+10))+10)];
-    self.gridView = [[KKGridView alloc] initWithFrame:CGRectMake(parentFrame.origin.x, parentFrame.origin.y - 240 , parentFrame.size.width,  parentFrame.size.height)];
+    
+    self.gridView = [[KKGridView alloc] initWithFrame:gridViewRect];
     self.gridView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     self.gridView.dataSource = self;
     self.gridView.delegate = self;
@@ -210,6 +216,9 @@
         if (success) {
             weakSelf.streamList = streamRecords;
             NSLog(@"STREAMLIST COUNT :::: %ld", weakSelf.streamList.count);
+            
+            
+            
         } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
@@ -555,7 +564,7 @@
     
     
     UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)sender;
-    NSLog (@"Tag %ld",[tapRecognizer.view tag]);
+    NSLog (@"Tag %d",[tapRecognizer.view tag]);
     NSInteger shareTag = [tapRecognizer.view tag];
     
     Streaming *stream = [self.streamList objectAtIndex:shareTag];
@@ -605,6 +614,7 @@
     
     Streaming *stream = [self.streamList objectAtIndex:profileTag];
     NSLog(@"userID : %@",stream.userID);
+    
 //    Streaming *stream = [self.streamList objectAtIndex:UserTag];
 //    userprofile
 //    userprofile.streamingType = @"history";

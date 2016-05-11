@@ -91,6 +91,7 @@
     CGRect previewScrollViewRect;
     CGRect onairSnapshotImgRect;
    
+    CGRect scrollViewRect;
     
     //มาจาก on air/////
     CGSize cellSize;
@@ -193,6 +194,7 @@
     CGFloat height = [UIScreen mainScreen].bounds.size.height;
     CGFloat scy = (1024.0/480.0);
     CGFloat scx = (768.0/360.0);
+   
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         
         fontSize = 16.0 * scx;
@@ -212,7 +214,8 @@
         imgLiveRect = CGRectMake(5*scx, 5*scy, 60*scx, 20*scy);
         // indicatorWidth = self.view.bounds.size.width;
         onAirViewRect = CGRectMake(0*scx, 0*scy, width, 240*scy);
-        
+        scrollViewRect = CGRectMake(0*scx, 40*scy, self.view.bounds.size.width, self.view.bounds.size.height - indicatorHeight);
+
         
         liveStatusViewRect = CGRectMake(0*scx, 0*scy,width , 40*scy);
         collectionViewRect = CGRectMake(0*scx, 0*scy , width, onAirViewRect.size.height);
@@ -245,7 +248,7 @@
          imgLiveRect = CGRectMake(5, 5, 60, 20);
        // indicatorWidth = self.view.bounds.size.width;
         onAirViewRect = CGRectMake(0, 0, self.view.bounds.size.width, 240);
-        
+        scrollViewRect = CGRectMake(0, 40, self.view.bounds.size.width, self.view.bounds.size.height - indicatorHeight);
         
         liveStatusViewRect = CGRectMake(0, 0,self.view.bounds.size.width , 40);
         collectionViewRect = CGRectMake(0, 0 , self.view.bounds.size.width, onAirViewRect.size.height);
@@ -335,7 +338,7 @@
                 [scrollView setFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
                               NSLog(@"NoLiveStream");
                 [collectionView setHidden: TRUE];
-                    _pageControl.view.frame = CGRectMake(0, 0 , self.view.bounds.size.width, self.view.bounds.size.height - 20);
+                _pageControl.view.frame = CGRectMake(0, 0 , self.view.bounds.size.width, self.view.bounds.size.height - 20);
                 
                 }
 
@@ -381,7 +384,7 @@
     
     
     
-    scrollView = [[SBScrollView alloc] initWithFrame:CGRectMake(0, 40, self.view.bounds.size.width, self.view.bounds.size.height - indicatorHeight)];
+    scrollView = [[SBScrollView alloc] initWithFrame:scrollViewRect];
     scrollView.bounces = NO;
     [scrollView setShowsHorizontalScrollIndicator:NO];
     scrollView.backgroundColor = [UIColor grayColor];
@@ -467,8 +470,15 @@
     
     /**** 3. Add as subview ****/
 
+    CGFloat scy = (1024.0/480.0);
+    CGFloat scx = (768.0/360.0);
     
-    _pageControl.view.frame = CGRectMake(0, 240, self.view.bounds.size.width, self.view.bounds.size.height - 20);
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        _pageControl.view.frame = CGRectMake(0*scx, 240*scy, self.view.bounds.size.width, self.view.bounds.size.height - (20*scy));
+    }
+    else{
+        _pageControl.view.frame = CGRectMake(0, 240, self.view.bounds.size.width, self.view.bounds.size.height - 20);
+    }
     [scrollView addSubview:_pageControl.view];
     
     
@@ -698,7 +708,7 @@
         imgSnapshotRect = CGRectMake(10*scx, 0*scy, item.contentView.bounds.size.width - (20 *scx), item.contentView.bounds.size.height - (40*scy) );
         imgWatermarkRect = CGRectMake(imgSnapshotRect.size.width/2 - (25*scx),imgSnapshotRect.size.height/2 - (25*scy), 50*scx, 50*scy);
         imgAvartarRect = CGRectMake(imgSnapshotRect.size.width - (55*scx), imgSnapshotRect.size.height - (55*scy), 50*scx, 50*scy);
-        lblTitleliveRect = CGRectMake(10*scx , imgSnapshot.bounds.size.height - (25*scy), 200*scx, 20*scy);
+        lblTitleliveRect = CGRectMake(10*scx , imgSnapshotRect.size.height - (25*scy), 200*scx, 20*scy);
         bottonViewItemRect = CGRectMake(0*scx, item.bounds.size.height - (40*scy), item.bounds.size.width, 40*scy);
         imgViewRect = CGRectMake(10*scx , bottonViewItemRect.size.height - (30*scy), 20*scx, 20*scy);
         lblViewCountRect = CGRectMake(40*scx , bottonViewItemRect.size.height - (30*scy), 50*scx, 20*scy);

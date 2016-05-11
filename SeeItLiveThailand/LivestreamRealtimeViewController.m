@@ -464,23 +464,49 @@
     
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        bottomHeight = 100.0 * scy;
-        vdoLabelPortRect = CGRectMake((self.player.view.bounds.size.width/2)-(100 * scx), (10 * scy), (200 * scx), (25 * scy));
-        imgPinPortRect = CGRectMake((self.player.view.bounds.size.width - (100 * scx)),(10 * scy), (60 * scx), (20 * scy));
-        fontSize = 14.0 * scx;
-        imgLivePortRect = CGRectMake(20 * scx, self.view.bounds.size.height - 75 * scy, 50 * scx, 50 * scy);
-        streamUserPortRect = CGRectMake(80 * scx, self.view.bounds.size.height - 60 * scy, self.view.bounds.size.width - 100 * scx, 20 * scy);
+        bottomHeight = 100.0 *scy;
         
-        imgViewIconPortRect = CGRectMake(self.view.bounds.size.width - (125*scx), self.view.bounds.size.height- (93*scy) , 25*scx,25*scy);
-        lblViewCountPortRect = CGRectMake(self.view.bounds.size.width - (95*scx),self.view.bounds.size.height- (90*scy), 40*scx, 20*scy);
-       // lblViewPortRect = CGRectMake(self.view.bounds.size.width - (55*scx),self.view.bounds.size.height- (90*scy), 55*scx, 20*scy);
-        btnLovePortRect = CGRectMake(self.view.bounds.size.width - (125*scx), self.view.bounds.size.height- (65*scy) , 25*scx, 25*scy);
-        lblLoveCountPortRect = CGRectMake(self.view.bounds.size.width - (95*scx), self.view.bounds.size.height- (62*scx) , 40*scx, 20*scy);
-        //lblLoveRect = CGRectMake(self.view.bounds.size.width - (55*scx), self.view.bounds.size.height- (62*scy) , 40*scx, 20*scy);
+        topViewPortRect = CGRectMake(0 *scx, 0*scy, [[UIScreen mainScreen] bounds].size.width, 50*scy);
+        imgPinPortRect = CGRectMake(10*scx,topViewPortRect.size.height/2 - (13*scy), 25*scx, 25*scy);
+        lblLocationLivePortRect = CGRectMake(imgPinPortRect.origin.x + (30*scx), topViewPortRect.size.height/2 - (10*scy), self.view.bounds.size.width - (imgPinPortRect.origin.x + (30*scx)), 20*scy);
+        doneButtonPortRect = CGRectMake(topViewPortRect.size.width - (45*scx), topViewPortRect.size.height/2 - (20*scy) , 40*scx, 40*scy);
         
-        imgCommentPortRect = CGRectMake(self.view.bounds.size.width - (125*scx), self.view.bounds.size.height- (35*scy) , 25*scx, 25*scy);
-        lblCommentCountPortRect = CGRectMake(self.view.bounds.size.width - (95*scx), self.view.bounds.size.height- (32*scy) , 40*scx, 20*scy);
-        //lblCommentRect = CGRectMake(self.view.bounds.size.width - (55*scx), self.view.bounds.size.height- (32*scy) , 40*scx, 20*scy);
+        
+        propViewPortRect = CGRectMake(0*scx, self.view.bounds.size.height / 2 , self.view.bounds.size.width, 70*scy);
+        imgLivePortRect = CGRectMake(20*scx, 2*scy, 35*scx, 35*scy);
+        
+        vdoLabelPortRect = CGRectMake(imgLivePortRect.size.width + imgLivePortRect.origin.x + (5*scx), 2*scy, 200*scx, 20*scy);
+        streamUserPortRect = CGRectMake(imgLivePortRect.size.width + imgLivePortRect.origin.x + (5*scx), 17*scy, 200*scx, 25*scy);
+        
+        
+        shareBtnPortRect = CGRectMake(propViewPortRect.size.width - (80*scx) ,  5*scy, 25*scx , 25*scy);
+        shareimgPortRect = CGRectMake(0*scx, 0*scy, shareBtnPortRect.size.width, shareBtnPortRect.size.height);
+        btnLovePortRect = CGRectMake(propViewPortRect.size.width - (45*scx) ,5*scy ,35*scx,35*scy);
+        heartimgPortRect = CGRectMake(0*scx, 0*scy, btnLovePortRect.size.width , btnLovePortRect.size.height );
+        
+        imgCommentPortRect = CGRectMake(20*scx, propViewPortRect.size.height - (25*scy), 20*scx, 20*scy);
+        lblCommentCountPortRect = CGRectMake(imgCommentPortRect.origin.x + (25*scx), propViewPortRect.size.height - (20*scy), 40*scx, 15*scy);
+        
+        imgViewIconPortRect = CGRectMake(lblCommentCountPortRect.origin.x + (45*scx) , propViewPortRect.size.height - (25*scy) ,20*scx,20*scy);
+        lblViewCountPortRect = CGRectMake(imgViewIconPortRect.origin.x + (25*scx), propViewPortRect.size.height - (20*scy), 40*scx, 15*scy);
+        
+        imgLoveIconPortRect = CGRectMake(lblViewCountPortRect.origin.x + (45*scx),propViewPortRect.size.height - (25*scy) ,20*scx,20*scy);
+        lblLoveCountPortRect = CGRectMake(imgLoveIconPortRect.origin.x + (25*scx) , propViewPortRect.size.height - (20*scy), 40*scx, 15*scy);
+        
+        bottomHeight = 100.0*scy;
+        
+        
+        chatViewPortRect = CGRectMake(0*scx, self.view.bounds.size.height / 2 + (70*scy) , self.view.bounds.size.width, self.view.bounds.size.height - (self.view.bounds.size.height / 2 + (70*scy)));
+        
+        chatTblPortRect = CGRectMake(20*scx, 10*scy , self.view.bounds.size.width - (100*scx), chatViewPortRect.size.height - (60*scy));
+        userChatImgRect = CGRectMake(0*scx, 0*scy , 40*scx , 40*scy);
+        
+        textchatLblRect = CGRectMake(0*scx, 0*scy, chatplaceViewRect.size.width, 20*scy);
+        userChatLblRect = CGRectMake(0*scx, chatplaceViewRect.size.height - (20*scy) , self.view.bounds.size.width, 20*scy);
+        chatboxTxtPortRect = CGRectMake(20*scx, chatTblPortRect.origin.y + chatTblPortRect.size.height + (10*scy), self.view.bounds.size.width - (100*scx), 30*scy);
+        sendchatBtnPortRect = CGRectMake(chatboxTxtPortRect.origin.x + chatboxTxtPortRect.size.width + ( 5*scx),  chatTblPortRect.origin.y + chatTblPortRect.size.height + (15*scy), 50*scx , 20*scy);
+        
+        cellH = 50*scy;
         
     } else {
         CGFloat topviewCtr = self.player.view.topControlOverlay.bounds.size.width;
@@ -835,7 +861,31 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
     
     
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {}
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        //////////////////////////////// Landscape iPad///////////////////////////////////////////
+        topViewLandRect =  CGRectMake(0*scx, 0*scy, self.view.bounds.size.width, 50*scy);
+        doneButtonLandRect = CGRectMake(topViewLandRect.size.width - (45*scx), topViewLandRect.size.height/2 - (20*scy) , 40*scx, 40*scy);
+        chatViewLandRect = CGRectMake(0*scx, 50*scy, self.view.bounds.size.width /2 , self.view.bounds.size.height - (100*scy));
+        propViewLandRect = CGRectMake(0*scx, self.view.bounds.size.height - (50*scy), self.view.bounds.size.width, 50*scy);
+        imgLiveLandRect = CGRectMake(20*scx, topViewLandRect.size.height/2 - (18*scy), 35*scx, 35*scy);
+        vdoLabelLandRect = CGRectMake(imgLiveLandRect.size.width + imgLiveLandRect.origin.x + (30*scx), topViewLandRect.size.height/2 - (18*scy),self.view.bounds.size.width/2, 20*scy);
+        imgPinLandRect = CGRectMake((self.view.bounds.size.width/2+self.view.bounds.size.width/4)-(30*scx),topView.bounds.size.height/2 - (13*scy), 25*scx, 25*scy);
+        streamUserLandRect = CGRectMake(imgLiveLandRect.size.width + imgLiveLandRect.origin.x + (30*scx), topViewLandRect.size.height/2, self.view.bounds.size.width/2, 20*scy);
+        lblLocationLiveLandRect = CGRectMake(self.view.bounds.size.width/2+self.view.bounds.size.width/4,topViewLandRect.size.height/2 - (10*scy), topViewLandRect.size.width - (imgPinLandRect.origin.x + (30*scx)), 20*scy);
+        
+        chatButtonLandRect = CGRectMake(20*scx , propViewLandRect.size.height/2 - (13*scy), 25*scx, 25*scy);
+        
+        shareBtnLandRect = CGRectMake(60*scx , propViewLandRect.size.height/2 - (13*scy), 25*scx, 25*scy);
+        imgCommentLandRect = CGRectMake(self.view.bounds.size.width/4, propViewLandRect.size.height/2 - (10*scy), 20*scx, 20*scy);
+        lblCommentCountLandRect = CGRectMake(self.view.bounds.size.width/4 + (25*scx) , propViewLandRect.size.height/2 - (8*scy), 40*scx, 15*scy);
+        imgViewIconLandRect = CGRectMake(self.view.bounds.size.width/4 + (70*scx) , propViewLandRect.size.height/2 - (10*scy), 20*scx, 20*scy);
+        lblViewCountLandRect = CGRectMake(self.view.bounds.size.width/4 + (95*scx) , propViewLandRect.size.height/2 - (8*scy), 40*scx, 15*scy);
+        
+        imgLoveIconLandRect = CGRectMake(self.view.bounds.size.width/4 + (140*scx) , propViewLandRect.size.height/2 - (10*scy), 20*scx, 20*scy);
+        lblLoveCountLandRect = CGRectMake(self.view.bounds.size.width/4 + (165*scx) , propViewLandRect.size.height/2 - (8*scy), 40*scx, 15*scy);
+        btnLoveLandRect = CGRectMake(self.view.bounds.size.width - (75*scx) ,0*scy , 45*scx , 45*scy);
+        heartimgLandRect = CGRectMake(5*scx, 5*scy, btnLoveLandRect.size.width - (10*scx),  btnLoveLandRect.size.height - (10*scy));
+    }
     else{
         //////////////////////////////// Landscape ///////////////////////////////////////////
         topViewLandRect =  CGRectMake(0, 0, self.view.bounds.size.width, 50);
