@@ -140,7 +140,7 @@
         imgPHW01 = 40.0 * scy;
         imgPHW02 = 25.0 * scy;
         onAirViewRect = CGRectMake(0*scx, 0*scy, self.view.frame.size.width, 240*scy);
-        scrollViewRect = CGRectMake(0*scx, 0*scy, width, height);
+        scrollViewRect = CGRectMake(0*scx, 0*scy, width, height- (80*scy));
         gridViewRect = CGRectMake(0*scx, 240*scy , width, height);
         
     } else {
@@ -154,7 +154,7 @@
         imgPHW01 = 40.0;
         imgPHW02 = 25.0;
         onAirViewRect = CGRectMake(0, 0, self.view.frame.size.width, 240);
-        scrollViewRect = CGRectMake(0, 0, width, height);
+        scrollViewRect = CGRectMake(0, 0, width, height - 80);
         gridViewRect = CGRectMake(0, 240 , width, height);
     }
 }

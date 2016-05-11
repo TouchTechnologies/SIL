@@ -898,7 +898,7 @@
                         <color key="separatorColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" rowHeight="100" id="GpR-Qq-wcO">
-                                <rect key="frame" x="0.0" y="92" width="507" height="100"/>
+                                <rect key="frame" x="0.0" y="28" width="507" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GpR-Qq-wcO" id="nJL-AP-ZYk">
                                     <rect key="frame" x="0.0" y="0.0" width="507" height="100"/>
@@ -2137,7 +2137,7 @@
                                 </searchBar>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="dWf-La-Rew">
-                                        <rect key="frame" x="0.0" y="136" width="507" height="44"/>
+                                        <rect key="frame" x="0.0" y="72" width="507" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dWf-La-Rew" id="LEh-D0-ZGN">
                                             <rect key="frame" x="0.0" y="0.0" width="507" height="43"/>
@@ -2446,6 +2446,21 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9n8-D5-8Fn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="739.5" y="4429"/>
+        </scene>
+        <!--Category List View Controller-->
+        <scene sceneID="kgU-JZ-NSK">
+            <objects>
+                <viewController storyboardIdentifier="categorylist" id="gnt-yz-mQY" customClass="CategoryListViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Dhw-5o-vBR">
+                        <rect key="frame" x="0.0" y="0.0" width="507" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad-1/2"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2qu-rM-EHn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1365.5" y="4449"/>
         </scene>
     </scenes>
     <resources>

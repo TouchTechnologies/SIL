@@ -62,6 +62,7 @@
     
     SBScrollView *scrollView;
     CGRect scrollViewRect;
+    CGRect pageControlRect;
 
     StreamingCell *cell;
     Streaming *stream;
@@ -97,7 +98,9 @@
     [self.view addSubview:navView];
     
     backBtn = [[UIButton alloc] initWithFrame:backBtnRect];
-    backBtn.backgroundColor = [UIColor whiteColor];
+    UIImage *backimg = [UIImage imageNamed:@"back.png"];
+ //   backBtn.backgroundColor = [UIColor whiteColor];
+    [backBtn setImage:backimg forState:UIControlStateNormal];
     [backBtn addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
     [navView addSubview:backBtn];
     
@@ -185,6 +188,24 @@
 //        rcGrapY = 200.0* SCALING_Y;
 //        rcButtonW = 50.0* SCALING_X;
 //        //indicatorWidth = self.view.bounds.size.width* SCALING_X;
+        
+        parentGrab = 120.0;
+        cellSize = CGSizeMake((self.view.frame.size.width / 2) - (15*scx), 230*scy);
+        paddingSize = CGSizeMake(10*scx, 10*scx);
+        fontSize = 16.0*scy;
+        titleHeight = 45.0*scy;
+        titleWidth = 100*scx;
+        indicatorHeight = 5.0*scy;
+        rcBarH = 70.0*scy;
+        rcGrapY = 200.0*scy;
+        rcButtonW = 50.0*scx;
+        imgPHW01 = 40.0*scy;
+        imgPHW02 = 25.0*scy;
+        navViewRect = CGRectMake(0*scx, 20*scy, width, 40*scy);
+        backBtnRect = CGRectMake(5*scx, navViewRect.size.height/2 -(15*scy) , 30*scx , 30*scy);
+        scrollViewRect = CGRectMake(0*scx, titleHeight, width, height - (85*scy));
+        pageControlRect = CGRectMake(0*scx, 60*scy, self.view.bounds.size.width, self.view.bounds.size.height - (20*scy));
+        
     } else {
         parentGrab = 120.0;
         cellSize = CGSizeMake((self.view.frame.size.width / 2) - 15, 230);
@@ -201,6 +222,7 @@
         navViewRect = CGRectMake(0, 20, width, 40);
         backBtnRect = CGRectMake(5, navViewRect.size.height/2 -15 , 30 , 30);
         scrollViewRect = CGRectMake(0, titleHeight, width, height - 85);
+        pageControlRect = CGRectMake(0, 60, self.view.bounds.size.width, self.view.bounds.size.height - 20);
     }
 
 }
@@ -296,7 +318,7 @@
     /**** 3. Add as subview ****/
     
     
-    _pageControl.view.frame = CGRectMake(0, 60, self.view.bounds.size.width, self.view.bounds.size.height - 20);
+    _pageControl.view.frame = pageControlRect;
     [self.view addSubview:_pageControl.view];
     
     

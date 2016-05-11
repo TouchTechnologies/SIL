@@ -56,7 +56,7 @@
     CGRect lblMyLivestreamRect;
     CGRect lblVideoRect;
     CGRect lblVideoCountRect;
-    
+    CGRect gridViewRect;
     NSString *Avatar;
 }
 @property (strong, nonatomic) IBOutlet UIImageView *NoLiveImg;
@@ -147,8 +147,21 @@
         imgPHW02 = 25.0 * scx;
         fontSize = 18.0 * scy;
         
-        imgLive = CGRectMake((self.view.bounds.size.width/2) - 25.0f, 130.0f, 50.0f, 50.0f);
-        lblNoStreamRect = CGRectMake((self.view.bounds.size.width/2) - 150.0f, 200.0f, 400.0f, 50.0f);
+        imgLive = CGRectMake((self.view.bounds.size.width/2) - (25*scx), 130*scy, 50*scx, 50*scy);
+        lblNoStreamRect = CGRectMake((self.view.bounds.size.width/2) - (150*scx), 200*scy, 400*scx, 50*scy);
+        
+        gridviewHeaderRect = CGRectMake(0* scx, 122*scy, self.view.bounds.size.width, 48*scy);
+        viewHeaderRect = CGRectMake(0* scx, 0*scy, self.view.bounds.size.width, 120*scy);
+        followerViewRect = CGRectMake(0* scx, viewHeaderRect.size.height-(50*scy), self.view.bounds.size.width,50*scy);
+        AvatarRect = CGRectMake(20* scx, 35*scy , (70* scx),70*scy);
+        UserNameRect = CGRectMake(AvatarRect.size.width + (40* scx) , followerViewRect.origin.y - (35*scy), self.view.bounds.size.width/2 , 30*scy);
+        followCountLblRect = CGRectMake(AvatarRect.size.width + (40* scx), followerViewRect.size.height/2 - (fontSize - 2), (50* scx), (fontSize - 2));
+        lblfollowRect = CGRectMake(AvatarRect.size.width + (40* scx), followerViewRect.size.height/2, (70* scx), (fontSize - 4));
+        lblMyLivestreamRect = CGRectMake(0* scx , gridviewHeaderRect.size.height/2 - fontSize, self.view.bounds.size.width, fontSize) ;
+        lblVideoRect= CGRectMake(0* scx , gridviewHeaderRect.size.height/2 + (5*scy) , self.view.bounds.size.width/2 , fontSize - 4) ;
+        lblVideoCountRect = CGRectMake(self.view.bounds.size.width/2 , gridviewHeaderRect.size.height/2 + (5*scy) , self.view.bounds.size.width/2, fontSize - 4) ;
+                gridViewRect = CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y + (170*scy) , self.view.bounds.size.width, self.view.bounds.size.height - (220*scy));
+        
     } else {
         
         parentGrab = 120.0;
@@ -174,6 +187,7 @@
         lblMyLivestreamRect = CGRectMake(0 , gridviewHeaderRect.size.height/2 - fontSize, self.view.bounds.size.width, fontSize) ;
         lblVideoRect= CGRectMake(0 , gridviewHeaderRect.size.height/2 + 5 , self.view.bounds.size.width/2 , fontSize - 4) ;
         lblVideoCountRect = CGRectMake(self.view.bounds.size.width/2 , gridviewHeaderRect.size.height/2 + 5 , self.view.bounds.size.width/2, fontSize - 4) ;
+        gridViewRect = CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y + 170 , self.view.bounds.size.width, self.view.bounds.size.height - (220));
     }
 }
 - (void)initial {
@@ -224,6 +238,7 @@
     
     self.UserName = [[UILabel alloc] initWithFrame:UserNameRect];
     self.UserName.text = @"User Name";
+    self.UserName.font = [UIFont fontWithName:@"Helvetica" size:fontSize];
     self.UserName.textColor = [UIColor whiteColor];
     [self.viewHeader addSubview:self.UserName];
     
@@ -255,7 +270,8 @@
     [self.gridView removeFromSuperview];
     
     CGRect parentFrame = self.view.bounds;
-    self.gridView = [[KKGridView alloc] initWithFrame:CGRectMake(parentFrame.origin.x, parentFrame.origin.y + 170 , parentFrame.size.width, parentFrame.size.height - 220 )];
+    
+    self.gridView = [[KKGridView alloc] initWithFrame:gridViewRect];
     self.gridView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     self.gridView.dataSource = self;
     self.gridView.delegate = self;

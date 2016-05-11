@@ -214,9 +214,9 @@
         imgLiveRect = CGRectMake(5*scx, 5*scy, 60*scx, 20*scy);
         // indicatorWidth = self.view.bounds.size.width;
         onAirViewRect = CGRectMake(0*scx, 0*scy, width, 240*scy);
-        scrollViewRect = CGRectMake(0*scx, 40*scy, self.view.bounds.size.width, self.view.bounds.size.height - indicatorHeight);
-
-        
+       
+        scrollViewRect = CGRectMake(0*scx, imgPHW01, self.view.bounds.size.width, self.view.bounds.size.height - indicatorHeight);
+ 
         liveStatusViewRect = CGRectMake(0*scx, 0*scy,width , 40*scy);
         collectionViewRect = CGRectMake(0*scx, 0*scy , width, onAirViewRect.size.height);
         
@@ -314,6 +314,7 @@
                _imgLiveStatus.hidden = YES;
                 [_imgLiveStatus removeFromSuperview];
               [collectionView removeFromSuperview];
+            scrollView = [[SBScrollView alloc] initWithFrame:scrollViewRect];
               [scrollView addSubview:collectionView];
 //                
 //                self.gridView = [[KKGridView alloc] initWithFrame:CGRectMake(parentFrame.origin.x, parentFrame.origin.y , self.view.bounds.size.width, parentFrame.size.height)];
@@ -334,11 +335,24 @@
 //                _pageControl.view.frame = CGRectMake(0, 240 , self.view.bounds.size.width, self.view.bounds.size.height - 20);
                 
             } else {
+                NSLog(@"NoLiveStream");
+              
                 [liveStatusView setHidden:TRUE];
-                [scrollView setFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
-                              NSLog(@"NoLiveStream");
-                [collectionView setHidden: TRUE];
-                _pageControl.view.frame = CGRectMake(0, 0 , self.view.bounds.size.width, self.view.bounds.size.height - 20);
+                  [collectionView setHidden: TRUE];
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    NSLog(@"set iPad");
+                   [scrollView setFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+                
+                  _pageControl.view.frame = CGRectMake(0, 0 , self.view.bounds.size.width, self.view.bounds.size.height - 20);
+                    }
+                else
+                {
+                    [scrollView setFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+                    
+                    _pageControl.view.frame = CGRectMake(0, 0 , self.view.bounds.size.width, self.view.bounds.size.height - 20);
+                
+                }
+                
                 
                 }
 

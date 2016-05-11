@@ -69,7 +69,7 @@
        // frame = CGRectMake(0, 0, cWidth, 400);
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             fontSize = 13.0 * scy;
-            imgSnapshotRect = CGRectMake(5*scx, 70* scy, cWidth - (10*scx), cHeight - cHeight/(2.5* scy));
+            imgSnapshotRect = CGRectMake(5*scx, 70* scy, cWidth - (10*scx), cHeight - cHeight/(2.5));
             imgAvatarRect = CGRectMake(5*scx, 10* scy, 50*scx, 50 * scy);
             
             lblPlaceRect = CGRectMake(2*scx, imgSnapshotRect.size.height - (20* scy) , imgSnapshotRect.size.width - (4*scx), 20* scy);
