@@ -112,14 +112,14 @@
     navView.backgroundColor = [UIColor whiteColor];
     
     doneBtn = [[UIButton alloc] initWithFrame:doneBtnRect];
-    [doneBtn setImage:[UIImage imageNamed:@"Left-25.png"] forState:UIControlStateNormal];
+    [doneBtn setImage:[UIImage imageNamed:@"back_black.png"] forState:UIControlStateNormal];
     [doneBtn addTarget:self action:@selector(doneAction:) forControlEvents:UIControlEventTouchUpInside];
     [navView addSubview:doneBtn];
     
     navTitleLbl = [[UILabel alloc] initWithFrame:navTitleLblRect];
     navTitleLbl.text = @"Live Around";
     navTitleLbl.textAlignment = NSTextAlignmentCenter;
-    navTitleLbl.font = [UIFont fontWithName:@"Helvatica" size:fontSize];
+    navTitleLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize + 4];
     [navView addSubview:navTitleLbl];
     
     [self.view addSubview:navView];
@@ -209,9 +209,54 @@
     [self dismissViewControllerAnimated:TRUE completion:nil];
 }
 - (void)initialSize{
-
+   
+    CGFloat scy = (1024.0/480.0);
+    CGFloat scx = (768.0/360.0);
     CGFloat width = self.view.bounds.size.width;
     CGFloat height = self.view.bounds.size.height;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        fontSize = 14*scy;
+        
+        navViewRect = CGRectMake(0*scx, 20*scy , width, 50);
+        scrollViewRect = CGRectMake(0*scx, 50*scy, width, height - (50*scy));
+        doneBtnRect = CGRectMake(10, navViewRect.size.height/2 - (15*scy), 30*scx, 30*scy);
+        
+        navTitleLblRect = CGRectMake(navViewRect.size.width/2 - (50*scx) , navViewRect.size.height/2 - (15*scy), 100*scx, 30*scy);
+        
+        scrollViewRect = CGRectMake(0*scx, navViewRect.origin.y + navViewRect.size.height, width, height - (navViewRect.size.height + (20*scy)));
+        mapViewRect = CGRectMake(0*scx, 0*scy, width, height/2 - navViewRect.size.height);
+        
+        imgSnapshotRect = CGRectMake(mapViewRect.size.width/2 - (50*scx), mapViewRect.size.height/2 - (70*scy), 100*scx, 70*scy);
+        imgWaterMarkRect = CGRectMake(imgSnapshotRect.size.width/2 - (15*scx) , imgSnapshotRect.size.height/2 - (15*scy), 30*scx, 30*scy);
+        imgPinRect = CGRectMake(mapViewRect.size.width/2 - (25*scx), mapViewRect.size.height/2 + (5*scy), 50*scx, 50*scy);
+        
+        detailViewRect = CGRectMake(0*scx , mapViewRect.origin.y + mapViewRect.size.height, width, 100*scy);
+        snapshotDetailImgRect = CGRectMake(10*scx, 10*scy , width/2 - (40*scx), detailViewRect.size.height - (20*scy));
+        waterMarkDetailImgRect = CGRectMake(snapshotDetailImgRect.size.width - (35*scx) , snapshotDetailImgRect.size.height - (35*scy), 30*scx, 30*scy);
+        
+        categoryDetailLblRect = CGRectMake(width/2 - (20*scx), detailViewRect.size.height/2 - (fontSize/2), width/2- (40*scx), fontSize);
+        TitleDetailLblRect = CGRectMake(width/2 - (20*scx), categoryDetailLblRect.origin.y - (fontSize + 5), width/2, fontSize+2);
+        AvatarDetailImgRect = CGRectMake(detailViewRect.size.width - (50*scx), detailViewRect.size.height - (50*scy), 40*scx, 40*scy);
+        
+        videoCountRect = CGRectMake(0*scx,detailViewRect.origin.y + detailViewRect.size.height,30*scx,30*scy);
+        videocountDescRect = CGRectMake(30*scx,detailViewRect.origin.y + detailViewRect.size.height,width - (30*scx),30*scy);
+        
+        
+        tableViewRect = CGRectMake(0*scx, detailViewRect.origin.y + detailViewRect.size.height + (30*scy) , width , 500*scy);
+        cellH = 100*scy;
+        
+        imgSnapshotcellRect = CGRectMake(10*scx , 10*scy , width/2 - (40*scx) , cellH - (20*scy));
+        
+        imgWaterMarkcellRect = CGRectMake(imgSnapshotcellRect.size.width - (35*scx) , imgSnapshotcellRect.size.height - (35*scy), 30*scx, 30*scy);
+        
+        streamTitleCellLblRect = CGRectMake(width/2 - (20*scx), cellH/4 - (fontSize/2),width/2, fontSize);
+        categoryTitleCellLblRect =  CGRectMake(width/2 - (20*scx), cellH/2 - (fontSize/2), 60*scx, fontSize);
+        categoryTypeCellLblRect = CGRectMake(width/2 + (40*scx), cellH/2 - (fontSize/2), 100*scx, fontSize);
+        imgLoveCellRect = CGRectMake(width/2 - (20*scx), cellH - (30*scy), 20*scx, 20*scy);
+        loveCountCellLblRect = CGRectMake(width/2 + (5*scx) , cellH - (25*scy), 50*scx, fontSize);
+        userAvatarCellimgRect = CGRectMake(width - (50*scx), cellH - (50*scy) , 40*scx, 40*scy);
+    }
+    else{
     fontSize = 14;
     
     navViewRect = CGRectMake(0, 20 , width, 50);
@@ -250,6 +295,7 @@
     imgLoveCellRect = CGRectMake(width/2 - 20, cellH - 30, 20, 20);
     loveCountCellLblRect = CGRectMake(width/2 + 5 , cellH - 25, 50, fontSize);
     userAvatarCellimgRect = CGRectMake(width - 50, cellH - 50 , 40, 40);
+    }
 
 }
 - (void)didReceiveMemoryWarning {

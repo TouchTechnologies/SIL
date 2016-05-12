@@ -234,12 +234,11 @@
     [topView addSubview:imgPin];
     
     lblLocationLive = [[UILabel alloc] initWithFrame:lblLocationLivePortRect];
-    lblLocationLive.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+ //   lblLocationLive.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     lblLocationLive.text = @"live location";
-    lblLocationLive.textColor = [UIColor grayColor];
-    lblLocationLive.backgroundColor = [UIColor clearColor];
+    lblLocationLive.textColor = [UIColor whiteColor];
     lblLocationLive.textAlignment = NSTextAlignmentLeft;
-    lblLocationLive.font = font;
+    lblLocationLive.font = [UIFont fontWithName:@"Helvetica" size:fontSize];
     [topView addSubview:lblLocationLive];
 
     
@@ -468,10 +467,10 @@
         
         topViewPortRect = CGRectMake(0 *scx, 0*scy, [[UIScreen mainScreen] bounds].size.width, 50*scy);
         imgPinPortRect = CGRectMake(10*scx,topViewPortRect.size.height/2 - (13*scy), 25*scx, 25*scy);
+       // lblLocationLivePortRect = CGRectMake(40*scx,topViewPortRect.size.height/2 - (13*scy),60*scx,20*scy);
         lblLocationLivePortRect = CGRectMake(imgPinPortRect.origin.x + (30*scx), topViewPortRect.size.height/2 - (10*scy), self.view.bounds.size.width - (imgPinPortRect.origin.x + (30*scx)), 20*scy);
         doneButtonPortRect = CGRectMake(topViewPortRect.size.width - (45*scx), topViewPortRect.size.height/2 - (20*scy) , 40*scx, 40*scy);
-        
-        
+ 
         propViewPortRect = CGRectMake(0*scx, self.view.bounds.size.height / 2 , self.view.bounds.size.width, 70*scy);
         imgLivePortRect = CGRectMake(20*scx, 2*scy, 35*scx, 35*scy);
         
@@ -508,7 +507,8 @@
         
         cellH = 50*scy;
         
-    } else {
+    }
+    else {
         CGFloat topviewCtr = self.player.view.topControlOverlay.bounds.size.width;
         NSLog(@"TOPVIEW ::: %.2f",topviewCtr);
         fontSize = 14.0;

@@ -630,49 +630,109 @@
     
     CGFloat scy = (1024.0/480.0);
     CGFloat scx = (768.0/360.0);
-    
-   
+    CGFloat topviewCtr = self.player.view.topControlOverlay.bounds.size.width;
+    CGFloat imgHeight;
+    CGFloat width = [[UIScreen mainScreen] bounds].size.width ;
+    CGFloat height = [[UIScreen mainScreen] bounds].size.height;
+
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
          bottomHeight = 100.0 * scy;
-//        vdoLabelRect = CGRectMake((self.player.view.bounds.size.width/2)-(100 * scx), (10 * scy), (200 * scx), (25 * scy));
-//        imgLiveRect = CGRectMake((self.player.view.bounds.size.width - (100 * scx)),(10 * scy), (60 * scx), (20 * scy));
-//        fontSize = 14.0 * scx;
-//        avatarRect = CGRectMake(20 * scx, self.view.bounds.size.height - 75 * scy, 50 * scx, 50 * scy);
-//        streamUserRect = CGRectMake(80 * scx, self.view.bounds.size.height - 60 * scy, self.view.bounds.size.width - 100 * scx, 20 * scy);
-//        
-//        imgViewIconRect = CGRectMake(self.view.bounds.size.width - (125*scx), self.view.bounds.size.height- (93*scy) , 25*scx,25*scy);
-//        lblViewCountRect = CGRectMake(self.view.bounds.size.width - (95*scx),self.view.bounds.size.height- (90*scy), 40*scx, 20*scy);
-//        lblViewRect = CGRectMake(self.view.bounds.size.width - (55*scx),self.view.bounds.size.height- (90*scy), 55*scx, 20*scy);
-//        btnLoveRect = CGRectMake(self.view.bounds.size.width - (125*scx), self.view.bounds.size.height- (65*scy) , 25*scx, 25*scy);
-//        lblLoveCountRect = CGRectMake(self.view.bounds.size.width - (95*scx), self.view.bounds.size.height- (62*scx) , 40*scx, 20*scy);
-//        lblLoveRect = CGRectMake(self.view.bounds.size.width - (55*scx), self.view.bounds.size.height- (62*scy) , 40*scx, 20*scy);
-//        
-//        btnCommentRect = CGRectMake(self.view.bounds.size.width - (125*scx), self.view.bounds.size.height- (35*scy) , 25*scx, 25*scy);
-//        lblCommentCountRect = CGRectMake(self.view.bounds.size.width - (95*scx), self.view.bounds.size.height- (32*scy) , 40*scx, 20*scy);
-//        lblCommentRect = CGRectMake(self.view.bounds.size.width - (55*scx), self.view.bounds.size.height- (32*scy) , 40*scx, 20*scy);
+        NSLog(@"TOPVIEW ::: %.2f",topviewCtr);
+        fontSize = 14.0*scy;
+        cellH = 100*scy;
+        imgHeight = 30.0*scy;
+        
+        
+        
+        topViewPortRect = CGRectMake(0*scx, 0*scy, width, 50*scy);
+        playerRect = CGRectMake(0*scx, 50*scy, width, 150*scy);
+        
+        
+        imgPinPortRect = CGRectMake(10*scx,topViewPortRect.size.height/2 - (13*scy), 25*scx, 25*scy);
+        
+        doneButtonPortRect = CGRectMake(10*scx, topViewPortRect.size.height/2 - (10*scy) , 30*scx, 30*scy);
+        
+        vdoLabelPortRect = CGRectMake(doneButtonPortRect.size.width + (10*scx) ,topViewPortRect.size.height/2 - (10*scy) , 200*scx, 20*scy);
+        
+        lblcategoryDescRect = CGRectMake(doneButtonPortRect.size.width + (10*scx) , topViewPortRect.size.height/2 + (8*scy), 70*scx, 15*scy);
+        
+        lblcategoryTypeRect = CGRectMake(lblcategoryDescRect.origin.x + (70*scx) , topViewPortRect.size.height/2 + (8*scy), topViewPortRect.size.width/2, 15*scy);
+        
+        propViewPortRect = CGRectMake(0*scx,playerRect.origin.y + playerRect.size.height - 2, self.view.bounds.size.width, 50*scy);
+        
+        imgLivePortRect = CGRectMake(20*scx, 2*scy, 35*scx, 35*scy);
+        
+        lblLocationDescRect = CGRectMake(10*scx , propViewPortRect.size.height - (20*scy), 60*scx, 15*scy);
+        
+        lblLocationLivePortRect = CGRectMake(lblLocationDescRect.origin.x + (60*scx),  propViewPortRect.size.height - (20*scy), self.view.bounds.size.width - (lblLocationDescRect.origin.x + (50*scx)), 15*scy);
+        
+        shareBtnPortRect = CGRectMake(propViewPortRect.size.width - (35*scx) ,  10*scy , 25*scx , 25*scy);
+        
+        shareimgPortRect = CGRectMake(0*scx, 0*scy, shareBtnPortRect.size.width, shareBtnPortRect.size.height);
+        
+        btnLovePortRect = CGRectMake(topViewPortRect.size.width - (45*scx) ,topViewPortRect.size.height/2 - (18*scy) ,35*scx,35*scy);
+        
+        heartimgPortRect = CGRectMake(0*scx, 0*scy, btnLovePortRect.size.width , btnLovePortRect.size.height );
+        
+        imgViewIconPortRect = CGRectMake(10*scx, 10 *scy, 20*scx, 20*scy);
+        
+        lblViewCountPortRect = CGRectMake(imgViewIconPortRect.origin.x + (25*scx), 13*scy , 40*scx, 15*scy);
+      
+        imgCommentPortRect =  CGRectMake(lblViewCountPortRect.origin.x + (45*scx) , 10*scy,20*scx,20*scy);
+        lblCommentCountPortRect = CGRectMake(imgCommentPortRect.origin.x + (25*scx), 13*scy , 40*scx, 15*scy);
+        
+        imgLoveIconPortRect = CGRectMake(lblCommentCountPortRect.origin.x + (45*scx),10*scy ,20*scx,20*scy);
+        lblLoveCountPortRect = CGRectMake(imgLoveIconPortRect.origin.x + (25*scx) , 13*scy, 40*scx, 15*scy);
+
+        mapImgRect = CGRectMake(0*scx,propViewPortRect.origin.y + propViewPortRect.size.height, self.view.bounds.size.width, 70*scy);
+        liveAroundBtnRect = CGRectMake(mapImgRect.size.width/2 - (40*scx), mapImgRect.size.height/2 - (15*scy), 80*scx, 30*scy);
+        
+        profileViewRect = CGRectMake(0*scx,propViewPortRect.origin.y + propViewPortRect.size.height  + mapImgRect.size.height, self.view.bounds.size.width, 70*scy);
+        
+        tableHeaderViewRect = CGRectMake(0*scx, profileViewRect.origin.y + profileViewRect.size.height, self.view.bounds.size.width, 100*scy);
+        iconCategoryImgRect = CGRectMake(tableHeaderViewRect.size.width/2 - (20*scx), tableHeaderViewRect.size.height/2 - (40*scy), 40*scx, 40*scy);
+        categoryTypeLblRect = CGRectMake(0*scx, tableHeaderViewRect.size.height/2 + fontSize/2, self.view.bounds.size.width, fontSize);
+        categoryDescLblRect = CGRectMake(0*scx, categoryTypeLblRect.origin.y + categoryTypeLblRect.size.height + fontSize/2, self.view.bounds.size.width, fontSize - 2);
+
+        
+        liveIncategoryTblRect = CGRectMake(0*scx, tableHeaderViewRect.origin.y + tableHeaderViewRect.size.height , self.view.bounds.size.width ,cellH*3);
+        AvatarRect = CGRectMake(10*scx, profileViewRect.size.height/2 - (20*scy) , 40*scx , 40*scy);
+
+        usernameLblRect = CGRectMake(60*scx, profileViewRect.size.height/2 - fontSize, 200*scx, fontSize);
+        followerLblRect = CGRectMake(60*scx, profileViewRect.size.height/2 + (5*scy) , 60*scx , fontSize - 2);
+        followerCountLblRect = CGRectMake(120*scx , profileViewRect.size.height/2 + (5*scy) , 50*scx , fontSize - 2);
+        
+        liveSnapshortImgRect = CGRectMake(10 *scx, 10*scy , self.view.bounds.size.width/2 - (40*scx) , cellH - (20*scy));
+        
+        waterMarkRect = CGRectMake((liveSnapshortImgRect.size.width) - (imgHeight+(5*scx)), (liveSnapshortImgRect.size.height)-(imgHeight+(5*scy)), imgHeight, imgHeight);
+
+        streamTitleCellLblRect = CGRectMake(self.view.bounds.size.width/2 - (20*scx), cellH/4 - (fontSize/2), self.view.bounds.size.width/2, fontSize);
+        categoryTitleCellLblRect =  CGRectMake(self.view.bounds.size.width/2 - (20*scx), cellH/2 - (fontSize/2), 60*scy, fontSize);
+        categoryTypeCellLblRect = CGRectMake(self.view.bounds.size.width/2 + (40*scx), cellH/2 - (fontSize/2), 100*scx, fontSize);
+        imgLoveCellRect = CGRectMake(self.view.bounds.size.width/2 - (20*scx), cellH - (30*scy), 20*scx, 20*scy);
+        loveCountCellLblRect = CGRectMake(self.view.bounds.size.width/2 + (5*scx) , cellH - (25*scy), 50*scx, fontSize);
+        userAvatarCellimgRect = CGRectMake(self.view.bounds.size.width - (50*scx), cellH - (50*scy) , 40*scx, 40*scy);
+        
+        
+
+        moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - (40*scx), liveIncategoryTblRect.origin.y + liveIncategoryTblRect.size.height + (10*scy) , 80*scx, 30*scy);
+        
+        
+
         
     } else {
-        CGFloat topviewCtr = self.player.view.topControlOverlay.bounds.size.width;
+       
         NSLog(@"TOPVIEW ::: %.2f",topviewCtr);
         fontSize = 14.0;
         cellH = 100;
-        
-        
-        CGFloat imgHeight;
-        CGFloat width = [[UIScreen mainScreen] bounds].size.width ;
-        CGFloat height = [[UIScreen mainScreen] bounds].size.height;
-        
-        //UIImage *playBig = [UIImage imageNamed:@"VKVideoPlayer_play_big.png"];
-        
         imgHeight = 30.0;
        
     
         
         topViewPortRect = CGRectMake(0, 0, width, 50);
         playerRect = CGRectMake(0, 50, width, 200);
-       
-        
+
         imgPinPortRect = CGRectMake(10,topViewPortRect.size.height/2 - 13, 25, 25);
        
         doneButtonPortRect = CGRectMake(10, topViewPortRect.size.height/2 - 10 , 30, 30);
