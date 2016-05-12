@@ -596,7 +596,8 @@
         //////////////////////////////////////////////////////////////////
         
         StreamHistoryViewController *streamHistory = [self.storyboard instantiateViewControllerWithIdentifier:@"StreamHistory"];
-        isLazy = TRUE;
+//        isLazy = TRUE;
+        isLazy = FALSE;
         return streamHistory;
 
     }
@@ -617,7 +618,8 @@
         //////////////////////////////////////////////////////////////////
         
         CategoryTypeViewController *categoryType = [self.storyboard instantiateViewControllerWithIdentifier:@"categorytype"];
-        isLazy = TRUE;
+//        isLazy = TRUE;
+        isLazy = FALSE;
         return categoryType;
     }
     else if(pageModel.iPageNumber == 2)

@@ -19,7 +19,7 @@
 #import "VKVideoPlayerViewController.h"
 #import "VKVideoPlayerCaptionSRT.h"
 #import <KKGridView/KKGridView.h>
-#import "MBProgressHUD.h"
+//#import "MBProgressHUD.h"
 #import "AppDelegate.h"
 #import <Google/Analytics.h>
 #import "UserProfileViewController.h"
@@ -32,7 +32,7 @@
 #import "SBScrollView.h"
 #import "SVPullToRefresh.h"
 
-@interface StreamHistoryViewController () <UIAlertViewDelegate,UIGestureRecognizerDelegate,UIScrollViewDelegate,UIApplicationDelegate>
+@interface StreamHistoryViewController () <UIAlertViewDelegate,UIGestureRecognizerDelegate,UIApplicationDelegate,KKGridViewDataSource, KKGridViewDelegate,UIScrollViewDelegate>//UIScrollViewDelegate
 {
     CGSize cellSize;
     CGSize paddingSize;
@@ -51,7 +51,7 @@
     
     StreamingCell *cell;
     Streaming *stream;
-    MBProgressHUD *hud ;
+//    MBProgressHUD *hud ;
 //    IBOutlet UIScrollView *scrollView;
     
     IBOutlet SBScrollView *scrollView;
@@ -84,6 +84,8 @@
     [self.view setBackgroundColor:[UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1.0]];
     [self initialSize];
     [self initial];
+    scrollView.delegate = self;
+    _gridView.delegate = self;
     scrollView.delegate = self;
      __weak StreamHistoryViewController *weakSelf = self;
     
@@ -126,12 +128,13 @@
     int64_t delayInSeconds = 2.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-//        [weakSelf.tableView beginUpdates];
+        [_gridView beginUpdates];
 //        [weakSelf.dataSource insertObject:[NSDate date] atIndex:0];
 //        [weakSelf.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];
-//        [weakSelf.tableView endUpdates];
+        [_gridView endUpdates];
+        [_gridView reloadData];
+        [_gridView.pullToRefreshView stopAnimating];
         
-        [weakSelf.gridView.pullToRefreshView stopAnimating];
     });
 }
 
@@ -142,12 +145,12 @@
     int64_t delayInSeconds = 2.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-//        [weakSelf.tableView beginUpdates];
+        [_gridView beginUpdates];
 //        [weakSelf.dataSource addObject:[weakSelf.dataSource.lastObject dateByAddingTimeInterval:-90]];
 //        [weakSelf.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:weakSelf.dataSource.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
-//        [weakSelf.tableView endUpdates];
-        
-        [weakSelf.gridView.infiniteScrollingView stopAnimating];
+        [_gridView endUpdates];
+        [_gridView reloadData];
+        [_gridView.infiniteScrollingView stopAnimating];
     });
 }
 
@@ -234,11 +237,11 @@
     */
     
     UIWindow *tempWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
-    hud = [[MBProgressHUD alloc] initWithWindow:tempWindow];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Loading...";
-    [tempWindow addSubview:hud];
-    [hud show:YES];
+//    hud = [[MBProgressHUD alloc] initWithWindow:tempWindow];
+//    hud.mode = MBProgressHUDModeIndeterminate;
+//    hud.labelText = @"Loading...";
+//    [tempWindow addSubview:hud];
+//    [hud show:YES];
     
     [self.gridView removeFromSuperview];
     
@@ -267,7 +270,7 @@
     [[DataManager shareManager] getStreamingWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
         
         
-        [hud hide:YES];
+//        [hud hide:YES];
         if (success) {
             weakSelf.streamList = streamRecords;
             NSLog(@"STREAMLIST COUNT :::: %ld", weakSelf.streamList.count);
@@ -547,11 +550,11 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"lovepress" object:nil];
     UIWindow *tempWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
-    hud = [[MBProgressHUD alloc] initWithWindow:tempWindow];
-    hud.mode = MBProgressHUDModeIndeterminate;
-   // hud.labelText = @"Loading...";
-    [tempWindow addSubview:hud];
-    [hud show:YES];
+//    hud = [[MBProgressHUD alloc] initWithWindow:tempWindow];
+//    hud.mode = MBProgressHUDModeIndeterminate;
+//   // hud.labelText = @"Loading...";
+//    [tempWindow addSubview:hud];
+//    [hud show:YES];
     
     if(!stream.isLoved)
     {
@@ -562,7 +565,7 @@
              stream.lovesCount++;
         
              [self.gridView reloadData];
-        [hud hide:YES];
+//        [hud hide:YES];
     }];
         
     }
@@ -576,7 +579,7 @@
             stream.isLoved = false;
 
             [self.gridView reloadData];
-          [hud hide:YES];
+//          [hud hide:YES];
 
         }];
         
@@ -782,23 +785,23 @@
     }
     
 }
--(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-//    NSLog(@"scrollViewDidScroll");
-    // Get new record from here
-}
--(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
-{
-//    NSLog(@"scrollViewDidEndScrollingAnimation");
-    
-}
--(void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
-{
-//    NSLog(@"scrollViewDidScrollToTop");
-}
--(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-//    NSLog(@"scrollViewWillBeginDragging");
-}
+//-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+////    NSLog(@"scrollViewDidScroll");
+//    // Get new record from here
+//}
+//-(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+//{
+////    NSLog(@"scrollViewDidEndScrollingAnimation");
+//    
+//}
+//-(void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
+//{
+////    NSLog(@"scrollViewDidScrollToTop");
+//}
+//-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+//{
+////    NSLog(@"scrollViewWillBeginDragging");
+//}
 
 -(NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
 {
