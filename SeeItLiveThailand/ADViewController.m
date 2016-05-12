@@ -314,7 +314,7 @@
                _imgLiveStatus.hidden = YES;
                 [_imgLiveStatus removeFromSuperview];
               [collectionView removeFromSuperview];
-            scrollView = [[SBScrollView alloc] initWithFrame:scrollViewRect];
+            //   scrollView = [[SBScrollView alloc] initWithFrame:scrollViewRect];
               [scrollView addSubview:collectionView];
 //                
 //                self.gridView = [[KKGridView alloc] initWithFrame:CGRectMake(parentFrame.origin.x, parentFrame.origin.y , self.view.bounds.size.width, parentFrame.size.height)];
@@ -377,9 +377,12 @@
     [self.view addSubview:liveStatusView];
 
     imgLiveicon = [[UIImageView alloc] initWithFrame:imgLiveiconRect];
-    imgLiveicon.image = [UIImage imageNamed:@"live1.png"];
-    imgLiveicon.layer.cornerRadius = imgLiveiconRect.size.width/2;
-    imgLiveicon.clipsToBounds = YES;
+    
+    [imgLiveicon setImage:[UIImage animatedImageNamed:@"live" duration:1.0]];
+    //imgLiveicon.image = [UIImage imageNamed:@"live1.png"];
+   // imgLiveicon.layer.cornerRadius = imgLiveiconRect.size.width/2;
+   // imgLiveicon.clipsToBounds = YES;
+   // [imgLiveicon setImage:[UIImage animatedImageNamed:@"live" duration:1.0] forState:UIControlStateNormal];
     [liveStatusView addSubview:imgLiveicon];
     
     lblLiveNow = [[UILabel alloc] initWithFrame:lblLiveNowRect];

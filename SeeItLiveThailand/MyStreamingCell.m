@@ -56,12 +56,13 @@
     
         CGRect imgShareIconRect;
         
+        CGRect editProfilrRect;
         CGRect shareLiveStreamBtnRect;
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
            
             fontSize = 13.0 * scx;
-            
+            editProfilrRect = CGRectMake(cWidth - (35*scx), 5*scy, 30*scx, 30*scy);
             imgSnapshotRect = CGRectMake(0, 0, cWidth, cHeight/2 + (30 * scy));
             
             lblPlaceRect = CGRectMake(2*scx, imgSnapshotRect.size.height +(1*scy) , cWidth - (2*scx), 20*scy);
@@ -84,7 +85,7 @@
 
         } else {
             fontSize = 13.0;
-           
+            editProfilrRect = CGRectMake(cWidth - 35, 5, 30, 30);
             imgSnapshotRect = CGRectMake(0, 0, cWidth, cHeight);
             lblPlaceRect = CGRectMake(2, imgSnapshotRect.size.height +1 , cWidth - 2, 20);
             lblCreateDescRect = CGRectMake(2,imgSnapshotRect.size.height +22 , 30, 20);
@@ -122,7 +123,7 @@
         [self.shareLivestream setBackgroundColor:[UIColor whiteColor]];
       //  [self.contentView addSubview:self.shareLivestream];
         
-        self.editLivestream = [[UIButton alloc]initWithFrame:CGRectMake(cWidth - 35, 5, 30, 30)];
+        self.editLivestream = [[UIButton alloc]initWithFrame:editProfilrRect];
         [self.editLivestream setBackgroundImage:[UIImage imageNamed:@"ic_edit_livestream.png"] forState:UIControlStateNormal];
         [self.contentView addSubview:self.editLivestream];
         

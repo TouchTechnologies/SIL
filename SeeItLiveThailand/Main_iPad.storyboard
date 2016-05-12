@@ -1134,21 +1134,6 @@
             </objects>
             <point key="canvasLocation" x="225.5" y="4429"/>
         </scene>
-        <!--Streaming Detail View Controller-->
-        <scene sceneID="USI-EU-yoT">
-            <objects>
-                <viewController storyboardIdentifier="streamingdetail" id="Z05-vO-ySu" customClass="StreamingDetailViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="WWA-4D-YHB">
-                        <rect key="frame" x="0.0" y="0.0" width="507" height="768"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad-1/2"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gf9-oG-N7s" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1421.5" y="6654"/>
-        </scene>
         <!--View Controller-->
         <scene sceneID="r3m-gd-xQS">
             <objects>
@@ -2461,6 +2446,72 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2qu-rM-EHn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1365.5" y="4449"/>
+        </scene>
+        <!--Streaming Detail View Controller-->
+        <scene sceneID="mbT-Ry-Tf1">
+            <objects>
+                <viewController storyboardIdentifier="streamingdetail" id="QO4-TY-wff" customClass="StreamingDetailViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="4PC-8N-Ltp">
+                        <rect key="frame" x="0.0" y="0.0" width="507" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="hEK-qS-eQF">
+                                <rect key="frame" x="0.0" y="0.0" width="507" height="768"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" id="E9n-pm-8XG" customClass="SBScrollView">
+                                        <rect key="frame" x="0.0" y="0.0" width="507" height="768"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="QO4-TY-wff" id="Of5-wK-NYc"/>
+                                        </connections>
+                                    </scrollView>
+                                </subviews>
+                                <connections>
+                                    <outlet property="delegate" destination="QO4-TY-wff" id="JLY-xS-VKf"/>
+                                </connections>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="mXV-L6-7hA"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad-1/2"/>
+                    <connections>
+                        <outlet property="scrollView" destination="E9n-pm-8XG" id="x03-Nf-0g1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Lzj-4h-wGt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2058.5" y="4024"/>
+        </scene>
+        <!--Live Around View Controller-->
+        <scene sceneID="EQ5-9e-7Hw">
+            <objects>
+                <viewController storyboardIdentifier="livearound" id="yw2-yo-gSm" customClass="LiveAroundViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hfu-UH-XSn">
+                        <rect key="frame" x="0.0" y="0.0" width="507" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="v9n-yR-gkI" customClass="SBScrollView">
+                                <rect key="frame" x="0.0" y="49" width="507" height="719"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="0.66666666669999997" alpha="0.13946659480000001" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="delegate" destination="yw2-yo-gSm" id="zev-nD-nNB"/>
+                                </connections>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad-1/2"/>
+                    <connections>
+                        <outlet property="scrollView" destination="v9n-yR-gkI" id="HgG-iN-IAx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vJ4-qQ-0aV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2810" y="4591"/>
         </scene>
     </scenes>
     <resources>

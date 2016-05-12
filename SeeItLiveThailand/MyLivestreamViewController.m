@@ -141,7 +141,7 @@
         cellSize = CGSizeMake((self.view.frame.size.width / 2) - (15 * scx), (230 * scy));
         paddingSize = CGSizeMake((10.0 * scx), (10.0 * scy));
         rcBarH = 90.0 * scy;
-        rcGrapY = (180 * scy) + 20;
+        rcGrapY = 200 * scy;
         rcButtonW = 80.0 * scx;
         imgPHW01 = 40.0 * scx;
         imgPHW02 = 25.0 * scx;
@@ -458,7 +458,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
     CGFloat scx = (768.0/360.0);
     CGFloat cellH ;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        cellH = 100*scy;
+        cellH = 120*scy;
         gridView.cellSize = CGSizeMake(gridView.bounds.size.width/2 - (15*scx) , cellH);
     }
     else{
