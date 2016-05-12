@@ -77,7 +77,7 @@
 @end
 
 @implementation StreamHistoryViewController
-
+@synthesize gridView = gridView;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -85,20 +85,21 @@
     [self initialSize];
     [self initial];
     scrollView.delegate = self;
-    _gridView.delegate = self;
+    gridView.delegate = self;
     scrollView.delegate = self;
-     __weak StreamHistoryViewController *weakSelf = self;
+//     __weak StreamHistoryViewController *weakSelf = self;
+//    
+//    [self.gridView addPullToRefreshWithActionHandler:^{
+//        [weakSelf insertRowAtTop];
+//    }];
+//    
+//    // setup infinite scrolling
+//    [self.gridView addInfiniteScrollingWithActionHandler:^{
+//        [weakSelf insertRowAtBottom];
+//    }];
+//    gridView.pullToRefreshView.arrowColor = [UIColor redColor];
+//    NSLog(@"StreamHistoryViewController");
     
-    [_gridView addPullToRefreshWithActionHandler:^{
-        [weakSelf insertRowAtTop];
-    }];
-    
-    // setup infinite scrolling
-    [_gridView addInfiniteScrollingWithActionHandler:^{
-        [weakSelf insertRowAtBottom];
-    }];
-    
-    NSLog(@"StreamHistoryViewController");
 //    
 //   [[NSNotificationCenter defaultCenter] addObserver:self
 //                                            selector:@selector(refreshList:)
@@ -111,7 +112,8 @@
     //[self initialTest];
 }
 - (void)viewDidAppear:(BOOL)animated {
-    [_gridView triggerPullToRefresh];
+//    [gridView triggerPullToRefresh];
+    
 }
 #pragma mark - Actions
 
@@ -125,33 +127,34 @@
     __weak StreamHistoryViewController *weakSelf = self;
     NSLog(@"insertRowAtTop");
     
-    int64_t delayInSeconds = 2.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [_gridView beginUpdates];
+//    int64_t delayInSeconds = 2.0;
+//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//        [_gridView beginUpdates];
 //        [weakSelf.dataSource insertObject:[NSDate date] atIndex:0];
 //        [weakSelf.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];
-        [_gridView endUpdates];
-        [_gridView reloadData];
-        [_gridView.pullToRefreshView stopAnimating];
+//        [_gridView endUpdates];
+        [weakSelf.gridView reloadData];
+        [weakSelf.gridView.pullToRefreshView stopAnimating];
         
-    });
+//    });
 }
 
 
 - (void)insertRowAtBottom {
     __weak StreamHistoryViewController *weakSelf = self;
     NSLog(@"insertRowAtBottom");
-    int64_t delayInSeconds = 2.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [_gridView beginUpdates];
+//    int64_t delayInSeconds = 2.0;
+//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//        [_gridView beginUpdates];
 //        [weakSelf.dataSource addObject:[weakSelf.dataSource.lastObject dateByAddingTimeInterval:-90]];
 //        [weakSelf.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:weakSelf.dataSource.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
-        [_gridView endUpdates];
-        [_gridView reloadData];
-        [_gridView.infiniteScrollingView stopAnimating];
-    });
+//        [_gridView endUpdates];
+        [weakSelf.gridView reloadData];
+        [weakSelf.gridView.infiniteScrollingView stopAnimating];
+    
+//    });
 }
 
 - (void)initialTest {
