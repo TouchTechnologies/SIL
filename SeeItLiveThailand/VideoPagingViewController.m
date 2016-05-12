@@ -40,6 +40,7 @@
 #import <Google/Analytics.h>
 #import "SVWebViewController.h"
 #import "AppDelegate.h"
+#import "SVPullToRefresh.h"
 
 #define SCALING_Y (1024.0/480.0);
 #define SCALING_X (768.0/360.0);
@@ -129,8 +130,61 @@
     //    [tracker set:kGAIScreenName value:name];
     //    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     //    // [END screen_view_hit_objc]
+    __weak VideoPagingViewController *weakSelf = self;
+    
+    [_tblViewVideo addPullToRefreshWithActionHandler:^{
+        [weakSelf insertRowAtTop];
+    }];
+    
+    // setup infinite scrolling
+    [_tblViewVideo addInfiniteScrollingWithActionHandler:^{
+        [weakSelf insertRowAtBottom];
+    }];
     
     [self checkPromotion];
+}
+- (void)viewDidAppear:(BOOL)animated {
+    [_tblViewVideo triggerPullToRefresh];
+}
+#pragma mark - Actions
+
+- (void)setupDataSource {
+    //    self.dataSource = [NSMutableArray array];
+    //    for(int i=0; i<15; i++)
+    //        [self.dataSource addObject:[NSDate dateWithTimeIntervalSinceNow:-(i*90)]];
+}
+
+- (void)insertRowAtTop {
+    __weak VideoPagingViewController *weakSelf = self;
+    NSLog(@"insertRowAtTop");
+    
+    int64_t delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [_tblViewVideo beginUpdates];
+        //        [weakSelf.dataSource insertObject:[NSDate date] atIndex:0];
+        //        [weakSelf.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];
+        [_tblViewVideo endUpdates];
+        [_tblViewVideo reloadData];
+        [_tblViewVideo.pullToRefreshView stopAnimating];
+        
+    });
+}
+
+
+- (void)insertRowAtBottom {
+    __weak VideoPagingViewController *weakSelf = self;
+    NSLog(@"insertRowAtBottom");
+    int64_t delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [_tblViewVideo beginUpdates];
+        //        [weakSelf.dataSource addObject:[weakSelf.dataSource.lastObject dateByAddingTimeInterval:-90]];
+        //        [weakSelf.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:weakSelf.dataSource.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+        [_tblViewVideo endUpdates];
+        [_tblViewVideo reloadData];
+        [_tblViewVideo.infiniteScrollingView stopAnimating];
+    });
 }
 - (void)viewDidLoad {
     [super viewDidLoad];

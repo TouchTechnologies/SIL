@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <KKGridView/KKGridView.h>
 
-@interface StreamHistoryViewController : UIViewController<KKGridViewDataSource, KKGridViewDelegate>
+@interface StreamHistoryViewController : UIViewController;//<KKGridViewDataSource, KKGridViewDelegate>
 
 @property (nonatomic, strong) KKGridView *gridView;
 

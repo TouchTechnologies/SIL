@@ -218,7 +218,7 @@
     
     
    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake((imgFrame.size.width/2) - (imgHeight/2), (imgFrame.size.height/2)-(imgHeight/2), imgHeight, imgHeight)];
-    imgView.image = [UIImage imageNamed:@"play.png"];
+//    imgView.image = [UIImage imageNamed:@"play.png"];
     imgView.alpha = 0.7f;
     
     [self.imgSnapshot addSubview:imgView];
