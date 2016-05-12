@@ -458,7 +458,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
     CGFloat scx = (768.0/360.0);
     CGFloat cellH ;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        cellH = 120*scy;
+        cellH = 100*scy;
         gridView.cellSize = CGSizeMake(gridView.bounds.size.width/2 - (15*scx) , cellH);
     }
     else{
@@ -500,8 +500,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
         //format.allowUpscaling = YES;
         
     }
-    
-    cell.imgSnapshot.hnk_cacheFormat = format;
+       cell.imgSnapshot.hnk_cacheFormat = format;
     
     NSURL *url = [NSURL URLWithString:stream.snapshot];
     [cell.imgSnapshot hnk_setImageFromURL:url placeholder:imgPH];

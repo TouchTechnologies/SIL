@@ -63,7 +63,7 @@
            
             fontSize = 13.0 * scx;
             editProfilrRect = CGRectMake(cWidth - (35*scx), 5*scy, 30*scx, 30*scy);
-            imgSnapshotRect = CGRectMake(0, 0, cWidth, cHeight/2 + (30 * scy));
+            imgSnapshotRect = CGRectMake(0, 0, cWidth, cHeight);
             
             lblPlaceRect = CGRectMake(2*scx, imgSnapshotRect.size.height +(1*scy) , cWidth - (2*scx), 20*scy);
             lblCreateDescRect = CGRectMake(2*scx,imgSnapshotRect.size.height +(22*scy) , 30*scx, 20*scy);
