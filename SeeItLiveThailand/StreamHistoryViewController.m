@@ -541,7 +541,7 @@
 {
     NSLog(@"Love Love");
     UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)sender;
-    NSLog (@"Tag %ld",[tapRecognizer.view tag]);
+    NSLog (@"Tag %d",[tapRecognizer.view tag]);
     NSInteger loveTag = [tapRecognizer.view tag];
     
     Streaming *stream = [self.streamList objectAtIndex:loveTag];

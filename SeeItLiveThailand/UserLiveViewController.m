@@ -24,6 +24,7 @@
 #import "UserManager.h"
 #import "UserData.h"
 #import "AppDelegate.h"
+#import "MyStreamingCell.h"
 
 @interface UserLiveViewController ()<UIAlertViewDelegate,UIGestureRecognizerDelegate>
 {
@@ -200,11 +201,11 @@
     CGFloat scx = (768.0/360.0);
     CGFloat cellH ;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        cellH = 300*scy ;
+        cellH = 100*scy;
         gridView.cellSize = CGSizeMake(gridView.bounds.size.width/2 - (15*scx) , cellH);
     }
     else{
-        cellH = 300;
+        cellH = 100;
         gridView.cellSize = CGSizeMake(gridView.bounds.size.width/2 - 15 , cellH);
         //self.view.bounds.size.height/2 ;
         
@@ -222,7 +223,7 @@
     UITapGestureRecognizer *tapGestureRec = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cellViewClick:)];
     tapGestureRec.numberOfTapsRequired = 1;
     
-    StreamingCell *cell = [StreamingCell cellForGridView:gridView];
+    MyStreamingCell *cell = [MyStreamingCell cellForGridView:gridView];
     cell.cellTag = [indexPath index];
     cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
     
@@ -313,6 +314,7 @@
     
     return cell;
 }
+
 - (void)goProfile:(id)sender
 {
     UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)sender;
@@ -327,24 +329,26 @@
 }
 - (void)cellViewClick:(UITapGestureRecognizer *)tapGR {
     
-    StreamingCell *cell = (StreamingCell *)tapGR.view;
-    
-    
+    MyStreamingCell *cell = (MyStreamingCell *)tapGR.view;
+    NSLog(@"cellTag:%@",tapGR.view);
+    //    AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
+    //    appDelegate.pageName = @"mylivestream";
     StreamingDetailViewController *streamingDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"streamingdetail"];
-    //streamingDetail.streamingID = cell.lblPlace.text;
-    //NSInteger tag = previewScrollView.tag;
-    //NSLog(@"lbl - %@",cell.lblPlace.text);
     
-    //VideoDetailViewController *vdoDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"videodetail"];
-    cell.selectedBackgroundView.backgroundColor = [UIColor colorWithWhite:40 alpha:0.6f];
+    cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
     
     Streaming *stream = [self.streamList objectAtIndex:cell.cellTag];
     streamingDetail.objStreaming = stream;
-    streamingDetail.streamingType = @"history";
-
+    
+    //    streamingDetail.streamingID =
+    streamingDetail.streamingType = @"mylivestream";
+    
     [self.view.window.rootViewController presentViewController:streamingDetail animated:YES completion:nil];
     
+    
+    
 }
+
 
 -(UIImage*)resizeImage:(UIImage *)image imageSize:(CGSize)size
 {
@@ -399,6 +403,7 @@
     
     
 }
+
 - (void)loveSend:(id)sender
 {
     NSLog(@"Love Love");

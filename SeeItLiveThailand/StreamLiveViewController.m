@@ -644,8 +644,6 @@
     
     
 }
-
-
 - (void)cellViewClick:(UITapGestureRecognizer *)tapGR {
     NSLog(@"streamingdetail");
     
