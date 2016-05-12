@@ -10,7 +10,7 @@
 //#define StreamingLiveURL @"http://www.seeitlivethailand.com/api/liveStreamChannels?hasStreaming=Y"
 //#define SocketURL @"http://seeitlivethailand.com:3008"
 
-///////////////Dev/////////////////
+///////////////Dev///////////////////
 //Dev
 #define service @"http://192.168.9.117/seeitlivethailand/"
 #define PromotionURL @"http://192.168.9.117/seeitlivethailand"
