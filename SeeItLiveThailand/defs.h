@@ -11,10 +11,9 @@
 //#define SocketURL @"http://seeitlivethailand.com:3008"
 
 ///////////////Dev///////////////////
-//Dev
 #define service @"http://192.168.9.117/seeitlivethailand/"
 #define PromotionURL @"http://192.168.9.117/seeitlivethailand"
-#define StreamingHistoryURL @"http://192.168.9.117/seeitlivethailand/api/stream/histories?filtersPage=1&filterLimit=10"
+#define StreamingHistoryURL @"http://192.168.9.117/seeitlivethailand/api/stream/histories?filtersPage=1&filterLimit=30"
 #define StreamingLiveURL @"http://192.168.9.117/seeitlivethailand/api/liveStreamChannels?hasStreaming=Y"
 #define SocketURL @"http://192.168.9.117:3008"
 
@@ -25,6 +24,9 @@
 //#define StreamingLiveURL @"http://203.151.189.172/seeitlivethailand/api/liveStreamChannels?hasStreaming=Y"
 //#define SocketURL @"http://192.168.9.117:3008"
 
+
+
+/////////PON////////////
 
 #define CouponURL @"http://www.seeitlivethailand.com/coupon"
 #define BlogURL @"http://www.seeitlivethailand.com/blogs"
