@@ -30,7 +30,7 @@
 #import "LiveStreamingCell.h"
 #import "LivestreamRealtimeViewController.h"
 #import "SBScrollView.h"
-#import "SVPullToRefresh.h"
+//#import "SVPullToRefresh.h"
 
 @interface StreamHistoryViewController () <UIAlertViewDelegate,UIGestureRecognizerDelegate,UIApplicationDelegate,KKGridViewDataSource, KKGridViewDelegate,UIScrollViewDelegate>//UIScrollViewDelegate
 {
@@ -135,8 +135,8 @@
 //        [weakSelf.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];
 //        [_gridView endUpdates];
         [weakSelf.gridView reloadData];
-        [weakSelf.gridView.pullToRefreshView stopAnimating];
-        
+//        [weakSelf.gridView.pullToRefreshView stopAnimating];
+    
 //    });
 }
 
@@ -152,7 +152,7 @@
 //        [weakSelf.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:weakSelf.dataSource.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
 //        [_gridView endUpdates];
         [weakSelf.gridView reloadData];
-        [weakSelf.gridView.infiniteScrollingView stopAnimating];
+//        [weakSelf.gridView.infiniteScrollingView stopAnimating];
     
 //    });
 }

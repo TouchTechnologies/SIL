@@ -145,6 +145,7 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
      CategoryListViewController *category = [self.storyboard instantiateViewControllerWithIdentifier:@"categorylist"];
+    category.catID = [appDelegate.categoryData[indexPath.row][@"id"] integerValue];
     [self.view.window.rootViewController presentViewController:category animated:TRUE completion:nil];
 
 }

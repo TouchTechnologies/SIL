@@ -1312,8 +1312,6 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             //            self.lblUserName.text = data[0]["data"]!!["commentator"]!!["first_name"] as? String
             //            self.imgUserChat.image = UIImage(data: NSData(contentsOfURL: NSURL(string: data[0]["data"]!!["commentator"]!!["profile_picture"] as! String)!)!)
         }
-        
-        socket.connect()
     }
     func initSocket()
     {
@@ -1329,8 +1327,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             /// socket.emit("leave", "user/anonymous")
         }
         socket.connect()
-        
-        
+
         
         socket.on("message:new") {data, ack in
             
