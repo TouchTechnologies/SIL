@@ -183,7 +183,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     var startStreamBtnRect = CGRect()
     
     var cellH = CGFloat()
-    
+    var fonttitle = CGFloat()
     var session:VCSimpleSession = VCSimpleSession(videoSize: CGSize(width: 1280, height: 720), frameRate: 30, bitrate: 1000000, useInterfaceOrientation: false, cameraState: VCCameraState.Back , aspectMode:VCAspectMode.AspectModeFit)
     //    var session:VCSimpleSession = VCSimpleSession()
     
@@ -351,7 +351,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         locateLbl = UILabel(frame: locateLblRect)
         locateLbl.text = self.appDelegate.locationName
         locateLbl.textColor = UIColor.whiteColor()
-        locateLbl.font = UIFont(name: "Helvetica" , size: font)
+        locateLbl.font = UIFont(name: "Helvetica" , size: font - 2)
         popUpViewTop!.addSubview(locateLbl)
         locateLbl.text = "No Location found!"
         
@@ -379,15 +379,25 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         viewiconImg.image = UIImage(named:"view_2.png")
         popUpViewTop!.addSubview(viewiconImg)
         
-        
         liveiconImg  = UIImageView(frame :  liveiconImgRect)
-        liveiconImg.image = UIImage(named:"live_now_s.png")
+        var imgListArray : [UIImage] = []
+        for countValue in 1...2
+        {
+            
+            let strImageName : String = "live\(countValue).png"
+           // let image  = UIImage(named:strImageName)
+            imgListArray.append(UIImage(named:strImageName)!)
+           // imgListArray.addObject(image!)
+        }
+        liveiconImg.animationImages = imgListArray
+        liveiconImg.animationDuration = 1.0
+        liveiconImg.startAnimating()
         popUpViewTop!.addSubview(liveiconImg)
         
         titletopLbl  = UILabel(frame: titletopLblRect)
         titletopLbl.text = "LIVE"
         titletopLbl.textColor = UIColor.whiteColor()
-        titletopLbl.font = UIFont(name: "Helvetica" , size: 20 )
+        titletopLbl.font = UIFont(name: "Helvetica" , size: fonttitle )
         popUpViewTop!.addSubview(titletopLbl)
         
         
@@ -449,7 +459,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         popUpViewChat!.layer.cornerRadius = 10
         popUpViewChat!.clipsToBounds = true
         popUpView!.addSubview(popUpViewChat!)
-        popUpViewChat!.hidden = true
+        popUpViewChat!.hidden = false
         
         tableView = UITableView(frame: popUpViewChat!.bounds)
         tableView!.delegate = self
@@ -497,9 +507,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         
         changeCamBtn!.setImage(UIImage(named: "ic_flip_camera.png"), forState: .Normal)
         changeCamBtn!.addTarget(self, action: "changeCameraDevice:", forControlEvents: .TouchUpInside)
-        
-        
-        
+
         flashBtn!.setImage(UIImage(named: "ic_flash2.png"), forState: .Normal)
         flashBtn!.addTarget(self, action: "toggleFlash:", forControlEvents: .TouchUpInside)
         
@@ -687,9 +695,9 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         self.popUpViewCen!.addSubview(topCenView!)
         
         
-        //        self.popUpViewBot!.hidden = true
-        self.chatBtn?.hidden = true
-        self.shareLiveBtn?.hidden = true
+       // self.popUpViewBot!.hidden = false;
+       // self.chatBtn?.hidden = true
+       // self.shareLiveBtn?.hidden = true
         //        self.popUpViewTop?.hidden = true
         
         self.popUpView!.addSubview(popUpViewTop!)
@@ -730,50 +738,78 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         if (UIDevice.currentDevice().userInterfaceIdiom == .Pad){
             font = 14*scy
             cellH = 80*scy
+            fonttitle = 16*scy
             popUpViewCenX = UIScreen.mainScreen().bounds.size.height/(1.7*scy)
             popUpViewCenY = UIScreen.mainScreen().bounds.size.width/(1.6*scx)
-            streamViewRect = CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.height, UIScreen.mainScreen().bounds.size.width)
-            popUpViewRect =  CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.height, UIScreen.mainScreen().bounds.size.width)
-            popUpViewTopRect =  CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.height, 40*scx)
-            popUpViewBotRect = CGRectMake(70*scy, UIScreen.mainScreen().bounds.size.width-(150*scx), UIScreen.mainScreen().bounds.size.height-(140*scy), 150*scx)
+            streamViewRect = CGRectMake(0*scx, 0*scy, UIScreen.mainScreen().bounds.size.height, UIScreen.mainScreen().bounds.size.width)
+            popUpViewRect =  CGRectMake(0*scx, 0*scy, UIScreen.mainScreen().bounds.size.height, UIScreen.mainScreen().bounds.size.width)
+            popUpViewTopRect =  CGRectMake(0*scx, 0*scy, streamViewRect.size.width, 40*scy)
             
-            popUpViewRightRect = CGRectMake(streamViewRect.size.width-(100*scx),0*scy,100*scx, streamViewRect.size.height)
-            popUpViewLeftRect = CGRectMake(0*scx,0*scy,100*scx, streamViewRect.size.height)
+            popUpViewBotRect = CGRectMake(0*scx, streamViewRect.size.height - (70*scy), streamViewRect.size.width , 70*scy)
             
-            popUpViewCenRect = CGRectMake(100*scy,popUpViewCenY/2, UIScreen.mainScreen().bounds.size.height-(200*scy),UIScreen.mainScreen().bounds.size.width/2 + (20*scx))
+            popUpViewRightRect = CGRectMake(streamViewRect.size.width - (70*scx),40*scy,70*scx, streamViewRect.size.height - (110*scy))
+            popUpViewLeftRect = CGRectMake(0*scx,40*scy,40*scx, streamViewRect.size.height - (110*scy))
+            popUpViewCenRect = CGRectMake(streamViewRect.size.width/2 - popUpViewCenX, 45*scy , popUpViewCenX*2, streamViewRect.size.height - (120*scy))
+            
+            
             
             sliderRect = CGRectMake(popUpViewLeftRect.width/2-(100*scx),popUpViewLeftRect.height/2-(25*scy),200*scx,50*scy)
-            changeCamBtnRect = CGRectMake(popUpViewRightRect.size.width/2 - (40*scx) ,popUpViewRightRect.size.height-180*scy ,80*scx, 80*scy)
-            flashBtnRect = CGRectMake(popUpViewRightRect.size.width/2 - (40*scx) ,popUpViewRightRect.size.height - (250*scy) ,80*scx, 80*scy)
+            changeCamBtnRect = CGRectMake(popUpViewRightRect.size.width - (65*scx) ,popUpViewRightRect.size.height - (65*scy) ,60*scx, 60*scy)
+            flashBtnRect = CGRectMake(popUpViewRightRect.size.width - (65*scx) , popUpViewRightRect.size.height - (130*scy) ,60*scx, 60*scy)
             
-            closeBtnRect = CGRectMake(popUpViewRightRect.size.width-(40*scx),0*scy ,40*scx, 40*scy)
-            streamButtonRect = CGRectMake(popUpViewRightRect.size.width/2 - (40*scx) ,popUpViewRightRect.size.height - (90*scy) ,80*scx, 80*scy)
-            startStreamBtnRect = CGRectMake(popUpViewRightRect.size.width/2 - (40*scx) ,popUpViewRightRect.size.height - (90*scy) ,80*scx, 80*scy)
+            streamButtonRect = CGRectMake(popUpViewBotRect.size.width - (65*scx) ,5*scy ,60*scx, 60*scy)
+            startStreamBtnRect = CGRectMake(popUpViewBotRect.size.width - (65*scx) ,5*scy,60*scx, 60*scy)
             
             topCenViewRect = CGRectMake(10*scx, 10*scy, popUpViewCenRect.size.width-(20*scx), 40*scy)
-            titleIconImgRect = CGRectMake(10*scx,topCenViewRect.size.height/2-(10*scy),(20*scx), (20*scy))
+            titleIconImgRect = CGRectMake(10*scx,topCenViewRect.size.height/2-(10*scy),20*scx, 20*scy)
             
             titleLblRect = CGRectMake(40*scx,topCenViewRect.size.height/2-(15*scy),50*scx,30*scy)
-            titleTxtRect = CGRectMake(90*scx,topCenViewRect.size.height/2-(15*scy),topCenViewRect.size.width - (90*scx),30*scy)
+            titleTxtRect = CGRectMake(90*scx,topCenViewRect.size.height/2-(15*scy),topCenViewRect.size.width - 90*scx,30*scy)
             selectCatLblRect = CGRectMake(10*scx,60*scy,topCenViewRect.size.width/2,30*scy)
             categoryTxtRect = CGRectMake(topCenViewRect.size.width/2 + (10*scx),60*scy,topCenViewRect.size.width/2,30*scy)
             selectCatBtnRect = CGRectMake(topCenViewRect.size.width - (20*scx),60*scy,30*scx,30*scy)
             qualityLblRect = CGRectMake(10*scx,90*scy,topCenViewRect.size.width/2,30*scy)
-            qualityTxtRect = CGRectMake(topCenViewRect.size.width/2 + (10*scx),90*scy,topCenViewRect.size.width/2,30*scy)
-            selectQualityBtnRect =  CGRectMake(topCenViewRect.size.width - (20*scx),90*scy,30*scx,30*scy)
+            qualityTxtRect = CGRectMake(topCenViewRect.size.width/2+(10*scx),90*scy,topCenViewRect.size.width/2,30*scy)
+            selectQualityBtnRect =  CGRectMake(topCenViewRect.size.width - 20*scx,90*scy,30*scx,30*scy)
             locationPinImgRect = CGRectMake(10*scx,130*scy,30*scx,35*scy)
             locationLblRect = CGRectMake(50*scx,135*scy,topCenViewRect.size.width - (50*scx),30*scy)
-            detailLiveLblRect = CGRectMake(0*scx,popUpViewCenRect.size.height - (30*scy),popUpViewCenRect.size.width-(popUpViewCenRect.size.width/3),30*scy)
-            timeDetailRect = CGRectMake(popUpViewCenRect.size.width-(popUpViewCenRect.size.width/3),popUpViewCenRect.size.height - (30*scy),popUpViewCenRect.size.width-(popUpViewCenRect.size.width/3),30*scy)
-            categoryPickerViewRect = CGRectMake(topCenViewRect.size.width/2 + (10*scx),80*scy,topCenViewRect.size.width/2,100*scy)
+            detailLiveLblRect = CGRectMake(0*scx,popUpViewCenRect.size.height-(30*scy),popUpViewCenRect.size.width-(popUpViewCenRect.size.width/3),30*scy)
+            timeDetailRect = CGRectMake(popUpViewCenRect.size.width-(popUpViewCenRect.size.width/3),popUpViewCenRect.size.height-(30*scy),popUpViewCenRect.size.width-(popUpViewCenRect.size.width/3),30*scy)
+            categoryPickerViewRect = CGRectMake(topCenViewRect.size.width/2+(10*scx),80*scy,topCenViewRect.size.width/2,100*scy)
             qualityPickerViewRect = CGRectMake(topCenViewRect.size.width/2 + (10*scx),120*scy,topCenViewRect.size.width/2,100*scy)
             shareBtnRect = CGRectMake(UIScreen.mainScreen().bounds.size.height/2-popUpViewCenX/2,0*scy,50*scx,50*scy)
             
-            popUpViewChatRect = CGRectMake(45, 45 , streamViewRect.size.width/2 - 30 , streamViewRect.size.height - 120);
+            imgUserChatRect = CGRectMake(2*scx, 2*scy, 40*scx , 40*scy)
+            lblUserNameRect = CGRectMake((imgUserChatRect.size.width + imgUserChatRect.origin.x) + (2*scx), 2*scy, 70*scx , 30*scy)
+            lblTextChatRect = CGRectMake(lblUserNameRect.origin.x + lblUserNameRect.size.width + (2*scx) , 2*scy, popUpViewBotRect.size.width - (150*scx), 30*scy)
+            
+            popUpViewChatRect = CGRectMake(45*scx, 60*scy , streamViewRect.size.width/2 - (30*scx), streamViewRect.size.height - (150*scy));
+            
+            // top rect
+            closeBtnRect = CGRectMake(popUpViewTopRect.size.width - (35*scx) ,5*scy,30*scx, 30*scy)
+            locateLblRect = CGRectMake(popUpViewTopRect.size.width - (100*scx) , popUpViewTopRect.size.height/2 - (15*scy) , 60*scx ,30*scy)
+            locateImgRect = CGRectMake(popUpViewTopRect.size.width - (120*scx) , popUpViewTopRect.size.height/2 - (10*scy) , 20*scx , 20*scy)
+            lovecountLblRect = CGRectMake(popUpViewTopRect.size.width - (160*scx) , popUpViewTopRect.size.height/2 - (15*scy) , 40*scx ,30*scy)
+            loveiconImgRect = CGRectMake(popUpViewTopRect.size.width - (180*scx) , popUpViewTopRect.size.height/2 - (10*scy) , 20*scx , 20*scy)
+            viewcountLblRect = CGRectMake(popUpViewTopRect.size.width - (220*scx) , popUpViewTopRect.size.height/2 - (15*scy) , 40*scx ,30*scy)
+            viewiconImgRect = CGRectMake(popUpViewTopRect.size.width - (245*scx), popUpViewTopRect.size.height/2 - (10*scy), 20*scx , 20*scy)
+            titletopLblRect = CGRectMake( 40*scx , popUpViewTopRect.size.height/2 - (15*scy) , popUpViewTopRect.size.width/2 - 40*scx , 30*scy)
+            liveiconImgRect = CGRectMake(5*scx, popUpViewTopRect.size.height/2 - (15*scy) , 30*scx , 30*scy)
+            
+            // view bottom
+            chatBtnRect = CGRectMake(50*scx , popUpViewBotRect.size.height/2 - (20*scy) , 40*scx , 40*scy)
+            shareLiveBtnRect = CGRectMake(105*scx , popUpViewBotRect.size.height/2 - (20*scy) , 40*scx , 40*scy)
+            shareListViewRect = CGRectMake(150*scx , popUpViewBotRect.size.height/2 - (30*scy) , popUpViewBotRect.size.width - 250*scx , 60*scy)
+            facebookBtnRect = CGRectMake(10*scx , shareListViewRect.size.height/2 - (20*scy) , 40*scx ,40*scy )
+            googleBtnRect = CGRectMake(55*scx,shareListViewRect.size.height/2 - (20*scy) ,40*scx,40*scy)
+            tweeterBtnRect = CGRectMake(100*scx,shareListViewRect.size.height/2 - (20*scy) ,40*scx,40*scy)
+            linekBtnRect = CGRectMake(145*scx,shareListViewRect.size.height/2 - (20*scy) ,40*scx,40*scy)
+            copyLinkBtnRect = CGRectMake(190*scx,shareListViewRect.size.height/2 - (20*scy) ,40*scx,40*scy)
         }
         else{
             font = 14
             cellH = 45
+            fonttitle = 16
             popUpViewCenX = UIScreen.mainScreen().bounds.size.height/1.7
             popUpViewCenY = UIScreen.mainScreen().bounds.size.width/1.6
             streamViewRect = CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.height, UIScreen.mainScreen().bounds.size.width)
@@ -981,7 +1017,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     }
     func startChat( sender : UIButton) {
         
-        //        popUpViewChat!.hidden = false
+//        popUpViewChat!.hidden = false
         
         print("IS CHAT ::: \(appDelegate.isChat)")
         
@@ -996,7 +1032,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             
         }
         
-        popUpViewChat?.reloadInputViews()
+        popUpViewChat!.reloadInputViews()
         //appDelegate.isChat = false
         
         //   print("IS CHAT ::: \(appDelegate.isChat)")

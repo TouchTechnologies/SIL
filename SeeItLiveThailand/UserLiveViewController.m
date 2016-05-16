@@ -196,7 +196,8 @@
 }
 
 - (KKGridViewCell *)gridView:(KKGridView *)gridView cellForItemAtIndexPath:(KKIndexPath *)indexPath
-{
+{AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
     CGFloat scy = (1024.0/480.0);
     CGFloat scx = (768.0/360.0);
     CGFloat cellH ;
@@ -211,14 +212,13 @@
         
     }
     
-    //    gridView.contentSize = CGSizeMake(gridView.bounds.size.width/2 - 20 ,500);
-    Streaming *stream = [self.streamList objectAtIndex:[indexPath index]];
     
+    Streaming *stream = [self.streamList objectAtIndex:[indexPath index]];
     if(stream.avatarUrl != nil) {
         NSLog(@"%@",stream.avatarUrl);
     }
     
-    
+   // Avatar = [NSString stringWithFormat:@"%@",stream.avatarUrl];
     
     UITapGestureRecognizer *tapGestureRec = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cellViewClick:)];
     tapGestureRec.numberOfTapsRequired = 1;
@@ -244,55 +244,55 @@
         //format.allowUpscaling = YES;
         
     }
-    
     cell.imgSnapshot.hnk_cacheFormat = format;
+    
     NSURL *url = [NSURL URLWithString:stream.snapshot];
     [cell.imgSnapshot hnk_setImageFromURL:url placeholder:imgPH];
+    
+    //    NSLog(@"Screen : %@",url);
     [cell generateWarterMark];
-    NSLog(@"SnapshotURL : %@",stream.snapshot);
     
     //cell.imgSnapshot.image = imgPH;
     //cell.lblPlace.text = [_fillerData objectAtIndex:[indexPath index]];
     cell.lblPlace.text = stream.streamTitle;
-    //cell.lblCreateBy.text = stream.createBy;
     cell.lblCreateBy.text = stream.createBy;
     cell.lblViewCount.text = stream.streamTotalView;
     cell.lblLoveCount.text = [NSString stringWithFormat:@"%ld",(long)stream.lovesCount];
     
     
     NSLog(@"isLove : %d",stream.isLoved);
-    if (stream.isLoved  ) {
+    if (stream.isLoved) {
         UIImageView *img = [[UIImageView alloc] initWithFrame:cell.btnLoveicon.bounds];
         img.image = [UIImage imageNamed:@"ic_love2.png"];
         [cell.btnLoveicon addSubview:img];
-        //        [cell.contentView addSubview:cell.btnLoveicon];
+        //   [cell.contentView addSubview:cell.btnLoveicon];
     }else
     {
         UIImageView *img = [[UIImageView alloc] initWithFrame:cell.btnLoveicon.bounds];
         img.image = [UIImage imageNamed:@"ic_love.png"];
         [cell.btnLoveicon addSubview:img];
-        //        [cell.contentView addSubview:cell.btnLoveicon];
+        //     [cell.contentView addSubview:cell.btnLoveicon];
         
     }
-    
-    
-    //    cell.backgroundColor = [UIColor redColor];
+    //    [cell.editLivestream addTarget:self action:@selector(editMyStream:) forControlEvents:UIControlEventTouchUpInside];
+    //    cell.editLivestream.tag = [indexPath index];
     [cell addGestureRecognizer:tapGestureRec];
     
     
-    UITapGestureRecognizer* goProfile = [[UITapGestureRecognizer alloc]
-                                         initWithTarget:self action:@selector(goProfile:)];
-    //Here should be actionViewTap:
+    UITapGestureRecognizer* TapGestureRecognizer = [[UITapGestureRecognizer alloc]
+                                                    initWithTarget:self action:@selector(editMyStream:)];//Here should be actionViewTap:
     
-    [goProfile setNumberOfTouchesRequired:1];
-    [goProfile setDelegate:self];
-    cell.lblCreateBy.userInteractionEnabled = YES;
-    cell.lblCreateBy.tag = [indexPath index];
-    [cell.lblCreateBy addGestureRecognizer:goProfile];
-    goProfile.enabled = YES;
+    [TapGestureRecognizer setNumberOfTouchesRequired:1];
+    [TapGestureRecognizer setDelegate:self];
+    cell.editLivestream.userInteractionEnabled = YES;
+    cell.editLivestream.tag = [indexPath index];
+    cell.editLivestream.hidden = true;
+    [cell.editLivestream addGestureRecognizer:TapGestureRecognizer];
+    
     
     UITapGestureRecognizer* TapShare = [[UITapGestureRecognizer alloc]
                                         initWithTarget:self action:@selector(shareMyStream:)];//Here should be actionViewTap:
+    
     [TapShare setNumberOfTouchesRequired:1];
     [TapShare setDelegate:self];
     cell.shareLivestream.userInteractionEnabled = YES;
@@ -306,26 +306,39 @@
     [TapLove setDelegate:self];
     cell.btnLoveicon.userInteractionEnabled = YES;
     cell.btnLoveicon.tag = [indexPath index];
-    [cell.btnLoveicon addGestureRecognizer:TapLove];
+    //    [cell.btnLoveicon addGestureRecognizer:TapLove];
     TapLove.enabled = YES;
+    UITapGestureRecognizer* TapLogin = [[UITapGestureRecognizer alloc]
+                                        initWithTarget:self action:@selector(login:)];
+    [TapLogin setNumberOfTouchesRequired:1];
+    [TapLogin setDelegate:self];
+    if (appDelegate.isLogin) {
+        [ cell.btnLoveicon addGestureRecognizer:TapLove];
+        TapLove.enabled = YES;
+        TapLogin.enabled = NO;
+    }
+    else{
+        TapLove.enabled = NO;
+        TapLogin.enabled = YES;
+        [cell.btnLoveicon addGestureRecognizer:TapLogin];
+        
+    }
     
     
     
+    UITapGestureRecognizer* TapComment = [[UITapGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(commentStream:)];//Here should be actionViewTap:
+    [TapComment setNumberOfTouchesRequired:1];
+    [TapComment setDelegate:self];
+    cell.commentLivebtn.userInteractionEnabled = YES;
+    cell.commentLivebtn.tag = [indexPath index];
+    [cell.commentLivebtn addGestureRecognizer:TapComment];
+    TapComment.enabled = YES;
+    //
+    //    [cell.editLivestream  setUserInteractionEnabled:YES];
+    //    [cell.editLivestream  addGestureRecognizer:TapGestureRecognizer];
     
     return cell;
-}
-
-- (void)goProfile:(id)sender
-{
-    UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)sender;
-    NSLog (@"Tag %ld",[tapRecognizer.view tag]);
-    UserTag = [tapRecognizer.view tag];
-    
-   // StreamingCell *cell = (StreamingCell *)tapRecognizer.view;
-    
-//    UserProfileViewController *userprofile = [self.storyboard instantiateViewControllerWithIdentifier:@"userprofile"];
-//    
-//    [self.view.window.rootViewController presentViewController:userprofile animated:YES completion:nil];
 }
 - (void)cellViewClick:(UITapGestureRecognizer *)tapGR {
     
@@ -343,10 +356,24 @@
     //    streamingDetail.streamingID =
     streamingDetail.streamingType = @"mylivestream";
     
-    [self.view.window.rootViewController presentViewController:streamingDetail animated:YES completion:nil];
+   // [self.view.window.rootViewController presentViewController:streamingDetail animated:YES completion:nil];
     
+    [self presentViewController:streamingDetail animated:YES completion:nil];
+
     
+}
+
+- (void)goProfile:(id)sender
+{
+    UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)sender;
+    NSLog (@"Tag %ld",[tapRecognizer.view tag]);
+    UserTag = [tapRecognizer.view tag];
     
+   // StreamingCell *cell = (StreamingCell *)tapRecognizer.view;
+    
+//    UserProfileViewController *userprofile = [self.storyboard instantiateViewControllerWithIdentifier:@"userprofile"];
+//    
+//    [self.view.window.rootViewController presentViewController:userprofile animated:YES completion:nil];
 }
 
 
@@ -438,6 +465,7 @@
     
     
 }
+
 /*
 #pragma mark - Navigation
 

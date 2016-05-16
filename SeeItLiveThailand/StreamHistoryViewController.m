@@ -781,6 +781,7 @@
     NSLog(@"Stream history Notiname : %@",[refreshName name]);
     if ([[refreshName name] isEqualToString:@"refresh"])
     {
+       
         [self viewDidLoad];
         [self.gridView reloadContentSize];
         [self dismissViewControllerAnimated:YES completion:nil];

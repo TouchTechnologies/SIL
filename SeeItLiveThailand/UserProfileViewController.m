@@ -11,10 +11,15 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UserData.h"
 #import "UserManager.h"
+#import "ADPageControl.h"
+#import "DetailProfileViewController.h"
+#import "UserLiveViewController.h"
 
-@interface UserProfileViewController ()
+@interface UserProfileViewController ()<ADPageControlDelegate>
+
 {
-    
+    ADPageControl *_pageControl;
+    BOOL isLazy;
     UIImageView *imgProfile ;
     CGFloat imgW;
     CGFloat cgGrap;
@@ -44,7 +49,13 @@
     UserData *userData;
    // UIView *secondView;
     //IBOutlet UIView *secondView;
+    CGFloat fontSize;
+    CGFloat titleHeight;
+    CGFloat titleWidth;
+    CGFloat indicatorHeight;
+    CGFloat indicatorWidth;
     
+    CGRect pageControlRect;
 }
 
 
@@ -57,8 +68,12 @@
         [super viewDidLoad];
         [self initialSize];
         [self initial];
-    
-
+        [self setupPageControl];
+//    
+//        [[NSNotificationCenter defaultCenter] addObserver:self
+//                                                  selector:@selector(refreshList:)
+//                                                     name:@"refresh"
+//                                                   object:nil];
      // Do any additional setup after loading the view.
 }
 -(void)initialSize{
@@ -69,6 +84,11 @@
     
        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         
+           
+           fontSize = 16.0 * scx;
+           titleHeight = 45.0 * scy;
+           titleWidth = [UIScreen mainScreen].bounds.size.width/2 * scx;
+           indicatorHeight = 5.0 * scy;
         statusbarH = [UIApplication sharedApplication].statusBarFrame.size.height;
         imgW = 100*scx ;
         cgGrap = 10*scx ;
@@ -90,12 +110,18 @@
         containerViewRect =CGRectMake(0, (headerViewRect.origin.y + headerViewRect.size.height)*scy, self.view.bounds.size.width ,  self.view.bounds.size.height - (headerViewRect.origin.y + headerViewRect.size.height));
     }
     else{
+        
+        fontSize = 16.0;
+        titleHeight = 45.0;
+        titleWidth = [UIScreen mainScreen].bounds.size.width/2;
+        indicatorHeight = 5.0;
+
          statusbarH = [UIApplication sharedApplication].statusBarFrame.size.height;
         font = 14;
         imgW = 100;
         cgGrap = 10 ;
         headerViewRect = CGRectMake(0, self.navigationController.navigationBar.bounds.size.height+statusbarH, self.view.frame.size.width, 160);
-        userNameRect = CGRectMake(ScreenW/2, headerViewRect.size.height/2 - imgW/2,self.view.frame.size.width - (cgGrap*2)+imgW, 30);
+        userNameRect = CGRectMake(ScreenW/2, headerViewRect.size.height/2 - imgW/2,self.view.frame.size.width/2, 30);
       
         imgProfileRect = CGRectMake(ScreenW/4 - (imgW/2 + 10), headerViewRect.size.height/2 - imgW/2, imgW, imgW);
         followerLblRect = CGRectMake(ScreenW/2,  headerViewRect.size.height/2 - 30 , ScreenW/2, 30);
@@ -115,7 +141,7 @@
     
     
     headerView = [[UIView alloc] initWithFrame:headerViewRect];
-    headerView.backgroundColor = [UIColor whiteColor];
+    headerView.backgroundColor = [UIColor greenColor];
     [self.view addSubview:headerView];
     
     imgProfile = [[UIImageView alloc] initWithFrame:imgProfileRect];
@@ -197,9 +223,155 @@
     [headerView addSubview:FollowBtn];
     
     
-      containerView = [[UIView alloc] init];
-     [containerView setFrame:containerViewRect];
+    //  containerView = [[UIView alloc] init];
+    // [containerView setFrame:containerViewRect];
 
+}
+-(void)setupPageControl
+{
+    
+    /**** 1. Setup pages using model class "ADPageModel" ****/
+    
+    //Live
+    ADPageModel *liveModel = [[ADPageModel alloc] init];
+    liveModel.strPageTitle = @" Live History   ";
+    liveModel.iPageNumber = 0;
+    liveModel.bShouldLazyLoad = YES;
+    
+    //StreamHistoryViewController *streamHistory = [self.storyboard instantiateViewControllerWithIdentifier:@"StreamHistory"];
+    
+    ADPageModel *profileModel = [[ADPageModel alloc] init];
+    profileModel.strPageTitle = @"   Profile   ";
+    profileModel.iPageNumber = 1;
+    //historyModel.viewController = streamHistory;
+    profileModel.bShouldLazyLoad = YES;
+    
+    
+    /**** 2. Initialize page control ****/
+    
+    _pageControl = [[ADPageControl alloc] init];
+    _pageControl.delegateADPageControl = self;
+    _pageControl.arrPageModel = [[NSMutableArray alloc] initWithObjects:liveModel,profileModel,nil];
+    
+    _pageControl.iFirstVisiblePageNumber = 0;
+    
+    _pageControl.iTitleViewHeight = titleHeight;
+    _pageControl.iPageIndicatorHeight = indicatorHeight;
+    _pageControl.fontTitleTabText =  [UIFont fontWithName:@"Helvetica" size:fontSize];
+    _pageControl.iTitleViewWidth = [UIScreen mainScreen].bounds.size.width;
+    _pageControl.bEnablePagesEndBounceEffect = NO;
+    _pageControl.bEnableTitlesEndBounceEffect = NO;
+    
+    _pageControl.colorTabText = [UIColor blackColor]; //orangeColor
+    _pageControl.colorTitleBarBackground = [UIColor whiteColor];
+    _pageControl.colorPageIndicator = [UIColor colorWithRed:0.071 green:0.459 blue:0.714 alpha:1]; //[UIColor orangeColor]; //blueColor
+    _pageControl.colorPageOverscrollBackground = [UIColor whiteColor];
+    
+    _pageControl.bShowMoreTabAvailableIndicator = NO;
+    // _pageControl.iTitleViewWidth = indicatorWidth;
+    
+    
+    /**** 3. Add as subview ****/
+    
+    _pageControl.view.frame = CGRectMake(0, headerView.bounds.origin.y + headerView.bounds.size.height + titleHeight + 20, self.view.bounds.size.width, self.view.bounds.size.height-(headerView.bounds.origin.y + headerView.bounds.size.height + titleHeight + 20) );
+    [self.view addSubview:_pageControl.view];
+    
+    
+    //flag lazy load
+    isLazy = FALSE;
+}
+
+#pragma mark - ADPageControlDelegate
+
+//LAZY LOADING
+
+-(UIViewController *)adPageControlGetViewControllerForPageModel:(ADPageModel *) pageModel
+{
+    NSLog(@"ADPageControl :: Lazy load asking for page %d",pageModel.iPageNumber);
+    
+    if(pageModel.iPageNumber == 0)
+    {
+        
+        /////////////////////////////////////////////////////////////////
+        // The UA-XXXXX-Y tracker ID is loaded automatically from the
+        // GoogleService-Info.plist by the `GGLContext` in the AppDelegate.
+        // If you're copying this to an app just using Analytics, you'll
+        // need to configure your tracking ID here.
+        // [START screen_view_hit_objc]
+        //        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+        //        NSString *name = [NSString stringWithFormat:@"LiveStream_MyLive"];
+        //        NSLog(@"analytics %@",name);
+        //        NSString *dimensionValue = @"iOS";
+        //        NSString *metricValue = @"iOS_METRIC_VALUE";
+        //        [tracker set:[GAIFields customDimensionForIndex:1] value:dimensionValue];
+        //        [tracker set:[GAIFields customMetricForIndex:1] value:metricValue];
+        //        [tracker set:kGAIScreenName value:name];
+        //        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+        // [END screen_view_hit_objc]
+        //////////////////////////////////////////////////////////////////
+        
+        UserLiveViewController *userStream = [self.storyboard instantiateViewControllerWithIdentifier:@"userlive"];
+        isLazy = TRUE;
+        return userStream;
+    }
+    else if(pageModel.iPageNumber == 1)
+    {
+        
+        /////////////////////////////////////////////////////////////////
+        // The UA-XXXXX-Y tracker ID is loaded automatically from the
+        // GoogleService-Info.plist by the `GGLContext` in the AppDelegate.
+        // If you're copying this to an app just using Analytics, you'll
+        // need to configure your tracking ID here.
+        //        // [START screen_view_hit_objc]
+        //        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+        //        NSString *name = [NSString stringWithFormat:@"User_Profile"];
+        //        NSLog(@"analytics %@",name);
+        //        NSString *dimensionValue = @"iOS";
+        //        NSString *metricValue = @"iOS_METRIC_VALUE";
+        //        [tracker set:[GAIFields customDimensionForIndex:1] value:dimensionValue];
+        //        [tracker set:[GAIFields customMetricForIndex:1] value:metricValue];
+        //        [tracker set:kGAIScreenName value:name];
+        //        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+        // [END screen_view_hit_objc]
+        //////////////////////////////////////////////////////////////////
+        
+        DetailProfileViewController *useraccount = [self.storyboard instantiateViewControllerWithIdentifier:@"detailprofile"];
+        isLazy = TRUE;
+        return useraccount;
+    }
+    return nil;
+}
+
+
+//CURRENT PAGE INDEX
+
+-(void)adPageControlCurrentVisiblePageIndex:(int) iCurrentVisiblePage
+{
+    NSLog(@"ADPageControl :: Current visible page index : %d",iCurrentVisiblePage);
+    
+    if (isLazy == FALSE) {
+        ADPageModel *pageModel = [_pageControl.arrPageModel objectAtIndex:iCurrentVisiblePage];
+        
+        if ([pageModel.viewController isKindOfClass:[UserLiveViewController class]]) {
+            //NSLog(@"live live");
+            UserLiveViewController *streamLive = (UserLiveViewController *)pageModel.viewController;
+            [streamLive viewDidLoad];
+            
+        }
+        else if([pageModel.viewController isKindOfClass:[DetailProfileViewController class]])
+        {
+            //NSLog(@"his tory");
+            DetailProfileViewController *useraccount = (DetailProfileViewController *)pageModel.viewController;
+            [useraccount viewDidLoad];
+        }
+        
+    }
+    
+    isLazy = FALSE;
+    
+    
+    //UIViewController *controller = [_pageControl.arrPageModel objectAtIndex:iCurrentVisiblePage];
+    //[controller viewDidLoad];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -220,7 +392,9 @@
 - (IBAction)backBarbtn:(id)sender {
 //   AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     [self dismissViewControllerAnimated:YES completion:nil];
-    
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"refresh"
+     object:nil];
 //    NSLog(@"pagename ::: %@",appDelegate.pageName);
 //   appDelegate.pageName = @"MyStream";
 //    [[NSNotificationCenter defaultCenter]
@@ -277,5 +451,23 @@
 
     
 }
-
+- (void) refreshList:(NSNotification *) refreshName
+{
+    // [notification name] should always be @"TestNotification"
+    // unless you use this method for observation of other notifications
+    // as well.
+    NSLog(@"ADView Notiname: %@",[refreshName name]);
+//    if ([[refreshName name] isEqualToString:@"update"])
+//    {
+//        NSLog (@"Update successfully");
+//    }else
+    if ([[refreshName name] isEqualToString:@"refresh"])
+    {
+        [self viewDidLoad];
+        [self dismissViewControllerAnimated:YES completion:nil];
+        //        [self viewDidLoad];
+        NSLog (@"Reload successfully");
+    }
+    
+}
 @end

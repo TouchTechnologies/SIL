@@ -80,7 +80,7 @@
     
     //Live
     ADPageModel *liveModel = [[ADPageModel alloc] init];
-    liveModel.strPageTitle = @"   Live History   ";
+    liveModel.strPageTitle = @" Live History   ";
     liveModel.iPageNumber = 0;
     liveModel.bShouldLazyLoad = YES;
     
@@ -224,16 +224,14 @@
     // [notification name] should always be @"TestNotification"
     // unless you use this method for observation of other notifications
     // as well.
-//    NSLog(@"Notiname : %@",[refreshName name]);
-//    if ([[refreshName name] isEqualToString:@"update"])
-//    {
-//        NSLog (@"Update successfully");
-//    }else if ([[refreshName name] isEqualToString:@"refresh"])
-//    {
-//        [self dismissViewControllerAnimated:YES completion:nil];
-//        //        [self viewDidLoad];
-//        NSLog (@"Reload successfully");
-//    }
+    NSLog(@"Stream history Notiname : %@",[refreshName name]);
+    if ([[refreshName name] isEqualToString:@"refresh"])
+    {
+        [self viewDidLoad];
+        // [self.gridView reloadContentSize];
+        [self dismissViewControllerAnimated:YES completion:nil];
+        NSLog (@"Reload successfully");
+    }
     
 }
 
