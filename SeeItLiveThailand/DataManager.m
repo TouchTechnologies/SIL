@@ -277,6 +277,13 @@ static DataManager *staticManager = nil;
         [self downloadMyStreamingDetailForRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:StreamingHistoryURL]]];
     }
 }
+- (void)getStreamingWithCompletionBlockByCatgoryID:(StreamingCompletionBlock)block :(int)catID{
+    if (block) {
+        self.streamingBlock = block;
+        NSLog(@"StreamingHistoryURLByCatgory : %@",[StreamingHistoryURLByCatgory stringByAppendingFormat:@"%d",catID]);
+        [self downloadStreamingDetailForRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[StreamingHistoryURLByCatgory stringByAppendingFormat:@"%d",catID]]]];
+    }
+}
 
 - (void)downloadStreamingDetailForRequest:(NSURLRequest *)request {
     __weak DataManager *weakSelf = self;
@@ -289,7 +296,8 @@ static DataManager *staticManager = nil;
     [manager.requestSerializer setValue:appDelegate.access_token forHTTPHeaderField:@"X-TIT-ACCESS-TOKEN"];
     
     NSDictionary * param = @{};
-    [manager GET:StreamingHistoryURL parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
+    NSLog(@"request : %@",request.URL);
+    [manager GET:[request.URL absoluteString] parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
         
         NSLog(@"downloadStreamingDetailForRequestData : %@",responseObject);
         

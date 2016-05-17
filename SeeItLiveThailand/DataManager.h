@@ -19,6 +19,7 @@ typedef void (^StreamingLiveCompletionBlock)(BOOL success,NSArray *streamRecords
 - (void)getCCTVwithCompletionBlock:(ROICompletionBlock)block;
 - (void)getCCTVwithCompletionBlockDatabase:(ROICompletionBlock)block;
 - (void)getStreamingWithCompletionBlock:(StreamingCompletionBlock)block;
+- (void)getStreamingWithCompletionBlockByCatgoryID:(StreamingCompletionBlock)block :(int)catID;
 - (void)getMyStreamingWithCompletionBlock:(StreamingCompletionBlock)block;
 - (void)getStreamingLiveWithCompletionBlock:(StreamingCompletionBlock)block;
 - (NSMutableArray *)getData;

@@ -40,7 +40,7 @@
 #import <Google/Analytics.h>
 #import "SVWebViewController.h"
 #import "AppDelegate.h"
-#import "SVPullToRefresh.h"
+//#import "SVPullToRefresh.h"
 
 #define SCALING_Y (1024.0/480.0);
 #define SCALING_X (768.0/360.0);
@@ -134,7 +134,7 @@
     [self checkPromotion];
 }
 - (void)viewDidAppear:(BOOL)animated {
-    [_tblViewVideo triggerPullToRefresh];
+//    [_tblViewVideo triggerPullToRefresh];
 }
 #pragma mark - Actions
 
@@ -156,7 +156,7 @@
         //        [weakSelf.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];
 //        [_tblViewVideo endUpdates];
 //        [_tblViewVideo reloadData];
-        [_tblViewVideo.pullToRefreshView stopAnimating];
+//        [_tblViewVideo.pullToRefreshView stopAnimating];
         
     });
 }
@@ -173,7 +173,7 @@
         //        [weakSelf.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:weakSelf.dataSource.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
 //        [_tblViewVideo endUpdates];
 //        [_tblViewVideo reloadData];
-        [_tblViewVideo.infiniteScrollingView stopAnimating];
+//        [_tblViewVideo.infiniteScrollingView stopAnimating];
     });
 }
 - (void)viewDidLoad {
@@ -194,14 +194,14 @@
     _tblViewVideo.delegate = self;
     __weak VideoPagingViewController *weakSelf = self;
     
-    [_tblViewVideo addPullToRefreshWithActionHandler:^{
-        [weakSelf insertRowAtTop];
-    }];
+//    [_tblViewVideo addPullToRefreshWithActionHandler:^{
+//        [weakSelf insertRowAtTop];
+//    }];
     
     // setup infinite scrolling
-    [_tblViewVideo addInfiniteScrollingWithActionHandler:^{
-        [weakSelf insertRowAtBottom];
-    }];
+//    [_tblViewVideo addInfiniteScrollingWithActionHandler:^{
+//        [weakSelf insertRowAtBottom];
+//    }];
     [_intro setDelegate:self];
     
     

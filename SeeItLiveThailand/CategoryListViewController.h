@@ -16,6 +16,7 @@
 //@property (strong, nonatomic) REDPuzzleGridView *puzzleGridView;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) KKGridView *gridView;
+@property (nonatomic, assign) int catID;
 
 
 

@@ -111,12 +111,12 @@
     
     
     
-    UIWindow *tempWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
-    hud = [[MBProgressHUD alloc] initWithWindow:tempWindow];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Loading...";
-    [tempWindow addSubview:hud];
-    [hud show:YES];
+//    UIWindow *tempWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
+//    hud = [[MBProgressHUD alloc] initWithWindow:tempWindow];
+//    hud.mode = MBProgressHUDModeIndeterminate;
+//    hud.labelText = @"Loading...";
+//    [tempWindow addSubview:hud];
+//    [hud show:YES];
     
     [self.gridView removeFromSuperview];
     
@@ -141,33 +141,51 @@
     __weak CategoryListViewController *weakSelf = self;
     
     
-    [[DataManager shareManager] getStreamingWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
-        
-        
-        [hud hide:YES];
-        if (success) {
-            weakSelf.streamList = streamRecords;
-            NSLog(@"STREAMLIST COUNT :::: %ld", weakSelf.streamList.count);
-           
-            
-            
-        } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
-            /*
-             CGFloat xLbl = (weakSelf.view.bounds.size.width / 2) - 100;
-             UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(xLbl, 20, 200, 25)];
-             lblTitle.text = NotConnect;
-             lblTitle.textAlignment = NSTextAlignmentCenter;
-             [weakSelf.view addSubview:lblTitle];
-             */
-            //NSLog(@"%@",error);
-        }
-        
-        
-        
-        [weakSelf.gridView reloadData];
-    }];
+//    [[DataManager shareManager] getStreamingWithCompletionBlockByCatgoryID:^(BOOL success, NSArray *streamRecords, NSError *error) {
+//        [hud hide:YES];
+//        if (success) {
+//            weakSelf.streamList = streamRecords;
+//            NSLog(@"STREAMLIST COUNT :::: %ld", weakSelf.streamList.count);
+//            
+//            
+//            
+//        } else {
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//            [alert show];
+//        }
+//        
+//        
+//        
+//        [weakSelf.gridView reloadData];
+//    } :self.catID];
+    
+//    [[DataManager shareManager] getStreamingWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
+//        
+//        
+//        [hud hide:YES];
+//        if (success) {
+//            weakSelf.streamList = streamRecords;
+//            NSLog(@"STREAMLIST COUNT :::: %ld", weakSelf.streamList.count);
+//           
+//            
+//            
+//        } else {
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//            [alert show];
+//            /*
+//             CGFloat xLbl = (weakSelf.view.bounds.size.width / 2) - 100;
+//             UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(xLbl, 20, 200, 25)];
+//             lblTitle.text = NotConnect;
+//             lblTitle.textAlignment = NSTextAlignmentCenter;
+//             [weakSelf.view addSubview:lblTitle];
+//             */
+//            //NSLog(@"%@",error);
+//        }
+//        
+//        
+//        
+//        [weakSelf.gridView reloadData];
+//    }];
     
 
 
@@ -340,35 +358,35 @@
     
     NSLog(@"ADPageControl :: Lazy load asking for page %d",pageModel.iPageNumber);
     
-    if(pageModel.iPageNumber == 0)
-    {
-        
-        [_gridView reloadData];
-    }
-    else if(pageModel.iPageNumber == 1)
-    {
-        [_gridView reloadData];
-    }
-    else if(pageModel.iPageNumber == 2)
-    {
-        [_gridView reloadData];
-    }
-    else if(pageModel.iPageNumber == 3)
-    {
-        [_gridView reloadData];
-    }
-    else if(pageModel.iPageNumber == 4)
-    {
-        [_gridView reloadData];
-    }
-    else if(pageModel.iPageNumber == 5)
-    {
-        [_gridView reloadData];
-    }
-    else if(pageModel.iPageNumber == 6)
-    {
-        [_gridView reloadData];
-    }
+//    if(pageModel.iPageNumber == 0)
+//    {
+//        
+//        [_gridView reloadData];
+//    }
+//    else if(pageModel.iPageNumber == 1)
+//    {
+//        [_gridView reloadData];
+//    }
+//    else if(pageModel.iPageNumber == 2)
+//    {
+//        [_gridView reloadData];
+//    }
+//    else if(pageModel.iPageNumber == 3)
+//    {
+//        [_gridView reloadData];
+//    }
+//    else if(pageModel.iPageNumber == 4)
+//    {
+//        [_gridView reloadData];
+//    }
+//    else if(pageModel.iPageNumber == 5)
+//    {
+//        [_gridView reloadData];
+//    }
+//    else if(pageModel.iPageNumber == 6)
+//    {
+//        [_gridView reloadData];
+//    }
     return nil;
 }
 
@@ -377,6 +395,81 @@
 -(void)adPageControlCurrentVisiblePageIndex:(int) iCurrentVisiblePage
 {
     NSLog(@"ADPageControl :: Current visible page index : %d",iCurrentVisiblePage);
+    
+    __weak CategoryListViewController *weakSelf = self;
+    weakSelf.streamList = [[NSArray alloc]init];
+    
+    
+    [[DataManager shareManager] getStreamingWithCompletionBlockByCatgoryID:^(BOOL success, NSArray *streamRecords, NSError *error) {
+        //                [hud hide:YES];
+        if (success) {
+            weakSelf.streamList = streamRecords;
+            NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
+            
+            
+            
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        
+        
+        
+        [weakSelf.gridView reloadData];
+    } :[appDelegate.categoryData[iCurrentVisiblePage][@"id"] integerValue]];
+//    NSLog(@"screenName : %@",appDelegate.categoryData[iCurrentVisiblePage][@"category_name_en"]);
+    
+//    switch (iCurrentVisiblePage) {
+//        case 0:
+//        {
+//            NSLog(@"case 0");
+//            [[DataManager shareManager] getStreamingWithCompletionBlockByCatgoryID:^(BOOL success, NSArray *streamRecords, NSError *error) {
+////                [hud hide:YES];
+//                if (success) {
+//                    weakSelf.streamList = streamRecords;
+//                    NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
+//                    
+//                    
+//                    
+//                } else {
+//                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//                    [alert show];
+//                }
+//                
+//                
+//                
+//                [weakSelf.gridView reloadData];
+//            } :[appDelegate.categoryData[iCurrentVisiblePage][@"id"] integerValue]];
+//            NSLog(@"screenName : %@",appDelegate.categoryData[iCurrentVisiblePage][@"category_name_en"]);
+//        }
+//            break;
+//        case 1:
+//        {
+//            NSLog(@"case 1");
+//            [[DataManager shareManager] getStreamingWithCompletionBlockByCatgoryID:^(BOOL success, NSArray *streamRecords, NSError *error) {
+//                [hud hide:YES];
+//                if (success) {
+//                    weakSelf.streamList = streamRecords;
+//                    NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
+//                    
+//                    
+//                    
+//                } else {
+//                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//                    [alert show];
+//                }
+//                [weakSelf.gridView reloadData];
+//            } :[appDelegate.categoryData[iCurrentVisiblePage][@"id"] integerValue]];
+//            NSLog(@"screenName : %@",appDelegate.categoryData[iCurrentVisiblePage][@"category_name_en"]);
+//        }
+//            break;
+//        default:
+//            NSLog(@"aaaaaaaaaaaaaaa");
+//            
+//            [weakSelf.gridView reloadData];
+//            break;
+//    }
+    
     
     if (isLazy == FALSE) {
         ADPageModel *pageModel = [_pageControl.arrPageModel objectAtIndex:iCurrentVisiblePage];
