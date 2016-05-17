@@ -232,13 +232,13 @@
 
     self.Avatar = [[UIImageView alloc] initWithFrame:AvatarRect];
     self.Avatar.backgroundColor = [UIColor greenColor];
-    self.Avatar.image = [UIImage imageNamed:self.objStreaming.avatarUrl];
+    self.Avatar.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:appDelegate.profile_picture]]];
     self.Avatar.layer.cornerRadius = AvatarRect.size.width/2;
     self.Avatar.clipsToBounds = YES;
     [self.viewHeader addSubview:self.Avatar];
     
     self.UserName = [[UILabel alloc] initWithFrame:UserNameRect];
-    self.UserName.text = @"User Name";
+    self.UserName.text = (appDelegate.username != nil)?appDelegate.username:@"username";
     self.UserName.font = [UIFont fontWithName:@"Helvetica" size:fontSize];
     self.UserName.textColor = [UIColor whiteColor];
     [self.viewHeader addSubview:self.UserName];
@@ -260,7 +260,7 @@
     [self.gridviewHeader addSubview:self.lblVideo];
     
     self.lblVideoCount = [[UILabel alloc] initWithFrame:lblVideoCountRect];
-    self.lblVideoCount.text = @"13";
+    self.lblVideoCount.text = @"";
     self.lblVideoCount.textAlignment = NSTextAlignmentLeft;
     self.lblVideoCount.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 4];
     self.lblVideoCount.textColor = [UIColor redColor];
@@ -298,6 +298,7 @@
             if (success) {
                 NSLog(@"streamRecords : %@",streamRecords);
                 weakSelf.streamList = streamRecords;
+                self.lblVideoCount.text = [NSString stringWithFormat:@"%d",streamRecords.count];
                 _lblNoStream.hidden = YES;
                 imgLiveStatus.hidden = YES;
                 
