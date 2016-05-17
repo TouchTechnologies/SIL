@@ -869,7 +869,7 @@
     streamingDetail.objStreaming = stream;
     streamingDetail.streamingType = @"history";
     
-    [self.view.window.rootViewController presentViewController:streamingDetail animated:YES completion:nil];
+    [self presentViewController:streamingDetail animated:YES completion:nil];
 }
 
 
