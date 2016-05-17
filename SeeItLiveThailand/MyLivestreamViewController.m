@@ -20,7 +20,7 @@
 #import "VKVideoPlayerViewController.h"
 #import "VKVideoPlayerCaptionSRT.h"
 #import <KKGridView/KKGridView.h>
-#import "MBProgressHUD.h"
+//#import "MBProgressHUD.h"
 #import "AppDelegate.h"
 #import "UserManager.h"
 #import "EditMyStreamVC.h"
@@ -28,6 +28,7 @@
 @interface MyLivestreamViewController () <UIAlertViewDelegate,UIGestureRecognizerDelegate>
 {
     VCSimpleSession *session ;
+    AppDelegate *appDelegate;
     UIView *recordBar;
     CGFloat rcGrapY;
     CGFloat rcBarH;
@@ -83,6 +84,7 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+   
     [self initialSize];
     [self initial];
     
@@ -192,19 +194,17 @@
     }
 }
 - (void)initial {
-
-    AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
-    appDelegate.pageName = @"MyStream";
+    appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     UIWindow *tempWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
-    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithWindow:tempWindow];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Loading...";
-    [tempWindow addSubview:hud];
-    [hud show:YES];
+//    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithWindow:tempWindow];
+//    hud.mode = MBProgressHUDModeIndeterminate;
+//    hud.labelText = @"Loading...";
+//    [tempWindow addSubview:hud];
+//    [hud show:YES];
 
-    NSLog(@"Creata by ::::: %@",self.objStreaming.createBy);
-    NSLog(@"streamTotalViewEdit ::::: %@",self.objStreaming.streamTotalView);
-    NSLog(@"StreamImage ::::: %@",self.objStreaming.snapshot);
+//    NSLog(@"Creata by ::::: %@",self.objStreaming.createBy);
+//    NSLog(@"streamTotalViewEdit ::::: %@",self.objStreaming.streamTotalView);
+//    NSLog(@"StreamImage ::::: %@",self.objStreaming.snapshot);
     
     self.view.backgroundColor = [UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1.0];
 
@@ -294,9 +294,9 @@
         [[DataManager shareManager] getMyStreamingWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
             
             
-            [hud hide:YES];
+//            [hud hide:YES];
             if (success) {
-                NSLog(@"streamRecords : %@",streamRecords);
+//                NSLog(@"streamRecords : %@",streamRecords);
                 weakSelf.streamList = streamRecords;
                 self.lblVideoCount.text = [NSString stringWithFormat:@"%d",streamRecords.count];
                 _lblNoStream.hidden = YES;
@@ -310,7 +310,7 @@
             [weakSelf.gridView reloadData];
         }];
     }else{
-        [hud hide:YES];
+//        [hud hide:YES];
         NSLog(@"is not login ");
         //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Please Login" message:@"go Login" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
         //        [alert show];
@@ -334,16 +334,16 @@
 {
     NSLog(@"Update MyStream Data");
     UIWindow *tempWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
-    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithWindow:tempWindow];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Loading...";
+//    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithWindow:tempWindow];
+//    hud.mode = MBProgressHUDModeIndeterminate;
+//    hud.labelText = @"Loading...";
     __weak MyLivestreamViewController *weakSelf = self;
     [[DataManager shareManager] getMyStreamingWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
         
         
-        [hud hide:YES];
+//        [hud hide:YES];
         if (success) {
-            NSLog(@"streamRecords : %@",streamRecords);
+//            NSLog(@"streamRecords : %@",streamRecords);
             weakSelf.streamList = streamRecords;
             _lblNoStream.hidden = YES;
             imgLiveStatus.hidden = YES;
@@ -490,19 +490,19 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
     
     UIImage *imgPH = [self resizeImage:[UIImage imageNamed:@"sil_big.jpg"] imageSize:CGSizeMake(imgWidth, imgHeight - imgPHW02)];
     
-    HNKCacheFormat *format = [HNKCache sharedCache].formats[@"thumbnailHis"];
-    if (!format)
-    {
-        format = [[HNKCacheFormat alloc] initWithName:@"thumbnailHis"];
-        format.size = CGSizeMake(imgWidth, imgHeight - imgPHW02);
-        format.scaleMode = HNKScaleModeFill;
-        format.compressionQuality = 1;
-        format.diskCapacity = 10 * 1024 * 1024; // 1MB
-        format.preloadPolicy = HNKPreloadPolicyLastSession;
-        //format.allowUpscaling = YES;
-        
-    }
-       cell.imgSnapshot.hnk_cacheFormat = format;
+//    HNKCacheFormat *format = [HNKCache sharedCache].formats[@"thumbnailHis"];
+//    if (!format)
+//    {
+//        format = [[HNKCacheFormat alloc] initWithName:@"thumbnailHis"];
+//        format.size = CGSizeMake(imgWidth, imgHeight - imgPHW02);
+//        format.scaleMode = HNKScaleModeFill;
+//        format.compressionQuality = 1;
+//        format.diskCapacity = 10 * 1024 * 1024; // 1MB
+//        format.preloadPolicy = HNKPreloadPolicyLastSession;
+//        //format.allowUpscaling = YES;
+//        
+//    }
+//       cell.imgSnapshot.hnk_cacheFormat = format;
     
     NSURL *url = [NSURL URLWithString:stream.snapshot];
     [cell.imgSnapshot hnk_setImageFromURL:url placeholder:imgPH];
@@ -711,15 +711,14 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
     MyStreamingCell *cell = (MyStreamingCell *)tapGR.view;
     NSLog(@"cellTag:%@",tapGR.view);
 //    AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
-//    appDelegate.pageName = @"mylivestream";
+    
     StreamingDetailViewController *streamingDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"streamingdetail"];
  
     cell.selectedBackgroundView.backgroundColor = [UIColor colorWithWhite:40 alpha:0.6f];
     
     Streaming *stream = [self.streamList objectAtIndex:cell.cellTag];
     streamingDetail.objStreaming = stream;
-    
-//    streamingDetail.streamingID = 
+    appDelegate.pageName = @"MyStream";
     streamingDetail.streamingType = @"mylivestream";
     
     [self.view.window.rootViewController presentViewController:streamingDetail animated:YES completion:nil];
@@ -752,8 +751,6 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
         myStream.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
        
         Streaming *stream = [self.streamList objectAtIndex:editTag];
-        
-//        NSLog(@"StreamData %@",stream);
         myStream.objStreaming = stream;
         myStream.streamingType = @"history";
         NSLog(@"streamTotalViewTag:%lu",(unsigned long)editTag);

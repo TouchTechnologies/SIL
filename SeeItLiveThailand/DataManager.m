@@ -377,7 +377,7 @@ static DataManager *staticManager = nil;
 - (void)createMyStreamingObjectForRecords:(NSArray *)record {
     AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     NSMutableArray *recordObjects = [NSMutableArray array];
-    NSLog(@"RecordMyStream %@",record);
+//    NSLog(@"RecordMyStream %@",record);
     for (NSDictionary *stmRecord in record) {
         Streaming *stream = [[Streaming alloc] init];
         stream.userID = stmRecord[@"user_id"];
