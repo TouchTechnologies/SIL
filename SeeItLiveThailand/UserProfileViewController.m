@@ -69,7 +69,7 @@
         [self initialSize];
         [self initial];
         [self setupPageControl];
-//    
+    
 //        [[NSNotificationCenter defaultCenter] addObserver:self
 //                                                  selector:@selector(refreshList:)
 //                                                     name:@"refresh"
@@ -108,6 +108,8 @@
         followingCountRect = CGRectMake(ScreenW/2 + ScreenW/4, headerViewRect.size.height/2 , 70*scx , 30*scy);
         FollowBtnRect = CGRectMake(ScreenW/2 + followersCountRect.size.width/(4*scx), headerViewRect.size.height/2 + (40*scy), ScreenW/3 , 30*scy);
         containerViewRect =CGRectMake(0, (headerViewRect.origin.y + headerViewRect.size.height)*scy, self.view.bounds.size.width ,  self.view.bounds.size.height - (headerViewRect.origin.y + headerViewRect.size.height));
+          
+        pageControlRect = CGRectMake(0*scx, headerViewRect.origin.y + headerViewRect.size.height, self.view.bounds.size.width, self.view.bounds.size.height-(headerViewRect.origin.y + headerViewRect.size.height) );
     }
     else{
         
@@ -130,7 +132,10 @@
         followingCountRect = CGRectMake(ScreenW/2 + ScreenW/4, headerViewRect.size.height/2 , 70 , 30);
         FollowBtnRect = CGRectMake(ScreenW/2 + followersCountRect.size.width/4, headerViewRect.size.height/2 + 40, ScreenW/3 , 30);
        containerViewRect =CGRectMake(0,  headerViewRect.origin.y + headerViewRect.size.height, self.view.bounds.size.width ,  self.view.bounds.size.height - (headerViewRect.origin.y + headerViewRect.size.height));
+        pageControlRect = CGRectMake(0, headerView.bounds.origin.y + headerView.bounds.size.height + (titleHeight-20) , self.view.bounds.size.width, self.view.bounds.size.height-(headerView.bounds.origin.y + headerView.bounds.size.height + titleHeight + 20) );
+    
     }
+    
 
 }
 -(void)initial{
@@ -141,7 +146,7 @@
     
     
     headerView = [[UIView alloc] initWithFrame:headerViewRect];
-    headerView.backgroundColor = [UIColor greenColor];
+    headerView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:headerView];
     
     imgProfile = [[UIImageView alloc] initWithFrame:imgProfileRect];
@@ -273,7 +278,7 @@
     
     /**** 3. Add as subview ****/
     
-    _pageControl.view.frame = CGRectMake(0, headerView.bounds.origin.y + headerView.bounds.size.height + titleHeight + 20, self.view.bounds.size.width, self.view.bounds.size.height-(headerView.bounds.origin.y + headerView.bounds.size.height + titleHeight + 20) );
+    _pageControl.view.frame = pageControlRect;
     [self.view addSubview:_pageControl.view];
     
     
@@ -451,21 +456,18 @@
 
     
 }
-- (void) refreshList:(NSNotification *) refreshName
+- (void) refreshList:(NSNotification *)refreshName
 {
     // [notification name] should always be @"TestNotification"
     // unless you use this method for observation of other notifications
     // as well.
-    NSLog(@"ADView Notiname: %@",[refreshName name]);
-//    if ([[refreshName name] isEqualToString:@"update"])
-//    {
-//        NSLog (@"Update successfully");
-//    }else
+    NSLog(@"ADView Notiname:%@",[refreshName name]);
+
     if ([[refreshName name] isEqualToString:@"refresh"])
     {
-        [self viewDidLoad];
-        [self dismissViewControllerAnimated:YES completion:nil];
-        //        [self viewDidLoad];
+        //[self viewDidLoad];
+       [self dismissViewControllerAnimated:YES completion:nil];
+       [self viewDidLoad];
         NSLog (@"Reload successfully");
     }
     

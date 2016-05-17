@@ -449,25 +449,9 @@
     
     _pageControl = [[ADPageControl alloc] init];
     _pageControl.delegateADPageControl = self;
- //   _pageControl.arrPageModel = [[NSMutableArray alloc] initWithObjects:liveModel,historyModel, nil];
     _pageControl.arrPageModel = [[NSMutableArray alloc] initWithObjects:historyModel,liveModel,myLive, nil];
-    _pageControl.iTitleViewWidth = titleWidth;
-    
-    
-    /**** 3. Customize parameters (Optinal, as all have default value set) ****/
-//    AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
-//    if([appDelegate.pageName isEqualToString:@"MyStream"])
-//    {
-//        _pageControl.iFirstVisiblePageNumber = 2;
-//    }
-//    else
-//    {
-//        _pageControl.iFirstVisiblePageNumber = 0;
-//    }
-    
-    
     _pageControl.iFirstVisiblePageNumber = 0;
-    
+    _pageControl.iTitleViewWidth = titleWidth;
     _pageControl.iTitleViewHeight = titleHeight;
     _pageControl.iPageIndicatorHeight = indicatorHeight;
     _pageControl.fontTitleTabText =  [UIFont fontWithName:@"Helvetica" size:fontSize];
@@ -682,9 +666,9 @@
     
     isLazy = FALSE;
     
-
-    //UIViewController *controller = [_pageControl.arrPageModel objectAtIndex:iCurrentVisiblePage];
-    //[controller viewDidLoad];
+//
+//    UIViewController *controller = [_pageControl.arrPageModel objectAtIndex:iCurrentVisiblePage];
+//    [controller viewDidLoad];
 }
 - (void) refreshList:(NSNotification *) refreshName
 {
@@ -694,11 +678,13 @@
     NSLog(@"ADView Notiname: %@",[refreshName name]);
     if ([[refreshName name] isEqualToString:@"update"])
     {
+        [self dismissViewControllerAnimated:YES completion:nil];
+        [self viewDidLoad];
         NSLog (@"Update successfully");
     }else if ([[refreshName name] isEqualToString:@"refresh"])
     {
         [self dismissViewControllerAnimated:YES completion:nil];
-//        [self viewDidLoad];
+        [self viewDidLoad];
         NSLog (@"Reload successfully");
     }
     

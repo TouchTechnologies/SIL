@@ -58,7 +58,7 @@
    // self.navigationController.navigationBar.titleTextAttributes =
     AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     appDelegate.pageName = @"MyStream";
-    
+  
     [self initDeletebutton];
     [self initSize];
     [self initData];
@@ -74,6 +74,7 @@
     
     
 }
+
 - (void)initData
 {
     AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
@@ -92,6 +93,7 @@
     
     [self.setPublicSwitch addTarget:self action:@selector(setState:) forControlEvents:UIControlEventValueChanged];
     if (self.objStreaming.isPublic) {
+        
         [self.setPublicSwitch setOn:true animated:true];
         self.lblSetpublic.text = @"Public";
     }else
@@ -201,10 +203,11 @@
 
 - (IBAction)backMyStreamBtn:(UIBarButtonItem *)sender {
 
-    [self dismissViewControllerAnimated:YES completion:nil];
     [[NSNotificationCenter defaultCenter]
      postNotificationName:@"refresh"
      object:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
+ 
     
     NSLog(@"MyStream");
     

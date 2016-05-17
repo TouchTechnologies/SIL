@@ -711,16 +711,38 @@
 {
     
     UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)sender;
-    NSLog (@"Tag Playyyyy %ld",[tapRecognizer.view tag]);
-    //    UserTag = [tapRecognizer.view tag];
-    NSInteger playTag = [tapRecognizer.view tag];
+//    NSLog (@"Tag Playyyyy %ld",[tapRecognizer.view tag]);
+//    //    UserTag = [tapRecognizer.view tag];
+//    NSInteger playTag = [tapRecognizer.view tag];
+//    
+//    Streaming *stream = [self.streamList objectAtIndex:playTag];
+//    StreamingDetailViewController *streamingDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"streamingdetail"];
+//       streamingDetail.objStreaming = stream;
+//        streamingDetail.streamingType = @"history";
+//   
+//     [self.view.window.rootViewController presentViewController:streamingDetail animated:YES completion:nil];
+//    
+//    
+//    NSInteger watermarkTag = [tapGR.view tag];
+//    //   // imgWatermark = (UIImageView *)tapGR.view;
+//    //
+//    LivestreamRealtimeViewController *streamingRealtime = [self.storyboard instantiateViewControllerWithIdentifier:@"livestreaming"];
     
-    Streaming *stream = [self.streamList objectAtIndex:playTag];
-      StreamingDetailViewController *streamingDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"streamingdetail"];
-       streamingDetail.objStreaming = stream;
-        streamingDetail.streamingType = @"history";
-   
-     [self.view.window.rootViewController presentViewController:streamingDetail animated:YES completion:nil];
+    // item.selectedBackgroundView.backgroundColor = [UIColor colorWithWhite:40 alpha:0.6f];
+    NSInteger watermarkTag = [tapRecognizer.view tag];
+    //   // imgWatermark = (UIImageView *)tapGR.view;
+    //
+    LivestreamRealtimeViewController *streamingRealtime = [self.storyboard instantiateViewControllerWithIdentifier:@"livestreaming"];
+    
+    // item.selectedBackgroundView.backgroundColor = [UIColor colorWithWhite:40 alpha:0.6f];
+    
+    Streaming *stream = [self.streamList objectAtIndex:watermarkTag];
+    
+    streamingRealtime.objStreaming = stream;
+    
+    streamingRealtime.streamingType = @"live";
+    
+    [self.view.window.rootViewController presentViewController:streamingRealtime animated:YES completion:nil];
 }
 
 

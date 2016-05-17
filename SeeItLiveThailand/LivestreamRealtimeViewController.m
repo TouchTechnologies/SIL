@@ -147,6 +147,7 @@
     UIButton *shareBtn;
     UIImageView *shareImg;
   
+
     
 }
 @property (nonatomic, strong) VKVideoPlayer* player;
@@ -161,13 +162,13 @@
     [self initialSize];
     [self initialPort];
     [self addLabel];
-   
+    chatboxTxt.delegate = self;
     self.view.backgroundColor = [UIColor whiteColor];
 
     NSLog(@"IS FULLSCREEN ::: %@" , self.player.isFullScreen ? @"true":@"false");
     
     self.player.delegate = self;
-    chatboxTxt.delegate = self;
+  
     chatTbl.delegate = self;
     chatTbl.dataSource = self;
    }
@@ -183,16 +184,16 @@
 
     CGFloat ss;
     ss = 100;
-    
+    [self initialSize];
     if (self.player.isFullScreen) {
 
-        self.player.view.frame = CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height); //self.view.bounds;
+        self.player.view.frame = CGRectMake(0,0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height); //self.view.bounds;
         NSLog(@"NOT FULLSCREEN");
         self.player.view.doneButton.frame = doneButtonPortRect;
 
     }
     else{
-        self.player.view.frame = CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height/2); //self.view.bounds;
+        self.player.view.frame = CGRectMake(0,0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height/2); //self.view.bounds;
         NSLog(@"NOT FULLSCREEN");
         self.player.view.doneButton.frame = doneButtonPortRect;
    }
@@ -250,7 +251,7 @@
     imgLive = [[UIImageView alloc] initWithFrame:imgLivePortRect];
     imgLive.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     imgLive.contentMode = UIViewContentModeScaleToFill;
-    imgLive.image = [UIImage imageNamed:@"live_now_s.png"];
+    imgLive.image = [UIImage imageNamed:@"live2.png"];
     //[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.objStreaming.avatarUrl]]];
     float width = imgLive.bounds.size.height;
     imgLive.layer.cornerRadius = width/2;
@@ -348,13 +349,14 @@
     NSLog(@"isLove : %d",self.objStreaming.isLoved);
     if (self.objStreaming.isLoved) {
         //  UIImageView *img = [[UIImageView alloc] initWithFrame:cell.btnLoveicon.bounds];
-        [heartimg setBackgroundColor:[UIColor redColor]];
+       [heartimg setImage:[UIImage imageNamed:@"ic_love2.png"]];
+      
    //    [self.player.view addSubviewForControl:imgLoveIcon];
         //        [cell.contentView addSubview:cell.btnLoveicon];
     }else
     {
         //  UIImageView *img = [[UIImageView alloc] initWithFrame:cell.btnLoveicon.bounds];
-       [heartimg setBackgroundColor:[UIColor clearColor]];
+                   [heartimg setImage:[UIImage imageNamed:@"Heart.png"]];
    //    [self.player.view addSubviewForControl:imgLoveIcon];
         //        [cell.contentView addSubview:cell.btnLoveicon];
         
@@ -432,6 +434,7 @@
     
     chatboxTxt = [[UITextField alloc] initWithFrame:chatboxTxtPortRect];
     chatboxTxt.borderStyle = UITextBorderStyleNone;
+    chatboxTxt.font = font;
     chatboxTxt.textColor = [UIColor whiteColor];
     chatboxTxt.layer.cornerRadius = 5;
     chatboxTxt.clipsToBounds = TRUE;
@@ -445,7 +448,7 @@
     UIImage *sendImg = [[UIImage alloc] init];
     sendImg = [UIImage imageNamed:@"sent.png"];
     [sendchatBtn setImage:sendImg forState:UIControlStateNormal];
-    sendchatBtn.backgroundColor = [UIColor blackColor];
+    sendchatBtn.backgroundColor = [UIColor clearColor];
     sendchatBtn.layer.cornerRadius = 5;
     sendchatBtn.clipsToBounds = TRUE;
     [chatView addSubview:sendchatBtn];
@@ -464,6 +467,7 @@
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         bottomHeight = 100.0 *scy;
+        fontSize = 14.0*scy;
         
         topViewPortRect = CGRectMake(0 *scx, 0*scy, [[UIScreen mainScreen] bounds].size.width, 50*scy);
         imgPinPortRect = CGRectMake(10*scx,topViewPortRect.size.height/2 - (13*scy), 25*scx, 25*scy);
@@ -495,13 +499,13 @@
         bottomHeight = 100.0*scy;
         
         
-        chatViewPortRect = CGRectMake(0*scx, self.view.bounds.size.height / 2 + (70*scy) , self.view.bounds.size.width, self.view.bounds.size.height - (self.view.bounds.size.height / 2 + (70*scy)));
+         chatViewPortRect = CGRectMake(0*scx, self.view.bounds.size.height / 2 + (70*scy) , self.view.bounds.size.width, self.view.bounds.size.height - (self.view.bounds.size.height / 2 + (70*scy)));
         
-        chatTblPortRect = CGRectMake(20*scx, 10*scy , self.view.bounds.size.width - (100*scx), chatViewPortRect.size.height - (60*scy));
+        chatTblPortRect = CGRectMake(20*scx, 10*scy , self.view.bounds.size.width - (50*scx), chatViewPortRect.size.height - (60*scy));
         userChatImgRect = CGRectMake(0*scx, 0*scy , 40*scx , 40*scy);
         
-        textchatLblRect = CGRectMake(0*scx, 0*scy, chatplaceViewRect.size.width, 20*scy);
-        userChatLblRect = CGRectMake(0*scx, chatplaceViewRect.size.height - (20*scy) , self.view.bounds.size.width, 20*scy);
+       textchatLblRect = CGRectMake(0*scx, 0*scy, chatplaceViewRect.size.width, 20*scy);
+       userChatLblRect = CGRectMake(0*scx, chatplaceViewRect.size.height - (20*scy) , self.view.bounds.size.width, 20*scy);
         chatboxTxtPortRect = CGRectMake(20*scx, chatTblPortRect.origin.y + chatTblPortRect.size.height + (10*scy), self.view.bounds.size.width - (100*scx), 30*scy);
         sendchatBtnPortRect = CGRectMake(chatboxTxtPortRect.origin.x + chatboxTxtPortRect.size.width + ( 5*scx),  chatTblPortRect.origin.y + chatTblPortRect.size.height + (15*scy), 50*scx , 20*scy);
         
@@ -547,11 +551,11 @@
        
         chatViewPortRect = CGRectMake(0, self.view.bounds.size.height / 2 + 70 , self.view.bounds.size.width, self.view.bounds.size.height - (self.view.bounds.size.height / 2 + 70));
       
-        chatTblPortRect = CGRectMake(20, 10 , self.view.bounds.size.width - 100, chatViewPortRect.size.height - 60);
+        chatTblPortRect = CGRectMake(20, 10 , self.view.bounds.size.width - 50, chatViewPortRect.size.height - 60);
         userChatImgRect = CGRectMake(0, 0 , 40 , 40);
         
-        textchatLblRect = CGRectMake(0, 0, chatplaceViewRect.size.width, 20);
-        userChatLblRect = CGRectMake(0, chatplaceViewRect.size.height - 20 , self.view.bounds.size.width, 20);
+       textchatLblRect = CGRectMake(0, 0, chatplaceViewRect.size.width, 20);
+       userChatLblRect = CGRectMake(0, chatplaceViewRect.size.height - 20 , self.view.bounds.size.width, 20);
         chatboxTxtPortRect = CGRectMake(20, chatTblPortRect.origin.y + chatTblPortRect.size.height + 10, self.view.bounds.size.width - 100, 30);
         sendchatBtnPortRect = CGRectMake(chatboxTxtPortRect.origin.x + chatboxTxtPortRect.size.width + 5,  chatTblPortRect.origin.y + chatTblPortRect.size.height + 15, 50 , 20);
 
@@ -658,7 +662,8 @@
             NSLog(@"loveSendresult : %@",result);
                         self.objStreaming.lovesCount++;
             [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
-            [heartimg setBackgroundColor:[UIColor redColor]];
+            [heartimg setImage:[UIImage imageNamed:@"ic_love2.png"]];
+            //[heartimg setBackgroundColor:[UIColor redColor]];
             self.objStreaming.isLoved = true;
 
            // [self viewDidLoad];
@@ -672,7 +677,8 @@
            
             self.objStreaming.lovesCount--;
             [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
-             [heartimg setBackgroundColor:[UIColor clearColor]];
+             [heartimg setImage:[UIImage imageNamed:@"Heart.png"]];
+           //  [heartimg setBackgroundColor:[UIColor clearColor]];
                    //[self viewDidLoad];
              self.objStreaming.isLoved = false;
         }];
@@ -865,7 +871,7 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
         //////////////////////////////// Landscape iPad///////////////////////////////////////////
         topViewLandRect =  CGRectMake(0*scx, 0*scy, self.view.bounds.size.width, 50*scy);
         doneButtonLandRect = CGRectMake(topViewLandRect.size.width - (45*scx), topViewLandRect.size.height/2 - (20*scy) , 40*scx, 40*scy);
-        chatViewLandRect = CGRectMake(0*scx, 50*scy, self.view.bounds.size.width /2 , self.view.bounds.size.height - (100*scy));
+        chatViewLandRect = CGRectMake(0*scx, 50*scy, self.view.bounds.size.width /2 , self.view.bounds.size.height);
         propViewLandRect = CGRectMake(0*scx, self.view.bounds.size.height - (50*scy), self.view.bounds.size.width, 50*scy);
         imgLiveLandRect = CGRectMake(20*scx, topViewLandRect.size.height/2 - (18*scy), 35*scx, 35*scy);
         vdoLabelLandRect = CGRectMake(imgLiveLandRect.size.width + imgLiveLandRect.origin.x + (30*scx), topViewLandRect.size.height/2 - (18*scy),self.view.bounds.size.width/2, 20*scy);
@@ -885,12 +891,14 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
         lblLoveCountLandRect = CGRectMake(self.view.bounds.size.width/4 + (165*scx) , propViewLandRect.size.height/2 - (8*scy), 40*scx, 15*scy);
         btnLoveLandRect = CGRectMake(self.view.bounds.size.width - (75*scx) ,0*scy , 45*scx , 45*scy);
         heartimgLandRect = CGRectMake(5*scx, 5*scy, btnLoveLandRect.size.width - (10*scx),  btnLoveLandRect.size.height - (10*scy));
+        
+        chatTblLandRect = CGRectMake(0*scx, 0*scy, chatViewLandRect.size.width, chatViewLandRect.size.width - 50*scy);
     }
     else{
         //////////////////////////////// Landscape ///////////////////////////////////////////
         topViewLandRect =  CGRectMake(0, 0, self.view.bounds.size.width, 50);
         doneButtonLandRect = CGRectMake(topViewLandRect.size.width - 45, topViewLandRect.size.height/2 - 20 , 40, 40);
-        chatViewLandRect = CGRectMake(0, 50, self.view.bounds.size.width /2 , self.view.bounds.size.height - 100);
+        chatViewLandRect = CGRectMake(0, 50, self.view.bounds.size.width /2 , self.view.bounds.size.height - 50);
         propViewLandRect = CGRectMake(0, self.view.bounds.size.height - 50, self.view.bounds.size.width, 50);
         imgLiveLandRect = CGRectMake(20, topViewLandRect.size.height/2 - 18, 35, 35);
         vdoLabelLandRect = CGRectMake(imgLiveLandRect.size.width + imgLiveLandRect.origin.x + 30, topViewLandRect.size.height/2 - 18,self.view.bounds.size.width/2, 20);
@@ -911,6 +919,9 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
         btnLoveLandRect = CGRectMake(self.view.bounds.size.width - 75 ,0 , 45 , 45);
         heartimgLandRect = CGRectMake(5, 5, btnLoveLandRect.size.width - 10,  btnLoveLandRect.size.height - 10);
         
+        chatTblLandRect = CGRectMake(0, 0, chatViewLandRect.size.width, chatViewLandRect.size.height - 50);
+        chatboxTxtLandRect = CGRectMake(0, 0, chatTblLandRect.size.height + chatTblLandRect.origin.y + 2, chatTblLandRect.size.width);
+        
        
     }
     
@@ -929,6 +940,8 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
     [chatView setFrame:chatViewLandRect];
     [chatView setBackgroundColor:[UIColor clearColor]];
      [self.player.view addSubview:chatView];
+    
+    [chatTbl setFrame:chatTblLandRect];
     
     
     [propViewPort setFrame:propViewLandRect];
@@ -1055,19 +1068,37 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
     userChatImg.layer.cornerRadius = 5;
     userChatImg.clipsToBounds = YES;
     userChatImg.image = [UIImage imageNamed:@"blank.png"];
+     [cell.contentView addSubview:userChatImg];
+    
+    
 
-    [cell.contentView addSubview:userChatImg];
-    chatplaceView = [[UIView alloc] init];
-    [chatplaceView setFrame:CGRectMake(52, 2 ,chatTblPortRect.size.width - 54, cellH - 4)];
+    CGFloat scy = (1024.0/480.0);
+    CGFloat scx = (768.0/360.0);
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        chatplaceView = [[UIView alloc] initWithFrame:CGRectMake(55*scx, 2*scy ,chatTbl.bounds.size.width - (54*scx), cellH - (4*scy ))];
+        textchatLbl = [[UILabel alloc] initWithFrame: CGRectMake(55*scx, 4*scy , chatplaceView.bounds.size.width - (10*scx) , 20*scy )];
+        userChatLbl = [[UILabel alloc] initWithFrame:CGRectMake(55*scx,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + (2 *scy ) , chatplaceView.bounds.size.width - (10*scx), 20*scy )];
+        
+    }
+    else{
+        chatplaceView = [[UIView alloc] initWithFrame:CGRectMake(52, 2 ,chatTbl.bounds.size.width - 54, cellH - 4)];
+        textchatLbl = [[UILabel alloc] initWithFrame: CGRectMake(55, 4, chatplaceView.bounds.size.width - 10 , 20)];
+        userChatLbl = [[UILabel alloc] initWithFrame:CGRectMake(55,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + 2 , chatplaceView.bounds.size.width - 10, 20)];
+        
+    }
+
+
+  
+    
+  // [chatplaceView setFrame:];
     chatplaceView.backgroundColor = [UIColor whiteColor];
     chatplaceView.layer.cornerRadius = 5;
     chatplaceView.clipsToBounds = YES;
     [cell.contentView addSubview:chatplaceView];
     
     
-    textchatLbl = [[UILabel alloc] initWithFrame:CGRectMake(55, 4, chatplaceView.bounds.size.width - 10 , 20)];
     
-    textchatLbl.text = @"brcyfvryevcyrevcyrevyrvycyrvcyrevycrvyc";
+    textchatLbl.text = @"brcyfvryevcyrevcyrevyrvycyrvcyrevycrvyc trtrtweiirifuircrbcyvyctvytvcyvcyr";
     textchatLbl.font = [UIFont fontWithName:@"Helvetica" size: fontSize - 2];
     textchatLbl.lineBreakMode = NSLineBreakByWordWrapping;
     textchatLbl.numberOfLines = 0;
@@ -1075,7 +1106,7 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
     [textchatLbl sizeToFit];
     [cell.contentView addSubview:textchatLbl];
     
-    userChatLbl = [[UILabel alloc] initWithFrame:CGRectMake(55,textchatLbl.bounds.size.height +2 , chatplaceView.bounds.size.width - 10, 20)];
+    
     
 
     userChatLbl.text = @"giftfy";
@@ -1092,10 +1123,24 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
         return cellH ;
     }
     else{
-       
-        [chatplaceView setFrame:CGRectMake(52, 2, chatTblPortRect.size.width - 54 ,textchatLbl.bounds.size.height + userChatLbl.bounds.size.height + 6)];
-        return textchatLbl.bounds.size.height + userChatLbl.bounds.size.height + 10;
+        CGFloat scy = (1024.0/480.0);
+        CGFloat scx = (768.0/360.0);
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [chatplaceView setFrame:CGRectMake(52*scx, 2*scy, chatTbl.bounds.size.width - (54*scx) ,textchatLbl.bounds.size.height + userChatLbl.bounds.size.height + (6*scy))];
+            [userChatLbl setFrame:CGRectMake(55*scx,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + (2*scy) , chatplaceView.bounds.size.width - (10*scx), 20*scx)];
+
+            return textchatLbl.bounds.size.height + userChatLbl.bounds.size.height + (10*scy);
+        }
+        else{
+            [chatplaceView setFrame:CGRectMake(52, 2, chatTbl.bounds.size.width - 54 ,textchatLbl.bounds.size.height + userChatLbl.bounds.size.height + 6)];
+          [userChatLbl setFrame:CGRectMake(55,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + 2 , chatplaceView.bounds.size.width - 10, 20)];
+            
+
+            return textchatLbl.bounds.size.height + userChatLbl.bounds.size.height + 10;
+        }
         
+        
+
     }
   
 
@@ -1129,35 +1174,39 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
     CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
    
     
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    if (orientation == UIInterfaceOrientationPortrait) {
-         NSLog(@"22");
+//    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+//    if (orientation == UIInterfaceOrientationPortrait) {
+        NSLog(@"22");
         width = [UIScreen mainScreen].bounds.size.width;
         height = [UIScreen mainScreen].bounds.size.height;
         [self.view setFrame:CGRectMake(0, -keyboardFrameBeginRect.size.height ,width,height)];
-    }
-    else{
+   }
+-(void)keyboardDidHide:(NSNotification *)notification
+{
+    NSLog(@"KeyboerdDidHide");
+    CGFloat width = [UIScreen mainScreen].bounds.size.width;
+    CGFloat height = [UIScreen mainScreen].bounds.size.height;
+  
+        [self.view setFrame:CGRectMake(0,0,width,height)];
     
-        width = [UIScreen mainScreen].bounds.size.width;
-        height = [UIScreen mainScreen].bounds.size.height;
-        [self.player.view setFrame:CGRectMake(0, -keyboardFrameBeginRect.size.width ,height,width)];
-    
-    }
+
+
+}
+//    else{
+//    
+//        width = [UIScreen mainScreen].bounds.size.width;
+//        height = [UIScreen mainScreen].bounds.size.height;
+//        [self.player.view setFrame:CGRectMake(0, -keyboardFrameBeginRect.size.width ,height,width)];
+//    
+//    }
 //    else{
 //    NSLog(@"23");
 //    [self.view setFrame:CGRectMake(0,0,width,height)];
 //    
 //    }
     //here taken -20 for example i.e. your view will be scrolled to -20. change its value according to your requirement.
-    
-}
 
--(void)keyboardDidHide:(NSNotification *)notification
-{
-    CGFloat width = [UIScreen mainScreen].bounds.size.width;
-    CGFloat height = [UIScreen mainScreen].bounds.size.height;
-    [self.view setFrame:CGRectMake(0,0,width,height)];
-}
+
 
 
 

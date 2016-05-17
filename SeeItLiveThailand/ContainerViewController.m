@@ -182,7 +182,8 @@
     if([appDelegate.pageName  isEqual: @"MyStream"])
     {
          NSLog(@"Page Name %@",appDelegate.pageName);
-        [self addViewSecond:self];
+        
+        [self addViewFirst:self];
     }
   
     
@@ -249,7 +250,7 @@
     _toolbarView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:_toolbarView];
     
-    self.detailView = [[UIView alloc] initWithFrame:CGRectMake(0, topbarRect.origin.y + barHeight, boundWidth, boundHeight-(topbarRect.origin.y + barHeight))];
+    self.detailView = [[UIView alloc] initWithFrame:CGRectMake(0, topbarRect.origin.y + barHeight, boundWidth, boundHeight - (topbarRect.origin.y + barHeight))];
     self.detailView.layer.backgroundColor = [UIColor whiteColor].CGColor;
     self.detailView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:self.detailView];
@@ -465,10 +466,11 @@
     [tracker set:[GAIFields customMetricForIndex:1] value:metricValue];
     [tracker set:kGAIScreenName value:name];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    
+   
     
     [self activeMenu:1];
     ADViewController *streamContrainer =[ self.storyboard instantiateViewControllerWithIdentifier:@"adcontroller"];
+    
     [self swapCurrentControllerWith:streamContrainer];
 
 }

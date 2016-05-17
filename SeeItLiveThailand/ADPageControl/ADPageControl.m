@@ -632,7 +632,7 @@
                            ADPageModel *pageModel = [_arrPageModel objectAtIndex:0];
                            //animate to next page
                            [_pageViewController setViewControllers:@[[self getViewControllerForPageModel:pageModel]]
-                                                         direction: (_iCurrentVisiblePage < 2) ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse
+                                                         direction: (_iCurrentVisiblePage < 3) ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse
                                                           animated:NO
                                                         completion:^(BOOL finished){}];
                            
@@ -643,14 +643,14 @@
         NSLog (@"StreamHistory Reload successfully");
         dispatch_async(dispatch_get_main_queue(),
                        ^{
-                           ADPageModel *pageModel = [_arrPageModel objectAtIndex:1];
+                           ADPageModel *pageModel = [_arrPageModel objectAtIndex:0];
                            //animate to next page
                            [_pageViewController setViewControllers:@[[self getViewControllerForPageModel:pageModel]]
-                                                         direction: (_iCurrentVisiblePage < 2) ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse
+                                                         direction: (_iCurrentVisiblePage < 3) ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse
                                                           animated:NO
                                                         completion:^(BOOL finished){}];
                            
-                           [self setPageIndicatorToPageNumber:1 andShouldHighlightCurrentPage:YES];
+                           [self setPageIndicatorToPageNumber:0 andShouldHighlightCurrentPage:YES];
                        });
     }else if ([[refreshName name] isEqualToString:@"refresh"] && [appDelegate.pageName isEqualToString:@"MyStream"])
     {
@@ -660,7 +660,7 @@
                            ADPageModel *pageModel = [_arrPageModel objectAtIndex:2];
                            //animate to next page
                            [_pageViewController setViewControllers:@[[self getViewControllerForPageModel:pageModel]]
-                                                         direction: (_iCurrentVisiblePage < 2) ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse
+                                                         direction: (_iCurrentVisiblePage < 3) ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse
                                                           animated:NO
                                                         completion:^(BOOL finished){}];
                            

@@ -972,9 +972,9 @@
             
             NSLog(@"mylivestreamEnd");
             [self dismissViewControllerAnimated:YES completion:nil];
-//            [[NSNotificationCenter defaultCenter]
-//             postNotificationName:@"refresh"
-//             object:nil];
+            [[NSNotificationCenter defaultCenter]
+             postNotificationName:@"refresh"
+             object:nil];
             [videoPlayer pauseContent:YES completionHandler:nil];
             /*
              UIButton *shareButton = [[UIButton alloc] initWithFrame:CGRectMake((self.player.view.bounds.size.width - 45), 15, 35, 35)];

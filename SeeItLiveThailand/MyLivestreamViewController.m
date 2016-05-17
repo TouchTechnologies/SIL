@@ -87,14 +87,15 @@
     [self initial];
     
 //    
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(refreshList:)
-//                                                 name:@"refresh"
-//                                               object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(refreshList:)
-//                                                 name:@"update"
-//                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshList:)
+                                                 name:@"refresh"
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshList:)
+                                                 name:@"update"
+                                               object:nil];
     
 //    rcBarH = 90.0;
 //    rcGrapY = 200.0;
@@ -795,16 +796,10 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
     }else if ([[refreshName name] isEqualToString:@"refresh"])
     {
             [self viewDidLoad];
-            [self.gridView reloadContentSize];
-            [self dismissViewControllerAnimated:YES completion:nil];
+//            [self.gridView reloadContentSize];
+           // [self dismissViewControllerAnimated:YES completion:nil];
             NSLog (@"Reload successfully");
     }
-
-//        [self.gridView reloadContentSize];
-//        [self dismissViewControllerAnimated:YES completion:nil];
-//        NSLog (@"Reload successfully");
-//    }
-    
 }
 -(NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
 {
