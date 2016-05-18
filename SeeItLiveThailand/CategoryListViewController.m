@@ -544,7 +544,7 @@
     cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
     cell.selected = FALSE;
      NSLog(@"CATEGORY :%@" , stream.category);
-    
+    cell.lblCategoryTitle.text = stream.category;
     if (stream.categoryID == 1) {
         NSLog(@"Category DDD >>> %@",stream.category);
     }

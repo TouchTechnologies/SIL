@@ -435,7 +435,7 @@
     cell.lblCreateBy.text = stream.createBy;
     cell.lblViewCount.text = stream.streamTotalView;
     cell.lblLoveCount.text = [NSString stringWithFormat:@"%ld",(long)stream.lovesCount];
-    
+    cell.lblCategoryTitle.text = stream.category;
     
     NSLog(@"isLove : %d",stream.isLoved);
     if (stream.isLoved && appDelegate.isLogin) {

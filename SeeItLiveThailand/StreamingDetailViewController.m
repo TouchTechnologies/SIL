@@ -485,7 +485,7 @@
     
     lblCommentCount = [[UILabel alloc] initWithFrame:lblCommentCountPortRect];
     lblCommentCount.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    lblCommentCount.text = (self.objStreaming.count_comment != nil)?self.objStreaming.count_comment:@"0";
+    lblCommentCount.text = (self.objStreaming.count_comment != nil)?[NSString stringWithFormat:@"%@" ,self.objStreaming.count_comment]:@"0";
     lblCommentCount.textColor = [UIColor whiteColor];
     lblCommentCount.backgroundColor = [UIColor clearColor];
     lblCommentCount.textAlignment = NSTextAlignmentLeft;
@@ -801,7 +801,10 @@
     }
 }
 
-
+//- (void)viewDidDisappear:(BOOL)animated{
+//    NSLog(@"disconnect socket");
+//    [socket disconnect];
+//}
 - (void)viewDidAppear:(BOOL)animated {
     
 

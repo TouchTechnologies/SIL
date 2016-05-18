@@ -18,6 +18,7 @@
 @property (nonatomic, strong) NSString *streamUpdateDate;
 @property (nonatomic, strong) NSString *streamTotalView;
 @property (nonatomic, strong) NSString *category;
+@property (nonatomic, strong) NSString *categoryName;
 @property NSInteger categoryID;
 @property (nonatomic, strong) NSString *categoryCountStream;
 @property (nonatomic, strong) NSString *count_comment;
