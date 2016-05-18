@@ -612,13 +612,14 @@
     NSLog(@"ADPageControl Notiname : %@",[refreshName name]);
     if ([[refreshName name] isEqualToString:@"update"])
     {
+        appDelegate.pageName = @"";
         NSLog (@"Update successfully");
         dispatch_async(dispatch_get_main_queue(),
                        ^{
                            ADPageModel *pageModel = [_arrPageModel objectAtIndex:2];
                            //animate to next page
                            [_pageViewController setViewControllers:@[[self getViewControllerForPageModel:pageModel]]
-                                                         direction: (_iCurrentVisiblePage < 2) ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse
+                                                         direction: (_iCurrentVisiblePage < 3) ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse
                                                           animated:NO
                                                         completion:^(BOOL finished){}];
                            
@@ -626,6 +627,7 @@
                        });
     }else if ([[refreshName name] isEqualToString:@"refresh"] && [appDelegate.pageName isEqualToString:@"StreamLive"])
     {
+        appDelegate.pageName = @"";
         NSLog (@"StreamLive Reload successfully");
         dispatch_async(dispatch_get_main_queue(),
                        ^{
@@ -640,6 +642,7 @@
                        });
     }else if ([[refreshName name] isEqualToString:@"refresh"] && [appDelegate.pageName isEqualToString:@"StreamHistory"])
     {
+        appDelegate.pageName = @"";
         NSLog (@"StreamHistory Reload successfully");
         dispatch_async(dispatch_get_main_queue(),
                        ^{
@@ -654,6 +657,7 @@
                        });
     }else if ([[refreshName name] isEqualToString:@"refresh"] && [appDelegate.pageName isEqualToString:@"MyStream"])
     {
+        appDelegate.pageName = @"";
         NSLog (@"MyStream Reload successfully");
         dispatch_async(dispatch_get_main_queue(),
                        ^{
@@ -666,6 +670,9 @@
                            
                            [self setPageIndicatorToPageNumber:2 andShouldHighlightCurrentPage:YES];
                        });
+    }else{
+        NSLog(@"appDelegate.pageName ????????");
+        appDelegate.pageName = @"";
     }
     
 }

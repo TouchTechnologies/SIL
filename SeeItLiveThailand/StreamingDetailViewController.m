@@ -337,9 +337,6 @@
     [topView addSubview:lblcategoryType];
 
     
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
-    
     
     lblLocationDesc = [[UILabel alloc] initWithFrame:lblLocationDescRect];
     lblLocationDesc.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -824,7 +821,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     appDelegate.isChat = TRUE;
     appDelegate.isMoreVedio = false ;
     //self.player.view.frame = CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height-bottomHeight);
@@ -877,8 +873,6 @@
 }
 - (void)startChat:(UIButton *)sender
 {
-    
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     //   UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)sender;
     //[[NSNotificationCenter defaultCenter] postNotificationName:@"buttonPressed" object:nil];
     if(!appDelegate.isChat)

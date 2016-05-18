@@ -280,7 +280,7 @@ static DataManager *staticManager = nil;
 - (void)getStreamingWithCompletionBlockByCatgoryID:(StreamingCompletionBlock)block :(int)catID{
     if (block) {
         self.streamingBlock = block;
-        NSLog(@"StreamingHistoryURLByCatgory : %@",[StreamingHistoryURLByCatgory stringByAppendingFormat:@"%d",catID]);
+//        NSLog(@"StreamingHistoryURLByCatgory : %@",[StreamingHistoryURLByCatgory stringByAppendingFormat:@"%d",catID]);
         [self downloadStreamingDetailForRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[StreamingHistoryURLByCatgory stringByAppendingFormat:@"%d",catID]]]];
     }
 }
@@ -299,7 +299,7 @@ static DataManager *staticManager = nil;
     NSLog(@"request : %@",request.URL);
     [manager GET:[request.URL absoluteString] parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
         
-        NSLog(@"downloadStreamingDetailForRequestData : %@",responseObject);
+//        NSLog(@"downloadStreamingDetailForRequestData : %@",responseObject);
         
         [weakSelf createStreamingObjectForRecords:(NSArray *)responseObject];
         
@@ -313,9 +313,6 @@ static DataManager *staticManager = nil;
     AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     //    NSDictionary *jsonDict = @{@"access_token":appDelegate.access_token};
     
-    
-    
-    
     [[UserManager shareIntance]getMyStream:appDelegate.access_token Completion:^(NSError *error, NSDictionary *result, NSString *message){
         
         
@@ -327,7 +324,7 @@ static DataManager *staticManager = nil;
             
             [weakSelf createMyStreamingObjectForRecords:(NSArray *)result];
             
-            NSLog(@"All MyStream Result : %@",result);
+//            NSLog(@"All MyStream Result : %@",result);
             
         } else {
             weakSelf.streamingBlock(NO,nil,error);
@@ -364,7 +361,6 @@ static DataManager *staticManager = nil;
         stream.latitude = stmRecord[@"latitude"];
         stream.longitude = stmRecord[@"longitude"];
         stream.avatarUrl = stmRecord[@"user"][@"profile_picture"];
-        
         stream.category = stmRecord[@"category_stream"][@"category_name_en"];
         stream.categoryID = [stmRecord[@"category_id"] integerValue];
         stream.categoryCountStream = stmRecord[@"category_stream"][@"count_stream"];
@@ -381,7 +377,7 @@ static DataManager *staticManager = nil;
 - (void)createMyStreamingObjectForRecords:(NSArray *)record {
     AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     NSMutableArray *recordObjects = [NSMutableArray array];
-    NSLog(@"RecordMyStream %@",record);
+//    NSLog(@"RecordMyStream %@",record);
     for (NSDictionary *stmRecord in record) {
         Streaming *stream = [[Streaming alloc] init];
         stream.userID = stmRecord[@"user_id"];
