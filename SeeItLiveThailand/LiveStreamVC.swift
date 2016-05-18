@@ -283,7 +283,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         super.viewDidLoad()
         appDelegate.isChat = false
         appDelegate.isShare = false
-        
+//        self.initSocket()
         self.initialSize()
         self.initial()
         self.getLocationName()
@@ -1323,6 +1323,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         socket.on("ack-connected") {data, ack in
             socket.emit("join", "streamlive/\(roomID)")
             print("socket connected")
+            print("socket Data \(data)")
             
         }
         
@@ -1348,21 +1349,24 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             //            self.lblUserName.text = data[0]["data"]!!["commentator"]!!["first_name"] as? String
             //            self.imgUserChat.image = UIImage(data: NSData(contentsOfURL: NSURL(string: data[0]["data"]!!["commentator"]!!["profile_picture"] as! String)!)!)
         }
+        socket.connect()
     }
     func initSocket()
     {
-        
+        print("init Socket")
         let url = NSURL(fileURLWithPath: "http://192.168.9.117:3008")
         
         let socket = SocketIOClient(socketURL: url)
+        socket.joinNamespace("/websocket")
         socket.on("ack-connected") {data, ack in
             /// Join room.
-            socket.emit("join", "demo/room-1")
+            socket.emit("join", "batman")
             
+            print("Alldata : \(data)")
             /// Leave room.
             /// socket.emit("leave", "user/anonymous")
         }
-        socket.connect()
+        
 
         
         socket.on("message:new") {data, ack in
@@ -1376,6 +1380,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             //                ack.with("Got your currentAmount", "dude")
             //            }
         }
+        socket.connect()
         /// Setup channel:event handlers.
         
         //        socket.on("message:new") {data, ack in
