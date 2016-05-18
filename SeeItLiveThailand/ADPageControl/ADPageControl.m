@@ -25,6 +25,7 @@
 #import "AppDelegate.h"
 #import <CoreLocation/CoreLocation.h>
 
+
 //Constants
 #define DEFAULT_TAB_TEXT_FONT [UIFont fontWithName:@"Helvetica" size:15]
 #define DEFAULT_PAGE_INDICATOR_HEIGHT 3
@@ -93,6 +94,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
     // Check for iOS 8. Without this guard the code will crash with "unknown selector" on iOS 7.

@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/ADPageControl/ADPageControl.m"
-            timestampString = "485250772.081254"
+            timestampString = "485253721.732511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
             landmarkName = "constraintPageIndicatorLeading"
             landmarkType = "19">
             <Locations>

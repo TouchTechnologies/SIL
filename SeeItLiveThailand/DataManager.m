@@ -340,8 +340,10 @@ static DataManager *staticManager = nil;
     
     NSMutableArray *recordObjects = [NSMutableArray array];
     
+//    NSLog(@"All recordObjects %@",record);
     for (NSDictionary *stmRecord in record) {
         Streaming *stream = [[Streaming alloc] init];
+        stream.ID = stmRecord[@"id_stream"];
         stream.userID = stmRecord[@"user_id"];
         stream.streamID = stmRecord[@"id_stream"];
         stream.streamTitle = stmRecord[@"title"];
@@ -364,6 +366,7 @@ static DataManager *staticManager = nil;
         stream.category = stmRecord[@"category_stream"][@"category_name_en"];
         stream.categoryID = [stmRecord[@"category_id"] integerValue];
         stream.categoryCountStream = stmRecord[@"category_stream"][@"count_stream"];
+        stream.count_comment = stmRecord[@"count_comment"];
         
         //NSLog(@"%@",stream.avatarUrl);
         
@@ -380,6 +383,7 @@ static DataManager *staticManager = nil;
 //    NSLog(@"RecordMyStream %@",record);
     for (NSDictionary *stmRecord in record) {
         Streaming *stream = [[Streaming alloc] init];
+        stream.ID = stmRecord[@"id_stream"];
         stream.userID = stmRecord[@"user_id"];
         stream.streamID = stmRecord[@"id_stream"];
         stream.streamTitle = stmRecord[@"title"];
@@ -399,6 +403,7 @@ static DataManager *staticManager = nil;
         stream.latitude = stmRecord[@"latitude"];
         stream.longitude = stmRecord[@"longitude"];
         stream.avatarUrl = stmRecord[@"user"][@"profile_picture"];
+        stream.count_comment = stmRecord[@"count_comment"];
         
         
 //        NSLog(@"stream title :%@",stmRecord[@"title"]);
