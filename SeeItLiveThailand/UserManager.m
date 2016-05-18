@@ -442,6 +442,32 @@ static UserManager * shareObject;
             completion(error,nil,@"Failed");
         }];
         
+    }else if([apiName isEqualToString:@"loveLive"]) {
+        apiName = [streamID stringByAppendingString:@"/loves"];
+        NSString *apiLink = [@"api/stream/live/" stringByAppendingString:apiName];
+        NSLog(@"Full love API : %@",apiLink);
+        [manager POST:[service stringByAppendingString:apiLink] parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
+            
+            completion(nil,responseObject,@"Success");
+            //        NSLog(@"Data : %@",responseObject);
+            
+        } failure:^(AFHTTPRequestOperation *  operation, NSError *  error) {
+            completion(error,nil,@"Failed");
+        }];
+    }else if ([apiName isEqualToString:@"unloveLive"])
+    {
+        apiName = [streamID stringByAppendingString:@"/loves"];
+        NSString *apiLink = [@"api/stream/live/" stringByAppendingString:apiName];
+        NSLog(@"Full love API : %@",apiLink);
+        [manager DELETE:[service stringByAppendingString:apiLink] parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
+            
+            completion(nil,responseObject,@"Success");
+            //        NSLog(@"Data : %@",responseObject);
+            
+        } failure:^(AFHTTPRequestOperation *  operation, NSError *  error) {
+            completion(error,nil,@"Failed");
+        }];
+        
     }
     
 }

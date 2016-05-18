@@ -296,7 +296,7 @@
             
        //     [hud hide:YES];
             if (success) {
-//                NSLog(@"streamRecords : %@",streamRecords);
+                NSLog(@"streamRecords : %@",streamRecords);
                 weakSelf.streamList = streamRecords;
                 self.lblVideoCount.text = [NSString stringWithFormat:@"%d",streamRecords.count];
                 _lblNoStream.hidden = YES;

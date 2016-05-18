@@ -410,11 +410,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/StreamingDetailViewController.m"
-            timestampString = "485259564.752015"
+            timestampString = "485259895.224459"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1327"
-            endingLineNumber = "1327"
+            startingLineNumber = "1325"
+            endingLineNumber = "1325"
             landmarkName = "-setSocket:"
             landmarkType = "5">
          </BreakpointContent>

@@ -801,10 +801,10 @@
     }
 }
 
-//- (void)viewDidDisappear:(BOOL)animated{
-//    NSLog(@"disconnect socket");
-//    [socket disconnect];
-//}
+- (void)viewDidDisappear:(BOOL)animated{
+    NSLog(@"disconnect socket");
+    [socket disconnect];
+}
 - (void)viewDidAppear:(BOOL)animated {
     
 

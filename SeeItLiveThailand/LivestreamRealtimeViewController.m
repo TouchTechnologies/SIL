@@ -315,7 +315,7 @@
     
     lblViewCount = [[UILabel alloc] initWithFrame:lblViewCountPortRect];
     lblViewCount.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    lblViewCount.text = self.objStreaming.streamTotalView;
+    lblViewCount.text = self.objStreaming.watchedCount;
     lblViewCount.textColor = [UIColor whiteColor];
     lblViewCount.backgroundColor = [UIColor clearColor];
     lblViewCount.textAlignment = NSTextAlignmentLeft;
@@ -657,7 +657,7 @@
      NSLog (@"Tag !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     if(!self.objStreaming.isLoved)
     {
-        [[UserManager shareIntance] loveAPI:@"love" streamID:self.objStreaming.streamID userID:@"" Completion:^(NSError *error, NSDictionary *result, NSString *message) {
+        [[UserManager shareIntance] loveAPI:@"loveLive" streamID:self.objStreaming.ID userID:@"" Completion:^(NSError *error, NSDictionary *result, NSString *message) {
             
             NSLog(@"loveSendresult : %@",result);
                         self.objStreaming.lovesCount++;
@@ -671,7 +671,7 @@
         }];
     }else
     {
-        [[UserManager shareIntance] loveAPI:@"unlove" streamID:self.objStreaming.streamID userID:@"" Completion:^(NSError *error, NSDictionary *result, NSString *message) {
+        [[UserManager shareIntance] loveAPI:@"unloveLive" streamID:self.objStreaming.ID userID:@"" Completion:^(NSError *error, NSDictionary *result, NSString *message) {
             
             NSLog(@"unloveloveSendresult : %@",result);
            

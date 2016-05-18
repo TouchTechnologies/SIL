@@ -15,7 +15,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
 {
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-    
+    var socket:SocketIOClient? = nil;
     
     var comments = NSMutableArray()
     //    @IBOutlet var previewView: UIView!
@@ -256,7 +256,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
                     print("Key : \(self.streamKey!)")
                     
                     self.titletopLbl.text = (result["title"] as! String)
-                    self.setSocket(result["id"] as! Int)
+                    self.setSocketLive(result["id"] as! Int)
                     self.session.startRtmpSessionWithURL(self.streamURL!, andStreamKey: self.streamKey!)
                     
                     
@@ -1194,6 +1194,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         
     }
     override func viewDidDisappear(animated: Bool) {
+        print("disconnect socket")
         
     }
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
@@ -1317,27 +1318,27 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         
     }
     
-    func setSocket(roomID:Int) {
+    func setSocketLive(roomID:Int) {
         print("room ID \(roomID)")
-        let socket = SocketIOClient(socketURL: NSURL(string: SocketURL)!, options: [.Log(true), .ForcePolling(true)])
-        socket.joinNamespace("/websocket")
-        socket.on("ack-connected") {data, ack in
-            socket.emit("join", "streamlive/\(roomID)")
+        socket = SocketIOClient(socketURL: NSURL(string: SocketURL)!, options: [.Log(true), .ForcePolling(true)])
+        socket!.joinNamespace("/websocket")
+        socket!.on("ack-connected") {data, ack in
+            self.socket!.emit("join", "streamlive/\(roomID)")
             print("socket connected")
             print("socket Data \(data)")
             
         }
         
-        socket.on("lovescount:update") {data, ack in
+        socket!.on("lovescount:update") {data, ack in
             print("lovescount:update :  \(data)")
             print("lovescount:update ::: \(data[0]["data"]!!["loves_count"] as! String)")
             self.lovecountLbl.text = data[0]["data"]!!["loves_count"] as? String
         }
-        socket.on("watchedcount:update") { data, ack in
+        socket!.on("watchedcount:update") { data, ack in
             print("watchedcount:update ::: \(data[0]["data"]!!["watchedCount"] as! String)")
             self.viewcountLbl.text = data[0]["data"]!!["watchedCount"] as? String
         }
-        socket.on("comment:new") { data, ack in
+        socket!.on("comment:new") { data, ack in
             print("comment:new ::: \(data[0]["data"]!!["comment_content"] as! String)")
             
             let comment = Commentator()
@@ -1350,7 +1351,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             //            self.lblUserName.text = data[0]["data"]!!["commentator"]!!["first_name"] as? String
             //            self.imgUserChat.image = UIImage(data: NSData(contentsOfURL: NSURL(string: data[0]["data"]!!["commentator"]!!["profile_picture"] as! String)!)!)
         }
-        socket.connect()
+        socket!.connect()
     }
     func initSocket()
     {
