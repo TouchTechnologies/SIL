@@ -703,11 +703,11 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"lovepress" object:nil];
     UIWindow *tempWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
-    hud = [[MBProgressHUD alloc] initWithWindow:tempWindow];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    // hud.labelText = @"Loading...";
-    [tempWindow addSubview:hud];
-    [hud show:YES];
+//    hud = [[MBProgressHUD alloc] initWithWindow:tempWindow];
+//    hud.mode = MBProgressHUDModeIndeterminate;
+//    // hud.labelText = @"Loading...";
+//    [tempWindow addSubview:hud];
+//    [hud show:YES];
     
     if(!stream.isLoved)
     {
@@ -718,7 +718,7 @@
             stream.lovesCount++;
             
             [self.gridView reloadData];
-            [hud hide:YES];
+ //           [hud hide:YES];
         }];
         
     }
@@ -732,7 +732,7 @@
             stream.isLoved = false;
             
             [self.gridView reloadData];
-            [hud hide:YES];
+   //         [hud hide:YES];
             
         }];
         

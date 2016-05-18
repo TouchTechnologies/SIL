@@ -199,7 +199,7 @@
         
         fontSize = 16.0 * scx;
         titleHeight = 45.0 * scy;
-        titleWidth = width/(1.4 * scx);
+        titleWidth = width/1.4;
         indicatorHeight = 5.0 * scy;
         rcBarH = 70.0* scy;
         rcGrapY = 200.0* scy;
