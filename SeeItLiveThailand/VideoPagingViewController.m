@@ -896,14 +896,14 @@
                     
                     if (weakSelf.vdoList.count == 0) {
                         NSLog(@"getDataFromWebAPI");
-                        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-                        hud.mode = MBProgressHUDModeIndeterminate;
-                        hud.labelText = @"Loading data...";
-                        [hud show:YES];
+//                        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+//                        hud.mode = MBProgressHUDModeIndeterminate;
+//                        hud.labelText = @"Loading data...";
+//                        [hud show:YES];
                         
                         [[DataManager shareManager] getCCTVwithCompletionBlock:^(BOOL success, NSArray *roiRecords, NSError *error) {
                             weakSelf.vdoList = roiRecords;
-                            [hud hide:YES];
+//                            [hud hide:YES];
                             [self initial];
                             [self pageView];
                             //                            [weakSelf.tblViewVideo reloadData];

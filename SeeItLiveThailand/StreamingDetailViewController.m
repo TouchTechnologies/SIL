@@ -560,15 +560,15 @@
     
     moreBtn = [[UIButton alloc] initWithFrame: moreBtnRect];
     moreBtn.layer.borderWidth = 1;
-    moreBtn.layer.borderColor = [UIColor grayColor].CGColor;
-    moreBtn.backgroundColor = [UIColor whiteColor];
+    moreBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    moreBtn.backgroundColor = [UIColor redColor];
     moreBtn.layer.cornerRadius = moreBtnRect.size.height/2;
     moreBtn.clipsToBounds = YES;
     UILabel *titlemoreLbl = [[UILabel alloc] initWithFrame:moreBtn.bounds];
-    titlemoreLbl.text = @"more";
+    titlemoreLbl.text = @"Live Around";
     titlemoreLbl.textAlignment = NSTextAlignmentCenter;
     titlemoreLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize];
-    titlemoreLbl.textColor = [UIColor grayColor];
+    titlemoreLbl.textColor = [UIColor whiteColor];
     [moreBtn addSubview:titlemoreLbl];
     [moreBtn addTarget:self action:@selector(clickmore:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -713,7 +713,7 @@
         
         
 
-        moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - (40*scx), liveIncategoryTblRect.origin.y + liveIncategoryTblRect.size.height + (10*scy) , 80*scx, 30*scy);
+        moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - (40*scx), mapImgRect.origin.y +mapImgRect.size.height/2, 80*scx, 30*scy);
         
         
 
@@ -792,7 +792,7 @@
         
         
         
-         moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - 40, liveIncategoryTblRect.origin.y + liveIncategoryTblRect.size.height + 10 , 80, 30);
+         moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - 40,mapImgRect.origin.y +mapImgRect.size.height/2 , 80, 30);
         
         
         

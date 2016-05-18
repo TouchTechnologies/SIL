@@ -150,8 +150,8 @@
         imgPHW02 = 25.0 * scx;
         fontSize = 18.0 * scy;
         
-        imgLive = CGRectMake((self.view.bounds.size.width/2) - (25*scx), 130*scy, 50*scx, 50*scy);
-        lblNoStreamRect = CGRectMake((self.view.bounds.size.width/2) - (150*scx), 200*scy, 400*scx, 50*scy);
+        imgLive = CGRectMake((self.view.bounds.size.width/2) - (25*scx), 200*scy, 50*scx, 50*scy);
+        lblNoStreamRect = CGRectMake(0*scx, 250*scy, self.view.bounds.size.width, 30*scy);
         
         gridviewHeaderRect = CGRectMake(0* scx, 122*scy, self.view.bounds.size.width, 48*scy);
         viewHeaderRect = CGRectMake(0* scx, 0*scy, self.view.bounds.size.width, 120*scy);
@@ -177,8 +177,8 @@
         imgPHW02 = 25.0;
         fontSize = 18.0;
         
-        imgLive = CGRectMake((self.view.bounds.size.width/2) - 25.0f, 130.0f, 50.0f, 50.0f);
-        lblNoStreamRect = CGRectMake((self.view.bounds.size.width/2) - 150.0f, 200.0f, 300.0f, 30.0f);
+        imgLive = CGRectMake((self.view.bounds.size.width/2) - 25.0f, 200, 50.0f, 50.0f);
+        lblNoStreamRect = CGRectMake(0, self.view.bounds.size.height - 100, self.view.bounds.size.width, 30);
         
         gridviewHeaderRect = CGRectMake(0, 122, self.view.bounds.size.width, 48);
         viewHeaderRect = CGRectMake(0, 0, self.view.bounds.size.width, 120);
@@ -294,7 +294,7 @@
         [[DataManager shareManager] getMyStreamingWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
             
             
-//            [hud hide:YES];
+       //     [hud hide:YES];
             if (success) {
 //                NSLog(@"streamRecords : %@",streamRecords);
                 weakSelf.streamList = streamRecords;
@@ -310,7 +310,7 @@
             [weakSelf.gridView reloadData];
         }];
     }else{
-//        [hud hide:YES];
+   //     [hud hide:YES];
         NSLog(@"is not login ");
         //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Please Login" message:@"go Login" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
         //        [alert show];
@@ -341,7 +341,7 @@
     [[DataManager shareManager] getMyStreamingWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
         
         
-//        [hud hide:YES];
+  //      [hud hide:YES];
         if (success) {
 //            NSLog(@"streamRecords : %@",streamRecords);
             weakSelf.streamList = streamRecords;
