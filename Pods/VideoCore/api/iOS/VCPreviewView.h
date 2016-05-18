@@ -28,5 +28,5 @@
 @interface VCPreviewView : UIView
 
 - (void) drawFrame: (CVPixelBufferRef) pixelBuffer;
-- (void) videoPlayer:(VCPreviewView *)videoPlayer didChangeOrientationFrom:(UIInterfaceOrientation)orientation;
+
 @end

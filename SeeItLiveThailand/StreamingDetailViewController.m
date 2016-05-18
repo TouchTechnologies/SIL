@@ -211,7 +211,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self initSocket];
+//    [self initSocket];
     [self initialSize];
     [self initial];
     [self addLabel];

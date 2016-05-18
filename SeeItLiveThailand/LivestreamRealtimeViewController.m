@@ -158,7 +158,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self initSocket];
+//    [self initSocket];
     [self initialSize];
     [self initialPort];
     [self addLabel];
