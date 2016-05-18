@@ -51,6 +51,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     var topCenView:UIView?
     var titleIconImg:UIImageView?
     var titleLbl:UILabel?
+    var locationName:NSString?
     var titleTxt:UITextField?
     
     var selectCatLbl:UILabel?
@@ -231,7 +232,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         case .None, .PreviewStarted, .Ended, .Error:
             // session.startRtmpSessionWithURL("rtmp://10.49.0.107:1935/pon", andStreamKey: "myStream")  Name+Sur_2016_01_31
             let stream = UserManager()
-            let title:String = (titleTxt!.text != "" ) ? titleTxt!.text! : "\(appDelegate.first_name) \(appDelegate.last_name)_\(appDelegate.date)"
+            let title:String = (titleTxt!.text != "" ) ? "\(titleTxt!.text!)_\(appDelegate.date)" : "\(appDelegate.first_name) \(appDelegate.last_name)_\(appDelegate.date)"
             print("Title : \(title) Category ID : \(catID)")
             stream.getStreamURL(title,categoryID: catID, note: "",dateTime: dateTime) { (error , result , message) in
                 
@@ -1400,6 +1401,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         // Add below code to get address for touch coordinates.
         let geoCoder = CLGeocoder()
         let location = CLLocation(latitude: appDelegate.latitute, longitude: appDelegate.longitude)
+        locationName = ""
         
         geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) -> Void in
             
@@ -1408,37 +1410,61 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             placeMark = placemarks?[0]
             
             // Address dictionary
-            print(placeMark.addressDictionary)
+            print("All address : \(placeMark.addressDictionary)")
             
             // Location name
             if let locationName = placeMark.addressDictionary!["Name"] as? NSString {
-                print(locationName)
+                print("Name : \(locationName)")
             }
             
             // Street address
             if let street = placeMark.addressDictionary!["Thoroughfare"] as? NSString {
-                print(street)
+                print("Thoroughfare : \(street)")
             }
-            
+            // State
+            if let state = placeMark.addressDictionary!["State"] as? NSString {
+                print("State : \(state)")
+                self.locationName = state
+            }
             // City
             if let city = placeMark.addressDictionary!["City"] as? NSString {
-                print(city)
+                print("City : \(city)")
+                self.locationName = "\(self.locationName!) \(city)"
                 self.locateLbl.text = city as String
-                
                 self.locationLbl!.text = city as String
+                self.titleTxt?.text = (self.locationName as! String)
+                print("Location Name : \(self.locationName)")
             }
+
             
             // Zip code
             if let zip = placeMark.addressDictionary!["ZIP"] as? NSString {
-                print(zip)
+                print("ZIP : \(zip)")
             }
             
             // Country
             if let country = placeMark.addressDictionary!["Country"] as? NSString {
-                print(country)
+                print("Country : \(country)")
             }
+
+            
             
         })
         
     }
 }
+
+// address dictionary properties
+//public var name: String? { get } // eg. Apple Inc.
+//public var thoroughfare: String? { get } // street name, eg. Infinite Loop
+//public var subThoroughfare: String? { get } // eg. 1
+//public var locality: String? { get } // city, eg. Cupertino
+//public var subLocality: String? { get } // neighborhood, common name, eg. Mission District
+//public var administrativeArea: String? { get } // state, eg. CA
+//public var subAdministrativeArea: String? { get } // county, eg. Santa Clara
+//public var postalCode: String? { get } // zip code, eg. 95014
+//public var ISOcountryCode: String? { get } // eg. US
+//public var country: String? { get } // eg. United States
+//public var inlandWater: String? { get } // eg. Lake Tahoe
+//public var ocean: String? { get } // eg. Pacific Ocean
+//public var areasOfInterest: [String]? { get } // eg. Golden Gate Park

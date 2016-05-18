@@ -66,6 +66,7 @@
     CGRect detailViewRect;
     
     CGRect lblDesRect;
+    NSTimer * myTimer;
     
     
 }
@@ -78,11 +79,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    
   //  [commentRtn addTarget:self action:(goCommant) forControlEvents:UIControlEventTouchUpInside];
     navbar = [self.navigationController navigationBar];
     navbar.barTintColor = [UIColor colorWithRed:0.22 green:0.47 blue:0.7 alpha:1];
     self.navigationController.navigationItem.leftBarButtonItem.image = [UIImage imageNamed:@"bg_livestream_back.png"];
         // Do any additional setup after loading the view.
+    UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"< Back" style:UIBarButtonItemStyleBordered target:self action:@selector(backAction)];
+    self.navigationItem.leftBarButtonItem=newBackButton;
     
 
     [getDirectionBtn addTarget:self action:@selector(routeDirection) forControlEvents: UIControlEventTouchUpInside];
@@ -322,7 +326,7 @@
         
         NSArray *imgObj = @[imageView,cctvs.imageUrl];
         
-        [NSTimer scheduledTimerWithTimeInterval:3.0
+       myTimer = [NSTimer scheduledTimerWithTimeInterval:10.0
                                          target:self
                                        selector:@selector(LoadNewImage:)
                                        userInfo:imgObj
@@ -507,7 +511,7 @@
 }
 - (void)LoadNewImage:(NSTimer*)theTimer {
     
-    NSLog(@"New Image");
+//    NSLog(@"New Image");
     NSArray *imgObj = (NSArray *)[theTimer userInfo];
     NSString *imgUrl = [imgObj objectAtIndex:1];
     UIImageView *imageView1 = [imgObj objectAtIndex:0];
@@ -516,7 +520,7 @@
     
     imgUrl = [imgUrl stringByAppendingFormat:@"&reloadtime=%d", r];
     
-    //NSLog(@"%@",imgUrl);
+//    NSLog(@"image reload : %@",imgUrl);
     
     CGFloat scWidth = self.ssView.frame.size.width;
     //CGFloat imgHeight = 180;
@@ -557,6 +561,18 @@
     
 }
 
+- (void)backAction{
+    NSLog(@"backAction");
+    [myTimer invalidate];
+    myTimer = nil;
+    [self.navigationController popViewControllerAnimated:TRUE];
+}
+- (void)viewDidDisappear:(BOOL)animated
+{
+    NSLog(@"viewDidDisappear");
+    [myTimer invalidate];
+    myTimer = nil;
+}
 - (void)LoadDesc {
     CCTVS *cctvs = [self.roi.cctvs objectAtIndex:self.rowIndex];
     
@@ -942,6 +958,7 @@ applicationActivities:nil];
 //    
 //    
 //}
+
 - (void) orientationChanged:(NSNotification *)note
 {
     NSLog(@"orientationChanged");

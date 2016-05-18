@@ -608,6 +608,7 @@
         
     }
     
+    NSLog(@"<<<<<<<<<<<<<<<<<== %lu ==>>>>>>>>>>>>>>>>>>>>>>>",(unsigned long)[indexPath index]);
     UITapGestureRecognizer* playStream = [[UITapGestureRecognizer alloc]
                                           initWithTarget:self action:@selector(play:)];
     [playStream setNumberOfTouchesRequired:1];
@@ -615,7 +616,7 @@
     cell.imgSnapshot.userInteractionEnabled = YES;
     cell.imgSnapshot.tag = [indexPath index];
     [cell.imgSnapshot addGestureRecognizer:playStream];
-    [cell addGestureRecognizer:playStream];
+//    [cell addGestureRecognizer:playStream];
     
     
     UITapGestureRecognizer* goProfile = [[UITapGestureRecognizer alloc]

@@ -62,7 +62,7 @@ static DataManager *staticManager = nil;
             NSError *jsonParsingError = nil;
             NSDictionary *jsonResults = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonParsingError];
             
-            NSLog(@"DATA ROI %@",jsonResults);
+//            NSLog(@"DATA ROI %@",jsonResults);
             
             [weakSelf createRoiObjectForRecords:(NSArray *)jsonResults];
         } else {
@@ -148,7 +148,7 @@ static DataManager *staticManager = nil;
             NSLog(@"insert CCTV");
             [modelManager insertCCTVSData:model_cctvObjects];
             
-            NSLog(@"cctvObjects %@",model_cctvObjects);
+//            NSLog(@"cctvObjects %@",model_cctvObjects);
             
             roi.roiName = roiRecord[@"provider_information_tag_name"];
             roi.roiTagKeyName = roiRecord[@"id_provider_information_tag_keyname"];

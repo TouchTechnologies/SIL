@@ -23,6 +23,7 @@
 
 #import "ADPageControl.h"
 #import "AppDelegate.h"
+#import <CoreLocation/CoreLocation.h>
 
 //Constants
 #define DEFAULT_TAB_TEXT_FONT [UIFont fontWithName:@"Helvetica" size:15]
@@ -71,6 +72,7 @@
 //To hide, add lines _viewLeftDummy.hidden = YES; _viewRightDummy.hidden = YES; in viewDidLoad
 @property (strong, nonatomic) IBOutlet UIView               *viewLeftDummy;
 @property (strong, nonatomic) IBOutlet UIView               *viewRightDummy;
+@property (nonatomic,strong) CLLocationManager *locationManager;
 
 //Private methods
 -(void)validateFirstVisiblePageNumber;
@@ -91,6 +93,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    // Check for iOS 8. Without this guard the code will crash with "unknown selector" on iOS 7.
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        [self.locationManager requestWhenInUseAuthorization];
+    }
+    [self.locationManager startUpdatingLocation];
+    [self.locationManager pausesLocationUpdatesAutomatically];
     // Do any additional setup after loading the view from its nib.
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -675,6 +685,28 @@
         appDelegate.pageName = @"";
     }
     
+}
+#pragma mark - CLLocationManagerDelegate
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+    NSLog(@"didFailWithError: %@", error);
+    UIAlertView *errorAlert = [[UIAlertView alloc]
+                               initWithTitle:@"Error" message:@"Failed to Get Your Location" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [errorAlert show];
+}
+
+// Location Manager Delegate Methods
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
+    CLLocation *newLocation = locations.lastObject;
+    
+    
+    NSLog(@"currentLocation.coordinate.latitude  %@",[NSString stringWithFormat:@"%.8f", newLocation.coordinate.latitude]);
+    NSLog(@"currentLocation.coordinate.longitude %@",[NSString stringWithFormat:@"%.8f", newLocation.coordinate.longitude]);
+    appDelegate.latitute = newLocation.coordinate.latitude;
+    appDelegate.longitude = newLocation.coordinate.longitude;
 }
 
 @end
