@@ -62,7 +62,7 @@ static DataManager *staticManager = nil;
             NSError *jsonParsingError = nil;
             NSDictionary *jsonResults = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonParsingError];
             
-            NSLog(@"DATA ROI %@",jsonResults);
+//            NSLog(@"DATA ROI %@",jsonResults);
             
             [weakSelf createRoiObjectForRecords:(NSArray *)jsonResults];
         } else {
@@ -148,7 +148,7 @@ static DataManager *staticManager = nil;
             NSLog(@"insert CCTV");
             [modelManager insertCCTVSData:model_cctvObjects];
             
-            NSLog(@"cctvObjects %@",model_cctvObjects);
+//            NSLog(@"cctvObjects %@",model_cctvObjects);
             
             roi.roiName = roiRecord[@"provider_information_tag_name"];
             roi.roiTagKeyName = roiRecord[@"id_provider_information_tag_keyname"];
@@ -340,8 +340,10 @@ static DataManager *staticManager = nil;
     
     NSMutableArray *recordObjects = [NSMutableArray array];
     
+//    NSLog(@"All recordObjects %@",record);
     for (NSDictionary *stmRecord in record) {
         Streaming *stream = [[Streaming alloc] init];
+        stream.ID = stmRecord[@"id_stream"];
         stream.userID = stmRecord[@"user_id"];
         stream.streamID = stmRecord[@"id_stream"];
         stream.streamTitle = stmRecord[@"title"];
@@ -364,6 +366,7 @@ static DataManager *staticManager = nil;
         stream.category = stmRecord[@"category_stream"][@"category_name_en"];
         stream.categoryID = [stmRecord[@"category_id"] integerValue];
         stream.categoryCountStream = stmRecord[@"category_stream"][@"count_stream"];
+        stream.count_comment = stmRecord[@"count_comment"];
         
         //NSLog(@"%@",stream.avatarUrl);
         
@@ -380,6 +383,7 @@ static DataManager *staticManager = nil;
 //    NSLog(@"RecordMyStream %@",record);
     for (NSDictionary *stmRecord in record) {
         Streaming *stream = [[Streaming alloc] init];
+        stream.ID = stmRecord[@"id_stream"];
         stream.userID = stmRecord[@"user_id"];
         stream.streamID = stmRecord[@"id_stream"];
         stream.streamTitle = stmRecord[@"title"];
@@ -387,6 +391,9 @@ static DataManager *staticManager = nil;
         stream.streamUpdateDate = stmRecord[@"updatedate"];
         stream.streamTotalView = stmRecord[@"watchedCount"];
         stream.streamCreateDate = stmRecord[@"createdate"];
+        
+        stream.watchingCount = stmRecord[@"watchingCount"];
+        stream.watchedCount = stmRecord[@"watchedCount"];
         stream.lovesCount = [stmRecord[@"loves_count"] integerValue];
         stream.isLoved = [stmRecord[@"is_loved"] integerValue];
         stream.web_url = stmRecord[@"web_url"];
@@ -399,6 +406,7 @@ static DataManager *staticManager = nil;
         stream.latitude = stmRecord[@"latitude"];
         stream.longitude = stmRecord[@"longitude"];
         stream.avatarUrl = stmRecord[@"user"][@"profile_picture"];
+        stream.count_comment = stmRecord[@"count_comment"];
         
         
 //        NSLog(@"stream title :%@",stmRecord[@"title"]);
@@ -452,7 +460,7 @@ static DataManager *staticManager = nil;
 
 - (void)createStreamingLiveObjectForRecords:(NSDictionary *)records {
     
-    //NSLog(@"%@",records);
+    NSLog(@"createStreamingLiveObjectForRecords : %@",records);
     //NSLog(@"%@",records[@"status"]);
     //NSLog(@"%@",records[@"message"]);
     
@@ -469,11 +477,15 @@ static DataManager *staticManager = nil;
             
             for (NSDictionary *stmRecord in channel[@"streamings"]) {
                 Streaming *stream = [[Streaming alloc] init];
+                stream.ID = stmRecord[@"id"];
                 stream.streamID = stmRecord[@"streamingID"];
                 stream.streamTitle = stmRecord[@"title"];
                 stream.snapshot = stmRecord[@"snapshots"][@"320x240"];
                 stream.streamUrl = stmRecord[@"urls"][@"http"];
-//                stream.isLoved = [NSString stringWithFormat:@"%@", stmRecord[@"is_loved"]];
+                stream.isLoved = ([stmRecord[@"is_loved"] integerValue] == 1) ? TRUE : FALSE;
+                stream.lovesCount = [stmRecord[@"loves_count"] integerValue];
+                stream.watchingCount = stmRecord[@"watchingCount"];
+                stream.watchedCount = stmRecord[@"watchedCount"];
                 //stream.timeCreate = stmRecord[@"createdate"];
                 stream.createBy = stmRecord[@"user"][@"first_name"];
                 stream.latitude = stmRecord[@"geolocation"][@"latitude"];
@@ -481,6 +493,7 @@ static DataManager *staticManager = nil;
                 stream.avatarUrl = stmRecord[@"user"][@"profile_picture"];
                 
                 NSLog(@"%@",stream.avatarUrl);
+                NSLog(@"stmRecord Love : %@",stmRecord[@"is_loved"]);
                 
                 [recordObjects addObject:stream];
             }

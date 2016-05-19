@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 @interface Streaming : NSObject
+@property (nonatomic, strong) NSString *ID;
+
 @property (nonatomic, strong) NSString *streamID;
 @property (nonatomic, strong) NSString *userID;
 @property (nonatomic, strong) NSString *streamTitle;
@@ -16,12 +18,15 @@
 @property (nonatomic, strong) NSString *streamUpdateDate;
 @property (nonatomic, strong) NSString *streamTotalView;
 @property (nonatomic, strong) NSString *category;
+@property (nonatomic, strong) NSString *categoryName;
 @property NSInteger categoryID;
 @property (nonatomic, strong) NSString *categoryCountStream;
+@property (nonatomic, strong) NSString *count_comment;
 @property  NSInteger lovesCount;
 @property _Bool isLoved;
 @property _Bool isPublic;
 @property (nonatomic, strong) NSString *watchedCount;
+@property (nonatomic, strong) NSString *watchingCount;
 @property (nonatomic, strong) NSString *web_url;
 
 @property (nonatomic, strong) NSString *snapshot;

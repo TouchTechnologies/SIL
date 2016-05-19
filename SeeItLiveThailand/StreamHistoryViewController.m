@@ -437,23 +437,23 @@
     
     UIImage *imgPH = [self resizeImage:[UIImage imageNamed:@"sil_big.jpg"] imageSize:CGSizeMake(imgWidth, imgHeight - imgPHW02)];
     
-    HNKCacheFormat *format = [HNKCache sharedCache].formats[@"thumbnailHis"];
-    if (!format)
-    {
-        format = [[HNKCacheFormat alloc] initWithName:@"thumbnailHis"];
-        format.size = CGSizeMake(imgWidth, imgHeight - imgPHW02);
-        format.scaleMode = HNKScaleModeFill;
-        format.compressionQuality = 1;
-        format.diskCapacity = 10 * 1024 * 1024; // 1MB
-        format.preloadPolicy = HNKPreloadPolicyLastSession;
-        //format.allowUpscaling = YES;
-        
-    }
+//    HNKCacheFormat *format = [HNKCache sharedCache].formats[@"thumbnailHis"];
+//    if (!format)
+//    {
+//        format = [[HNKCacheFormat alloc] initWithName:@"thumbnailHis"];
+//        format.size = CGSizeMake(imgWidth, imgHeight - imgPHW02);
+//        format.scaleMode = HNKScaleModeFill;
+//        format.compressionQuality = 1;
+//        format.diskCapacity = 10 * 1024 * 1024; // 1MB
+//        format.preloadPolicy = HNKPreloadPolicyLastSession;
+//        //format.allowUpscaling = YES;
+//        
+//    }
     
     NSURL *urlAvatar = [NSURL URLWithString:stream.avatarUrl];
     [cell.imgAvatar hnk_setImageFromURL:urlAvatar];
 
-    cell.imgSnapshot.hnk_cacheFormat = format;
+//    cell.imgSnapshot.hnk_cacheFormat = format;
     
     NSURL *url = [NSURL URLWithString:stream.snapshot];
     [cell.imgSnapshot hnk_setImageFromURL:url placeholder:imgPH];
@@ -467,7 +467,7 @@
     cell.lblCreateBy.text = stream.createBy;
     cell.lblViewCount.text = stream.streamTotalView;
     cell.lblLoveCount.text = [NSString stringWithFormat:@"%ld",(long)stream.lovesCount];
-    
+    cell.lblCategoryTitle.text = stream.category;
     
     NSLog(@"isLove : %d",stream.isLoved);
     if (stream.isLoved && appDelegate.isLogin) {

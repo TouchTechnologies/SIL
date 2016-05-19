@@ -209,7 +209,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    [self initSocket];
     [self initialSize];
     [self initial];
     [self addLabel];
@@ -265,7 +264,8 @@
     
     self.player = [[VKVideoPlayer alloc] init];
     profileView.hidden = FALSE;
-    
+    NSLog(@"streamID %@",self.objStreaming.ID);
+    [self setSocket:[self.objStreaming.ID integerValue]];
     CGFloat ss;
     ss = 100;
     
@@ -487,7 +487,7 @@
     
     lblCommentCount = [[UILabel alloc] initWithFrame:lblCommentCountPortRect];
     lblCommentCount.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    lblCommentCount.text = @"0";
+    lblCommentCount.text = (self.objStreaming.count_comment != nil)?[NSString stringWithFormat:@"%@" ,self.objStreaming.count_comment]:@"0";
     lblCommentCount.textColor = [UIColor whiteColor];
     lblCommentCount.backgroundColor = [UIColor clearColor];
     lblCommentCount.textAlignment = NSTextAlignmentLeft;
@@ -846,7 +846,10 @@
     }
 }
 
-
+- (void)viewDidDisappear:(BOOL)animated{
+    NSLog(@"disconnect socket");
+    [socket disconnect];
+}
 - (void)viewDidAppear:(BOOL)animated {
     
 
@@ -1364,49 +1367,74 @@
     CGFloat height = [UIScreen mainScreen].bounds.size.height;
     [self.view setFrame:CGRectMake(0,0,width,height)];
 }
-- (void)initSocket
+- (void)setSocket:(int)roomID
 {
-    NSURL* url = [[NSURL alloc] initWithString:@"http://192.168.9.117:3008"];
+    NSLog(@"setSocket RoomID : %d",roomID);
+    NSURL* url = [[NSURL alloc] initWithString:SocketURL];
     //socket
-    SocketIOClient* socket = [[SocketIOClient alloc] initWithSocketURL:url options:nil];
+    socket = [[SocketIOClient alloc] initWithSocketURL:url options:nil];
 
     [socket joinNamespace:@"/websocket"];
     
     [socket on:@"ack-connected" callback:^(NSArray* data, SocketAckEmitter* ack) {
         NSLog(@"socket connected %@",data);
-        [socket emit:@"join" withItems:@[@"demo/room-2"]];
+        NSString* roomName = [@"streaming/" stringByAppendingString:[NSString stringWithFormat:@"%d",roomID]];
+        [socket emit:@"join" withItems:@[roomName]];
     }];
-//    [socket connect];
-    
+    [socket on:@"watchedcount:update" callback:^(NSArray* data, SocketAckEmitter* ack) {
+        NSLog(@"All watchedcount:update :%@",data);
+        lblViewCount.text = data[0][@"data"][@"watchedCount"];
+        
+        
+    }];
+    [socket on:@"lovescount:update" callback:^(NSArray* data, SocketAckEmitter* ack) {
+        NSLog(@"All lovescount:update :%@",data);
+        loveCount.text = data[0][@"data"][@"loves_count"];
+        
+        
+    }];
     
     [socket on:@"message:new" callback:^(NSArray* data, SocketAckEmitter* ack) {
         NSLog(@"HandlingEvent : %@",data);
-        NSError *jsonError;
-        NSData *objectData = [data[0] dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:objectData
-                                                             options:NSJSONReadingMutableContainers
-                                                               error:&jsonError];
-        //
-        if([json[@"message_type"]  isEqual: @"test"])
-        {
-            
-        
-            NSLog(@"message : %@",json[@"message"]);
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Socket Data"
-                                  
-                                                            message:json[@"message"]
-                                                           delegate:self
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
-        }
-        
-        
+
     }];
-    //    [socket connect];
+    [socket connect];
     //    NSArray *room = @[self.roomNameTxt.text];
     
 }
+//print("room ID \(roomID)")
+//let socket = SocketIOClient(socketURL: NSURL(string: SocketURL)!, options: [.Log(true), .ForcePolling(true)])
+//socket.joinNamespace("/websocket")
+//socket.on("ack-connected") {data, ack in
+//    socket.emit("join", "streamlive/\(roomID)")
+//    print("socket connected")
+//    print("socket Data \(data)")
+//    
+//}
+//
+//socket.on("lovescount:update") {data, ack in
+//    print("lovescount:update :  \(data)")
+//    print("lovescount:update ::: \(data[0]["data"]!!["loves_count"] as! String)")
+//    self.lovecountLbl.text = data[0]["data"]!!["loves_count"] as? String
+//}
+//socket.on("watchedcount:update") { data, ack in
+//    print("watchedcount:update ::: \(data[0]["data"]!!["watchedCount"] as! String)")
+//    self.viewcountLbl.text = data[0]["data"]!!["watchedCount"] as? String
+//}
+//socket.on("comment:new") { data, ack in
+//    print("comment:new ::: \(data[0]["data"]!!["comment_content"] as! String)")
+//    
+//    let comment = Commentator()
+//    comment.comment_content = data[0]["data"]!!["comment_content"] as? String
+//    comment.first_name = data[0]["data"]!!["commentator"]!!["first_name"] as? String
+//    comment.profile_picture = data[0]["data"]!!["commentator"]!!["profile_picture"] as! String
+//    self.comments.addObject(comment)
+//    self.tableView?.reloadData()
+//    //            self.lblTextChat.text = data[0]["data"]!!["comment_content"] as? String
+//    //            self.lblUserName.text = data[0]["data"]!!["commentator"]!!["first_name"] as? String
+//    //            self.imgUserChat.image = UIImage(data: NSData(contentsOfURL: NSURL(string: data[0]["data"]!!["commentator"]!!["profile_picture"] as! String)!)!)
+//}
+//socket.connect()
 
 
 
