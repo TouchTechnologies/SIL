@@ -391,6 +391,9 @@ static DataManager *staticManager = nil;
         stream.streamUpdateDate = stmRecord[@"updatedate"];
         stream.streamTotalView = stmRecord[@"watchedCount"];
         stream.streamCreateDate = stmRecord[@"createdate"];
+        
+        stream.watchingCount = stmRecord[@"watchingCount"];
+        stream.watchedCount = stmRecord[@"watchedCount"];
         stream.lovesCount = [stmRecord[@"loves_count"] integerValue];
         stream.isLoved = [stmRecord[@"is_loved"] integerValue];
         stream.web_url = stmRecord[@"web_url"];
@@ -481,6 +484,7 @@ static DataManager *staticManager = nil;
                 stream.streamUrl = stmRecord[@"urls"][@"http"];
                 stream.isLoved = ([stmRecord[@"is_loved"] integerValue] == 1) ? TRUE : FALSE;
                 stream.lovesCount = [stmRecord[@"loves_count"] integerValue];
+                stream.watchingCount = stmRecord[@"watchingCount"];
                 stream.watchedCount = stmRecord[@"watchedCount"];
                 //stream.timeCreate = stmRecord[@"createdate"];
                 stream.createBy = stmRecord[@"user"][@"first_name"];

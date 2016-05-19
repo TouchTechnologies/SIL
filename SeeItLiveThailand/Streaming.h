@@ -26,6 +26,7 @@
 @property _Bool isLoved;
 @property _Bool isPublic;
 @property (nonatomic, strong) NSString *watchedCount;
+@property (nonatomic, strong) NSString *watchingCount;
 @property (nonatomic, strong) NSString *web_url;
 
 @property (nonatomic, strong) NSString *snapshot;

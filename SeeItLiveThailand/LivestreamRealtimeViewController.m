@@ -188,13 +188,13 @@
     if (self.player.isFullScreen) {
 
         self.player.view.frame = CGRectMake(0,0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height); //self.view.bounds;
-        NSLog(@"NOT FULLSCREEN");
+        NSLog(@"NOT FULLSCREEN Live Realtime");
         self.player.view.doneButton.frame = doneButtonPortRect;
 
     }
     else{
         self.player.view.frame = CGRectMake(0,0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height/2); //self.view.bounds;
-        NSLog(@"NOT FULLSCREEN");
+        NSLog(@"NOT FULLSCREEN Live Realtime");
         self.player.view.doneButton.frame = doneButtonPortRect;
    }
     self.player.view.playerControlsAutoHideTime = @1000;
@@ -315,16 +315,14 @@
     
     lblViewCount = [[UILabel alloc] initWithFrame:lblViewCountPortRect];
     lblViewCount.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    lblViewCount.text = self.objStreaming.watchedCount;
+    NSLog(@"self.objStreaming.watchedCount %@",self.objStreaming.watchingCount);
+    lblViewCount.text = (self.objStreaming.watchingCount != nil)?self.objStreaming.watchingCount:@"0";
     lblViewCount.textColor = [UIColor whiteColor];
     lblViewCount.backgroundColor = [UIColor clearColor];
     lblViewCount.textAlignment = NSTextAlignmentLeft;
     lblViewCount.font = font;
     [propViewPort addSubview:lblViewCount];
     
-
-    
-  
   //  btnLove = [[UIButton alloc] initWithFrame:btnLoveRect];
     imgLoveIcon = [[UIImageView alloc] initWithFrame:imgLoveIconPortRect];
     imgLoveIcon.image = [UIImage imageNamed:@"love_noti.png"];
