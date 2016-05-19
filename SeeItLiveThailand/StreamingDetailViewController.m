@@ -848,7 +848,7 @@
 
 - (void)viewDidDisappear:(BOOL)animated{
     NSLog(@"disconnect socket");
-    [socket disconnect];
+   // [socket disconnect];
 }
 - (void)viewDidAppear:(BOOL)animated {
     
@@ -1370,35 +1370,35 @@
 - (void)setSocket:(int)roomID
 {
     NSLog(@"setSocket RoomID : %d",roomID);
-    NSURL* url = [[NSURL alloc] initWithString:SocketURL];
+//    NSURL* url = [[NSURL alloc] initWithString:SocketURL];
     //socket
-    socket = [[SocketIOClient alloc] initWithSocketURL:url options:nil];
-
-    [socket joinNamespace:@"/websocket"];
-    
-    [socket on:@"ack-connected" callback:^(NSArray* data, SocketAckEmitter* ack) {
-        NSLog(@"socket connected %@",data);
-        NSString* roomName = [@"streaming/" stringByAppendingString:[NSString stringWithFormat:@"%d",roomID]];
-        [socket emit:@"join" withItems:@[roomName]];
-    }];
-    [socket on:@"watchedcount:update" callback:^(NSArray* data, SocketAckEmitter* ack) {
-        NSLog(@"All watchedcount:update :%@",data);
-        lblViewCount.text = data[0][@"data"][@"watchedCount"];
-        
-        
-    }];
-    [socket on:@"lovescount:update" callback:^(NSArray* data, SocketAckEmitter* ack) {
-        NSLog(@"All lovescount:update :%@",data);
-        loveCount.text = data[0][@"data"][@"loves_count"];
-        
-        
-    }];
-    
-    [socket on:@"message:new" callback:^(NSArray* data, SocketAckEmitter* ack) {
-        NSLog(@"HandlingEvent : %@",data);
-
-    }];
-    [socket connect];
+//    socket = [[SocketIOClient alloc] initWithSocketURL:url options:nil];
+//
+//    [socket joinNamespace:@"/websocket"];
+//    
+//    [socket on:@"ack-connected" callback:^(NSArray* data, SocketAckEmitter* ack) {
+//        NSLog(@"socket connected %@",data);
+//        NSString* roomName = [@"streaming/" stringByAppendingString:[NSString stringWithFormat:@"%d",roomID]];
+//        [socket emit:@"join" withItems:@[roomName]];
+//    }];
+//    [socket on:@"watchedcount:update" callback:^(NSArray* data, SocketAckEmitter* ack) {
+//        NSLog(@"All watchedcount:update :%@",data);
+//        lblViewCount.text = data[0][@"data"][@"watchedCount"];
+//        
+//        
+//    }];
+//    [socket on:@"lovescount:update" callback:^(NSArray* data, SocketAckEmitter* ack) {
+//        NSLog(@"All lovescount:update :%@",data);
+//        loveCount.text = data[0][@"data"][@"loves_count"];
+//        
+//        
+//    }];
+//    
+//    [socket on:@"message:new" callback:^(NSArray* data, SocketAckEmitter* ack) {
+//        NSLog(@"HandlingEvent : %@",data);
+//
+//    }];
+//    [socket connect];
     //    NSArray *room = @[self.roomNameTxt.text];
     
 }
