@@ -15,6 +15,7 @@
 #import "UserProfileViewController.h"
 #import "UserManager.h"
 #import "AppDelegate.h"
+#import "Streaming.h"
 
 #import "SeeItLiveThailand-Swift.h"
 #import "LiveAroundViewController.h"
@@ -197,11 +198,8 @@
     UIButton *moreBtn;
     IBOutlet UIScrollView *scrollView;
     AppDelegate *appDelegate;
-    
-
-    
 }
-
+@property (nonatomic, strong) NSArray *streamList;
 @property (nonatomic, strong) VKVideoPlayer* player;
 
 
@@ -462,10 +460,15 @@
         TapLove.enabled = NO;
         TapLogin.enabled = YES;
         [btnLove addGestureRecognizer:TapLogin];
-        
-        
     }
     
+    UITapGestureRecognizer* TapShare = [[UITapGestureRecognizer alloc]
+                                        initWithTarget:self action:@selector(shareStream:)];//Here should be actionViewTap:
+    [TapShare setNumberOfTouchesRequired:1];
+    [TapShare setDelegate:self];
+    shareBtn.userInteractionEnabled = YES;
+    [shareBtn addGestureRecognizer:TapShare];
+    TapShare.enabled = YES;
     
     //   [self.player.view addSubviewForControl:lblLove];
     
@@ -596,6 +599,49 @@
 //    [chatTbl registerClass:UITableViewCell.self forCellReuseIdentifier:@"cell"];
 //    //  chatplaceView = [[UIView alloc] initWithFrame:CGRectMake(42, 2 ,chatTblRect.size.width - 44, cellH - 4)];
 
+}
+- (void)shareStream:(id)sender
+{
+    NSLog(@"ShareMyStream TAP");
+    
+    
+    UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)sender;
+    NSLog (@"Tag %ld",[tapRecognizer.view tag]);
+    NSInteger shareTag = [tapRecognizer.view tag];
+    
+    Streaming *stream = [self.streamList objectAtIndex:shareTag];
+    
+    NSLog(@"Stream Data %@",stream.web_url);
+    
+    NSString * shareUrl = stream.web_url;
+    NSLog(@"Share Image %@",shareUrl);
+    
+    NSArray *shareItems = @[shareUrl];
+    
+    
+    //UIImage * image = [UIImage imageNamed:@"boyOnBeach"];
+    //NSMutableArray * shareItems = [NSMutableArray new];
+    //[shareItems addObject:imgShare];
+    //[shareItems addObject:message];
+    
+    //    NSString *text = @"";
+    //    NSURL *url = [NSURL URLWithString:shareUrl];
+    //    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:stream.snapshot]]];
+    //    UIActivityViewController *avc =[[UIActivityViewController alloc] initWithActivityItems:@[text, url, image] applicationActivities:nil];
+    UIActivityViewController * avc = [[UIActivityViewController alloc] initWithActivityItems:shareItems applicationActivities:nil];
+    
+    //if iPhone
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self presentViewController:avc animated:YES completion:nil];
+    }
+    //if iPad
+    else {
+        // Change Rect to position Popover
+        UIPopoverController *popup = [[UIPopoverController alloc] initWithContentViewController:avc];
+        [popup presentPopoverFromRect:CGRectMake(self.view.frame.size.width-35, 60, 0, 0)inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+    
+    
 }
 
 - (void)clickmore :(id)sender{

@@ -65,7 +65,8 @@
     CGRect imgOnAirRect;
     CGRect gridViewRect;
     
-    
+      UIButton *moreBtn;
+     CGRect moreBtnRect;
 }
 
 
@@ -189,7 +190,7 @@
     CGFloat height = [UIScreen mainScreen].bounds.size.height;
     parentFrame = self.view.bounds;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        
+        cellH = 300*scy;
         parentGrab = 120.0 * scy;
         cellSize = CGSizeMake((self.view.frame.size.width / 2) - (15 * scx), (230 * scy));
         paddingSize = CGSizeMake((10.0 * scx), (10.0 * scy));
@@ -201,6 +202,7 @@
         onAirViewRect = CGRectMake(0*scx, 0*scy, self.view.frame.size.width, 240*scy);
         scrollViewRect = CGRectMake(0*scx, 0*scy, width, height- (80*scy));
         gridViewRect = CGRectMake(0*scx, 240*scy , width, height);
+        moreBtnRect = CGRectMake(width/2 - (40*scx), scrollViewRect.size.height - (20*scy), 80*scx , 30*scy);
         
     } else {
         cellH = 300;
@@ -215,6 +217,7 @@
         onAirViewRect = CGRectMake(0, 0, self.view.frame.size.width, 240);
         scrollViewRect = CGRectMake(0, 0, width, height - 80);
         gridViewRect = CGRectMake(0, 240 , width, height);
+        moreBtnRect = CGRectMake(width/2 - 40, scrollViewRect .size.height - 40  , 80 , 30);
     }
 }
 
@@ -226,6 +229,12 @@
 
     AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     appDelegate.pageName = @"StreamHistory";
+    
+    
+    
+    
+    
+    
     //NSLog(@"History Stream");
     // Show progress
     /*
@@ -267,6 +276,8 @@
     self.gridView.backgroundColor = [UIColor clearColor];
     [scrollView addSubview:self.gridView];
     
+    
+    
     __weak StreamHistoryViewController *weakSelf = self;
     
     
@@ -277,12 +288,15 @@
         if (success) {
             weakSelf.streamList = streamRecords;
             NSLog(@"STREAMLIST COUNT :::: %ld", weakSelf.streamList.count);
-            
-            
+            [scrollView setFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - 70)];
+   
             
         } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
+            
+          
+            
             /*
              CGFloat xLbl = (weakSelf.view.bounds.size.width / 2) - 100;
              UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(xLbl, 20, 200, 25)];
@@ -296,8 +310,24 @@
        
         
         [weakSelf.gridView reloadData];
+        moreBtn = [[UIButton alloc] initWithFrame: moreBtnRect];
+        [moreBtn setTitle:@"more" forState:UIControlStateNormal];
+        [moreBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        moreBtn.layer.borderWidth = 1;
+        moreBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        moreBtn.backgroundColor = [UIColor clearColor];
+        moreBtn.layer.cornerRadius = moreBtnRect.size.height/2;
+        moreBtn.clipsToBounds = YES;
+        [moreBtn addTarget:self action:@selector(loadmore:) forControlEvents:UIControlEventTouchUpInside];
+        [scrollView addSubview:moreBtn];
+        
     }];
 
+
+}
+-(void)loadmore:(id)sender{
+
+    NSLog(@"LOAD MORE ACTIVE");
 
 }
 -(void)gostreamming:(UIButton *)sender{
@@ -385,11 +415,13 @@
           cellH = 300 * scy ;
         gridView.cellSize = CGSizeMake(gridView.bounds.size.width - (20*scx) , cellH);
         setframe = CGRectMake(parentFrame.origin.x, parentFrame.origin.y, parentFrame.size.width, self.streamList.count*(cellH+(10*scy)) + (10*scy));
+        moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - 40, setframe.size.height + 10, 80, 30);
     }
     else{
           cellH = 300;
           gridView.cellSize = CGSizeMake(gridView.bounds.size.width - 20 , cellH);
          setframe = CGRectMake(parentFrame.origin.x, parentFrame.origin.y , parentFrame.size.width, self.streamList.count*(cellH+10) + 10);
+         moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - 40, setframe.size.height + 10, 80, 30);
     
     }
   
@@ -522,8 +554,13 @@
     [cell.commentLivebtn addGestureRecognizer:TapComment];
     TapComment.enabled = YES;
     
+    
+    
+    
+    
     CGRect parentFrame = self.view.bounds;
     [self.gridView setFrame:setframe];
+    [moreBtn setFrame:moreBtnRect];
        return cell;
 }
 

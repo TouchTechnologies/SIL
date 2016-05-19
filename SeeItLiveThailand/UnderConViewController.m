@@ -33,6 +33,8 @@
     NSArray * _menuImageName;
     NSArray *_menuLabelName;
     IBOutlet UILabel *nameTxt;
+    CGRect nameTxtRect;
+    
     IBOutlet UIButton *loginBtn;
     IBOutlet UIView *profileView;
     
@@ -78,6 +80,7 @@
     _profileImg.layer.borderWidth = 6;
     _profileImg.layer.borderColor = [UIColor colorWithRed:0.87 green:0.91 blue:0.95 alpha:1.0].CGColor;
     
+    
     [myAccountBtn setFrame:CGRectMake((imgGrapX + imgW)-imgW/3,  _profileImg.center.y - (imgW/1.8), imgW/2, imgW/2)];
     myAccountBtn.layer.cornerRadius = myAccountBtn.bounds.size.width/2;
     myAccountBtn.clipsToBounds = YES;
@@ -94,8 +97,9 @@
     [myAccountBtn addSubview:imgAccount];
     
     //    [topView addSubview:myAccountBtn];
-    [nameTxt setFrame:CGRectMake(self.view.bounds.size.width /2,  _profileImg.center.y - (imgW/1.8), self.view.bounds.size.width /2 , 30)];
+    [nameTxt setFrame:nameTxtRect];
     nameTxt.font = [UIFont fontWithName:@"Helvetica" size:fontSize];
+    [nameTxt setBackgroundColor:[UIColor whiteColor]];
     [topView addSubview:nameTxt];
 }
 
@@ -148,6 +152,10 @@
     
 }
 - (void)initialSize {
+    CGFloat scy = (1024.0/480.0);
+    CGFloat scx = (768.0/360.0);
+    CGFloat width = [UIScreen mainScreen].bounds.size.width;
+    CGFloat height = [UIScreen mainScreen].bounds.size.height;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         
         collectionViewH = 303*SCALING_Y;
@@ -164,12 +172,17 @@
         imgGrapX = 20* SCALING_X;
         imgGrapY = 40* SCALING_Y;
         
+        nameTxtRect = CGRectMake(self.view.bounds.size.width /2 - (15*scx),  _profileImg.center.y - (imgW/(1*scy)), self.view.bounds.size.width /2 , 30*scy);
+        
+        
     } else {
         fontSize = 20;
         imgH = 110;
         imgW = 110;
         imgGrapX = 20;
         imgGrapY = 40;
+        
+        nameTxtRect = CGRectMake(self.view.bounds.size.width /2,  _profileImg.center.y - (imgW/1.8), self.view.bounds.size.width /2 , 30);
         
         
     }
