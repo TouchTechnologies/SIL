@@ -232,7 +232,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         case .None, .PreviewStarted, .Ended, .Error:
             // session.startRtmpSessionWithURL("rtmp://10.49.0.107:1935/pon", andStreamKey: "myStream")  Name+Sur_2016_01_31
             let stream = UserManager()
-            let title:String = (titleTxt!.text != "" ) ? "\(titleTxt!.text!)_\(appDelegate.date)" : "\(appDelegate.first_name) \(appDelegate.last_name)_\(appDelegate.date)"
+            let title:String = (titleTxt!.text != "" ) ? titleTxt!.text! : "\(appDelegate.first_name) \(appDelegate.last_name)_\(appDelegate.date)"
             print("Title : \(title) Category ID : \(catID)")
             stream.getStreamURL(title,categoryID: catID, note: "",dateTime: dateTime) { (error , result , message) in
                 
