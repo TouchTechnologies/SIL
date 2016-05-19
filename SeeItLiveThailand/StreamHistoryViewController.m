@@ -415,7 +415,7 @@
           cellH = 300 * scy ;
         gridView.cellSize = CGSizeMake(gridView.bounds.size.width - (20*scx) , cellH);
         setframe = CGRectMake(parentFrame.origin.x, parentFrame.origin.y, parentFrame.size.width, self.streamList.count*(cellH+(10*scy)) + (10*scy));
-        moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - 40, setframe.size.height + 10, 80, 30);
+        moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - (40* scx), setframe.size.height + (10* scy), 80* scx, 30* scy);
     }
     else{
           cellH = 300;
