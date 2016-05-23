@@ -46,7 +46,7 @@
     self.hasPromotion = NO;
     self.access_token = @"";
     self.isProfile = 0;
-    self.latitute = 0.0;
+    self.latitude = 0.0;
     self.longitude = 0.0;
     self.topAll = @{@"name":@"",
                     @"totalView":@"",

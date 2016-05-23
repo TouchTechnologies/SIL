@@ -246,7 +246,7 @@ static ModelManager *instance=nil;
 -(NSMutableArray *)getAllData
 {
     AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
-    CLLocation *currentLoc = [[CLLocation alloc] initWithLatitude:appDelegate.latitute longitude:appDelegate.longitude];
+    CLLocation *currentLoc = [[CLLocation alloc] initWithLatitude:appDelegate.latitude longitude:appDelegate.longitude];
     
     [instance.database open];
     NSMutableArray *recordObjects = [NSMutableArray array];
@@ -551,7 +551,7 @@ static ModelManager *instance=nil;
 - (NSMutableArray *)getPOIDataDB
 {
     AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
-    CLLocation *currentLoc = [[CLLocation alloc] initWithLatitude:appDelegate.latitute longitude:appDelegate.longitude];
+    CLLocation *currentLoc = [[CLLocation alloc] initWithLatitude:appDelegate.latitude longitude:appDelegate.longitude];
     int count = 0;
     NSMutableArray *poiObjects = [NSMutableArray array];
     [instance.database open];

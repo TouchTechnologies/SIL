@@ -629,7 +629,7 @@
         
         
         //getDistance
-        CLLocation *currentLoc = [[CLLocation alloc] initWithLatitude:appDelegate.latitute longitude:appDelegate.longitude];
+        CLLocation *currentLoc = [[CLLocation alloc] initWithLatitude:appDelegate.latitude longitude:appDelegate.longitude];
         CLLocation *poiLocation = [[CLLocation alloc] initWithLatitude:[[saveLocationData objectAtIndex:indexPath.row][@"latitude"] floatValue] longitude:[[saveLocationData objectAtIndex:indexPath.row][@"longitude"] floatValue]];
         CLLocationDistance meters = [poiLocation distanceFromLocation:currentLoc];
         
@@ -691,7 +691,7 @@
         
         
         //getDistance
-        CLLocation *currentLoc = [[CLLocation alloc] initWithLatitude:appDelegate.latitute longitude:appDelegate.longitude];
+        CLLocation *currentLoc = [[CLLocation alloc] initWithLatitude:appDelegate.latitude longitude:appDelegate.longitude];
         CLLocation *poiLocation = [[CLLocation alloc] initWithLatitude:[[saveLocationData objectAtIndex:indexPath.row][@"latitude"] floatValue] longitude:[[saveLocationData objectAtIndex:indexPath.row][@"longitude"] floatValue]];
         CLLocationDistance meters = [poiLocation distanceFromLocation:currentLoc];
         

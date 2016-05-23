@@ -16,6 +16,8 @@
 #import "UserManager.h"
 #import "AppDelegate.h"
 #import "Commentator.h"
+#import "UserManager.h"
+#import "Comment.h"
 #import "SeeItLiveThailand-Swift.h"
 #import <CoreLocation/CoreLocation.h>
 
@@ -164,7 +166,6 @@
     [self initialPort];
     [self addLabel];
     chatboxTxt.delegate = self;
-    commentData = [NSMutableArray array];
     self.view.backgroundColor = [UIColor whiteColor];
 
     NSLog(@"IS FULLSCREEN ::: %@" , self.player.isFullScreen ? @"true":@"false");
@@ -186,7 +187,9 @@
 
     NSLog(@"Stream lat : %@",self.objStreaming.latitude);
     NSLog(@"Stream long : %@",self.objStreaming.longitude);
+    CLLocation* location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake([self.objStreaming.latitude floatValue], [self.objStreaming.longitude floatValue]) altitude:0 horizontalAccuracy:0 verticalAccuracy:0 course:0 speed:0 timestamp:nil];
     
+    [self getAddressFromLocation:location];
     [self setSocket:[self.objStreaming.ID integerValue]];
     CGFloat ss;
     ss = 100;
@@ -449,8 +452,9 @@
     sendchatBtn = [[UIButton alloc] initWithFrame:sendchatBtnPortRect];
     UIImage *sendImg = [[UIImage alloc] init];
     sendImg = [UIImage imageNamed:@"sent.png"];
-    [sendchatBtn addTarget:self action:@selector(sendComment) forControlEvents:UIControlEventTouchUpInside];
+    [sendchatBtn addTarget:self action:@selector(sendComment:) forControlEvents:UIControlEventTouchUpInside];
     [sendchatBtn setImage:sendImg forState:UIControlStateNormal];
+    sendchatBtn.tag = [self.objStreaming.ID integerValue];
     sendchatBtn.backgroundColor = [UIColor clearColor];
     sendchatBtn.layer.cornerRadius = 5;
     sendchatBtn.clipsToBounds = TRUE;
@@ -575,8 +579,9 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    
     [self playSampleClip1];
+    
+   
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -594,6 +599,11 @@
     [super viewWillAppear:animated];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     appDelegate.isChat = TRUE;
+    
+    commentData = [NSMutableArray array];
+
+    
+
 }
 
 
@@ -697,9 +707,34 @@
     //    [self presentViewController:comment animated:YES completion:nil];
     
 }
-- (void)sendComment
+- (void)sendComment:(id)sender
 {
-//    NSLog(@"sendComment");
+    UIButton *tappedButton = sender;
+    
+    NSInteger streamID = tappedButton.tag;
+    NSLog(@"sendComment %ld",(long)streamID);
+    
+    
+    Comment * com = [[Comment alloc] init];
+
+    NSString *API_Name = @"postlivecomment";
+    if(chatboxTxt != nil)
+    {
+        com.commentMsg = chatboxTxt.text;
+        com.commentPicture = @"";
+        [[UserManager shareIntance] commentStreamAPI:API_Name streamID:[NSString stringWithFormat:@"%ld",(long)streamID] data:com Completion:^(NSError *error, NSDictionary *result, NSString *message) {
+            NSLog(@"postcomment %@",result);
+            if([message isEqualToString:@"Success"])
+            {
+                chatboxTxt.text = nil;
+            }
+            
+        }];
+    }
+
+    
+    
+    
 //    messageData = [NSMutableArray array];
 //    Commentator *cmt = [[Commentator alloc]init];
 //    cmt.profile_picture = @"555555";
@@ -1366,19 +1401,23 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
     [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
      {
          if (!placemarks) {
-             // handle error
+            // handle error
+             NSLog(@" handle error");
+            
          }
          
          if(placemarks && placemarks.count > 0)
          {
              CLPlacemark *placemark= [placemarks objectAtIndex:0];
-             NSString *address = [NSString stringWithFormat:@"address %@ %@,%@ %@", [placemark subThoroughfare],[placemark thoroughfare],[placemark locality], [placemark administrativeArea]];
+             NSString *address = [NSString stringWithFormat:@"%@ %@", [placemark administrativeArea],[placemark locality]];
              
              // you have the address.
              // do something with it.
-             [[NSNotificationCenter defaultCenter] postNotificationName:@"MBDidReceiveAddressNotification"
-                                                                 object:self
-                                                               userInfo:@{ @"address" : address }];
+             NSLog(@"Address : %@",address);
+             lblLocationLive.text = address;
+//             [[NSNotificationCenter defaultCenter] postNotificationName:@"MBDidReceiveAddressNotification"
+//                                                                 object:self
+//                                                               userInfo:@{ @"address" : address }];
          }
      }];
 }
