@@ -17,7 +17,8 @@
 #import "UserManager.h"
 #import "AppDelegate.h"
 #import "Streaming.h"
-
+#import "DataManager.h"
+#import "Streaming.h"
 #import "SeeItLiveThailand-Swift.h"
 #import "LiveAroundViewController.h"
 
@@ -222,6 +223,34 @@
     liveIncategoryTbl.dataSource = self;
     scrollView.delegate = self;
     appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
+    
+    
+    __weak StreamingDetailViewController *weakSelf = self;
+    weakSelf.streamList = [[NSArray alloc]init];
+    
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+        //Background Thread
+        [[DataManager shareManager] getStreamingWithCompletionBlockByCatgoryID:^(BOOL success, NSArray *streamRecords, NSError *error) {
+            if (success) {
+                weakSelf.streamList = streamRecords;
+                NSLog(@"STREAMLIST Cat COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
+                [liveIncategoryTbl reloadData];
+                
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+            }
+            
+            
+            
+            
+        } :self.objStreaming.categoryID];
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            //Run UI Updates
+            
+        });
+    });
+    
     
 //        [[NSNotificationCenter defaultCenter] addObserver:self
 //                                                 selector:@selector(refreshList:)
@@ -614,16 +643,7 @@
 {
     NSLog(@"ShareMyStream TAP");
     
-    
-    UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)sender;
-    NSLog (@"Tag %ld",[tapRecognizer.view tag]);
-    NSInteger shareTag = [tapRecognizer.view tag];
-    
-    Streaming *stream = [self.streamList objectAtIndex:shareTag];
-    
-    NSLog(@"Stream Data %@",stream.web_url);
-    
-    NSString * shareUrl = stream.web_url;
+    NSString * shareUrl = self.objStreaming.web_url;
     NSLog(@"Share Image %@",shareUrl);
     
     NSArray *shareItems = @[shareUrl];
@@ -882,6 +902,8 @@
     [super viewWillAppear:animated];
     appDelegate.isChat = TRUE;
     appDelegate.isMoreVedio = false ;
+    
+    
     //self.player.view.frame = CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height-bottomHeight);
     //[[UIApplication sharedApplication] setStatusBarHidden:YES];
     //[self.navigationController setNavigationBarHidden:TRUE];
@@ -1262,14 +1284,19 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    return 3;
+    return self.streamList.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    __weak StreamingDetailViewController *weakSelf = self;
+    Streaming *stream = [[Streaming alloc]init];
+    stream = [weakSelf.streamList objectAtIndex:indexPath.row];
     
     cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     liveSnapshortImg = [[UIImageView alloc] initWithFrame:liveSnapshortImgRect];
     liveSnapshortImg.backgroundColor = [UIColor greenColor];
     liveSnapshortImg.image = [UIImage imageNamed:@"sil_big.jpg"];
+//    liveSnapshortImg.image = (stream.snapshot != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:stream.snapshot]]]:[UIImage imageNamed:@"sil_big.jpg"];
     
     waterMark = [[UIImageView alloc] initWithFrame:waterMarkRect];
     waterMark.image = [UIImage imageNamed:@"play.png"];
@@ -1278,7 +1305,8 @@
     [cell.contentView addSubview:liveSnapshortImg];
     
     streamTitleCellLbl = [[UILabel alloc] initWithFrame:streamTitleCellLblRect];
-    streamTitleCellLbl.text = @"Title stream";
+    streamTitleCellLbl.text = stream.streamTitle;
+    
     streamTitleCellLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize];
     [cell.contentView addSubview:streamTitleCellLbl];
     
@@ -1290,7 +1318,7 @@
     
     categoryTypeCellLbl = [[UILabel alloc] initWithFrame:categoryTypeCellLblRect];
 //    NSLog(@"categoryName : %@",self.objStreaming.categoryName);
-    categoryTypeCellLbl.text = self.objStreaming.categoryName;
+    categoryTypeCellLbl.text = stream.categoryName;
     categoryTypeCellLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 2];
     categoryTypeCellLbl.textColor = [UIColor redColor];
     [cell.contentView addSubview:categoryTypeCellLbl];
@@ -1302,12 +1330,12 @@
     
     loveCountCellLbl = [[UILabel alloc] initWithFrame:loveCountCellLblRect];
     loveCountCellLbl.textColor = [UIColor redColor];
-    loveCountCellLbl.text = @"0";
+    loveCountCellLbl.text = [NSString stringWithFormat:@"%ld",(long)stream.lovesCount];
     loveCountCellLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize-2];
     [cell.contentView addSubview:loveCountCellLbl];
 
     userAvatarCellimg = [[UIImageView alloc] initWithFrame:userAvatarCellimgRect];
-    userAvatarCellimg.image = [UIImage imageNamed:@"blank.png"];
+    userAvatarCellimg.image = (stream.streamUserImage != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:stream.streamUserImage]]]:[UIImage imageNamed:@"blank.png"];
     userAvatarCellimg.layer.cornerRadius = userAvatarCellimgRect.size.width/2;
     userAvatarCellimg.clipsToBounds = YES;
     [cell addSubview:userAvatarCellimg];

@@ -24,7 +24,7 @@
 @property (nonatomic, strong) NSString *category;
 @property (nonatomic, strong) NSString *categoryName;
 @property (nonatomic, strong) NSString *categoryImage;
-@property NSInteger categoryID;
+@property int categoryID;
 @property (nonatomic, strong) NSString *categoryCountStream;
 @property (nonatomic, strong) NSString *count_comment;
 @property  NSInteger lovesCount;
