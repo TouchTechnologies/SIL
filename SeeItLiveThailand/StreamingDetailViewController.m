@@ -691,9 +691,9 @@
 //        appDelegate.isMoreVedio = false;
 //    }
     NSLog(@"GO LIVEAROUND");
-       LiveAroundViewController *livearound = [self.storyboard instantiateViewControllerWithIdentifier:@"livearound"];
- 
-       [self presentViewController: livearound animated: YES completion:nil];
+    LiveAroundViewController *livearound = [self.storyboard instantiateViewControllerWithIdentifier:@"livearound"];
+    livearound.objStreaming = self.objStreaming;
+    [self presentViewController: livearound animated: YES completion:nil];
     
     
 
@@ -1461,7 +1461,7 @@
 //             NSLog(@"Address : %@ placemark : %@",address,placemark);
              if(([placemark administrativeArea] != nil)&&([placemark locality] != nil))
              {
-                 NSLog(@"[placemark administrativeArea] : %@",[placemark administrativeArea]);
+//                 NSLog(@"[placemark administrativeArea] : %@",[placemark administrativeArea]);
                 lblLocationLive.text = address;
              }
 

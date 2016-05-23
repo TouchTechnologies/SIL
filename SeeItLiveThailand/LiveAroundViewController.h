@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Streaming.h"
 @interface LiveAroundViewController : UIViewController
 
 {
 
 }
+@property (nonatomic, strong) Streaming *objStreaming;
 @end

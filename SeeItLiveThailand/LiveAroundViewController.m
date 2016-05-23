@@ -105,6 +105,8 @@
     scrollView.delegate = self;
     tableView.delegate = self;
     tableView.dataSource = self;
+    
+    NSLog(@"Live Around %@",self.objStreaming);
     // Do any additional setup after loading the view.
 }
 - (void)initial{
@@ -150,19 +152,19 @@
     detailView.backgroundColor = [UIColor redColor];
     
     snapshotDetailImg = [[UIImageView alloc] initWithFrame:snapshotDetailImgRect];
-    snapshotDetailImg.image = [UIImage imageNamed:@"activities02.jpg"];
+    snapshotDetailImg.image = (self.objStreaming.snapshot != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.objStreaming.snapshot]]]:[UIImage imageNamed:@"sil_big.jpg"];
     waterMarkDetailImg = [[UIImageView alloc] initWithFrame:waterMarkDetailImgRect];
     waterMarkDetailImg.image = [UIImage imageNamed:@"play.png"];
     [snapshotDetailImg addSubview:waterMarkDetailImg];
     [detailView addSubview:snapshotDetailImg];
     
     TitleDetailLbl = [[UILabel alloc] initWithFrame:TitleDetailLblRect];
-    TitleDetailLbl.text = @"TEST LIVE";
+    TitleDetailLbl.text = self.objStreaming.streamTitle;
     TitleDetailLbl.textColor = [UIColor whiteColor];
     TitleDetailLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize];
     [detailView addSubview:TitleDetailLbl];
     
-    NSString *typeStr = @"Travel";
+    NSString *typeStr = self.objStreaming.categoryName;
     strCategoryType = [[NSString alloc] init];
     strCategoryType = [NSString stringWithFormat:@"Category : %@" ,typeStr];
     categoryDetailLbl = [[UILabel alloc] initWithFrame:categoryDetailLblRect];
@@ -173,7 +175,7 @@
 
     
     AvatarDetailImg = [[UIImageView alloc] initWithFrame:AvatarDetailImgRect];
-    AvatarDetailImg.image = [UIImage imageNamed:@"blank.png"];
+    AvatarDetailImg.image = (self.objStreaming.streamUserImage != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.objStreaming.streamUserImage]]]:[UIImage imageNamed:@"blank.png"];
     AvatarDetailImg.layer.cornerRadius = AvatarDetailImgRect.size.width/2;
     AvatarDetailImg.clipsToBounds =YES ;
     AvatarDetailImg.contentMode = UIViewContentModeScaleAspectFill;
@@ -312,7 +314,8 @@
     
     return 3;
 }
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     
     cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     imgSnapshotcell = [[UIImageView alloc] initWithFrame:imgSnapshotcellRect];
