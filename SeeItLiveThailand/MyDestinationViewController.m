@@ -269,13 +269,14 @@
     __weak MyDestinationViewController *weakSelf = self;
     ModelManager *modelManager = [ModelManager getInstance];
     
-    //    weakSelf.poiData  = [modelManager getPOIData];
+//    weakSelf.poiData  = [modelManager getPOIData];
     if(!weakSelf.poiData.count)
     {
         weakSelf.poiData = [modelManager getPOIDataDB];
         NSLog(@"weakSelf.poiData %@",weakSelf.poiData );
         if(weakSelf.poiData != nil)
         {
+            NSLog(@"poiData = nil");
             [[PoiManager shareIntance]getPOIData:@"" Completion:^(NSError *error, NSMutableArray *result, NSString *message) {
                 
                 _searchData = [[NSMutableArray alloc]init];

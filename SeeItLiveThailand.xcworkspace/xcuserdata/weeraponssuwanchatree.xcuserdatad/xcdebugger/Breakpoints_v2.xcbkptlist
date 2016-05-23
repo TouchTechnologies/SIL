@@ -233,22 +233,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SeeItLiveThailand/ModelManager.m"
-            timestampString = "479364208.573115"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "382"
-            endingLineNumber = "382"
-            landmarkName = "-getAllDataSort"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/UserManager.m"
             timestampString = "485668609.721741"
             startingColumnNumber = "9223372036854775807"
@@ -410,11 +394,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/StreamingDetailViewController.m"
-            timestampString = "485325282.196129"
+            timestampString = "485686760.539304"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1326"
-            endingLineNumber = "1326"
+            startingLineNumber = "1336"
+            endingLineNumber = "1336"
             landmarkName = "-textFieldShouldEndEditing:"
             landmarkType = "5">
          </BreakpointContent>
@@ -426,11 +410,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/StreamingDetailViewController.m"
-            timestampString = "485325282.196129"
+            timestampString = "485683665.125653"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "217"
-            endingLineNumber = "217"
+            startingLineNumber = "218"
+            endingLineNumber = "218"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -442,11 +426,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/StreamingDetailViewController.m"
-            timestampString = "485325282.196129"
+            timestampString = "485683665.125653"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "214"
-            endingLineNumber = "214"
+            startingLineNumber = "215"
+            endingLineNumber = "215"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>

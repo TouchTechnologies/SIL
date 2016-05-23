@@ -10,6 +10,7 @@
 #import "VKVideoPlayer.h"
 #import "VKVideoPlayerCaptionSRT.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import <CoreLocation/CoreLocation.h>
 #import "Streaming.h"
 #import "CommentViewController.h"
 #import "UserProfileViewController.h"
@@ -266,6 +267,9 @@
     self.player = [[VKVideoPlayer alloc] init];
     profileView.hidden = FALSE;
     NSLog(@"streamID %@",self.objStreaming.ID);
+    CLLocation* location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake([self.objStreaming.latitude floatValue], [self.objStreaming.longitude floatValue]) altitude:0 horizontalAccuracy:0 verticalAccuracy:0 course:0 speed:0 timestamp:nil];
+    
+    [self getAddressFromLocation:location];
     [self setSocket:[self.objStreaming.ID integerValue]];
     CGFloat ss;
     ss = 100;
@@ -328,7 +332,7 @@
     
     lblcategoryType = [[UILabel alloc] initWithFrame:lblcategoryTypeRect];
     lblcategoryType.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    lblcategoryType.text = @"Travel";
+    lblcategoryType.text = self.objStreaming.categoryName;
     lblcategoryType.textColor = [UIColor redColor];
     lblcategoryType.backgroundColor = [UIColor clearColor];
     lblcategoryType.textAlignment = NSTextAlignmentLeft;
@@ -495,7 +499,12 @@
     lblCommentCount.font = font;
     [propViewPort addSubview:lblCommentCount];
     
+//    NSLog(@"Lat %@ Long %@",self.objStreaming.latitude,self.objStreaming.longitude);
+    NSString *mapURL = [@"https://maps.googleapis.com/maps/api/staticmap?center=" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:[@"&zoom=15&size=800x150&markers=color:red%7C" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:@"&key=AIzaSyALoQE2hBd8Za7sVvCm5wrqjkDCdd0Olto"]]]]]]]];
+    
+//    NSLog(@"Map URL : %@",mapURL);
     mapImg = [[UIImageView alloc] initWithFrame:mapImgRect];
+    mapImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:mapURL]]];
     mapImg.backgroundColor = [UIColor greenColor];
     [scrollView addSubview:mapImg];
     
@@ -504,13 +513,13 @@
     profileView.backgroundColor = [UIColor blackColor];
     
     avatarImg = [[UIImageView alloc] initWithFrame:AvatarRect];
-    avatarImg.image = [UIImage imageNamed:@"blank.png"];
+    avatarImg.image = (self.objStreaming.streamUserImage != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.objStreaming.streamUserImage]]]:[UIImage imageNamed:@"blank.png"];
     avatarImg.layer.cornerRadius = AvatarRect.size.width/2;
     avatarImg.clipsToBounds = YES;
     [profileView addSubview:avatarImg];
     
     usernameLbl = [[UILabel alloc]initWithFrame:usernameLblRect];
-    usernameLbl.text = @"Test User";
+    usernameLbl.text = self.objStreaming.streamUserName;
     usernameLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize];
     usernameLbl.textColor = [UIColor whiteColor];
     [profileView addSubview:usernameLbl];
@@ -522,7 +531,7 @@
     [profileView addSubview:followerLbl];
 
     followerCountLbl = [[UILabel alloc]initWithFrame:followerCountLblRect];
-    followerCountLbl.text = @"12K";
+    followerCountLbl.text = self.objStreaming.streamUserFollowerCount;
     followerCountLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 2];
     followerCountLbl.textColor = [UIColor redColor];
     [profileView addSubview:followerCountLbl];
@@ -533,13 +542,13 @@
     tableHeaderView.backgroundColor = [UIColor whiteColor];
     
     iconCategoryImg = [[UIImageView alloc] initWithFrame:iconCategoryImgRect];
-    iconCategoryImg.image = [UIImage imageNamed:@"blank.png"];
+    iconCategoryImg.image = (self.objStreaming.streamUserImage != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.objStreaming.streamUserImage]]]:[UIImage imageNamed:@"blank.png"];
     iconCategoryImg.layer.cornerRadius = iconCategoryImgRect.size.width/2;
     iconCategoryImg.clipsToBounds = YES;
     [tableHeaderView addSubview:iconCategoryImg];
     
     categoryTypeLbl = [[UILabel alloc]initWithFrame:categoryTypeLblRect];
-    categoryTypeLbl.text = @"Travel";
+    categoryTypeLbl.text = self.objStreaming.categoryName;
     categoryTypeLbl.textAlignment = NSTextAlignmentCenter;
     categoryTypeLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize];
     categoryTypeLbl.textColor = [UIColor redColor];
@@ -1280,7 +1289,8 @@
     [cell.contentView addSubview:categoryTitleCellLbl];
     
     categoryTypeCellLbl = [[UILabel alloc] initWithFrame:categoryTypeCellLblRect];
-    categoryTypeCellLbl.text = @"Travel";
+//    NSLog(@"categoryName : %@",self.objStreaming.categoryName);
+    categoryTypeCellLbl.text = self.objStreaming.categoryName;
     categoryTypeCellLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 2];
     categoryTypeCellLbl.textColor = [UIColor redColor];
     [cell.contentView addSubview:categoryTypeCellLbl];
@@ -1292,7 +1302,7 @@
     
     loveCountCellLbl = [[UILabel alloc] initWithFrame:loveCountCellLblRect];
     loveCountCellLbl.textColor = [UIColor redColor];
-    loveCountCellLbl.text = @"54K";
+    loveCountCellLbl.text = @"0";
     loveCountCellLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize-2];
     [cell.contentView addSubview:loveCountCellLbl];
 
@@ -1402,6 +1412,33 @@
     [socket connect];
     //    NSArray *room = @[self.roomNameTxt.text];
     
+}
+-(void)getAddressFromLocation:(CLLocation *)location {
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
+     {
+         if (!placemarks) {
+             // handle error
+             NSLog(@" handle error");
+             
+         }
+         
+         if(placemarks && placemarks.count > 0)
+         {
+             CLPlacemark *placemark= [placemarks objectAtIndex:0];
+             NSString *address = [NSString stringWithFormat:@"%@ %@", [placemark administrativeArea],[placemark locality]];
+             
+             // you have the address.
+             // do something with it.
+//             NSLog(@"Address : %@ placemark : %@",address,placemark);
+             if(([placemark administrativeArea] != nil)&&([placemark locality] != nil))
+             {
+                 NSLog(@"[placemark administrativeArea] : %@",[placemark administrativeArea]);
+                lblLocationLive.text = address;
+             }
+
+         }
+     }];
 }
 
 
