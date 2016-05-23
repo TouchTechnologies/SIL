@@ -1414,10 +1414,11 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
              // you have the address.
              // do something with it.
              NSLog(@"Address : %@",address);
-             lblLocationLive.text = address;
-//             [[NSNotificationCenter defaultCenter] postNotificationName:@"MBDidReceiveAddressNotification"
-//                                                                 object:self
-//                                                               userInfo:@{ @"address" : address }];
+             if(([placemark administrativeArea] != nil)&&([placemark locality] != nil))
+             {
+                 NSLog(@"[placemark administrativeArea] : %@",[placemark administrativeArea]);
+                 lblLocationLive.text = address;
+             }
          }
      }];
 }

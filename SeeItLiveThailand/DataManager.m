@@ -345,6 +345,9 @@ static DataManager *staticManager = nil;
         Streaming *stream = [[Streaming alloc] init];
         stream.ID = stmRecord[@"id_stream"];
         stream.userID = stmRecord[@"user_id"];
+        stream.streamUserName = stmRecord[@"user"][@"email"];
+        stream.streamUserImage = stmRecord[@"user"][@"profile_picture"];
+        stream.streamUserFollowerCount = stmRecord[@"user"][@"count_follower"];
         stream.streamID = stmRecord[@"id_stream"];
         stream.streamTitle = stmRecord[@"title"];
         
@@ -365,6 +368,8 @@ static DataManager *staticManager = nil;
         stream.avatarUrl = stmRecord[@"user"][@"profile_picture"];
         stream.category = stmRecord[@"category_stream"][@"category_name_en"];
         stream.categoryID = [stmRecord[@"category_id"] integerValue];
+        stream.categoryName = stmRecord[@"category_stream"][@"category_name_en"];
+        stream.categoryImage = stmRecord[@"category_stream"][@"icon_category"];
         stream.categoryCountStream = stmRecord[@"category_stream"][@"count_stream"];
         stream.count_comment = stmRecord[@"count_comment"];
         
