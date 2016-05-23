@@ -40,6 +40,7 @@
 -(void)updateProfile:(NSString *)firstname Lastname:(NSString *)lastname Completion:(void (^)(NSError *, NSDictionary *, NSString *))completion;
 -(void)updateMyStream:(NSString *)streamID title:(NSString*)title note:(NSString*)note public:(BOOL)public Completion:(void (^)(NSError *, NSDictionary *, NSString *))completion;
 -(void)getStreamURL:(NSString *)title categoryID:(NSInteger)categoryID Note:(NSString *)note dateTime:(NSString *)dateTime Completion:(void (^)(NSError *, NSDictionary *, NSString *))completion;
+-(void)commentStreamAPI:(NSString*)apiName streamID:(NSString*)streamID data:(Comment *)data Completion:(void (^)( NSError *error,NSDictionary * result, NSString * message))completion;
 -(void)deleteMyStream:(NSString *)access_token StreamID:(NSString *)id_stream Completion:(void (^)(NSError *, NSDictionary *, NSString *))completion;
 -(void)getAPIData:(NSString*)apiName Completion:(void (^)( NSError *error,NSDictionary * result, NSString * message))completion;
 -(void)getMyStream:(NSString *)access_token Completion:(void (^)(NSError *, NSDictionary *, NSString *))completion;

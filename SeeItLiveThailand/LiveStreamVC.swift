@@ -1489,7 +1489,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     func  getLocationName() {
         // Add below code to get address for touch coordinates.
         let geoCoder = CLGeocoder()
-        let location = CLLocation(latitude: appDelegate.latitute, longitude: appDelegate.longitude)
+        let location = CLLocation(latitude: appDelegate.latitude, longitude: appDelegate.longitude)
         locationName = ""
         
         geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) -> Void in

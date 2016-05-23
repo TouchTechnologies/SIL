@@ -223,13 +223,15 @@ static UserManager * shareObject;
 //                             };
 //
     NSLog(@"categoryID::: %ld",(long)categoryID);
+    NSLog(@"latitute %@",[NSString stringWithFormat:@"%.8f", appDelegate.latitude]);
+    NSLog(@"longitude %@",[NSString stringWithFormat:@"%.8f", appDelegate.longitude]);
     NSDictionary * param = @{
                              @"title":title,
                              @"note" :note,
                              @"access_token":appDelegate.access_token,
                              @"categoryID":[NSString stringWithFormat:@"%ld",(long)categoryID],
-                             @"latitute":[NSString stringWithFormat:@"%.8f", appDelegate.latitute],
-                             @"longtitute":[NSString stringWithFormat:@"%.8f", appDelegate.longitude],
+                             @"latitude":[NSString stringWithFormat:@"%.8f", appDelegate.latitude],
+                             @"longitude":[NSString stringWithFormat:@"%.8f", appDelegate.longitude],
                              @"protocol": @"RTSP",
                              @"connectingTimeoutDatetime" : dateTime,
                              @"wifiSSID": (appDelegate.SSIDName == NULL)?@"":appDelegate.SSIDName,
@@ -480,8 +482,6 @@ static UserManager * shareObject;
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:appDelegate.access_token forHTTPHeaderField:@"X-TIT-ACCESS-TOKEN"];
     
-    
-    
     if ([apiName isEqualToString:@"getcomment"]) {
         NSDictionary * param = @{};
         apiName = [cctvID stringByAppendingString:@"/comment?filtersPage=1&filterLimit=10"];
@@ -586,6 +586,131 @@ static UserManager * shareObject;
     {
         NSDictionary * param = @{};
         apiName = [cctvID stringByAppendingString:[@"/comment/" stringByAppendingString:data.commentID]];
+        NSString *apiLink = [@"api/stream/" stringByAppendingString:apiName];
+        NSLog(@"Full comment API : %@",apiLink);
+        [manager DELETE:[service stringByAppendingString:apiLink] parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
+            
+            completion(nil,responseObject,@"Success");
+            NSLog(@"deletecommentData : %@",responseObject);
+            
+        } failure:^(AFHTTPRequestOperation *  operation, NSError *  error) {
+            completion(error,nil,@"Failed");
+        }];
+    }
+    //stream/{id}/comment
+}
+-(void)commentStreamAPI:(NSString*)apiName streamID:(NSString*)streamID data:(Comment *)data Completion:(void (^)( NSError *error,NSDictionary * result, NSString * message))completion{
+    AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:appDelegate.access_token forHTTPHeaderField:@"X-TIT-ACCESS-TOKEN"];
+    
+    if ([apiName isEqualToString:@"getcomment"]) {
+        NSDictionary * param = @{};
+        apiName = [streamID stringByAppendingString:@"/comment?filtersPage=1&filterLimit=10"];
+        NSString *apiLink = [@"api/cctv/" stringByAppendingString:apiName];
+        NSLog(@"Full comment API : %@",apiLink);
+        [manager GET:[service stringByAppendingString:apiLink] parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
+            
+            completion(nil,responseObject,@"Success");
+            NSLog(@"getcommentData : %@",responseObject);
+            
+        } failure:^(AFHTTPRequestOperation *  operation, NSError *  error) {
+            completion(error,nil,@"Failed");
+        }];
+    }else if ([apiName isEqualToString:@"getcommentAll"]) {
+        NSDictionary * param = @{};
+        apiName = [streamID stringByAppendingString:@"/comment"];
+        NSString *apiLink = [@"api/cctv/" stringByAppendingString:apiName];
+        NSLog(@"Full comment API : %@",apiLink);
+        [manager GET:[service stringByAppendingString:apiLink] parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
+            
+            completion(nil,responseObject,@"Success");
+            NSLog(@"getcommentData : %@",responseObject);
+            
+        } failure:^(AFHTTPRequestOperation *  operation, NSError *  error) {
+            completion(error,nil,@"Failed");
+        }];
+    }else if ([apiName isEqualToString:@"postlivecomment"])
+    {
+        
+        NSDictionary * param = @{@"comment_content":data.commentMsg
+                                 };
+        apiName = [streamID stringByAppendingString:[@"/comments?access_token=" stringByAppendingString:appDelegate.access_token]];
+        NSString *apiLink = [@"api/streamlives/" stringByAppendingString:apiName];
+        NSLog(@"Full Live comment API : %@",apiLink);
+        [manager POST:[service stringByAppendingString:apiLink] parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
+            
+            completion(nil,responseObject,@"Success");
+            NSLog(@"postcommentData : %@",responseObject);
+            
+        } failure:^(AFHTTPRequestOperation *  operation, NSError *  error) {
+            completion(error,nil,@"Failed");
+        }];
+        
+    }else if([apiName isEqualToString:@"delcomment"])
+    {
+        NSDictionary * param = @{};
+        apiName = [streamID stringByAppendingString:[@"/comment/" stringByAppendingString:data.commentID]];
+        NSString *apiLink = [@"api/cctv/" stringByAppendingString:apiName];
+        NSLog(@"Full comment API : %@",apiLink);
+        [manager DELETE:[service stringByAppendingString:apiLink] parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
+            
+            completion(nil,responseObject,@"Success");
+            NSLog(@"deletecommentData : %@",responseObject);
+            
+        } failure:^(AFHTTPRequestOperation *  operation, NSError *  error) {
+            completion(error,nil,@"Failed");
+        }];
+    }else if ([apiName isEqualToString:@"getcommentStream"]) {
+        NSDictionary * param = @{};
+        apiName = [streamID stringByAppendingString:@"/comment?filtersPage=1&filterLimit=10"];
+        NSString *apiLink = [@"api/stream/" stringByAppendingString:apiName];
+        NSLog(@"Full comment API : %@",apiLink);
+        [manager GET:[service stringByAppendingString:apiLink] parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
+            
+            completion(nil,responseObject,@"Success");
+            NSLog(@"getcommentData : %@",responseObject);
+            
+        } failure:^(AFHTTPRequestOperation *  operation, NSError *  error) {
+            completion(error,nil,@"Failed");
+        }];
+    }else if ([apiName isEqualToString:@"getcommentAllStream"]) {
+        NSDictionary * param = @{};
+        apiName = [streamID stringByAppendingString:@"/comment"];
+        NSString *apiLink = [@"api/stream/" stringByAppendingString:apiName];
+        NSLog(@"Full comment API : %@",apiLink);
+        [manager GET:[service stringByAppendingString:apiLink] parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
+            
+            completion(nil,responseObject,@"Success");
+            NSLog(@"getcommentData : %@",responseObject);
+            
+        } failure:^(AFHTTPRequestOperation *  operation, NSError *  error) {
+            completion(error,nil,@"Failed");
+        }];
+    }else if ([apiName isEqualToString:@"postcommentStream"])
+    {
+        
+        NSDictionary * param = @{@"comment_content":data.commentMsg
+                                 };
+        apiName = [streamID stringByAppendingString:@"/comment"];
+        NSString *apiLink = [@"api/stream/" stringByAppendingString:apiName];
+        NSLog(@"Full comment API : %@",apiLink);
+        [manager POST:[service stringByAppendingString:apiLink] parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
+            
+            completion(nil,responseObject,@"Success");
+            NSLog(@"postcommentData : %@",responseObject);
+            
+        } failure:^(AFHTTPRequestOperation *  operation, NSError *  error) {
+            completion(error,nil,@"Failed");
+        }];
+        
+    }else if([apiName isEqualToString:@"delcommentStream"])
+    {
+        NSDictionary * param = @{};
+        apiName = [streamID stringByAppendingString:[@"/comment/" stringByAppendingString:data.commentID]];
         NSString *apiLink = [@"api/stream/" stringByAppendingString:apiName];
         NSLog(@"Full comment API : %@",apiLink);
         [manager DELETE:[service stringByAppendingString:apiLink] parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {

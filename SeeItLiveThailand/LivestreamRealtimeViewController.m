@@ -15,8 +15,11 @@
 #import "UserProfileViewController.h"
 #import "UserManager.h"
 #import "AppDelegate.h"
-
+#import "Commentator.h"
+#import "UserManager.h"
+#import "Comment.h"
 #import "SeeItLiveThailand-Swift.h"
+#import <CoreLocation/CoreLocation.h>
 
 @interface LivestreamRealtimeViewController  ()<VKVideoPlayerDelegate , UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource> {
     
@@ -146,7 +149,8 @@
     
     UIButton *shareBtn;
     UIImageView *shareImg;
-  
+    SocketIOClient *socket;
+    NSMutableArray* commentData;
 
     
 }
@@ -158,7 +162,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    [self initSocket];
     [self initialSize];
     [self initialPort];
     [self addLabel];
@@ -182,6 +185,12 @@
     self.player = [[VKVideoPlayer alloc] init];
     chatView.hidden = FALSE;
 
+    NSLog(@"Stream lat : %@",self.objStreaming.latitude);
+    NSLog(@"Stream long : %@",self.objStreaming.longitude);
+    CLLocation* location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake([self.objStreaming.latitude floatValue], [self.objStreaming.longitude floatValue]) altitude:0 horizontalAccuracy:0 verticalAccuracy:0 course:0 speed:0 timestamp:nil];
+    
+    [self getAddressFromLocation:location];
+    [self setSocket:[self.objStreaming.ID integerValue]];
     CGFloat ss;
     ss = 100;
     [self initialSize];
@@ -297,8 +306,6 @@
 //    [TapChat setDelegate:self];
     [chatBtn addTarget:self action:@selector(startChat:) forControlEvents:UIControlEventTouchUpInside];
     
-  
-    
     shareBtn = [[UIButton alloc] initWithFrame:shareBtnPortRect];
     shareImg = [[UIImageView alloc] initWithFrame:shareimgPortRect];
     shareImg.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
@@ -316,7 +323,7 @@
     lblViewCount = [[UILabel alloc] initWithFrame:lblViewCountPortRect];
     lblViewCount.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     NSLog(@"self.objStreaming.watchedCount %@",self.objStreaming.watchingCount);
-    lblViewCount.text = (self.objStreaming.watchingCount != nil)?self.objStreaming.watchingCount:@"0";
+    lblViewCount.text = @"0";
     lblViewCount.textColor = [UIColor whiteColor];
     lblViewCount.backgroundColor = [UIColor clearColor];
     lblViewCount.textAlignment = NSTextAlignmentLeft;
@@ -445,7 +452,9 @@
     sendchatBtn = [[UIButton alloc] initWithFrame:sendchatBtnPortRect];
     UIImage *sendImg = [[UIImage alloc] init];
     sendImg = [UIImage imageNamed:@"sent.png"];
+    [sendchatBtn addTarget:self action:@selector(sendComment:) forControlEvents:UIControlEventTouchUpInside];
     [sendchatBtn setImage:sendImg forState:UIControlStateNormal];
+    sendchatBtn.tag = [self.objStreaming.ID integerValue];
     sendchatBtn.backgroundColor = [UIColor clearColor];
     sendchatBtn.layer.cornerRadius = 5;
     sendchatBtn.clipsToBounds = TRUE;
@@ -564,13 +573,15 @@
         
     }
 }
-
+- (void)viewDidDisappear:(BOOL)animated{
+    NSLog(@"disconnect socket");
+    [socket disconnect];
+}
 
 - (void)viewDidAppear:(BOOL)animated {
-    
-    
-    
     [self playSampleClip1];
+    
+   
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -588,6 +599,11 @@
     [super viewWillAppear:animated];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     appDelegate.isChat = TRUE;
+    
+    commentData = [NSMutableArray array];
+
+    
+
 }
 
 
@@ -689,6 +705,42 @@
     //    UIViewController *commentVC = [[UIViewController alloc] init];
     //      CommentViewController *comment = [self.storyboard instantiateViewControllerWithIdentifier:@"commentNav"];
     //    [self presentViewController:comment animated:YES completion:nil];
+    
+}
+- (void)sendComment:(id)sender
+{
+    UIButton *tappedButton = sender;
+    
+    NSInteger streamID = tappedButton.tag;
+    NSLog(@"sendComment %ld",(long)streamID);
+    
+    
+    Comment * com = [[Comment alloc] init];
+
+    NSString *API_Name = @"postlivecomment";
+    if(chatboxTxt != nil)
+    {
+        com.commentMsg = chatboxTxt.text;
+        com.commentPicture = @"";
+        [[UserManager shareIntance] commentStreamAPI:API_Name streamID:[NSString stringWithFormat:@"%ld",(long)streamID] data:com Completion:^(NSError *error, NSDictionary *result, NSString *message) {
+            NSLog(@"postcomment %@",result);
+            if([message isEqualToString:@"Success"])
+            {
+                chatboxTxt.text = nil;
+            }
+            
+        }];
+    }
+
+    
+    
+    
+//    messageData = [NSMutableArray array];
+//    Commentator *cmt = [[Commentator alloc]init];
+//    cmt.profile_picture = @"555555";
+//    [messageData addObject:cmt];
+//    NSLog(@"messageData : %@",messageData);
+    
     
 }
 - (void)goProfile:(id)sender{
@@ -1051,25 +1103,26 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-    return 3;
+    return commentData.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
    
     cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     cell.backgroundColor = [UIColor clearColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-   
+    
+    //get Comment Data
+    Commentator *comment = [[Commentator alloc]init];
+    comment = [commentData objectAtIndex:indexPath.row];
     
     userChatImg = [[UIImageView alloc] initWithFrame:userChatImgRect];
     
 
     userChatImg.layer.cornerRadius = 5;
     userChatImg.clipsToBounds = YES;
-    userChatImg.image = [UIImage imageNamed:@"blank.png"];
+    userChatImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:comment.profile_picture]]];
      [cell.contentView addSubview:userChatImg];
     
-    
-
     CGFloat scy = (1024.0/480.0);
     CGFloat scx = (768.0/360.0);
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -1084,9 +1137,6 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
         userChatLbl = [[UILabel alloc] initWithFrame:CGRectMake(55,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + 2 , chatplaceView.bounds.size.width - 10, 20)];
         
     }
-
-
-  
     
   // [chatplaceView setFrame:];
     chatplaceView.backgroundColor = [UIColor whiteColor];
@@ -1094,9 +1144,10 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
     chatplaceView.clipsToBounds = YES;
     [cell.contentView addSubview:chatplaceView];
     
+
     
     
-    textchatLbl.text = @"brcyfvryevcyrevcyrevyrvycyrvcyrevycrvyc trtrtweiirifuircrbcyvyctvytvcyvcyr";
+    textchatLbl.text = comment.comment_content;
     textchatLbl.font = [UIFont fontWithName:@"Helvetica" size: fontSize - 2];
     textchatLbl.lineBreakMode = NSLineBreakByWordWrapping;
     textchatLbl.numberOfLines = 0;
@@ -1107,7 +1158,7 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
     
     
 
-    userChatLbl.text = @"giftfy";
+    userChatLbl.text = comment.first_name;
     userChatLbl.textColor = [UIColor grayColor];
     userChatLbl.font = [UIFont fontWithName:@"Helvetica" size: fontSize - 4];
     [cell.contentView addSubview:userChatLbl];
@@ -1304,48 +1355,71 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
  // Pass the selected object to the new view controller.
  }
  */
-- (void)initSocket
+- (void)setSocket:(int)roomID
 {
-    NSURL* url = [[NSURL alloc] initWithString:@"http://192.168.9.117:3008"];
-    //socket
-    SocketIOClient* socket = [[SocketIOClient alloc] initWithSocketURL:url options:nil];
+    NSLog(@"setSocket RoomID : %d",roomID);
+    NSURL* url = [[NSURL alloc] initWithString:SocketURL];
+    //    socket
+    socket = [[SocketIOClient alloc] initWithSocketURL:url options:@{@"log": @YES, @"forcePolling": @YES}];
     
     [socket joinNamespace:@"/websocket"];
     
     [socket on:@"ack-connected" callback:^(NSArray* data, SocketAckEmitter* ack) {
         NSLog(@"socket connected %@",data);
-        [socket emit:@"join" withItems:@[@"demo/room-2"]];
+        NSString* roomName = [@"streamlive/" stringByAppendingString:[NSString stringWithFormat:@"%d",roomID]];
+        [socket emit:@"join" withItems:@[roomName]];
     }];
-    //    [socket connect];
-    
-    
-    [socket on:@"message:new" callback:^(NSArray* data, SocketAckEmitter* ack) {
-        NSLog(@"HandlingEvent : %@",data);
-        NSError *jsonError;
-        NSData *objectData = [data[0] dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:objectData
-                                                             options:NSJSONReadingMutableContainers
-                                                               error:&jsonError];
-        //
-        if([json[@"message_type"]  isEqual: @"test"])
-        {
-            
-            
-            NSLog(@"message : %@",json[@"message"]);
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Socket Data"
-                                  
-                                                            message:json[@"message"]
-                                                           delegate:self
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
-        }
+    [socket on:@"watchedcount:update" callback:^(NSArray* data, SocketAckEmitter* ack) {
+        NSLog(@"All watchedcount:update :%@",data);
+        lblViewCount.text = data[0][@"data"][@"watchedCount"];
         
         
     }];
-    //    [socket connect];
-    //    NSArray *room = @[self.roomNameTxt.text];
+    [socket on:@"lovescount:update" callback:^(NSArray* data, SocketAckEmitter* ack) {
+        NSLog(@"All lovescount:update :%@",data);
+        loveCount.text = data[0][@"data"][@"loves_count"];
+        
+        
+    }];
     
+    [socket on:@"comment:new" callback:^(NSArray* data, SocketAckEmitter* ack) {
+        NSLog(@"message:new : %@",data);
+        
+        Commentator *comment = [[Commentator alloc]init];
+        comment.comment_content = data[0][@"data"][@"comment_content"];
+        comment.first_name = data[0][@"data"][@"commentator"][@"first_name"];
+        comment.profile_picture = data[0][@"data"][@"commentator"][@"profile_picture"];
+        [commentData addObject:comment];
+        [chatTbl reloadData];
+        
+    }];
+    [socket connect];
+    
+}
+-(void)getAddressFromLocation:(CLLocation *)location {
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
+     {
+         if (!placemarks) {
+            // handle error
+             NSLog(@" handle error");
+            
+         }
+         
+         if(placemarks && placemarks.count > 0)
+         {
+             CLPlacemark *placemark= [placemarks objectAtIndex:0];
+             NSString *address = [NSString stringWithFormat:@"%@ %@", [placemark administrativeArea],[placemark locality]];
+             
+             // you have the address.
+             // do something with it.
+             NSLog(@"Address : %@",address);
+             lblLocationLive.text = address;
+//             [[NSNotificationCenter defaultCenter] postNotificationName:@"MBDidReceiveAddressNotification"
+//                                                                 object:self
+//                                                               userInfo:@{ @"address" : address }];
+         }
+     }];
 }
 
 

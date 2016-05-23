@@ -25,7 +25,7 @@
 @property (strong,nonatomic) NSString *social_access_token;
 @property (strong,nonatomic) NSString *social_birth_date;
 //Curent Location
-@property double latitute;
+@property double latitude;
 @property double longitude;
 @property NSString *locationName;
 

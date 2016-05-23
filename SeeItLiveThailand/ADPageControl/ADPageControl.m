@@ -707,7 +707,7 @@
     
     NSLog(@"currentLocation.coordinate.latitude  %@",[NSString stringWithFormat:@"%.8f", newLocation.coordinate.latitude]);
     NSLog(@"currentLocation.coordinate.longitude %@",[NSString stringWithFormat:@"%.8f", newLocation.coordinate.longitude]);
-    appDelegate.latitute = newLocation.coordinate.latitude;
+    appDelegate.latitude = newLocation.coordinate.latitude;
     appDelegate.longitude = newLocation.coordinate.longitude;
 }
 
