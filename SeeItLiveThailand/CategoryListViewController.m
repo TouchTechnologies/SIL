@@ -67,6 +67,11 @@
     StreamingCell *cell;
     Streaming *stream;
     MBProgressHUD *hud ;
+    
+    UIButton *moreBtn;
+    CGRect moreBtnRect;
+    
+    CGRect gridViewRect;
 }
 @property (nonatomic, strong) NSMutableArray *fillerData;
 @property (nonatomic, strong) NSArray *streamList;
@@ -108,8 +113,16 @@
     scrollView.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0];
     [_pageControl.view addSubview:scrollView];
     
-    
-    
+        moreBtn = [[UIButton alloc] initWithFrame:moreBtnRect];
+        [moreBtn setTitle:@"more" forState:UIControlStateNormal];
+        [moreBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        moreBtn.layer.borderWidth = 1;
+        moreBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        moreBtn.backgroundColor = [UIColor clearColor];
+        moreBtn.layer.cornerRadius = moreBtnRect.size.height/2;
+        moreBtn.clipsToBounds = YES;
+        [moreBtn addTarget:self action:@selector(loadmore:) forControlEvents:UIControlEventTouchUpInside];
+     [_pageControl.view addSubview:moreBtn];
     
 //    UIWindow *tempWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
 //    hud = [[MBProgressHUD alloc] initWithWindow:tempWindow];
@@ -128,12 +141,13 @@
     
     
     //   self.gridView = [[KKGridView alloc] initWithFrame:CGRectMake(parentFrame.origin.x, parentFrame.origin.y, parentFrame.size.width, (weakSelf.streamList.count*(cellH+10))+10)];
-    self.gridView = [[KKGridView alloc] initWithFrame:CGRectMake(parentFrame.origin.x, parentFrame.origin.y - 240 , parentFrame.size.width,  parentFrame.size.height)];
+    self.gridView = [[KKGridView alloc] initWithFrame:gridViewRect];
     self.gridView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     self.gridView.dataSource = self;
     self.gridView.delegate = self;
     self.gridView.cellSize = cellSize;
     self.gridView.cellPadding = paddingSize;
+    self.gridView.bounces = NO;
     self.gridView.allowsMultipleSelection = NO;
     self.gridView.backgroundColor = [UIColor clearColor];
     [scrollView addSubview:self.gridView];
@@ -221,8 +235,11 @@
         imgPHW02 = 25.0*scy;
         navViewRect = CGRectMake(0*scx, 20*scy, width, 40*scy);
         backBtnRect = CGRectMake(5*scx, navViewRect.size.height/2 -(15*scy) , 30*scx , 30*scy);
-        scrollViewRect = CGRectMake(0*scx, titleHeight, width, height - (85*scy));
-        pageControlRect = CGRectMake(0*scx, 60*scy, self.view.bounds.size.width, self.view.bounds.size.height - (20*scy));
+        scrollViewRect = CGRectMake(0*scx, titleHeight, width, height - (150*scy));
+        pageControlRect = CGRectMake(0*scx, 60*scy, self.view.bounds.size.width, self.view.bounds.size.height - (100*scy));
+        moreBtnRect = CGRectMake(width/2 - (40*scx), scrollViewRect.size.height + (50*scy), 80*scx , 30*scy);
+        gridViewRect = CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y - (240*scy) , self.view.bounds.size.width,  self.view.bounds.size.height);
+
         
     } else {
         parentGrab = 120.0;
@@ -239,8 +256,10 @@
         imgPHW02 = 25.0;
         navViewRect = CGRectMake(0, 20, width, 40);
         backBtnRect = CGRectMake(5, navViewRect.size.height/2 -15 , 30 , 30);
-        scrollViewRect = CGRectMake(0, titleHeight, width, height - 85);
+        scrollViewRect = CGRectMake(0, titleHeight, width, height - 150);
         pageControlRect = CGRectMake(0, 60, self.view.bounds.size.width, self.view.bounds.size.height - 20);
+       moreBtnRect = CGRectMake(width/2 - 40, scrollViewRect.size.height + 50 , 80 , 30);
+        gridViewRect = CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y - 240 , self.view.bounds.size.width,  self.view.bounds.size.height);
     }
 
 }
@@ -327,7 +346,7 @@
     _pageControl.colorTitleBarBackground = [UIColor whiteColor];
     _pageControl.colorPageIndicator = [UIColor redColor];
     //[UIColor colorWithRed:0.071 green:0.459 blue:0.714 alpha:1]; //[UIColor orangeColor]; //blueColor
-    _pageControl.colorPageOverscrollBackground = [UIColor lightGrayColor];
+    _pageControl.colorPageOverscrollBackground = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0];
     
     _pageControl.bShowMoreTabAvailableIndicator = NO;
     
@@ -337,8 +356,13 @@
     
     
     _pageControl.view.frame = pageControlRect;
+    [_pageControl.view addSubview:moreBtn];
     [self.view addSubview:_pageControl.view];
     
+  //  [scrollView setBackgroundColor:[UIColor greenColor]];
+    
+  
+
     
     //flag lazy load
     isLazy = FALSE;
@@ -358,35 +382,39 @@
     
     NSLog(@"ADPageControl :: Lazy load asking for page %d",pageModel.iPageNumber);
     
-//    if(pageModel.iPageNumber == 0)
-//    {
-//        
-//        [_gridView reloadData];
-//    }
-//    else if(pageModel.iPageNumber == 1)
-//    {
-//        [_gridView reloadData];
-//    }
-//    else if(pageModel.iPageNumber == 2)
-//    {
-//        [_gridView reloadData];
-//    }
-//    else if(pageModel.iPageNumber == 3)
-//    {
-//        [_gridView reloadData];
-//    }
-//    else if(pageModel.iPageNumber == 4)
-//    {
-//        [_gridView reloadData];
-//    }
-//    else if(pageModel.iPageNumber == 5)
-//    {
-//        [_gridView reloadData];
-//    }
-//    else if(pageModel.iPageNumber == 6)
-//    {
-//        [_gridView reloadData];
-//    }
+    if(pageModel.iPageNumber == 0)
+    {
+        
+     //   [_gridView reloadData];
+     
+    }
+    else if(pageModel.iPageNumber == 1)
+    {
+     //   [_gridView reloadData];
+    
+    }
+    else if(pageModel.iPageNumber == 2)
+    {
+     //   [_gridView reloadData];
+    
+    }
+    else if(pageModel.iPageNumber == 3)
+    {
+     //   [_gridView reloadData];
+       }
+    else if(pageModel.iPageNumber == 4)
+    {
+     //   [_gridView reloadData];
+           }
+    else if(pageModel.iPageNumber == 5)
+    {
+     //   [_gridView reloadData];
+          }
+    else if(pageModel.iPageNumber == 6)
+    {
+     //   [_gridView reloadData];
+      
+    }
     return nil;
 }
 
@@ -405,7 +433,8 @@
         if (success) {
             weakSelf.streamList = streamRecords;
             NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
-            
+           
+            //[moreBtn reloadInputViews];
             
             
         } else {
@@ -413,10 +442,12 @@
             [alert show];
         }
         
-        
-        
         [weakSelf.gridView reloadData];
+      
+        
     } :[appDelegate.categoryData[iCurrentVisiblePage][@"id"] integerValue]];
+   
+    
 //    NSLog(@"screenName : %@",appDelegate.categoryData[iCurrentVisiblePage][@"category_name_en"]);
     
 //    switch (iCurrentVisiblePage) {
@@ -499,6 +530,12 @@
     //UIViewController *controller = [_pageControl.arrPageModel objectAtIndex:iCurrentVisiblePage];
     //[controller viewDidLoad];
 }
+-(void)loadmore:(id)sender{
+    
+    NSLog(@"LOAD MORE ACTIVE");
+    
+}
+
 #pragma mark - KKGridView
 
 - (NSUInteger)numberOfSectionsInGridView:(KKGridView *)gridView
@@ -525,11 +562,13 @@
         cellH = 300 * scy ;
         gridView.cellSize = CGSizeMake(gridView.bounds.size.width - (20*scx) , cellH);
         setframe = CGRectMake(parentFrame.origin.x, parentFrame.origin.y, parentFrame.size.width, self.streamList.count*(cellH+(10*scy)) + (10*scy));
+   //     moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - (40* scx),self.streamList.count*(cellH+(10*scy)) + (30*scy), 80* scx, 30* scy);
     }
     else{
         cellH = 300;
         gridView.cellSize = CGSizeMake(gridView.bounds.size.width - 20 , cellH);
         setframe = CGRectMake(parentFrame.origin.x, parentFrame.origin.y , parentFrame.size.width, self.streamList.count*(cellH+10) + 10);
+  //      moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - 40, self.streamList.count*(cellH+10) + 30, 80, 30);
         
     }
     
@@ -674,6 +713,11 @@
     TapComment.enabled = YES;
     
     [self.gridView setFrame:setframe];
+
+//
+//  //  [moreBtn setFrame:moreBtnRect];
+//    [scrollView addSubview:moreBtn];
+
     return cell;
 }
 

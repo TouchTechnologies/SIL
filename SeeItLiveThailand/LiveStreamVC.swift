@@ -196,8 +196,29 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     var textButton = UILabel()
     //  @IBOutlet weak var stopBtn: UIButton!
     
+    var alertView = UIView()
+    var alertViewRect = CGRect()
+    
+    var alertTitleLbl = UILabel()
+    var alertTitleLblRect = CGRect()
+    
+    var subAlertTitleLbl = UILabel()
+    var subAlertTitleLblRect = CGRect()
+    
+    var okBtnAlert = UIButton()
+    var okBtnAlertRect = CGRect()
+    
+    var cancelBtnAlert = UIButton()
+    var cancelBtnAlertRect = CGRect()
+    
+    
+    
+    
+    
     func stopStream(sender: UIButton) {
-        
+        print("STOP");
+
+      
         print("Stop Streaming")
         if(session.rtmpSessionState == .Started)
         {
@@ -206,7 +227,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         
         self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
     }
-    
+
     func startStream(sender:UIButton){
         self.popUpViewBot!.hidden = false
         self.popUpViewTop?.hidden = false
@@ -268,9 +289,51 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         default:
             //            self.dismissViewControllerAnimated(true, completion: nil)
             //            self.presentationController.dis
+
+            
+                
+                
             print("Stop Streaming")
-            self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
-            session.endRtmpSession()
+            alertView = UIView(frame: alertViewRect)
+            alertView.backgroundColor = UIColor.whiteColor()
+            alertView.layer.cornerRadius = 10
+            alertView.alpha = 0.7
+            popUpView!.addSubview(alertView)
+            
+            alertTitleLbl = UILabel(frame:alertTitleLblRect)
+            alertTitleLbl.textAlignment = .Center
+            alertTitleLbl.text = "Stop streaming?"
+            alertTitleLbl.font = UIFont.init(name: "Helvetica", size: font)
+            alertView.addSubview(alertTitleLbl)
+            
+            okBtnAlert = UIButton(frame:okBtnAlertRect)
+            let okLbl = UILabel(frame:okBtnAlert.bounds)
+            okLbl.text = "OK"
+            okLbl.font = UIFont.init(name: "Helvetica", size: font)
+            okLbl.textAlignment = .Center
+            okBtnAlert.addSubview(okLbl)
+            okBtnAlert.backgroundColor = UIColor.clearColor()
+            okBtnAlert.layer.cornerRadius = 5
+            okBtnAlert.layer.borderWidth = 1
+            okBtnAlert.layer.borderColor = UIColor.lightGrayColor().CGColor
+            okBtnAlert.addTarget(self, action:  #selector(LiveStreamVC.okStop(_:)), forControlEvents:  UIControlEvents.TouchUpInside)
+            alertView.addSubview(okBtnAlert)
+            
+            cancelBtnAlert = UIButton(frame:cancelBtnAlertRect)
+            let cancelLbl = UILabel(frame:okBtnAlert.bounds)
+            cancelLbl.text = "CANCEL"
+            cancelLbl.font = UIFont.init(name: "Helvetica", size: font)
+            cancelLbl.textAlignment = .Center
+            cancelBtnAlert.addSubview(cancelLbl)
+            cancelBtnAlert.backgroundColor = UIColor.clearColor()
+            cancelBtnAlert.layer.cornerRadius = 5
+            cancelBtnAlert.layer.borderWidth = 1
+            cancelBtnAlert.layer.borderColor = UIColor.lightGrayColor().CGColor
+            cancelBtnAlert.addTarget(self, action: #selector(LiveStreamVC.cancelStop(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            alertView.addSubview(cancelBtnAlert)
+            
+          
+        
             break
         }
         //        print("Stop Streaming")
@@ -278,7 +341,20 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         
         
     }
-    
+    func handleCancel(alertView: UIAlertAction!)
+    {
+        print("User click cancel button")
+    }
+    func cancelStop(sender :UIButton){
+        alertView.hidden = true;
+    }
+    func okStop(sender :UIButton){
+        alertView.hidden = true;
+        session.endRtmpSession()
+        self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
+        
+        
+    }
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -806,6 +882,11 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             tweeterBtnRect = CGRectMake(100*scx,shareListViewRect.size.height/2 - (20*scy) ,40*scx,40*scy)
             linekBtnRect = CGRectMake(145*scx,shareListViewRect.size.height/2 - (20*scy) ,40*scx,40*scy)
             copyLinkBtnRect = CGRectMake(190*scx,shareListViewRect.size.height/2 - (20*scy) ,40*scx,40*scy)
+            alertViewRect = CGRectMake(popUpViewCenRect.origin.x, popUpViewCenRect.origin.y + popUpViewCenRect.size.height/4, popUpViewCenRect.size.width, popUpViewCenRect.size.height/2);
+            alertTitleLblRect = CGRectMake(0*scx, 10*scy , alertViewRect.size.width, 30*scy);
+            subAlertTitleLblRect = CGRectMake(0*scx, 40*scy , alertViewRect.size.width, 30*scy);
+            okBtnAlertRect = CGRectMake(0*scx,alertViewRect.size.height - (40*scy) , alertViewRect.size.width/2, 40*scy);
+            cancelBtnAlertRect = CGRectMake(alertViewRect.size.width/2,alertViewRect.size.height - (40*scy) , alertViewRect.size.width/2, 40*scy);
         }
         else{
             font = 14
@@ -877,6 +958,13 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             linekBtnRect = CGRectMake(145,shareListViewRect.size.height/2 - 20 ,40,40)
             copyLinkBtnRect = CGRectMake(190,shareListViewRect.size.height/2 - 20 ,40,40)
             
+            alertViewRect = CGRectMake(popUpViewCenRect.origin.x, popUpViewCenRect.origin.y + popUpViewCenRect.size.height/4, popUpViewCenRect.size.width, popUpViewCenRect.size.height/2);
+            alertTitleLblRect = CGRectMake(0, 10 , alertViewRect.size.width, 30);
+            subAlertTitleLblRect = CGRectMake(0, 40 , alertViewRect.size.width, 30);
+            okBtnAlertRect = CGRectMake(0,alertViewRect.size.height - 40 , alertViewRect.size.width/2, 40);
+            cancelBtnAlertRect = CGRectMake(alertViewRect.size.width/2,alertViewRect.size.height - 40 , alertViewRect.size.width/2, 40);
+            
+
         }
         
         
