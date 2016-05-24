@@ -201,6 +201,8 @@
     IBOutlet UIScrollView *scrollView;
     AppDelegate *appDelegate;
     SocketIOClient *socket;
+    
+    int *count;
 }
 @property (nonatomic, strong) NSArray *streamList;
 @property (nonatomic, strong) VKVideoPlayer* player;
@@ -224,28 +226,42 @@
     scrollView.delegate = self;
     appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     
-    
+   // [liveIncategoryTbl removeFromSuperview];
     __weak StreamingDetailViewController *weakSelf = self;
     weakSelf.streamList = [[NSArray alloc]init];
-    
+ 
+
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
         //Background Thread
         [[DataManager shareManager] getStreamingWithCompletionBlockByCatgoryID:^(BOOL success, NSArray *streamRecords, NSError *error) {
             if (success) {
+              
                 weakSelf.streamList = streamRecords;
                 NSLog(@"STREAMLIST Cat COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
-                [liveIncategoryTbl reloadData];
+                
                 
             } else {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
             }
             
+<<<<<<< HEAD
+=======
+           count = [weakSelf.streamList count];
+            
+           [liveIncategoryTbl reloadData];
+
+            
+            
+>>>>>>> origin/master
         } :self.objStreaming.categoryID];
+       
+        
         dispatch_async(dispatch_get_main_queue(), ^(void){
             //Run UI Updates
             
         });
+        
     });
     
     
@@ -592,7 +608,7 @@
     
     
     liveIncategoryTbl = [[UITableView alloc] initWithFrame:liveIncategoryTblRect];
-    liveIncategoryTbl.backgroundColor = [UIColor grayColor];
+    liveIncategoryTbl.backgroundColor = [UIColor whiteColor];
     liveIncategoryTbl.separatorStyle = UITableViewCellStyleDefault;
     [liveIncategoryTbl registerClass:UITableViewCell.self forCellReuseIdentifier:@"cell"];
     [scrollView addSubview:liveIncategoryTbl];
@@ -768,7 +784,7 @@
         liveIncategoryTblRect = CGRectMake(0*scx, tableHeaderViewRect.origin.y + tableHeaderViewRect.size.height , self.view.bounds.size.width ,cellH*3);
         AvatarRect = CGRectMake(10*scx, profileViewRect.size.height/2 - (20*scy) , 40*scx , 40*scy);
 
-        usernameLblRect = CGRectMake(60*scx, profileViewRect.size.height/2 - fontSize, 200*scx, fontSize);
+        usernameLblRect = CGRectMake(60*scx, profileViewRect.size.height/2 - fontSize, 200*scx, fontSize+(1*scy));
         followerLblRect = CGRectMake(60*scx, profileViewRect.size.height/2 + (5*scy) , 60*scx , fontSize - 2);
         followerCountLblRect = CGRectMake(120*scx , profileViewRect.size.height/2 + (5*scy) , 50*scx , fontSize - 2);
         
@@ -842,7 +858,7 @@
         liveIncategoryTblRect = CGRectMake(0, tableHeaderViewRect.origin.y + tableHeaderViewRect.size.height , self.view.bounds.size.width ,cellH*3);
         AvatarRect = CGRectMake(10, profileViewRect.size.height/2 - 20 , 40 , 40);
         
-        usernameLblRect = CGRectMake(60, profileViewRect.size.height/2 - fontSize, 200, fontSize);
+        usernameLblRect = CGRectMake(60, profileViewRect.size.height/2 - fontSize, 200, fontSize+1);
         followerLblRect = CGRectMake(60, profileViewRect.size.height/2 + 5 , 50 , fontSize - 2);
         followerCountLblRect = CGRectMake(110 , profileViewRect.size.height/2 + 5 , 50 , fontSize - 2);
         
@@ -1281,6 +1297,19 @@
     Streaming *stream = [[Streaming alloc]init];
     stream = [weakSelf.streamList objectAtIndex:indexPath.row];
     
+    CGFloat scy = (1024.0/480.0);
+    CGFloat scx = (768.0/360.0);
+    
+    CGRect tblSetframe;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        tblSetframe = CGRectMake(0*scx, tableHeaderViewRect.origin.y + tableHeaderViewRect.size.height , self.view.bounds.size.width ,cellH*(weakSelf.streamList.count)) ;
+    }
+    else{
+        tblSetframe = CGRectMake(0, tableHeaderViewRect.origin.y + tableHeaderViewRect.size.height , self.view.bounds.size.width ,cellH*(weakSelf.streamList.count)) ;
+    }
+    
+    
+    
     cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     liveSnapshortImg = [[UIImageView alloc] initWithFrame:liveSnapshortImgRect];
     liveSnapshortImg.backgroundColor = [UIColor greenColor];
@@ -1328,6 +1357,8 @@
     userAvatarCellimg.layer.cornerRadius = userAvatarCellimgRect.size.width/2;
     userAvatarCellimg.clipsToBounds = YES;
     [cell addSubview:userAvatarCellimg];
+    liveIncategoryTbl.scrollEnabled = NO;
+    [liveIncategoryTbl setFrame:tblSetframe];
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

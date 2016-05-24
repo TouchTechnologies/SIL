@@ -341,10 +341,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         
         
     }
-    func handleCancel(alertView: UIAlertAction!)
-    {
-        print("User click cancel button")
-    }
+    
     func cancelStop(sender :UIButton){
         alertView.hidden = true;
     }

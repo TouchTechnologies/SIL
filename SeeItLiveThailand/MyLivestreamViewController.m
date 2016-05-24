@@ -231,10 +231,11 @@
     [self.viewHeader addSubview:self.followerView];
 
     self.Avatar = [[UIImageView alloc] initWithFrame:AvatarRect];
-    self.Avatar.backgroundColor = [UIColor greenColor];
+    self.Avatar.backgroundColor = [UIColor lightGrayColor];
     self.Avatar.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:appDelegate.profile_picture]]];
     self.Avatar.layer.cornerRadius = AvatarRect.size.width/2;
     self.Avatar.clipsToBounds = YES;
+    self.Avatar.contentMode = UIViewContentModeScaleToFill;
     [self.viewHeader addSubview:self.Avatar];
     
     self.UserName = [[UILabel alloc] initWithFrame:UserNameRect];
@@ -312,6 +313,7 @@
     }else{
    //     [hud hide:YES];
         NSLog(@"is not login ");
+        [self.Avatar setImage:[UIImage imageNamed:@"anonymous.png"]];
         //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Please Login" message:@"go Login" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
         //        [alert show];
         
