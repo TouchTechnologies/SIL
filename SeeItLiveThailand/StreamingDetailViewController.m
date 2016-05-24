@@ -245,15 +245,8 @@
                 [alert show];
             }
             
-<<<<<<< HEAD
-=======
            count = [weakSelf.streamList count];
-            
            [liveIncategoryTbl reloadData];
-
-            
-            
->>>>>>> origin/master
         } :self.objStreaming.categoryID];
        
         
@@ -1310,11 +1303,30 @@
     
     
     
+
+    
+    
+    
     cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     liveSnapshortImg = [[UIImageView alloc] initWithFrame:liveSnapshortImgRect];
-    liveSnapshortImg.backgroundColor = [UIColor greenColor];
+//    liveSnapshortImg.backgroundColor = [UIColor greenColor];
+    
+    
     liveSnapshortImg.image = [UIImage imageNamed:@"sil_big.jpg"];
-//    liveSnapshortImg.image = (stream.snapshot != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:stream.snapshot]]]:[UIImage imageNamed:@"sil_big.jpg"];
+    
+//    NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:stream.snapshot]];
+//    UIImage *image=[UIImage imageWithData:data];
+//    if (image==nil) {
+//        //yourImageURL is not valid
+//        NSLog(@"liveSnapshortImg Invalid");
+//        liveSnapshortImg.image = [UIImage imageNamed:@"sil_big.jpg"];
+//    }
+//    else{
+//        NSLog(@"liveSnapshortImg valid");
+//        liveSnapshortImg.image = image;
+//    }
+    
+    
     
     waterMark = [[UIImageView alloc] initWithFrame:waterMarkRect];
     waterMark.image = [UIImage imageNamed:@"play.png"];
