@@ -528,7 +528,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         //******      popUpViewBot?.addSubview(tableView!)
         
         popUpViewChat = UIView(frame : popUpViewChatRect)
-        popUpViewChat!.backgroundColor = UIColor.blackColor()
+        popUpViewChat!.backgroundColor = UIColor.clearColor()
         popUpViewChat!.alpha = 0.7
         popUpViewChat!.layer.cornerRadius = 10
         popUpViewChat!.clipsToBounds = true
@@ -853,11 +853,11 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             qualityPickerViewRect = CGRectMake(topCenViewRect.size.width/2 + (10*scx),120*scy,topCenViewRect.size.width/2,100*scy)
             shareBtnRect = CGRectMake(UIScreen.mainScreen().bounds.size.height/2-popUpViewCenX/2,0*scy,50*scx,50*scy)
             
+            popUpViewChatRect = CGRectMake(45*scx, 60*scy , streamViewRect.size.width/2 , streamViewRect.size.height - (150*scy));
             imgUserChatRect = CGRectMake(2*scx, 2*scy, 40*scx , 40*scy)
-            lblUserNameRect = CGRectMake((imgUserChatRect.size.width + imgUserChatRect.origin.x) + (2*scx), 2*scy, 70*scx , 30*scy)
-            lblTextChatRect = CGRectMake(lblUserNameRect.origin.x + lblUserNameRect.size.width + (2*scx) , 2*scy, popUpViewBotRect.size.width - (150*scx), 30*scy)
+            lblUserNameRect = CGRectMake((imgUserChatRect.size.width + imgUserChatRect.origin.x) + (5*scx), 2*scy, 70*scx , 30*scy)
+            lblTextChatRect = CGRectMake(lblUserNameRect.origin.x + lblUserNameRect.size.width + (2*scx) , 2*scy, popUpViewChatRect.size.width - (50*scx), 30*scy)
             
-            popUpViewChatRect = CGRectMake(45*scx, 60*scy , streamViewRect.size.width/2 - (30*scx), streamViewRect.size.height - (150*scy));
             
             // top rect
             closeBtnRect = CGRectMake(popUpViewTopRect.size.width - (35*scx) ,5*scy,30*scx, 30*scy)
@@ -927,12 +927,12 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             categoryPickerViewRect = CGRectMake(topCenViewRect.size.width/2+10,80,topCenViewRect.size.width/2,100)
             qualityPickerViewRect = CGRectMake(topCenViewRect.size.width/2+10,120,topCenViewRect.size.width/2,100)
             shareBtnRect = CGRectMake(UIScreen.mainScreen().bounds.size.height/2-popUpViewCenX/2,0,50,50)
-            
+            popUpViewChatRect = CGRectMake(45, 60 , streamViewRect.size.width/2 , streamViewRect.size.height - 150);
             imgUserChatRect = CGRectMake(2, 2, 40 , 40)
-            lblUserNameRect = CGRectMake((imgUserChatRect.size.width + imgUserChatRect.origin.x)+2, 2, 70 , 30)
-            lblTextChatRect = CGRectMake(lblUserNameRect.origin.x + lblUserNameRect.size.width + 2 , 2, popUpViewBotRect.size.width - 150, 30)
+            lblUserNameRect = CGRectMake((imgUserChatRect.size.width + imgUserChatRect.origin.x)+10, 2, 70 , 30)
+            lblTextChatRect = CGRectMake((imgUserChatRect.size.width + imgUserChatRect.origin.x)+10 , 2, popUpViewChatRect.size.width - 50, 30)
             
-            popUpViewChatRect = CGRectMake(45, 60 , streamViewRect.size.width/2 - 30 , streamViewRect.size.height - 150);
+            
             
             // top rect
             closeBtnRect = CGRectMake(popUpViewTopRect.size.width - 35 ,5,30, 30)
@@ -992,7 +992,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         cell.backgroundColor = UIColor.clearColor()
         cell.alpha = 0.5
         
-        let view = UIView(frame:CGRectMake(imgUserChatRect.size.width + 10,2,cell.contentView.bounds.size.width - 4 ,cell.contentView.bounds.size.height - 4))
+        let view = UIView(frame:CGRectMake(imgUserChatRect.size.width + 10,2,cell.contentView.bounds.size.width - (imgUserChatRect.size.width + 10) ,cell.contentView.bounds.size.height - 4))
         view.backgroundColor = UIColor.whiteColor()
         view.layer.cornerRadius = 5
         view.clipsToBounds = true
@@ -1014,7 +1014,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         lblUserName.textAlignment = NSTextAlignment.Justified
         lblUserName.sizeToFit()
         
-        cell.contentView.addSubview(lblUserName)
+        //cell.contentView.addSubview(lblUserName)
         
         lblTextChat = UILabel(frame: lblTextChatRect)
         //        lblTextChat.text = "helloDRETSYSYS"
