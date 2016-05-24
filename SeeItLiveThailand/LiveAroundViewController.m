@@ -9,7 +9,7 @@
 #import "LiveAroundViewController.h"
 #import <MapKit/MapKit.h>
 
-@interface LiveAroundViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface LiveAroundViewController ()<UITableViewDelegate,UITableViewDataSource,MKMapViewDelegate>
 {
     CGFloat fontSize;
     CGFloat cellH;
@@ -105,8 +105,21 @@
     scrollView.delegate = self;
     tableView.delegate = self;
     tableView.dataSource = self;
+    mapView = [[MKMapView alloc] init];
+    mapView.delegate = self;
+    mapView.showsUserLocation = YES;
     
-    NSLog(@"Live Around %@",self.objStreaming);
+    
+    MKCoordinateRegion region = mapView.region;
+    region.center = CLLocationCoordinate2DMake(12.9752297537231, 80.2313079833984);
+    region.span.longitudeDelta /= 1.0; // Bigger the value, closer the map view
+    region.span.latitudeDelta /= 1.0;
+    [mapView setRegion:region animated:NO]; // Choose if you want animate or not
+//    [self.view addSubview:mapView];
+    
+    
+    
+//    NSLog(@"Live Around %@",self.objStreaming);
     // Do any additional setup after loading the view.
 }
 - (void)initial{
@@ -372,6 +385,61 @@
     return cellH ;
 }
 
+-(void)initConstraints
+{
+    mapView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    id views = @{
+                 @"mapView": mapView
+                 };
+    
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[mapView]|" options:0 metrics:nil views:views]];
+    
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[mapView]|" options:0 metrics:nil views:views]];
+}
+
+-(void)addAllPins
+{
+    mapView.delegate=self;
+    
+    NSArray *name=[[NSArray alloc]initWithObjects:
+                   @"VelaCherry",
+                   @"Perungudi",
+                   @"Tharamani", nil];
+    
+    NSMutableArray *arrCoordinateStr = [[NSMutableArray alloc] initWithCapacity:name.count];
+    
+    [arrCoordinateStr addObject:@"12.970760345459, 80.2190093994141"];
+    [arrCoordinateStr addObject:@"12.9752297537231, 80.2313079833984"];
+    [arrCoordinateStr addObject:@"12.9788103103638, 80.2412414550781"];
+    
+    for(int i = 0; i < name.count; i++)
+    {
+        [self addPinWithTitle:name[i] AndCoordinate:arrCoordinateStr[i]];
+    }
+}
+
+-(void)addPinWithTitle:(NSString *)title AndCoordinate:(NSString *)strCoordinate
+{
+    MKPointAnnotation *mapPin = [[MKPointAnnotation alloc] init];
+    
+    // clear out any white space
+    strCoordinate = [strCoordinate stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    // convert string into actual latitude and longitude values
+    NSArray *components = [strCoordinate componentsSeparatedByString:@","];
+    
+    double latitude = [components[0] doubleValue];
+    double longitude = [components[1] doubleValue];
+    
+    // setup the map pin with all data and add to map view
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+    
+    mapPin.title = title;
+    mapPin.coordinate = coordinate;
+    
+    [mapView addAnnotation:mapPin];
+}
 /*
 #pragma mark - Navigation
 

@@ -241,9 +241,6 @@
                 [alert show];
             }
             
-            
-            
-            
         } :self.objStreaming.categoryID];
         dispatch_async(dispatch_get_main_queue(), ^(void){
             //Run UI Updates
@@ -708,7 +705,6 @@
     CGFloat width = [[UIScreen mainScreen] bounds].size.width ;
     CGFloat height = [[UIScreen mainScreen] bounds].size.height;
 
-    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
          bottomHeight = 100.0 * scy;
         NSLog(@"TOPVIEW ::: %.2f",topviewCtr);
@@ -786,13 +782,8 @@
         imgLoveCellRect = CGRectMake(self.view.bounds.size.width/2 - (20*scx), cellH - (30*scy), 20*scx, 20*scy);
         loveCountCellLblRect = CGRectMake(self.view.bounds.size.width/2 + (5*scx) , cellH - (25*scy), 50*scx, fontSize);
         userAvatarCellimgRect = CGRectMake(self.view.bounds.size.width - (50*scx), cellH - (50*scy) , 40*scx, 40*scy);
-        
-        
 
         moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - (40*scx), mapImgRect.origin.y +mapImgRect.size.height/2, 80*scx, 30*scy);
-        
-        
-
         
     } else {
        
@@ -869,8 +860,6 @@
         
         
          moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - 40,mapImgRect.origin.y +mapImgRect.size.height/2 , 80, 30);
-        
-        
         
 
     }
