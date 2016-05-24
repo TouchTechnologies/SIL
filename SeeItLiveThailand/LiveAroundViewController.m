@@ -220,6 +220,7 @@
     
     tableView = [[UITableView alloc] initWithFrame:tableViewRect];
     tableView.backgroundColor = [UIColor grayColor];
+    tableView.scrollEnabled = NO;
     tableView.separatorStyle = UITableViewCellStyleDefault;
     [tableView registerClass:UITableViewCell.self forCellReuseIdentifier:@"cell"];
 
@@ -340,6 +341,20 @@
     Streaming* stream = [[Streaming alloc]init];
     stream = [self.streamList objectAtIndex:indexPath.row];
     
+    CGRect setFrame ;
+    CGFloat scy = (1024.0/480.0);
+    CGFloat scx = (768.0/360.0);
+    CGFloat width = self.view.bounds.size.width;
+    CGFloat height = self.view.bounds.size.height;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+      setFrame =  CGRectMake(0*scx, detailViewRect.origin.y + detailViewRect.size.height + (30*scy) , width , cellH*(self.streamList.count));
+
+    }
+    else{
+       setFrame = CGRectMake(0, detailViewRect.origin.y + detailViewRect.size.height + 30 , width , cellH*(self.streamList.count));
+
+    }
+    
     NSLog(@"tabelView Data : %@",stream.streamTitle);
     cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     imgSnapshotcell = [[UIImageView alloc] initWithFrame:imgSnapshotcellRect];
@@ -385,7 +400,7 @@
     userAvatarCellimg.layer.cornerRadius = userAvatarCellimgRect.size.width/2;
     userAvatarCellimg.clipsToBounds = YES;
     [cell addSubview:userAvatarCellimg];
-    
+    [tableView setFrame:setFrame];
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -412,13 +427,13 @@
             NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
             [self initMap];
             videoCount.text = [NSString stringWithFormat:@"%d",weakSelf.streamList.count];
-            [tableView reloadData];
+           
             
         } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
         }
-        
+         [tableView reloadData];
         
     } Filter:filter];
         
