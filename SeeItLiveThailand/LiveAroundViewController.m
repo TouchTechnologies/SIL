@@ -8,9 +8,15 @@
 
 #import "LiveAroundViewController.h"
 #import <MapKit/MapKit.h>
+#import "AppDelegate.h"
+#import "DataManager.h"
+#import "defs.h"
+#import "Streaming.h"
 
-@interface LiveAroundViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface LiveAroundViewController ()<UITableViewDelegate,UITableViewDataSource,MKMapViewDelegate>
 {
+    
+    AppDelegate *appDelegate;
     CGFloat fontSize;
     CGFloat cellH;
     
@@ -100,16 +106,29 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
+
+    
     [self initialSize];
     [self initial];
+    [self getNearStream];
+//    [self initMap];
+
     scrollView.delegate = self;
     tableView.delegate = self;
     tableView.dataSource = self;
+    mapView = [[MKMapView alloc] init];
+    mapView.delegate = self;
+    mapView.showsUserLocation = YES;
     
-    NSLog(@"Live Around %@",self.objStreaming);
+    
+    
+//    NSLog(@"Live Around %@",self.objStreaming);
     // Do any additional setup after loading the view.
 }
 - (void)initial{
+    
+    
     navView = [[UIView alloc] initWithFrame:navViewRect];
     navView.backgroundColor = [UIColor whiteColor];
     
@@ -185,7 +204,7 @@
     [scrollView addSubview:detailView];
     
     videoCount = [[UILabel alloc] initWithFrame:videoCountRect];
-    videoCount.text = @"3";
+    videoCount.text = [NSString stringWithFormat:@"%d",self.streamList.count];
     videoCount.textColor = [UIColor blackColor];
     videoCount.textAlignment = NSTextAlignmentCenter;
     videoCount.font = [UIFont fontWithName:@"Helvetica-Bold" size:fontSize-2];
@@ -299,6 +318,7 @@
     userAvatarCellimgRect = CGRectMake(width - 50, cellH - 50 , 40, 40);
     }
 
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -312,11 +332,15 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    return 3;
+    return self.streamList.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
+    Streaming* stream = [[Streaming alloc]init];
+    stream = [self.streamList objectAtIndex:indexPath.row];
+    
+    NSLog(@"tabelView Data : %@",stream.streamTitle);
     cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     imgSnapshotcell = [[UIImageView alloc] initWithFrame:imgSnapshotcellRect];
     imgSnapshotcell.backgroundColor = [UIColor greenColor];
@@ -329,7 +353,7 @@
     [cell.contentView addSubview:imgSnapshotcell];
     
     streamTitleCellLbl = [[UILabel alloc] initWithFrame:streamTitleCellLblRect];
-    streamTitleCellLbl.text = @"Title stream";
+    streamTitleCellLbl.text = stream.streamTitle;
     streamTitleCellLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize];
     [cell.contentView addSubview:streamTitleCellLbl];
     
@@ -340,7 +364,7 @@
     [cell.contentView addSubview:categoryTitleCellLbl];
     
     categoryTypeCellLbl = [[UILabel alloc] initWithFrame:categoryTypeCellLblRect];
-    categoryTypeCellLbl.text = @"Travel";
+    categoryTypeCellLbl.text = stream.categoryName;
     categoryTypeCellLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 2];
     categoryTypeCellLbl.textColor = [UIColor redColor];
     [cell.contentView addSubview:categoryTypeCellLbl];
@@ -352,12 +376,12 @@
     
     loveCountCellLbl = [[UILabel alloc] initWithFrame:loveCountCellLblRect];
     loveCountCellLbl.textColor = [UIColor redColor];
-    loveCountCellLbl.text = @"54K";
+    loveCountCellLbl.text = [NSString stringWithFormat:@"%d",stream.lovesCount];
     loveCountCellLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize-2];
     [cell.contentView addSubview:loveCountCellLbl];
     
     userAvatarCellimg = [[UIImageView alloc] initWithFrame:userAvatarCellimgRect];
-    userAvatarCellimg.image = [UIImage imageNamed:@"blank.png"];
+    userAvatarCellimg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:stream.streamUserImage]]];
     userAvatarCellimg.layer.cornerRadius = userAvatarCellimgRect.size.width/2;
     userAvatarCellimg.clipsToBounds = YES;
     [cell addSubview:userAvatarCellimg];
@@ -372,6 +396,130 @@
     return cellH ;
 }
 
+-(void)getNearStream
+{
+    __weak LiveAroundViewController *weakSelf = self;
+    
+    
+    NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,1,10,1];
+    
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+        //Background Thread
+    [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
+        
+        if (success) {
+            weakSelf.streamList = streamRecords;
+            NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
+            [self initMap];
+            videoCount.text = [NSString stringWithFormat:@"%d",weakSelf.streamList.count];
+            [tableView reloadData];
+            
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        
+        
+    } Filter:filter];
+        
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            //Run UI Updates
+
+            
+        });
+        
+    });
+    
+}
+
+-(void)initMap
+{
+    MKPointAnnotation *mapPin = [[MKPointAnnotation alloc] init];
+    MKCoordinateRegion region;
+    region.center.latitude = [self.objStreaming.latitude floatValue];
+    region.center.longitude = [self.objStreaming.longitude floatValue];
+    region.span.latitudeDelta = 1;
+    region.span.longitudeDelta = 1;
+    
+    [mapView setRegion:region animated:YES];
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([self.objStreaming.latitude floatValue], [self.objStreaming.longitude floatValue]);
+    mapPin.title = self.objStreaming.streamTitle;
+    mapPin.coordinate = coordinate;
+    [mapView addAnnotation:mapPin];
+    
+//    __weak LiveAroundViewController *weakSelf = self;
+//    
+//    for(Streaming *stream in weakSelf.streamList)
+//    {
+//        NSLog(@"stream NAME %@ lat : %@ long : %@",stream.streamTitle,stream.latitude,stream.longitude);
+//        
+//        // setup the map pin with all data and add to map view
+//        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([stream.latitude floatValue], [stream.longitude floatValue]);
+//        mapPin.title = @"555555555";
+//        mapPin.coordinate = coordinate;
+//        [mapView addAnnotation:mapPin];
+//    }
+//    
+//    NSArray *name=[[NSArray alloc]initWithObjects:
+//                   @"VelaCherry",
+//                   @"Perungudi",
+//                   @"Tharamani", nil];
+//    
+//    NSMutableArray *arrCoordinateStr = [[NSMutableArray alloc] initWithCapacity:name.count];
+//    
+//    [arrCoordinateStr addObject:@"13.75482078, 100.56833035"];
+//    [arrCoordinateStr addObject:@"13.75482078, 100.58833035"];
+//    [arrCoordinateStr addObject:@"13.75482078, 100.59833035"];
+//    
+//    for(int i = 0; i < name.count; i++)
+//    {
+//        [self addPinWithTitle:name[i] AndCoordinate:arrCoordinateStr[i]];
+//    }
+    
+}
+
+-(void)addAllPins
+{
+    mapView.delegate=self;
+    
+    NSArray *name=[[NSArray alloc]initWithObjects:
+                   @"VelaCherry",
+                   @"Perungudi",
+                   @"Tharamani", nil];
+    
+    NSMutableArray *arrCoordinateStr = [[NSMutableArray alloc] initWithCapacity:name.count];
+    
+    [arrCoordinateStr addObject:@"12.970760345459, 80.2190093994141"];
+    [arrCoordinateStr addObject:@"12.9752297537231, 80.2313079833984"];
+    [arrCoordinateStr addObject:@"12.9788103103638, 80.2412414550781"];
+    
+    for(int i = 0; i < name.count; i++)
+    {
+        [self addPinWithTitle:name[i] AndCoordinate:arrCoordinateStr[i]];
+    }
+}
+
+-(void)addPinWithTitle:(NSString *)title AndCoordinate:(NSString *)strCoordinate
+{
+    MKPointAnnotation *mapPin = [[MKPointAnnotation alloc] init];
+    
+    // clear out any white space
+    strCoordinate = [strCoordinate stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    // convert string into actual latitude and longitude values
+    NSArray *components = [strCoordinate componentsSeparatedByString:@","];
+    
+    double latitude = [components[0] doubleValue];
+    double longitude = [components[1] doubleValue];
+    
+    // setup the map pin with all data and add to map view
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+    
+    mapPin.title = title;
+    mapPin.coordinate = coordinate;
+    
+    [mapView addAnnotation:mapPin];
+}
 /*
 #pragma mark - Navigation
 

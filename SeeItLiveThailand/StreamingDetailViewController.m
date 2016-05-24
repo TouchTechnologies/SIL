@@ -246,11 +246,7 @@
             }
             
            count = [weakSelf.streamList count];
-            
            [liveIncategoryTbl reloadData];
-
-            
-            
         } :self.objStreaming.categoryID];
        
         
@@ -718,7 +714,6 @@
     CGFloat width = [[UIScreen mainScreen] bounds].size.width ;
     CGFloat height = [[UIScreen mainScreen] bounds].size.height;
 
-    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
          bottomHeight = 100.0 * scy;
         NSLog(@"TOPVIEW ::: %.2f",topviewCtr);
@@ -796,13 +791,8 @@
         imgLoveCellRect = CGRectMake(self.view.bounds.size.width/2 - (20*scx), cellH - (30*scy), 20*scx, 20*scy);
         loveCountCellLblRect = CGRectMake(self.view.bounds.size.width/2 + (5*scx) , cellH - (25*scy), 50*scx, fontSize);
         userAvatarCellimgRect = CGRectMake(self.view.bounds.size.width - (50*scx), cellH - (50*scy) , 40*scx, 40*scy);
-        
-        
 
         moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - (40*scx), mapImgRect.origin.y +mapImgRect.size.height/2, 80*scx, 30*scy);
-        
-        
-
         
     } else {
        
@@ -879,8 +869,6 @@
         
         
          moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - 40,mapImgRect.origin.y +mapImgRect.size.height/2 , 80, 30);
-        
-        
         
 
     }
@@ -1315,11 +1303,30 @@
     
     
     
+
+    
+    
+    
     cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     liveSnapshortImg = [[UIImageView alloc] initWithFrame:liveSnapshortImgRect];
-    liveSnapshortImg.backgroundColor = [UIColor greenColor];
+//    liveSnapshortImg.backgroundColor = [UIColor greenColor];
+    
+    
     liveSnapshortImg.image = [UIImage imageNamed:@"sil_big.jpg"];
-//    liveSnapshortImg.image = (stream.snapshot != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:stream.snapshot]]]:[UIImage imageNamed:@"sil_big.jpg"];
+    
+//    NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:stream.snapshot]];
+//    UIImage *image=[UIImage imageWithData:data];
+//    if (image==nil) {
+//        //yourImageURL is not valid
+//        NSLog(@"liveSnapshortImg Invalid");
+//        liveSnapshortImg.image = [UIImage imageNamed:@"sil_big.jpg"];
+//    }
+//    else{
+//        NSLog(@"liveSnapshortImg valid");
+//        liveSnapshortImg.image = image;
+//    }
+    
+    
     
     waterMark = [[UIImageView alloc] initWithFrame:waterMarkRect];
     waterMark.image = [UIImage imageNamed:@"play.png"];

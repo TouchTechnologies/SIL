@@ -281,33 +281,60 @@
     __weak StreamHistoryViewController *weakSelf = self;
     
     
-    [[DataManager shareManager] getStreamingWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
+//    [[DataManager shareManager] getStreamingWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
+//        
+//        
+////        [hud hide:YES];
+//        if (success) {
+//            weakSelf.streamList = streamRecords;
+//            NSLog(@"STREAMLIST COUNT :::: %ld", weakSelf.streamList.count);
+//            [scrollView setFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - 70)];
+//   
+//            
+//        } else {
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//            [alert show];
+//            
+//          
+//            
+//            /*
+//             CGFloat xLbl = (weakSelf.view.bounds.size.width / 2) - 100;
+//             UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(xLbl, 20, 200, 25)];
+//             lblTitle.text = NotConnect;
+//             lblTitle.textAlignment = NSTextAlignmentCenter;
+//             [weakSelf.view addSubview:lblTitle];
+//             */
+//            //NSLog(@"%@",error);
+//        }
+//        
+//       
+//        
+//        [weakSelf.gridView reloadData];
+//        moreBtn = [[UIButton alloc] initWithFrame: moreBtnRect];
+//        [moreBtn setTitle:@"more" forState:UIControlStateNormal];
+//        [moreBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+//        moreBtn.layer.borderWidth = 1;
+//        moreBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//        moreBtn.backgroundColor = [UIColor clearColor];
+//        moreBtn.layer.cornerRadius = moreBtnRect.size.height/2;
+//        moreBtn.clipsToBounds = YES;
+//        [moreBtn addTarget:self action:@selector(loadmore:) forControlEvents:UIControlEventTouchUpInside];
+//        [scrollView addSubview:moreBtn];
+//        
+//    }];
+
+    NSString *filter = [@"?" stringByAppendingFormat:@"filterLimit=%d&filtersPage=%d",filter_limit,1];
+    
+    [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
         
-        
-//        [hud hide:YES];
         if (success) {
             weakSelf.streamList = streamRecords;
-            NSLog(@"STREAMLIST COUNT :::: %ld", weakSelf.streamList.count);
-            [scrollView setFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - 70)];
-   
+            NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
             
         } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
-            
-          
-            
-            /*
-             CGFloat xLbl = (weakSelf.view.bounds.size.width / 2) - 100;
-             UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(xLbl, 20, 200, 25)];
-             lblTitle.text = NotConnect;
-             lblTitle.textAlignment = NSTextAlignmentCenter;
-             [weakSelf.view addSubview:lblTitle];
-             */
-            //NSLog(@"%@",error);
         }
-        
-       
         
         [weakSelf.gridView reloadData];
         moreBtn = [[UIButton alloc] initWithFrame: moreBtnRect];
@@ -321,8 +348,8 @@
         [moreBtn addTarget:self action:@selector(loadmore:) forControlEvents:UIControlEventTouchUpInside];
         [scrollView addSubview:moreBtn];
         
-    }];
-
+        
+    } Filter:filter];
 
 }
 -(void)loadmore:(id)sender{
