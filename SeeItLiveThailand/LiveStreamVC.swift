@@ -16,7 +16,9 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var socket:SocketIOClient? = nil;
-    
+    var countDown:NSInteger = 0;
+    var countDownTimer = NSTimer()
+    var timerValue = 20
     var comments = NSMutableArray()
     //    @IBOutlet var previewView: UIView!
     @IBOutlet var connectBtn: UIButton!
@@ -216,9 +218,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     
     
     func stopStream(sender: UIButton) {
-        print("STOP");
 
-      
         print("Stop Streaming")
         if(session.rtmpSessionState == .Started)
         {
@@ -229,6 +229,14 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     }
 
     func startStream(sender:UIButton){
+        
+        print("stream time : \(self.getStreamTime())")
+        self.countDownTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(LiveStreamVC.countdown(_:)), userInfo: nil, repeats: true)
+
+        
+        
+        
+        
         self.popUpViewBot!.hidden = false
         self.popUpViewTop?.hidden = false
         self.chatBtn?.hidden = false
@@ -346,6 +354,9 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         alertView.hidden = true;
     }
     func okStop(sender :UIButton){
+        
+        self.countDownTimer.invalidate()
+        timerValue = 0;
         alertView.hidden = true;
         session.endRtmpSession()
         self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
@@ -1483,6 +1494,35 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         //            print("Delete message: \(data?[0])")
         //        }
     }
+    func getStreamTime() -> NSInteger {
+        let defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        if ((defaults.stringForKey("isActivate")) != nil) {
+            return 3000
+        }else
+        {
+            return 300
+        }
+    }
+    
+    
+    func countdown(dt: NSTimer) {
+        self.timerValue -= 1
+        if self.timerValue < 0 {
+            self.countDownTimer.invalidate()
+        }
+        else {
+//            self.setLabelText(self.timeFormatted(self.timerValue))
+            print("time count : \(self.timeFormatted(self.timerValue))")
+        }
+    }
+    
+    func timeFormatted(totalSeconds: Int) -> String {
+        let seconds: Int = totalSeconds % 60
+        let minutes: Int = (totalSeconds / 60) % 60
+        let hours: Int = totalSeconds / 3600
+        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+    }
+    
     func  getLocationName() {
         // Add below code to get address for touch coordinates.
         let geoCoder = CLGeocoder()

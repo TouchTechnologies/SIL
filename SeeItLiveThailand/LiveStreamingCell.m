@@ -101,7 +101,7 @@
             lblLoveRect = CGRectMake(80, imgSnapshotRect.size.height +64, cWidth - 32, 20);
             
         }
-        NSLog(@"cHeight ::: %f",cHeight);
+//        NSLog(@"cHeight ::: %f",cHeight);
         
         UIFont *font = [UIFont fontWithName:@"Helvetica" size:fontSize];
         

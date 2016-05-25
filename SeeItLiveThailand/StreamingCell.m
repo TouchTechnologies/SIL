@@ -114,7 +114,7 @@
             imgShareIconRect = CGRectMake(self.bounds.size.width - 40, self.bounds.size.height - 40 , 25 , 25);
 
         }
-        NSLog(@"cHeight ::: %f",cHeight);
+//        NSLog(@"cHeight ::: %f",cHeight);
     
         UIFont *font = [UIFont fontWithName:@"Helvetica" size:fontSize];
         self.imgAvatar = [[UIImageView alloc] initWithFrame:imgAvatarRect];

@@ -440,7 +440,7 @@
     [cell.shareLivestream addGestureRecognizer:TapShare];
     TapShare.enabled = YES;
   
-    NSLog(@"isLove : %d",stream.isLoved);
+//    NSLog(@"isLove : %d",stream.isLoved);
     if (stream.isLoved) {
         UIImageView *img = [[UIImageView alloc] initWithFrame:cell.btnLoveicon.bounds];
         img.image = [UIImage imageNamed:@"ic_love2.png"];

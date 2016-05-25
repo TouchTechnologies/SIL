@@ -626,7 +626,7 @@
     cell.lblLoveCount.text = [NSString stringWithFormat:@"%ld",(long)stream.lovesCount];
     
     
-    NSLog(@"isLove : %d",stream.isLoved);
+//    NSLog(@"isLove : %d",stream.isLoved);
     if (stream.isLoved && appDelegate.isLogin) {
         //        UIImageView *img = [[UIImageView alloc] initWithFrame:cell.btnLoveicon.bounds];
         //        img.image = [UIImage imageNamed:@"ic_love2.png"];
