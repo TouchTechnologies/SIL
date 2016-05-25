@@ -1252,10 +1252,8 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     
     override func viewWillDisappear(animated: Bool) {
         // Remove observer of self.
-        
-        //        NSNotificationCenter.defaultCenter().removeObserver(self)
-        
-        
+        socket?.disconnect()
+        print("disconnect socket")
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -1271,10 +1269,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         //        self.setNeedsStatusBarAppearanceUpdate()
         //        UIApplication.sharedApplication().setStatusBarOrientation(.LandscapeRight, animated: false)
         //
-        
-        
     }
-    
     override func viewDidAppear(animated: Bool) {
         
         print("End viewwillDisappear")
@@ -1285,12 +1280,9 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         //        let value = UIInterfaceOrientation.LandscapeRight.rawValue
         //        UIDevice.currentDevice().setValue(value, forKey: "orientation")
         //        UIApplication.sharedApplication().setStatusBarOrientation(.LandscapeRight, animated: false)
-        
-        
-        
     }
     override func viewDidDisappear(animated: Bool) {
-        print("disconnect socket")
+       
         
     }
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
@@ -1479,20 +1471,6 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             //            }
         }
         socket.connect()
-        /// Setup channel:event handlers.
-        
-        //        socket.on("message:new") {data, ack in
-        //            print("New message: \(data?[0])")
-        //        }
-        //        socket.on("message:read") {data, ack in
-        //            print("Read message: \(data?[0])")
-        //        }
-        //        socket.on("message:update") {data, ack in
-        //            print("Update message: \(data?[0])")
-        //        }
-        //        socket.on("message:delete") {data, ack in
-        //            print("Delete message: \(data?[0])")
-        //        }
     }
     func getStreamTime() -> NSInteger {
         let defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -1579,18 +1557,3 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         
     }
 }
-
-// address dictionary properties
-//public var name: String? { get } // eg. Apple Inc.
-//public var thoroughfare: String? { get } // street name, eg. Infinite Loop
-//public var subThoroughfare: String? { get } // eg. 1
-//public var locality: String? { get } // city, eg. Cupertino
-//public var subLocality: String? { get } // neighborhood, common name, eg. Mission District
-//public var administrativeArea: String? { get } // state, eg. CA
-//public var subAdministrativeArea: String? { get } // county, eg. Santa Clara
-//public var postalCode: String? { get } // zip code, eg. 95014
-//public var ISOcountryCode: String? { get } // eg. US
-//public var country: String? { get } // eg. United States
-//public var inlandWater: String? { get } // eg. Lake Tahoe
-//public var ocean: String? { get } // eg. Pacific Ocean
-//public var areasOfInterest: [String]? { get } // eg. Golden Gate Park
