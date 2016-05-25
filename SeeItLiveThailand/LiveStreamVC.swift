@@ -60,7 +60,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     var categoryPickerView:UIPickerView?
     //    var catArray : [String] = ["Other","Travel","Education","Event","News"]
     var catID = 1
-    var count = 0
+//    var count = 0
     var qualityLbl:UILabel?
     var qualityTxt:UITextField?
     var selectQualityBtn:UIButton?
@@ -211,8 +211,16 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     var cancelBtnAlert = UIButton()
     var cancelBtnAlertRect = CGRect()
     
+    var timeStreamLbl = UILabel()
+    var titimeStreamLblRect = CGRect()
     
+    var countdownImg = UIImageView()
+    var countdownImgRect = CGRect()
     
+    var countdownLbl = UILabel()
+    var countDownLblRect = CGRect()
+    
+    var count = 5
     
     
     func stopStream(sender: UIButton) {
@@ -229,8 +237,9 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     }
 
     func startStream(sender:UIButton){
+        self.popUpViewTop!.hidden = false
         self.popUpViewBot!.hidden = false
-        self.popUpViewTop?.hidden = false
+       // self.popUpViewTop?.hidden = false
         self.chatBtn?.hidden = false
         //        self.shareLiveBtn?.hidden = false
         
@@ -361,7 +370,8 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         self.initialSize()
         self.initial()
         self.getLocationName()
-        
+       
+        var timer = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
         
         print("IS CHAT didload ::: \(appDelegate.isChat) ")
         //self.initSocket()
@@ -750,6 +760,16 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         //        startStreamBtn!.addTarget(self, action: "testBtn:", forControlEvents: .TouchUpInside)
         
         
+        timeStreamLbl.frame =  titimeStreamLblRect
+        timeStreamLbl.text = "00:00"
+        timeStreamLbl.textAlignment = .Center
+        timeStreamLbl.textColor = UIColor.whiteColor()
+        popUpViewBot!.addSubview(timeStreamLbl)
+        
+        countdownLbl.frame = CGRectMake(popupView.frame.size.width/2 - 25, popupView.frame.size.height/2 - 25, 50, 50);
+        countdownLbl.text = "5"
+        countdownLbl.textColor = UIColor.whiteColor()
+        
         //        textButton.frame = CGRectMake(0 ,streamButton!.frame.size.height/2-10 ,streamButton!.frame.size.width, 30)
         //        textButton.text = "Starting"
         //        textButton.textAlignment = NSTextAlignment.Center
@@ -797,6 +817,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         self.view!.addSubview(popUpView!)
         
         
+        popUpViewTop!.hidden = true
         
         
     }
@@ -884,6 +905,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             subAlertTitleLblRect = CGRectMake(0*scx, 40*scy , alertViewRect.size.width, 30*scy);
             okBtnAlertRect = CGRectMake(0*scx,alertViewRect.size.height - (40*scy) , alertViewRect.size.width/2, 40*scy);
             cancelBtnAlertRect = CGRectMake(alertViewRect.size.width/2,alertViewRect.size.height - (40*scy) , alertViewRect.size.width/2, 40*scy);
+            titimeStreamLblRect = CGRectMake(streamButtonRect.origin.x - (60*scx), popUpViewBotRect.size.height/2 - (15*scy), 60*scx, 30*scy);
         }
         else{
             font = 14
@@ -961,6 +983,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             okBtnAlertRect = CGRectMake(0,alertViewRect.size.height - 40 , alertViewRect.size.width/2, 40);
             cancelBtnAlertRect = CGRectMake(alertViewRect.size.width/2,alertViewRect.size.height - 40 , alertViewRect.size.width/2, 40);
             
+            titimeStreamLblRect = CGRectMake(streamButtonRect.origin.x - 60, popUpViewBotRect.size.height/2 - 15, 60, 30);
 
         }
         
