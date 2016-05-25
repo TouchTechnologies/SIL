@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SettingTableViewController : UITableViewController
+@interface SettingTableViewController : UITableViewController<UITextFieldDelegate>
 - (IBAction)back:(id)sender;
 
 @end

@@ -12,5 +12,6 @@
 
 @property (strong, nonatomic) IBOutlet UIImageView *Img;
 @property (weak, nonatomic) IBOutlet UILabel *textLbl;
+@property (strong, nonatomic) IBOutlet UIImageView *accessoryTypeImg;
 
 @end

@@ -9,6 +9,7 @@
 #import "SettingTableViewController.h"
 #import "SettingTableViewCell.h"
 #import "AboutSeeItLiveViewController.h"
+#import "CustomIOSAlertView.h"
 #define SCALING_Y (1024.0/480.0);
 #define SCALING_X (768.0/360.0);
 
@@ -21,7 +22,16 @@
     CGFloat cellH;
     CGFloat cellW;
     
+    UIButton *upgradeBtn;
+    CGRect upgradeViewRect;
+    CGRect upgradeBtnRect;
+    CGRect titleRect;
+    CGRect keyTxtRect;
+    CGRect submitBtnRect;
+    
+    
     SettingTableViewCell *cell;
+    CustomIOSAlertView *alertView;
 }
 @end
 
@@ -57,7 +67,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 #warning Incomplete implementation, return the number of rows
-    return 3;
+    return 4 ;
 }
 
 
@@ -87,18 +97,83 @@
         cell.textLbl.text = @"About See it Live";
          cell.textLbl.textColor = [UIColor blackColor];
     }
+    else if([indexPath row] == 3){
+    
+        upgradeBtn = [[UIButton alloc] initWithFrame:upgradeBtnRect];
+        upgradeBtn.backgroundColor = [UIColor colorWithRed:0.20 green:0.36 blue:0.60 alpha:1.0];
+        upgradeBtn.layer.cornerRadius = 5 ;
+        [upgradeBtn addTarget:self action:@selector(upgrade:) forControlEvents: UIControlEventTouchUpInside];
+        [cell setSelected:NO];
+        
+        [upgradeBtn setTitle: @"Upgrade" forState:UIControlStateNormal];
+        [cell.accessoryTypeImg setHidden:TRUE];
+        cell.textLbl.text = nil;
+        [cell.Img setHidden: TRUE];
+        [cell.contentView addSubview:upgradeBtn];
+    
+    }
     
     // Configure the cell...
     
     return cell;
 }
+-(void)upgrade:(id)sender{
+    NSLog(@"UPgrade");
+    alertView = [[CustomIOSAlertView alloc] init];
+    [alertView setContainerView:[self createPopup]];
+    alertView.buttonTitles = nil;
+    [alertView setDelegate:self];
+    [alertView setUseMotionEffects:true];
+    [alertView show];
+
+}
+- (UIView *)createPopup
+{
+    UIView *upgradeView = [[UIView alloc] initWithFrame:upgradeViewRect];
+    upgradeView.backgroundColor = [UIColor whiteColor];
+    upgradeView.layer.cornerRadius = 10;
+    
+    UILabel *title = [[UILabel alloc] initWithFrame:titleRect ];
+    title.text = @"Please enter your key";
+    title.textAlignment = NSTextAlignmentCenter;
+     [upgradeView addSubview:title];
+    
+    
+    UITextField *keyTxt = [[UITextField alloc] initWithFrame:keyTxtRect];
+    keyTxt.backgroundColor = [UIColor lightGrayColor];
+    keyTxt.layer.cornerRadius = 5 ;
+    keyTxt.delegate = self;
+    [upgradeView addSubview:keyTxt];
+
+    UIButton *submitBtn = [[UIButton alloc] initWithFrame:submitBtnRect];
+    [submitBtn setTitle:@"OK" forState:UIControlStateNormal];
+    [submitBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    submitBtn.layer.cornerRadius =5;
+    submitBtn.backgroundColor = [UIColor colorWithRed:0.20 green:0.36 blue:0.60 alpha:1.0];
+    [submitBtn addTarget:self action:@selector(submitKey:) forControlEvents:UIControlEventTouchUpInside];
+     [upgradeView addSubview:submitBtn];
+    
+    
+    return upgradeView;
+}
+-(void)submitKey:(id)sender{
+
+    NSLog(@"Key OK");
+    [alertView close];
+}
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+
+    [textField resignFirstResponder];
+    return true;
+}
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if([indexPath row] == 2){
-    
-        cell.Img.image = [UIImage imageNamed:@"ic_more_about.png"];
-        cell.textLbl.textColor = [UIColor redColor];
+        
+      //  [cell.Img setImage:[UIImage imageNamed:@"ic_more_about.png"]];
+     //   image = [UIImage imageNamed:@"ic_more_about.png"];
+      //  [cell.textLbl setTextColor:[UIColor redColor]];
         
         [self performSegueWithIdentifier:@"showabout" sender:self];
     }
@@ -124,14 +199,27 @@
  
 }
 - (void)initialSize {
+    CGFloat scx = (768.0/360.0);
+    CGFloat scy = (1024.0/480.0);
+
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         
         cellH = 70 * SCALING_Y;
         // scHeight = 240 * SCALING_Y;
-        
+        upgradeBtnRect = CGRectMake(self.view.bounds.size.width/2 - (40*scx), cellH/2 - (20*scy), 80*scx, 40*scy);
+        upgradeViewRect = CGRectMake(0*scx, 0*scy, self.view.bounds.size.width/1.5 , self.view.bounds.size.height/4 );
+        titleRect = CGRectMake(0*scx, 20*scy, upgradeViewRect.size.width , 30*scy);
+        keyTxtRect = CGRectMake(10*scx, 50*scy, upgradeViewRect.size.width - (20*scx), 30*scy) ;
+        submitBtnRect = CGRectMake(upgradeViewRect.size.width/2 - (20*scx),keyTxtRect.origin.y + keyTxtRect.size.height + (5*scy), 40*scx, 30*scy);
     }
     else {
         cellH = 70;
+        upgradeBtnRect = CGRectMake(self.view.bounds.size.width/2 - 40, cellH/2 - 20, 80, 40);
+        upgradeViewRect = CGRectMake(0, 0, self.view.bounds.size.width/1.5 , self.view.bounds.size.height/4 );
+        titleRect = CGRectMake(0, 20, upgradeViewRect.size.width , 30);
+        keyTxtRect = CGRectMake(10, 50, upgradeViewRect.size.width - 20, 30) ;
+        submitBtnRect = CGRectMake(upgradeViewRect.size.width/2 - 20, upgradeViewRect.size.height - 50, 40, 30);
+    
     }
     
     
