@@ -370,8 +370,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         self.initialSize()
         self.initial()
         self.getLocationName()
-       
-        var timer = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
+        
         
         print("IS CHAT didload ::: \(appDelegate.isChat) ")
         //self.initSocket()
