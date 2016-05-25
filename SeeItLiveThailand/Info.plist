@@ -102,6 +102,7 @@
 	<string>Main_iPad</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
+		<string>location-services</string>
 		<string>armv7</string>
 	</array>
 	<key>UIRequiresFullScreen</key>
