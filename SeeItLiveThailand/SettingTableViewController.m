@@ -133,6 +133,13 @@
     upgradeView.backgroundColor = [UIColor whiteColor];
     upgradeView.layer.cornerRadius = 10;
     
+    UIButton *closePopup = [[UIButton alloc] initWithFrame:CGRectMake(upgradeView.bounds.size.width - 30 , 0 , 30, 30)];
+    [closePopup setImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
+    closePopup.backgroundColor = [UIColor redColor];
+    closePopup.layer.cornerRadius = 5 ;
+    [closePopup addTarget:self action:@selector(ClosePopup:) forControlEvents:UIControlEventTouchUpInside];
+    [upgradeView addSubview:closePopup];
+    
     UILabel *title = [[UILabel alloc] initWithFrame:titleRect ];
     title.text = @"Please enter your key";
     title.textAlignment = NSTextAlignmentCenter;
@@ -155,6 +162,9 @@
     
     
     return upgradeView;
+}
+-(void)ClosePopup:(id)sender{
+  [alertView close];
 }
 -(void)submitKey:(id)sender{
 
