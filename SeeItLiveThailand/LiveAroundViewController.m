@@ -111,8 +111,7 @@
     
     [self initialSize];
     [self initial];
-    [self getNearStream];
-//    [self initMap];
+    [self initMap];
 
     scrollView.delegate = self;
     tableView.delegate = self;
@@ -125,6 +124,10 @@
     
 //    NSLog(@"Live Around %@",self.objStreaming);
     // Do any additional setup after loading the view.
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self getNearStream];
 }
 - (void)initial{
     
@@ -337,9 +340,9 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    __weak LiveAroundViewController *weakSelf = self;
     Streaming* stream = [[Streaming alloc]init];
-    stream = [self.streamList objectAtIndex:indexPath.row];
+    stream = [weakSelf.streamList objectAtIndex:indexPath.row];
     
     CGRect setFrame ;
     CGFloat scy = (1024.0/480.0);
@@ -391,11 +394,12 @@
     
     loveCountCellLbl = [[UILabel alloc] initWithFrame:loveCountCellLblRect];
     loveCountCellLbl.textColor = [UIColor redColor];
-    loveCountCellLbl.text = [NSString stringWithFormat:@"%d",stream.lovesCount];
+    loveCountCellLbl.text = [NSString stringWithFormat:@"%ld",(long)stream.lovesCount];
     loveCountCellLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize-2];
     [cell.contentView addSubview:loveCountCellLbl];
     
     userAvatarCellimg = [[UIImageView alloc] initWithFrame:userAvatarCellimgRect];
+//    userAvatarCellimg.image = [UIImage imageNamed:@"blank.png"];
     userAvatarCellimg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:stream.streamUserImage]]];
     userAvatarCellimg.layer.cornerRadius = userAvatarCellimgRect.size.width/2;
     userAvatarCellimg.clipsToBounds = YES;
@@ -425,7 +429,7 @@
         if (success) {
             weakSelf.streamList = streamRecords;
             NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
-            [self initMap];
+//            [self initMap];
             videoCount.text = [NSString stringWithFormat:@"%d",weakSelf.streamList.count];
            
             
@@ -433,6 +437,7 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
         }
+        [self initMap];
          [tableView reloadData];
         
     } Filter:filter];
@@ -462,34 +467,31 @@
     mapPin.coordinate = coordinate;
     [mapView addAnnotation:mapPin];
     
-//    __weak LiveAroundViewController *weakSelf = self;
-//    
-//    for(Streaming *stream in weakSelf.streamList)
-//    {
-//        NSLog(@"stream NAME %@ lat : %@ long : %@",stream.streamTitle,stream.latitude,stream.longitude);
-//        
-//        // setup the map pin with all data and add to map view
-//        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([stream.latitude floatValue], [stream.longitude floatValue]);
-//        mapPin.title = @"555555555";
-//        mapPin.coordinate = coordinate;
-//        [mapView addAnnotation:mapPin];
-//    }
-//    
-//    NSArray *name=[[NSArray alloc]initWithObjects:
-//                   @"VelaCherry",
-//                   @"Perungudi",
-//                   @"Tharamani", nil];
-//    
-//    NSMutableArray *arrCoordinateStr = [[NSMutableArray alloc] initWithCapacity:name.count];
-//    
-//    [arrCoordinateStr addObject:@"13.75482078, 100.56833035"];
-//    [arrCoordinateStr addObject:@"13.75482078, 100.58833035"];
-//    [arrCoordinateStr addObject:@"13.75482078, 100.59833035"];
-//    
-//    for(int i = 0; i < name.count; i++)
-//    {
-//        [self addPinWithTitle:name[i] AndCoordinate:arrCoordinateStr[i]];
-//    }
+    __weak LiveAroundViewController *weakSelf = self;
+    
+    NSLog(@"Stream count : %lu",(unsigned long)weakSelf.streamList.count);
+    
+    NSMutableArray* pinTitle = [[NSMutableArray alloc]init];
+    NSMutableArray *arrCoordinateStr = [[NSMutableArray alloc] init];
+
+    for(Streaming *stream in weakSelf.streamList)
+    {
+        NSLog(@"stream NAME %@ lat : %@ long : %@",stream.streamTitle,stream.latitude,stream.longitude);
+        
+        [pinTitle addObject:stream.streamTitle];
+        [arrCoordinateStr addObject:[NSString stringWithFormat:@"%@,%@",stream.latitude,stream.longitude]];
+        
+    }
+//    [pinTitle addObject:@"5555"];
+//    [arrCoordinateStr addObject:@"13.75482078, 100.55833035"];
+//    NSLog(@"pinTitle %@",pinTitle);
+//    NSLog(@"arrCoordinateStr %@",arrCoordinateStr);
+    
+//    NSLog(@"Pin Title count :%lu",(unsigned long)pinTitle.count);
+    for(int i = 0; i < pinTitle.count; i++)
+    {
+        [self addPinWithTitle:pinTitle[i] AndCoordinate:arrCoordinateStr[i]];
+    }
     
 }
 

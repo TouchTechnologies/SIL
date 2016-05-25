@@ -874,13 +874,12 @@
     }
 }
 
-- (void)viewDidDisappear:(BOOL)animated{
+- (void)viewWillDisappear:(BOOL)animated{
     NSLog(@"disconnect socket");
+    self.player.state = VKVideoPlayerStateContentPaused;
     [socket disconnect];
 }
 - (void)viewDidAppear:(BOOL)animated {
-    
-
     
     [self playSampleClip1];
 }
@@ -930,7 +929,7 @@
     track.hasNext = YES;    
     NSLog(@"playStream");
     [self.player loadVideoWithTrack:track];
-    //self.player.state = VKVideoPlayerStateContentPaused;
+//    self.player.state = VKVideoPlayerStateContentPaused;
 
 }
 
