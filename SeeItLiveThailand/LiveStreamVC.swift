@@ -221,6 +221,8 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     var countDownLblRect = CGRect()
     
     var count = 5
+    //var timecount = 5.00
+    
     
     
     func stopStream(sender: UIButton) {
@@ -239,6 +241,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     func startStream(sender:UIButton){
         self.popUpViewTop!.hidden = false
         self.popUpViewBot!.hidden = false
+        countdownLbl.hidden = false;
        // self.popUpViewTop?.hidden = false
         self.chatBtn?.hidden = false
         //        self.shareLiveBtn?.hidden = false
@@ -364,14 +367,16 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        self.timePlus()
         appDelegate.isChat = false
         appDelegate.isShare = false
 //        self.initSocket()
         self.initialSize()
         self.initial()
         self.getLocationName()
-        
-        
+       
+        var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(LiveStreamVC.update), userInfo: nil, repeats: true)
+ 
         print("IS CHAT didload ::: \(appDelegate.isChat) ")
         //self.initSocket()
         
@@ -765,9 +770,12 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         timeStreamLbl.textColor = UIColor.whiteColor()
         popUpViewBot!.addSubview(timeStreamLbl)
         
-        countdownLbl.frame = CGRectMake(popupView.frame.size.width/2 - 25, popupView.frame.size.height/2 - 25, 50, 50);
-        countdownLbl.text = "5"
+        countdownLbl.frame = CGRectMake(popUpViewBot!.frame.size.width/2 - 25, popUpViewBot!.frame.size.height/2 - 10, 20, 20);
+     //   countdownLbl.text = "5"
+        countdownLbl.font = UIFont.systemFontOfSize(25)
         countdownLbl.textColor = UIColor.whiteColor()
+        popUpViewBot!.addSubview(countdownLbl)
+        //countdownLbl.hidden = true;
         
         //        textButton.frame = CGRectMake(0 ,streamButton!.frame.size.height/2-10 ,streamButton!.frame.size.width, 30)
         //        textButton.text = "Starting"
@@ -816,7 +824,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         self.view!.addSubview(popUpView!)
         
         
-        popUpViewTop!.hidden = true
+     //  popUpViewTop!.hidden = true
         
         
     }
@@ -1359,15 +1367,27 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         dispatch_after(time, dispatch_get_main_queue()) {
             //call the method which have the steps after delay.
             self.stepsAfterDelay()
+
         }
+         print("DELAY\(delay)")
     }
     func stepsAfterDelay(){
         //your code after delay takes place here...
     }
+//    func updatetime(){
+//        if(timecount > 0)
+//        {
+//            timeStreamLbl.text = String(timecount--)
+//        }
+//    }
     func update() {
         
         if(count > 0)
         {
+            
+            countdownLbl.text = String(count--)
+            
+            print("countdown :::: \(countdownLbl.text)")
             //            countDownLabel.text = String(count++)
         }
         
