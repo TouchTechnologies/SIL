@@ -469,7 +469,7 @@
     
     
     
-    NSLog(@"isLove : %d",self.objStreaming.isLoved);
+//    NSLog(@"isLove : %d",self.objStreaming.isLoved);
     if (self.objStreaming.isLoved)
     {
         [btnLove setImage:[UIImage imageNamed:@"ic_love2.png"] forState:UIControlStateNormal];

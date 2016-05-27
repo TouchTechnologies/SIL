@@ -28,7 +28,7 @@
     CGRect titleRect;
     CGRect keyTxtRect;
     CGRect submitBtnRect;
-    
+    UITextField *keyTxt;
     
     SettingTableViewCell *cell;
     CustomIOSAlertView *alertView;
@@ -146,7 +146,7 @@
      [upgradeView addSubview:title];
     
     
-    UITextField *keyTxt = [[UITextField alloc] initWithFrame:keyTxtRect];
+    keyTxt = [[UITextField alloc] initWithFrame:keyTxtRect];
     keyTxt.backgroundColor = [UIColor lightGrayColor];
     keyTxt.layer.cornerRadius = 5 ;
     keyTxt.delegate = self;
@@ -168,7 +168,13 @@
 }
 -(void)submitKey:(id)sender{
 
-    NSLog(@"Key OK");
+    NSLog(@"Key OK : %@ ",keyTxt.text);
+    
+    // Store the data
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:true forKey:@"isActivate"];
+    [defaults synchronize];
+    
     [alertView close];
 }
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{

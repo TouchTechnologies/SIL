@@ -454,9 +454,9 @@
   
 // gridView.contentSize = CGSizeMake(gridView.bounds.size.width/2 - 20 ,500);
    stream = [self.streamList objectAtIndex:[indexPath index]];
-    if(stream.avatarUrl != nil) {
-        NSLog(@"%@",stream.avatarUrl);
-    }
+//    if(stream.avatarUrl != nil) {
+//        NSLog(@"%@",stream.avatarUrl);
+//    }
 
     cell = [StreamingCell cellForGridView:gridView];
     cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
@@ -496,7 +496,7 @@
     cell.lblLoveCount.text = [NSString stringWithFormat:@"%ld",(long)stream.lovesCount];
     cell.lblCategoryTitle.text = stream.category;
     
-    NSLog(@"isLove : %d",stream.isLoved);
+//    NSLog(@"isLovea : %d",stream.isLoved);
     if (stream.isLoved && appDelegate.isLogin) {
 //        UIImageView *img = [[UIImageView alloc] initWithFrame:cell.btnLoveicon.bounds];
 //        img.image = [UIImage imageNamed:@"ic_love2.png"];
@@ -746,7 +746,7 @@
 //    [self.view.window.rootViewController presentViewController:userprofile animated:YES completion:nil];
     
     [[UserManager shareIntance]followAPI:@"getfollow" userID:stream.userID Completion:^(NSError *error, NSDictionary *result, NSString *message) {
-        NSLog(@"followAPIData %@ ",result);
+//        NSLog(@"followAPIData %@ ",result);
         UserData *userData = [[UserData alloc] init];
         userData.userId = result[@"id"];
         userData.count_follower = result[@"count_follower"];

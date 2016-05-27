@@ -351,7 +351,7 @@
     
     
     
-    NSLog(@"isLove : %d",self.objStreaming.isLoved);
+//    NSLog(@"isLove : %d",self.objStreaming.isLoved);
     if (self.objStreaming.isLoved) {
         //  UIImageView *img = [[UIImageView alloc] initWithFrame:cell.btnLoveicon.bounds];
        [heartimg setImage:[UIImage imageNamed:@"ic_love2.png"]];
