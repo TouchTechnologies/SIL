@@ -230,6 +230,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     func stopStream(sender: UIButton) {
 
         print("Stop Streaming")
+        self.countDownTimer.invalidate()
         if(session.rtmpSessionState == .Started)
         {
             session.endRtmpSession()
@@ -239,7 +240,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     }
 
     func startStream(sender:UIButton){
-        self.timerValue = getStreamTime()
+        
         self.timeStreamLbl.text = String(timeFormatted(self.timerValue))
         
         self.popUpViewTop!.hidden = false
@@ -252,8 +253,8 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         print("getQualityStream \(getQualityStream(qualityTxt!.text!))")
         print("qualityLbl!.text! \(qualityTxt!.text!)")
         print("GO Streaming")
-        
-        countDownTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(LiveStreamVC.countdown(_:)), userInfo: nil, repeats: true)
+
+
         //        popUpViewTop!.hidden = true
         popUpViewCen!.hidden  = true
         let formatter: NSDateFormatter = NSDateFormatter()
@@ -294,6 +295,14 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
                     self.titletopLbl.text = (result["title"] as! String)
                     self.setSocketLive(result["id"] as! Int)
                     self.session.startRtmpSessionWithURL(self.streamURL!, andStreamKey: self.streamKey!)
+                    if(self.timerValue != 0)
+                    {
+                        self.countDownTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(LiveStreamVC.countdown(_:)), userInfo: nil, repeats: true)
+                    }else
+                    {
+                        self.countDownTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(LiveStreamVC.countup(_:)), userInfo: nil, repeats: true)
+                        self.countdownLbl.hidden = true
+                    }
                     
                     
                 }
@@ -365,7 +374,11 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         self.countDownTimer.invalidate()
         timerValue = 0;
         alertView.hidden = true;
-        session.endRtmpSession()
+        print("Stop Streaming")
+        if(session.rtmpSessionState == .Started)
+        {
+            session.endRtmpSession()
+        }
         self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
         
         
@@ -376,6 +389,8 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
 //        self.timePlus()
         appDelegate.isChat = false
         appDelegate.isShare = false
+        self.timerValue = getStreamTime()
+        self.timeStreamLbl.text = String(timeFormatted(self.timerValue))
 //        self.initSocket()
         self.initialSize()
         self.initial()
@@ -747,7 +762,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         
         closeBtn = UIButton(frame: closeBtnRect)
         closeBtn!.setImage(UIImage(named: "ic_action_cancel.png"), forState: .Normal)
-        closeBtn!.addTarget(self, action: "stopStream:", forControlEvents: .TouchUpInside)
+        closeBtn!.addTarget(self, action: #selector(LiveStreamVC.stopStream(_:)), forControlEvents: .TouchUpInside)
         //        closeBtn!.backgroundColor = UIColor.blackColor()
         
         streamButton = UIButton(frame: streamButtonRect)
@@ -1257,7 +1272,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         case .Started:
             //                    self.textButton.text = "STOP"
             startStreamBtn!.setTitle("STOP", forState: UIControlState.Normal)
-            //            startStreamBtn!.addTarget(self, action: Selector("stopStream"), forControlEvents: .TouchUpInside)
+//            startStreamBtn!.addTarget(self, action: #selector(LiveStreamVC.stopStream(_:)), forControlEvents: .TouchUpInside)
             break
         default:
             //                    self.textButton.text = "STOP"
@@ -1513,10 +1528,10 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     func getStreamTime() -> NSInteger {
         let defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
         if ((defaults.stringForKey("isActivate")) != nil) {
-            return 10
+            return 0
         }else
         {
-            return 10
+            return 300
         }
     }
     
@@ -1541,6 +1556,11 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             print("time count : \(self.timeFormatted(self.timerValue))")
             timeStreamLbl.text = String(self.timeFormatted(self.timerValue))
         }
+    }
+    func countup(dt: NSTimer) {
+        self.timerValue += 1
+        print("time count up : \(self.timeFormatted(self.timerValue))")
+        timeStreamLbl.text = String(self.timeFormatted(self.timerValue))
     }
     
     func timeFormatted(totalSeconds: Int) -> String {

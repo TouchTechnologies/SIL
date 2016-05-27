@@ -150,6 +150,7 @@
     keyTxt.backgroundColor = [UIColor lightGrayColor];
     keyTxt.layer.cornerRadius = 5 ;
     keyTxt.delegate = self;
+    keyTxt.autocapitalizationType = false;
     [upgradeView addSubview:keyTxt];
 
     UIButton *submitBtn = [[UIButton alloc] initWithFrame:submitBtnRect];
@@ -171,10 +172,15 @@
     NSLog(@"Key OK : %@ ",keyTxt.text);
     
     // Store the data
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setBool:true forKey:@"isActivate"];
-    [defaults synchronize];
-    
+    if([keyTxt.text isEqualToString:@"SeeItLive"])
+    {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setBool:true forKey:@"isActivate"];
+        [defaults synchronize];
+    }else{
+        keyTxt.text = @"key fail";
+    }
+
     [alertView close];
 }
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
