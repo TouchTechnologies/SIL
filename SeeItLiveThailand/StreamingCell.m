@@ -195,7 +195,8 @@
         self.lblLoveCount.font = font;
         self.lblLoveCount.textColor = [UIColor blackColor];
         [self.contentView addSubview:self.lblLoveCount];
-
+        
+        [self setHighlighted:NO];
 
 
    }

@@ -423,7 +423,9 @@
 {
     return 1;
 }
-
+- (void)gridView:(KKGridView *)gridView didSelectItemAtIndexPath:(KKIndexPath *)indexPath{
+    
+}
 - (NSUInteger)gridView:(KKGridView *)gridView numberOfItemsInSection:(NSUInteger)section
 {
     return self.streamList.count;
@@ -461,7 +463,7 @@
     cell = [StreamingCell cellForGridView:gridView];
     cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
     cell.selected = FALSE;
-    
+  
     UIImage *imgPH = [self resizeImage:[UIImage imageNamed:@"sil_big.jpg"] imageSize:CGSizeMake(imgWidth, imgHeight - imgPHW02)];
     
 //    HNKCacheFormat *format = [HNKCache sharedCache].formats[@"thumbnailHis"];
@@ -501,7 +503,6 @@
 //        UIImageView *img = [[UIImageView alloc] initWithFrame:cell.btnLoveicon.bounds];
 //        img.image = [UIImage imageNamed:@"ic_love2.png"];
 //        [cell.btnLoveicon addSubview:img];
-       
          [cell.btnLoveicon setImage:[UIImage imageNamed:@"ic_love2.png"] forState:UIControlStateNormal] ;
           cell.imgLoveicon.image = [UIImage imageNamed:@"ic_love2.png"];
           cell.lblLoveCount.textColor = [UIColor redColor];
@@ -512,8 +513,8 @@
     {
          [cell.btnLoveicon setImage:[UIImage imageNamed:@"ic_love.png"] forState:UIControlStateNormal] ;
           cell.imgLoveicon.image = [UIImage imageNamed:@"ic_love.png"];
-         cell.lblLoveCount.textColor = [UIColor blackColor];
-      //    [cell.btnLoveicon setImage:[UIImage animatedImageNamed:@"ic_love.png" duration:1.0] forState:UIControlStateHighlighted];//        [cell.contentView addSubview:cell.btnLoveicon];
+          cell.lblLoveCount.textColor = [UIColor blackColor];
+      //    [cell.btnLovei con setImage:[UIImage animatedImageNamed:@"ic_love.png" duration:1.0] forState:UIControlStateHighlighted];//        [cell.contentView addSubview:cell.btnLoveicon];
         
     }
 
