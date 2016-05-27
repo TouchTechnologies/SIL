@@ -239,6 +239,9 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     }
 
     func startStream(sender:UIButton){
+        self.timerValue = getStreamTime()
+        self.timeStreamLbl.text = String(timeFormatted(self.timerValue))
+        
         self.popUpViewTop!.hidden = false
         self.popUpViewBot!.hidden = false
         countdownLbl.hidden = false;
@@ -250,7 +253,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         print("qualityLbl!.text! \(qualityTxt!.text!)")
         print("GO Streaming")
         
-        //        let timer = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
+        countDownTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(LiveStreamVC.countdown(_:)), userInfo: nil, repeats: true)
         //        popUpViewTop!.hidden = true
         popUpViewCen!.hidden  = true
         let formatter: NSDateFormatter = NSDateFormatter()
@@ -267,35 +270,35 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             let stream = UserManager()
             let title:String = (titleTxt!.text != "" ) ? titleTxt!.text! : "\(appDelegate.first_name) \(appDelegate.last_name)_\(appDelegate.date)"
             print("Title : \(title) Category ID : \(catID)")
-            stream.getStreamURL(title,categoryID: catID, note: "",dateTime: dateTime) { (error , result , message) in
-                
-                print("result stream \(result)")
-                print("message stream \(message)")
-                if(error != nil)
-                {
-                    print("Error : \(error)")
-                }else{
-                    print("Error : \(error)")
-                    print("message : \(message)")
-                    print("data : \(result["urls"]!["rtmp"]!)")
-                    self.streamURL = (result["urls"]!["rtmp"] as! String)
-                    print("streamURLALL :\(self.streamURL)")
-                    print("StreamID : \(result["id"])")
-                    let key = self.streamURL?.characters.split{$0 == "/"}.map(String.init)
-                    print("AllKey : \(key)")
-                    self.streamKey = key![3]
-                    self.streamURL = self.streamURL!.stringByReplacingOccurrencesOfString("/\(self.streamKey!)", withString: "")
-                    print("StreamURL : \(self.streamURL!)")
-                    print("Key : \(self.streamKey!)")
-                    
-                    self.titletopLbl.text = (result["title"] as! String)
-                    self.setSocketLive(result["id"] as! Int)
-                    self.session.startRtmpSessionWithURL(self.streamURL!, andStreamKey: self.streamKey!)
-                    
-                    
-                }
-                
-            }
+//            stream.getStreamURL(title,categoryID: catID, note: "",dateTime: dateTime) { (error , result , message) in
+//                
+//                print("result stream \(result)")
+//                print("message stream \(message)")
+//                if(error != nil)
+//                {
+//                    print("Error : \(error)")
+//                }else{
+//                    print("Error : \(error)")
+//                    print("message : \(message)")
+//                    print("data : \(result["urls"]!["rtmp"]!)")
+//                    self.streamURL = (result["urls"]!["rtmp"] as! String)
+//                    print("streamURLALL :\(self.streamURL)")
+//                    print("StreamID : \(result["id"])")
+//                    let key = self.streamURL?.characters.split{$0 == "/"}.map(String.init)
+//                    print("AllKey : \(key)")
+//                    self.streamKey = key![3]
+//                    self.streamURL = self.streamURL!.stringByReplacingOccurrencesOfString("/\(self.streamKey!)", withString: "")
+//                    print("StreamURL : \(self.streamURL!)")
+//                    print("Key : \(self.streamKey!)")
+//                    
+//                    self.titletopLbl.text = (result["title"] as! String)
+//                    self.setSocketLive(result["id"] as! Int)
+//                    self.session.startRtmpSessionWithURL(self.streamURL!, andStreamKey: self.streamKey!)
+//                    
+//                    
+//                }
+//                
+//            }
             //        session.startRtmpSessionWithURL("rtmp://streaming.touch-ics.com:1935/live", andStreamKey: "myStream")
             
         default:
@@ -370,7 +373,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        self.timePlus()
+//        self.timePlus()
         appDelegate.isChat = false
         appDelegate.isShare = false
 //        self.initSocket()
@@ -378,7 +381,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         self.initial()
         self.getLocationName()
        
-        var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(LiveStreamVC.update), userInfo: nil, repeats: true)
+//        var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(LiveStreamVC.update), userInfo: nil, repeats: true)
  
         print("IS CHAT didload ::: \(appDelegate.isChat) ")
         //self.initSocket()
@@ -768,7 +771,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         
         
         timeStreamLbl.frame =  titimeStreamLblRect
-        timeStreamLbl.text = "00:00"
+//        timeStreamLbl.text = "00:00"
         timeStreamLbl.textAlignment = .Center
         timeStreamLbl.textColor = UIColor.whiteColor()
         popUpViewBot!.addSubview(timeStreamLbl)
@@ -1509,10 +1512,10 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     func getStreamTime() -> NSInteger {
         let defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
         if ((defaults.stringForKey("isActivate")) != nil) {
-            return 3000
+            return 10
         }else
         {
-            return 300
+            return 10
         }
     }
     
@@ -1520,19 +1523,31 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     func countdown(dt: NSTimer) {
         self.timerValue -= 1
         if self.timerValue < 0 {
+            print("time invalidate")
             self.countDownTimer.invalidate()
+//            if(session.rtmpSessionState == .Started)
+//            {
+//                session.endRtmpSession()
+//            }
+            self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
+        }else if(self.timerValue <= 5){
+            countdownLbl.text = String(self.timerValue)
+            timeStreamLbl.text = String(self.timeFormatted(self.timerValue))
+            
         }
         else {
 //            self.setLabelText(self.timeFormatted(self.timerValue))
             print("time count : \(self.timeFormatted(self.timerValue))")
+            timeStreamLbl.text = String(self.timeFormatted(self.timerValue))
         }
     }
     
     func timeFormatted(totalSeconds: Int) -> String {
         let seconds: Int = totalSeconds % 60
         let minutes: Int = (totalSeconds / 60) % 60
-        let hours: Int = totalSeconds / 3600
-        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+//        let hours: Int = totalSeconds / 3600
+//        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+        return String(format: "%02d:%02d", minutes, seconds)
     }
     
     func  getLocationName() {

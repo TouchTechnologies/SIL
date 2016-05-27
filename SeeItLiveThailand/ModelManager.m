@@ -354,7 +354,7 @@ static ModelManager *instance=nil;
             
             CCTVS *cctvs = [[CCTVS alloc] init];
             
-            NSLog(@"batman id %@",[resultSet stringForColumn:@"id_provider_information_tag_keyname"]);
+            NSLog(@" id %@",[resultSet stringForColumn:@"id_provider_information_tag_keyname"]);
             if(![roi.roiTagKeyName isEqualToString:[resultSet stringForColumn:@"id_provider_information_tag_keyname"]] && (roi.roiTagKeyName != nil))
             {
                 count++;
