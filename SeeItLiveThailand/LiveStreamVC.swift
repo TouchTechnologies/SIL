@@ -270,35 +270,35 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             let stream = UserManager()
             let title:String = (titleTxt!.text != "" ) ? titleTxt!.text! : "\(appDelegate.first_name) \(appDelegate.last_name)_\(appDelegate.date)"
             print("Title : \(title) Category ID : \(catID)")
-//            stream.getStreamURL(title,categoryID: catID, note: "",dateTime: dateTime) { (error , result , message) in
-//                
-//                print("result stream \(result)")
-//                print("message stream \(message)")
-//                if(error != nil)
-//                {
-//                    print("Error : \(error)")
-//                }else{
-//                    print("Error : \(error)")
-//                    print("message : \(message)")
-//                    print("data : \(result["urls"]!["rtmp"]!)")
-//                    self.streamURL = (result["urls"]!["rtmp"] as! String)
-//                    print("streamURLALL :\(self.streamURL)")
-//                    print("StreamID : \(result["id"])")
-//                    let key = self.streamURL?.characters.split{$0 == "/"}.map(String.init)
-//                    print("AllKey : \(key)")
-//                    self.streamKey = key![3]
-//                    self.streamURL = self.streamURL!.stringByReplacingOccurrencesOfString("/\(self.streamKey!)", withString: "")
-//                    print("StreamURL : \(self.streamURL!)")
-//                    print("Key : \(self.streamKey!)")
-//                    
-//                    self.titletopLbl.text = (result["title"] as! String)
-//                    self.setSocketLive(result["id"] as! Int)
-//                    self.session.startRtmpSessionWithURL(self.streamURL!, andStreamKey: self.streamKey!)
-//                    
-//                    
-//                }
-//                
-//            }
+            stream.getStreamURL(title,categoryID: catID, note: "",dateTime: dateTime) { (error , result , message) in
+                
+                print("result stream \(result)")
+                print("message stream \(message)")
+                if(error != nil)
+                {
+                    print("Error : \(error)")
+                }else{
+                    print("Error : \(error)")
+                    print("message : \(message)")
+                    print("data : \(result["urls"]!["rtmp"]!)")
+                    self.streamURL = (result["urls"]!["rtmp"] as! String)
+                    print("streamURLALL :\(self.streamURL)")
+                    print("StreamID : \(result["id"])")
+                    let key = self.streamURL?.characters.split{$0 == "/"}.map(String.init)
+                    print("AllKey : \(key)")
+                    self.streamKey = key![3]
+                    self.streamURL = self.streamURL!.stringByReplacingOccurrencesOfString("/\(self.streamKey!)", withString: "")
+                    print("StreamURL : \(self.streamURL!)")
+                    print("Key : \(self.streamKey!)")
+                    
+                    self.titletopLbl.text = (result["title"] as! String)
+                    self.setSocketLive(result["id"] as! Int)
+                    self.session.startRtmpSessionWithURL(self.streamURL!, andStreamKey: self.streamKey!)
+                    
+                    
+                }
+                
+            }
             //        session.startRtmpSessionWithURL("rtmp://streaming.touch-ics.com:1935/live", andStreamKey: "myStream")
             
         default:
@@ -766,7 +766,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         startStreamBtn!.setTitle("Live", forState: UIControlState.Normal)
         startStreamBtn!.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
         startStreamBtn!.titleLabel!.textAlignment = NSTextAlignment.Center
-        startStreamBtn!.addTarget(self, action: "startStream:", forControlEvents: .TouchUpInside)
+        startStreamBtn!.addTarget(self, action: #selector(LiveStreamVC.startStream(_:)), forControlEvents: .TouchUpInside)
         //        startStreamBtn!.addTarget(self, action: "testBtn:", forControlEvents: .TouchUpInside)
         
         
@@ -776,11 +776,12 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         timeStreamLbl.textColor = UIColor.whiteColor()
         popUpViewBot!.addSubview(timeStreamLbl)
         
-        countdownLbl.frame = CGRectMake(popUpViewBot!.frame.size.width/2 - 25, popUpViewBot!.frame.size.height/2 - 10, 20, 20);
+        countdownLbl.frame = CGRectMake(popUpView!.frame.size.width/2 - 25, popUpView!.frame.size.height/2 - 25, 50, 50);
      //   countdownLbl.text = "5"
-        countdownLbl.font = UIFont.systemFontOfSize(25)
+        countdownLbl.font = UIFont.systemFontOfSize(30)
         countdownLbl.textColor = UIColor.whiteColor()
-        popUpViewBot!.addSubview(countdownLbl)
+       popUpView?.addSubview(countdownLbl)
+      //  popUpVie.addSubview(countdownLbl)
         //countdownLbl.hidden = true;
         
         //        textButton.frame = CGRectMake(0 ,streamButton!.frame.size.height/2-10 ,streamButton!.frame.size.width, 30)
