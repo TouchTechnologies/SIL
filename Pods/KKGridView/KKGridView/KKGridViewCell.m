@@ -165,6 +165,7 @@
         if (!_selectedBackgroundView.backgroundColor)
             _selectedBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[self _defaultBlueBackgroundRendition]];
 
+        
         _selectedBackgroundView.hidden = NO;
         _selectedBackgroundView.alpha = 1.f;
     } else {

@@ -449,7 +449,7 @@
     else{
           cellH = 300;
           gridView.cellSize = CGSizeMake(gridView.bounds.size.width - 20 , cellH);
-         setframe = CGRectMake(parentFrame.origin.x, parentFrame.origin.y , parentFrame.size.width, self.streamList.count*(cellH+10) + 10);
+         setframe = CGRectMake(parentFrame.origin.x, parentFrame.origin.y , parentFrame.size.width, self.streamList.count*(cellH + 10) + 10);
          moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - 40, setframe.size.height + 10, 80, 30);
     
     }
@@ -461,9 +461,10 @@
 //    }
 
     cell = [StreamingCell cellForGridView:gridView];
-    cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
+  // cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
     cell.selected = FALSE;
-  
+    [cell.selectedBackgroundView setBackgroundColor:[UIColor clearColor]];
+    
     UIImage *imgPH = [self resizeImage:[UIImage imageNamed:@"sil_big.jpg"] imageSize:CGSizeMake(imgWidth, imgHeight - imgPHW02)];
     
 //    HNKCacheFormat *format = [HNKCache sharedCache].formats[@"thumbnailHis"];
@@ -492,6 +493,9 @@
     //cell.imgSnapshot.image = imgPH;
     //cell.lblPlace.text = [_fillerData objectAtIndex:[indexPath index]];
     cell.lblPlace.text = stream.streamTitle;
+    NSLog(@"COMMENT COUNT : %@",stream.count_comment);
+    
+    cell.lblcommentCount.text = [NSString stringWithFormat:@"%@",stream.count_comment];;
     //cell.lblCreateBy.text = stream.createBy;
     cell.lblCreateBy.text = stream.createBy;
     cell.lblViewCount.text = stream.streamTotalView;

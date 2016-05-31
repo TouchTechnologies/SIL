@@ -22,6 +22,7 @@
     KKGridViewCell *cell = (KKGridViewCell *)[gridView dequeueReusableCellWithIdentifier:cellID];
     if (cell == nil) {
         cell = [[self alloc] initWithFrame:(CGRect){ .size = gridView.cellSize } reuseIdentifier:cellID];
+         
     }
     
    
@@ -170,7 +171,7 @@
         self.lblcommentCount = [[UILabel alloc] initWithFrame:lblcommentCountRect];
         self.lblcommentCount.font = font;
          self.lblcommentCount.textColor = [UIColor blackColor];
-       [self.contentView addSubview:self.lblcommentCount];
+        [self.contentView addSubview:self.lblcommentCount];
         
         self.commentLivebtn = [[UIButton alloc] initWithFrame:imgcommentIConRect];
         UIImageView *imgcomment = [[UIImageView alloc] initWithFrame:self.commentLivebtn.bounds];
@@ -196,9 +197,11 @@
         self.lblLoveCount.textColor = [UIColor blackColor];
         [self.contentView addSubview:self.lblLoveCount];
         
-        [self setHighlighted:NO];
-
-
+//        [self setHighlighted:NO];
+//        [self setSelected:NO animated:NO];
+//        ;
+        
+        
    }
     
     return self;

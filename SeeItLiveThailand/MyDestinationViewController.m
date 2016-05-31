@@ -161,6 +161,7 @@
     [searchDisplayTbl setBackgroundColor:[UIColor clearColor]];
     searchDisplayTbl.layer.cornerRadius = 5;
     searchDisplayTbl.clipsToBounds = YES;
+    searchDisplayTbl.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     // [scrollView addSubview:searchDisplayTbl];
     
@@ -188,7 +189,7 @@
     notLocationIcon.image = [UIImage imageNamed:@"ic_more_checkin.png"];
     
     [notLocationLbl setFrame:notLocationLblRect];
-    notLocationLbl.text = @"Not List Location";
+    notLocationLbl.text = @"No List Location";
     notLocationLbl.font = [UIFont fontWithName:@"Helvetica" size:font];
     notLocationLbl.textColor = [UIColor grayColor];
     
@@ -341,12 +342,14 @@
     [scrollView addSubview:claerAllView];
     
     closeBtn = [[UIButton alloc] initWithFrame:closeBtnRect];
+    closeBtn.backgroundColor = [UIColor grayColor];
     closeBtn.layer.cornerRadius = 5;
     closeBtn.clipsToBounds = YES;
     [closeBtn addTarget:self action:@selector(close:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIImageView *imgClose = [[UIImageView alloc] initWithFrame:closeBtn.bounds];
-    imgClose.image = [UIImage imageNamed:@"ic_exit_checkin.png"];
+    UIImageView *imgClose = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, closeBtn.bounds.size.width - 20, closeBtn.bounds.size.height - 20)];
+    imgClose.image = [UIImage imageNamed:@"close.png"];
+  
     [closeBtn addSubview:imgClose];
     [claerAllView addSubview:closeBtn];
     
@@ -383,7 +386,7 @@
     NSLog (@"routeDirection %@",tapRecognizer.dataArr[0]);
     //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"You sure delete?" message:@"" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"OK", nil];
     
-    MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"You sure delete?" message:tapRecognizer.dataArr[0][@"name_en"] delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
+    MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"Are you sure to delete?" message:tapRecognizer.dataArr[0][@"name_en"] delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
     alert.dataArr = tapRecognizer.dataArr;
     alert.tag = 1;
     [alert show];
@@ -392,7 +395,7 @@
 
 -(void)deleteAll:(id)sender{
     //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"You sure delete all?" message:@"" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"OK", nil];
-    MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"You sure delete all?" message:@"" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
+    MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"Are you sure clear all?" message:@"" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
     alert.tag = 0;
     [alert show];
     

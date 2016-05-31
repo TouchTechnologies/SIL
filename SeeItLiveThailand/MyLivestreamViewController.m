@@ -25,6 +25,7 @@
 #import "UserManager.h"
 #import "EditMyStreamVC.h"
 #import <Google/Analytics.h>
+#import "UserData.h"
 @interface MyLivestreamViewController () <UIAlertViewDelegate,UIGestureRecognizerDelegate>
 {
     VCSimpleSession *session ;
@@ -59,6 +60,7 @@
     CGRect lblVideoCountRect;
     CGRect gridViewRect;
     NSString *Avatar;
+    
 }
 @property (strong, nonatomic) IBOutlet UIImageView *NoLiveImg;
 @property (strong, nonatomic) IBOutlet UILabel *NoLiveLb;
@@ -87,8 +89,9 @@
    
     [self initialSize];
     [self initial];
+
     
-//    
+//
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshList:)
                                                  name:@"refresh"
@@ -123,7 +126,8 @@
     imgLiveStatus.image = [UIImage imageNamed:@"ic_livestream2.png"];
     [self.view  addSubview:imgLiveStatus];
     [self.view addSubview:_lblNoStream];
-    
+    _lblNoStream.hidden = YES;
+    imgLiveStatus.hidden = YES;
     
     
 //    UIButton *recordButton = [[UIButton alloc] initWithFrame:CGRectMake((recordBar.bounds.size.width/2) - (rcButtonW/2), (recordBar.bounds.size.height/2) - (rcButtonW/2), rcButtonW, rcButtonW)];
@@ -217,7 +221,7 @@
     
     self.followCountLbl = [[UILabel alloc] initWithFrame:followCountLblRect];
     self.followCountLbl.textColor = [UIColor grayColor];
-    self.followCountLbl.text = @"12K";
+    self.followCountLbl.text = [NSString stringWithFormat:@"%d" , (int)appDelegate.followData.count_follower ];
     self.followCountLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 2];
     self.followCountLbl.textAlignment = NSTextAlignmentCenter;
     [self.followerView addSubview:self.followCountLbl];
@@ -314,6 +318,10 @@
    //     [hud hide:YES];
         NSLog(@"is not login ");
         [self.Avatar setImage:[UIImage imageNamed:@"anonymous.png"]];
+        
+        _lblNoStream.hidden = NO;
+        imgLiveStatus.hidden = NO;
+
         //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Please Login" message:@"go Login" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
         //        [alert show];
         
@@ -425,7 +433,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
     [super viewWillAppear:animated];
     NSLog(@"viewWillAppear");
     viewWidth = 1.0f;
-    //self.gridVideo.frame = CGRectMake(0, 40, self.view.frame.size.width, self.view.frame.size.height);
+       //self.gridVideo.frame = CGRectMake(0, 40, self.view.frame.size.width, self.view.frame.size.height);
     //self.navigationController.navigationBar.barTintColor = [UIColor blueColor];
     
     
@@ -795,10 +803,11 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
         NSLog (@"Update successfully");
     }else if ([[refreshName name] isEqualToString:@"refresh"])
     {
-            [self viewDidLoad];
-//            [self.gridView reloadContentSize];
-           // [self dismissViewControllerAnimated:YES completion:nil];
-            NSLog (@"Reload successfully");
+       // _lblNoStream.hidden = YES;
+      //  imgLiveStatus.hidden = YES;
+        [self viewDidLoad];
+        
+        NSLog (@"My Reload successfully");
     }
 }
 -(NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
