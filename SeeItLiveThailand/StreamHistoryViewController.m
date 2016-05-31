@@ -82,12 +82,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self.view setBackgroundColor:[UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1.0]];
+   // self.view.backgroundColor= [UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1.0];
     [self initialSize];
     [self initial];
     scrollView.delegate = self;
     gridView.delegate = self;
+    
     scrollView.delegate = self;
+   
+    
+    
+    
 //     __weak StreamHistoryViewController *weakSelf = self;
 //    
 //    [self.gridView addPullToRefreshWithActionHandler:^{
@@ -224,6 +229,7 @@
 - (void)initial {
    
     scrollView = [[SBScrollView alloc] init];
+    scrollView.backgroundColor = [UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1.0];
     [scrollView setFrame:scrollViewRect];
     [self.view addSubview: scrollView];
 
@@ -273,6 +279,8 @@
     self.gridView.cellSize = cellSize;
     self.gridView.cellPadding = paddingSize;
     self.gridView.allowsMultipleSelection = NO;
+   //  self.gridView.backgroundColor= [UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1.0];
+    
     self.gridView.backgroundColor = [UIColor clearColor];
     [scrollView addSubview:self.gridView];
     
@@ -461,9 +469,9 @@
 //    }
 
     cell = [StreamingCell cellForGridView:gridView];
-  // cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
-    cell.selected = FALSE;
-    [cell.selectedBackgroundView setBackgroundColor:[UIColor clearColor]];
+    //cell.selected = FALSE;
+    //cell.contentView.userInteractionEnabled =NO;
+    [cell.selectedBackgroundView setHidden:TRUE];
     
     UIImage *imgPH = [self resizeImage:[UIImage imageNamed:@"sil_big.jpg"] imageSize:CGSizeMake(imgWidth, imgHeight - imgPHW02)];
     
@@ -589,7 +597,7 @@
     
     
     
-    
+    cell.contentView.backgroundColor = [UIColor whiteColor];
     CGRect parentFrame = self.view.bounds;
     [self.gridView setFrame:setframe];
     [moreBtn setFrame:moreBtnRect];

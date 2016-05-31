@@ -119,16 +119,16 @@
 
 #pragma mark - Getters
 
-- (UIView *)selectedBackgroundView
-{
-	if (!_selectedBackgroundView)
-		_selectedBackgroundView = [[UIView alloc] initWithFrame:self.bounds];
-
-    _selectedBackgroundView.hidden = YES;
-    _selectedBackgroundView.alpha = 0.f;
-
-	return _selectedBackgroundView;
-}
+//- (UIView *)selectedBackgroundView
+//{
+//	if (!_selectedBackgroundView)
+//		_selectedBackgroundView = [[UIView alloc] initWithFrame:self.bounds];
+//
+//    _selectedBackgroundView.hidden = YES;
+//    _selectedBackgroundView.alpha = 0.f;
+//
+//	return _selectedBackgroundView;
+//}
 
 #pragma mark - Setters
 
@@ -155,41 +155,41 @@
 
 - (void)setPressedState:(BOOL)pressedState
 {
-    if (pressedState) {
-        if (!_selectedBackgroundView)
-            _selectedBackgroundView = [[UIView alloc] initWithFrame:self.bounds];
-
-        if (!_selectedBackgroundView.superview)
-            [self addSubview:_selectedBackgroundView];
-
-        if (!_selectedBackgroundView.backgroundColor)
-            _selectedBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[self _defaultBlueBackgroundRendition]];
-
-        
-        _selectedBackgroundView.hidden = NO;
-        _selectedBackgroundView.alpha = 1.f;
-    } else {
-        _selectedBackgroundView.hidden = YES;
-        _selectedBackgroundView.alpha = 0.f;
-    }
-    
-    [self setNeedsLayout];
+//    if (pressedState) {
+//        if (!_selectedBackgroundView)
+//            _selectedBackgroundView = [[UIView alloc] initWithFrame:self.bounds];
+//
+//        if (!_selectedBackgroundView.superview)
+//            [self addSubview:_selectedBackgroundView];
+//
+//        if (!_selectedBackgroundView.backgroundColor)
+//            _selectedBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[self _defaultBlueBackgroundRendition]];
+//
+//        
+//        _selectedBackgroundView.hidden = NO;
+//        _selectedBackgroundView.alpha = 1.f;
+//    } else {
+//        _selectedBackgroundView.hidden = YES;
+//        _selectedBackgroundView.alpha = 0.f;
+//    }
+//    
+//    [self setNeedsLayout];
 }
 
 - (void)setSelected:(BOOL)selected
 {
-    if (_selected != selected) {
-        _selected = selected;
-        [self setPressedState:selected];
-    }
-}
-
-- (void)setHighlighted:(BOOL)highlighted
-{
-    if (_highlighted != highlighted) {
-        _highlighted = highlighted;
-        [self setPressedState:highlighted];
-    }
+//    if (_selected != selected) {
+//        _selected = selected;
+//        [self setPressedState:selected];
+//    }
+//}
+//
+//- (void)setHighlighted:(BOOL)highlighted
+//{
+//    if (_highlighted != highlighted) {
+//        _highlighted = highlighted;
+//        [self setPressedState:highlighted];
+//    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -346,29 +346,29 @@
     }
 }
 
-- (UIImage *)_defaultBlueBackgroundRendition
-{
-    UIGraphicsBeginImageContextWithOptions(self.bounds.size, YES, [UIScreen mainScreen].scale);
-    CGColorSpaceRef baseSpace = CGColorSpaceCreateDeviceRGB();
-    static const CGFloat colors[] = { 
-        0.063f, 0.459f, 0.949f, 1.0f, 
-        0.028f, 0.26f, 0.877f, 1.0f
-    };
-    
-    CGGradientRef gradient = CGGradientCreateWithColorComponents(baseSpace, colors, NULL, 2);
-    CGColorSpaceRelease(baseSpace), baseSpace = NULL;
-    
-    CGFloat horizontalCenter = CGRectGetMidX(self.bounds);
-    CGPoint startPoint = CGPointMake(horizontalCenter, CGRectGetMinY(self.bounds));
-    CGPoint endPoint = CGPointMake(horizontalCenter, CGRectGetMaxY(self.bounds));
-    
-    CGContextDrawLinearGradient(UIGraphicsGetCurrentContext(), gradient, startPoint, endPoint, 0);
-    
-    CGGradientRelease(gradient), gradient = NULL;
-    UIImage *rendition = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return rendition;
-}
+//- (UIImage *)_defaultBlueBackgroundRendition
+//{
+//    UIGraphicsBeginImageContextWithOptions(self.bounds.size, YES, [UIScreen mainScreen].scale);
+//    CGColorSpaceRef baseSpace = CGColorSpaceCreateDeviceRGB();
+//    static const CGFloat colors[] = { 
+//        0.063f, 0.459f, 0.949f, 1.0f,
+//        0.028f, 0.26f, 0.877f, 1.0f
+//    };
+//    
+//    CGGradientRef gradient = CGGradientCreateWithColorComponents(baseSpace, colors, NULL, 2);
+//    CGColorSpaceRelease(baseSpace), baseSpace = NULL;
+//    
+//    CGFloat horizontalCenter = CGRectGetMidX(self.bounds);
+//    CGPoint startPoint = CGPointMake(horizontalCenter, CGRectGetMinY(self.bounds));
+//    CGPoint endPoint = CGPointMake(horizontalCenter, CGRectGetMaxY(self.bounds));
+//    
+//    CGContextDrawLinearGradient(UIGraphicsGetCurrentContext(), gradient, startPoint, endPoint, 0);
+//    
+//    CGGradientRelease(gradient), gradient = NULL;
+//    UIImage *rendition = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+//    return rendition;
+//}
 
 #pragma mark - Subclassers
 

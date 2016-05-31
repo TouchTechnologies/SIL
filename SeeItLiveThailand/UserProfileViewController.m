@@ -453,9 +453,7 @@
         [self initial];
         [headerView reloadInputViews];
     }
-    
 
-    
 }
 - (void) refreshList:(NSNotification *)refreshName
 {
