@@ -334,7 +334,7 @@
     //    }
     
     
-    _pageControl.iFirstVisiblePageNumber = 0;
+    _pageControl.iFirstVisiblePageNumber = self.catID - 1;
     
     _pageControl.iTitleViewHeight = titleHeight;
     _pageControl.iPageIndicatorHeight = indicatorHeight;
