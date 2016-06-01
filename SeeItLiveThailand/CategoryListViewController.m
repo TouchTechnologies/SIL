@@ -89,6 +89,7 @@
     [self initialSize];
     [self setupPageControl];
     [self initial];
+    NSLog(@"Cat ID : %d",self.catID);
     
 }
 
