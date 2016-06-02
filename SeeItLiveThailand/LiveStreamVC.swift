@@ -1541,10 +1541,10 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         if self.timerValue < 0 {
             print("time invalidate")
             self.countDownTimer.invalidate()
-//            if(session.rtmpSessionState == .Started)
-//            {
-//                session.endRtmpSession()
-//            }
+            if(session.rtmpSessionState == .Started)
+            {
+                session.endRtmpSession()
+            }
             self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
         }else if(self.timerValue <= 5){
             countdownLbl.text = String(self.timerValue)

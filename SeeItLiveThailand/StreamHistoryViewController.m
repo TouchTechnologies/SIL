@@ -531,7 +531,7 @@
     //cell.imgSnapshot.image = imgPH;
     //cell.lblPlace.text = [_fillerData objectAtIndex:[indexPath index]];
     cell.lblPlace.text = stream.streamTitle;
-    NSLog(@"COMMENT COUNT : %@",stream.count_comment);
+//    NSLog(@"COMMENT COUNT : %@",stream.count_comment);
     
     cell.lblcommentCount.text = [NSString stringWithFormat:@"%@",stream.count_comment];;
     //cell.lblCreateBy.text = stream.createBy;
