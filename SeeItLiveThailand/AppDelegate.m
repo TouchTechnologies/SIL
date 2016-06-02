@@ -73,6 +73,33 @@
     gai.logger.logLevel = kGAILogLevelVerbose;  // remove before app release
     // [END tracker_objc]
     
+    
+    //Regis Noti
+    NSLog(@"Registering for push notifications...");
+    UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
+                                                    UIUserNotificationTypeBadge |
+                                                    UIUserNotificationTypeSound);
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes
+                                                                             categories:nil];
+    [application registerUserNotificationSettings:settings];
+    [application registerForRemoteNotifications];
+    
+    
+//    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+//        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+//    } else {
+//        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+//         (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert)];
+//    }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleBackgroundNotification:)
+                                                 name:@"TestNotification"
+                                               object:nil];
+    
+    
+    
+    
     // Present Window before calling Harpy
     [self.window makeKeyAndVisible];
     
@@ -214,5 +241,50 @@
 }
 
 
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+//    NSString *str = [NSString stringWithFormat:@"Device Token=%@",deviceToken];
+//    NSLog(@"%@", str);
+    
+    NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSLog(@"Device Token---%@", token);
+
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {
+    NSString *str = [NSString stringWithFormat: @"Error: %@", err];
+    NSLog(@"%@",str);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    if(application.applicationState != UIApplicationStateActive) { // Only address notifications received when not active
+        // If your application supports multiple types of push notifications, you may wish to limit which ones you send to the TwilioIPMessagingClient here
+        NSLog(@"notification Data %@",userInfo);
+//        if (self.ipMessagingClient && userInfo) {
+//            // If your reference to the IP Messaging client exists and is initialized, send the notification to it
+//            [self.ipMessagingClient handleNotification:userInfo];
+//        } else {
+//            // Store the notification for later handling
+//            self.receivedNotification = userInfo;
+//        }
+    }
+}
+- (void)handleBackgroundNotification:(NSDictionary *)notification
+{
+    
+    NSLog(@"notification Data %@",notification);
+//    NSDictionary *aps = (NSDictionary *)[notification objectForKey:@"aps"];
+//    NSMutableString *alert = [NSMutableString stringWithString:@""];
+//    if ([aps objectForKey:@"alert"])
+//    {
+//        [alert appendString:(NSString *)[aps objectForKey:@"alert"]];
+//    }
+//    if ([notification objectForKey:@"job_id"])
+//    {
+//        // do something with job id
+//        int jobID = [[notification objectForKey:@"job_id"] intValue];
+//    }
+}
 
 @end

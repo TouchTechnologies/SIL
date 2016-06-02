@@ -1542,6 +1542,11 @@
 					36785ACB1C2911A3004E77BE = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = 28WCARLR9T;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					36785AE41C2911A3004E77BE = {
 						CreatedOnToolsVersion = 7.2;

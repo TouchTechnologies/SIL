@@ -139,6 +139,8 @@
     
     NSLog(@"Device ID : %@",[[[UIDevice currentDevice] identifierForVendor]UUIDString]);
     appDelegate.UUID = [[[UIDevice currentDevice] identifierForVendor]UUIDString];
+    
+    
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSLog(@"appVersion %@",version);
     appDelegate.appVersion = version;
