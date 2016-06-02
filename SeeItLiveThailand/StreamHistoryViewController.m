@@ -205,9 +205,9 @@
         imgPHW01 = 40.0 * scy;
         imgPHW02 = 25.0 * scy;
         onAirViewRect = CGRectMake(0*scx, 0*scy, self.view.frame.size.width, 240*scy);
-        scrollViewRect = CGRectMake(0*scx, 0*scy, width, height- (80*scy));
+        scrollViewRect = CGRectMake(0*scx, 0*scy, width, height - (100*scy));
         gridViewRect = CGRectMake(0*scx, 240*scy , width, height);
-        moreBtnRect = CGRectMake(width/2 - (40*scx), scrollViewRect.size.height - (20*scy), 80*scx , 30*scy);
+   //     moreBtnRect = CGRectMake(width/2 - (40*scx), scrollViewRect.size.height - (20*scy), 80*scx , 30*scy);
         
     } else {
         cellH = 300;
@@ -220,9 +220,9 @@
         imgPHW01 = 40.0;
         imgPHW02 = 25.0;
         onAirViewRect = CGRectMake(0, 0, self.view.frame.size.width, 240);
-        scrollViewRect = CGRectMake(0, 0, width, height - 80);
-        gridViewRect = CGRectMake(0, 240 , width, height);
-        moreBtnRect = CGRectMake(width/2 - 40, scrollViewRect .size.height - 40  , 80 , 30);
+        scrollViewRect = CGRectMake(0, 0, parentFrame.size.width, parentFrame.size.height - 110);
+        gridViewRect = CGRectMake(0, 240 , parentFrame.size.width, parentFrame.size.height);
+  //      moreBtnRect = CGRectMake(parentFrame.size.width/2 - 40, scrollViewRect .size.height - 40  , 80 , 30);
     }
 }
 
@@ -237,7 +237,15 @@
     appDelegate.pageName = @"StreamHistory";
     
     
-    
+    moreBtn = [[UIButton alloc] init];
+    [moreBtn setTitle:@"more" forState:UIControlStateNormal];
+    [moreBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    moreBtn.layer.borderWidth = 1;
+    moreBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    moreBtn.backgroundColor = [UIColor clearColor];
+    moreBtn.layer.cornerRadius = moreBtnRect.size.height/2;
+    moreBtn.clipsToBounds = YES;
+    [moreBtn addTarget:self action:@selector(loadmore:) forControlEvents:UIControlEventTouchUpInside];
     
     
     
@@ -331,6 +339,7 @@
 //        
 //    }];
 
+    [moreBtn removeFromSuperview];
     NSString *filter = [@"?" stringByAppendingFormat:@"filterLimit=%d&filtersPage=%d",filter_limit,1];
     
     [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
@@ -345,24 +354,45 @@
         }
         
         [weakSelf.gridView reloadData];
-        moreBtn = [[UIButton alloc] initWithFrame: moreBtnRect];
-        [moreBtn setTitle:@"more" forState:UIControlStateNormal];
-        [moreBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-        moreBtn.layer.borderWidth = 1;
-        moreBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        moreBtn.backgroundColor = [UIColor clearColor];
-        moreBtn.layer.cornerRadius = moreBtnRect.size.height/2;
-        moreBtn.clipsToBounds = YES;
-        [moreBtn addTarget:self action:@selector(loadmore:) forControlEvents:UIControlEventTouchUpInside];
+    
         [scrollView addSubview:moreBtn];
         
         
     } Filter:filter];
 
 }
--(void)loadmore:(id)sender{
+-(void)loadmore:(UIButton *)sender{
+    
+    sender.tag = sender.tag + 1;
+       NSLog(@"LOAD MORE ACTIVE");
+    __weak StreamHistoryViewController *weakSelf = self;
+    
+    int filterPage = 1;
+    filterPage += sender.tag;
+    NSLog(@"filterPage :%d",filterPage);
+//sender.tag +;
+    
+    
+    
+    NSString *filter = [@"?" stringByAppendingFormat:@"filterLimit=%d&filtersPage=%d",filter_limit*filterPage ,1];
+    
+    [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
+        
+        if (success) {
+            weakSelf.streamList = streamRecords;
+            NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
+            
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        
+        [weakSelf.gridView reloadData];
 
-    NSLog(@"LOAD MORE ACTIVE");
+        
+        
+    } Filter:filter];
+
 
 }
 -(void)gostreamming:(UIButton *)sender{
@@ -457,7 +487,7 @@
     else{
           cellH = 300;
           gridView.cellSize = CGSizeMake(gridView.bounds.size.width - 20 , cellH);
-         setframe = CGRectMake(parentFrame.origin.x, parentFrame.origin.y , parentFrame.size.width, self.streamList.count*(cellH + 10) + 10);
+         setframe = CGRectMake(parentFrame.origin.x, parentFrame.origin.y , parentFrame.size.width, self.streamList.count*(cellH + 10)+10 );
          moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - 40, setframe.size.height + 10, 80, 30);
     
     }
@@ -600,6 +630,13 @@
     cell.contentView.backgroundColor = [UIColor whiteColor];
     CGRect parentFrame = self.view.bounds;
     [self.gridView setFrame:setframe];
+  
+    moreBtn.layer.borderWidth = 1;
+    moreBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    moreBtn.backgroundColor = [UIColor clearColor];
+    moreBtn.layer.cornerRadius = moreBtnRect.size.height/2;
+    moreBtn.clipsToBounds = YES;
+
     [moreBtn setFrame:moreBtnRect];
        return cell;
 }

@@ -11,10 +11,13 @@
 #import "Streaming.h"
 #import "DataManager.h"
 #import "AppDelegate.h"
+#import "SBScrollView.h"
 
 @interface CategoryTypeViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     AppDelegate *appDelegate;
+    SBScrollView *scrollView;
+    
     UITableView *tableview;
     UITableViewCell *cell;
 
@@ -72,7 +75,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         cellH = 80*scy;
         fontSize = 14*scy;
-        tableviewRect =CGRectMake(0*scx, 0*scy, self.view.bounds.size.width, self.view.bounds.size.height - (120*scy));
+        tableviewRect =CGRectMake(0*scx, 0*scy, self.view.bounds.size.width, self.view.bounds.size.height - (130*scy));
         bgCellViewRect = CGRectMake(5*scx, 5 *scy , width - (10*scx) , cellH - (10*scy));
         imgCategoryRect = CGRectMake(10*scx, bgCellViewRect.size.height/2 - (25*scy), 60*scx, 60*scy) ;
         lblCategoryTypeRect = CGRectMake(imgCategoryRect.origin.x + imgCategoryRect.size.width + (10*scx) , bgCellViewRect.size.height/2 - (20*scy), width - lblCategoryTypeRect.origin.x , 20*scy);
@@ -82,7 +85,7 @@
     else{
         cellH = 80;
         fontSize = 14;
-        tableviewRect =CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - 120);
+        tableviewRect =CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - 130);
         bgCellViewRect = CGRectMake(5, 5 , width - 10 , cellH - 10);
         imgCategoryRect = CGRectMake(10, bgCellViewRect.size.height/2 - 25, 60, 60) ;
         lblCategoryTypeRect = CGRectMake(imgCategoryRect.origin.x + imgCategoryRect.size.width + 10 , bgCellViewRect.size.height/2 - 20, width - lblCategoryTypeRect.origin.x , 20);
@@ -95,9 +98,7 @@
 }
 - (void)viewWillAppear:(BOOL)animated{
 
-    __weak CategoryTypeViewController *weakSelf = self;
-    
-    
+  
 //    [[DataManager shareManager] getStreamingWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
 //        
 //        
@@ -124,6 +125,46 @@
 //
 //    }];
     
+    
+    
+    //
+//    __weak CategoryTypeViewController *weakSelf = self;
+//    
+//    [[DataManager shareManager] getStreamingLiveWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
+//        
+//        if (success)
+//        {
+//            
+//            
+//            if (streamRecords.count > 0) {
+//                
+//                NSLog(@"Has LiveStream");
+//                
+//                self.streamList = streamRecords;
+//                [tableview setFrame:CGRectMake(0, 0 , self.view.bounds.size.width , self.view.bounds.size.width - 120)];
+//              
+//                
+//                
+//            }
+//            else {
+//                NSLog(@"NoLiveStream");
+//                
+//                // [liveStatusView setHidden:TRUE];
+//                //[collectionView setHidden: TRUE]
+//                [tableview setFrame:tableviewRect];
+//           
+//                
+//                
+//                
+//            }
+//        }
+//        else
+//        {
+//            
+//            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:AlertTitle message:NotConnect delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//            //            [alert show];
+//            
+//        } }];
 
 
 }
@@ -132,14 +173,16 @@
 //    iconCate = [NSArray arrayWithObjects:@"travel.png",@"culture1.png"
 //                @"event.png", @"news.png", @"lifestyle.png",@"other.png",@"Music.png", nil];
 //    lblCateType = [NSArray arrayWithObjects:@"Travel",@"Culture",@"Event",@"News",@"Lifestyle",@"Other",@"Music", nil];
-   
-    tableview = [[UITableView alloc] initWithFrame:tableviewRect];
-    tableview.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0];
-    tableview.bounces = NO;
-    tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [tableview registerClass:UITableViewCell.self forCellReuseIdentifier:@"cell"];
-    [self.view addSubview:tableview];
-}
+//    
+        tableview = [[UITableView alloc] initWithFrame:tableviewRect];
+    
+                    tableview.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0];
+                    tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
+                    [tableview registerClass:UITableViewCell.self forCellReuseIdentifier:@"cell"];
+                    [self.view addSubview:tableview];
+    
+  
+  }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
        return appDelegate.categoryData.count;
 }

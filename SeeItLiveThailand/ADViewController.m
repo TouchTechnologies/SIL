@@ -478,7 +478,7 @@
         _pageControl.view.frame = CGRectMake(0*scx, 240*scy, self.view.bounds.size.width, self.view.bounds.size.height - (20*scy));
     }
     else{
-        _pageControl.view.frame = CGRectMake(0, 240, self.view.bounds.size.width, self.view.bounds.size.height - 20);
+        _pageControl.view.frame = CGRectMake(0, (liveStatusView.bounds.size.height*6), self.view.bounds.size.width, self.view.bounds.size.height - 20);
     }
     [scrollView addSubview:_pageControl.view];
     
