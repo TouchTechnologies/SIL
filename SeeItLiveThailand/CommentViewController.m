@@ -135,8 +135,8 @@
             com.commentMsg = comment[@"comment_content"];
             com.commentPicture = comment[@"commentator"][@"profile_picture"];
             com.commentID = comment[@"id"];
-            com.commentName = [comment[@"first_name"] stringByAppendingFormat:@" %@ :",comment[@"last_name"]];
-            NSLog(@"commentID %@",com.commentID);
+            com.commentName = [comment[@"commentator"][@"first_name"] stringByAppendingFormat:@" %@ :",comment[@"commentator"][@"last_name"]];
+//            NSLog(@"commentID %@",com.commentID);
             [self.comment addObject:com];
         }
         NSLog(@"getcommentAll com %@",com);
@@ -198,10 +198,12 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
 
-    Comment *com2 = [[Comment alloc] init];
-    com = [[Comment alloc] init];
+    
+    
+    Comment *comment = [[Comment alloc] init];
+//    com = [[Comment alloc] init];
 
-    com2 = [self.comment objectAtIndex:[indexPath row]];
+    comment = [self.comment objectAtIndex:[indexPath row]];
     
     UINib *nib = [UINib nibWithNibName:@"commentviewcell" bundle:nil];
     [tableView registerNib:nib forCellReuseIdentifier:@"cell"];
@@ -214,11 +216,22 @@
     cell.usercommentImg.layer.cornerRadius =(cellH - 16)/2;
     cell.usercommentImg.clipsToBounds = TRUE;
 
-    cell.usercommentImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:com.commentPicture]]];
+    cell.usercommentImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:comment.commentPicture]]];
     
     
-    NSString *strPoint = com.commentMsg;
-    [cell.commentLbl setFrame:CGRectMake(cellH, 10 , [UIScreen mainScreen].bounds.size.width - (cellH+5), 30)];
+    
+    
+    [cell.usernameLbl setFrame:CGRectMake(cellH, 10 , [UIScreen mainScreen].bounds.size.width - (cellH+5), 30)];
+    [cell.usernameLbl setText:comment.commentName];
+    [cell.usernameLbl setFont:[UIFont fontWithName:@"Helvetica" size:font]];
+    cell.usernameLbl.lineBreakMode = NSLineBreakByWordWrapping;
+    cell.usernameLbl.numberOfLines = 0 ;
+    cell.usernameLbl.textAlignment = NSTextAlignmentJustified;
+    [cell.usernameLbl sizeToFit];
+    
+    
+    NSString *strPoint = comment.commentMsg;
+    [cell.commentLbl setFrame:CGRectMake(cellH, 30 , [UIScreen mainScreen].bounds.size.width - (cellH+5), 30)];
     
     [cell.commentLbl setText:strPoint];
     [cell.commentLbl setFont:[UIFont fontWithName:@"Helvetica" size:font]];
@@ -226,6 +239,12 @@
     cell.commentLbl.numberOfLines = 0 ;
     cell.commentLbl.textAlignment = NSTextAlignmentJustified;
     [cell.commentLbl sizeToFit];
+    
+    
+
+//    NSLog(@"com %@ , %@",com.commentName,com.commentMsg);
+//     NSLog(@"com %@ , %@",com2.commentName,com2.commentMsg);
+    
     
 //    cell.usercommentImg = [[UIImageView alloc] initWithFrame:CGRectMake(4, 4, cellH - 16, cellH - 16)];
 //    cell.usercommentImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:com.commentPicture]]];
