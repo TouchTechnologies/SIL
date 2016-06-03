@@ -169,6 +169,7 @@
 		36CD93321C8031E000E5A414 /* ModelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 36CD93311C8031E000E5A414 /* ModelManager.m */; };
 		36CD93361C80325000E5A414 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 36CD93341C80325000E5A414 /* Model.m */; };
 		36CD933A1C8032A600E5A414 /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 36CD93391C8032A600E5A414 /* Util.m */; };
+		36E963211D001EB6008A9F63 /* MyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 36E963201D001EB6008A9F63 /* MyAnnotation.m */; };
 		36FABCFB1C58729200D78026 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 36FABCFA1C58729200D78026 /* GoogleService-Info.plist */; };
 		36FABD051C5B1E9B00D78026 /* SCFacebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 36FABD041C5B1E9B00D78026 /* SCFacebook.m */; };
 		BF30606B0845879090F4ED95 /* libPods-SeeItLiveThailand.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E172AA0D8F53ED8E086DD5C /* libPods-SeeItLiveThailand.a */; };
@@ -574,6 +575,8 @@
 		36CD93341C80325000E5A414 /* Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Model.m; sourceTree = "<group>"; };
 		36CD93381C8032A600E5A414 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
 		36CD93391C8032A600E5A414 /* Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Util.m; sourceTree = "<group>"; };
+		36E9631F1D001EA7008A9F63 /* MyAnnotation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyAnnotation.h; sourceTree = "<group>"; };
+		36E963201D001EB6008A9F63 /* MyAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAnnotation.m; sourceTree = "<group>"; };
 		36FABCFA1C58729200D78026 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "SeeItLiveThailand/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		36FABD031C5B1E9B00D78026 /* SCFacebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCFacebook.h; path = SCFacebook/SCFacebook.h; sourceTree = "<group>"; };
 		36FABD041C5B1E9B00D78026 /* SCFacebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCFacebook.m; path = SCFacebook/SCFacebook.m; sourceTree = "<group>"; };
@@ -853,6 +856,8 @@
 				F35D29B51CAD0E9B007916FD /* MYTapGestureRecognizer.m */,
 				36603E3F1CDC444A002E504D /* MYAlertView.h */,
 				36603E401CDC444A002E504D /* MYAlertView.m */,
+				36E9631F1D001EA7008A9F63 /* MyAnnotation.h */,
+				36E963201D001EB6008A9F63 /* MyAnnotation.m */,
 			);
 			name = MyUIClass;
 			sourceTree = "<group>";
@@ -1827,6 +1832,7 @@
 				F318B8941CD3716500FCC0BF /* CategoryTypeViewController.m in Sources */,
 				36448AE01CA90B32007A4AB4 /* SocketIOClient.swift in Sources */,
 				36448AD91CA90B32007A4AB4 /* SocketEngine.swift in Sources */,
+				36E963211D001EB6008A9F63 /* MyAnnotation.m in Sources */,
 				F32985CA1CD8983500C72901 /* CategoryListViewController.m in Sources */,
 				36785B1F1C2914D2004E77BE /* SubContainerViewController.m in Sources */,
 				F3C7F9351C9FA8A200F32866 /* HelpfullContactViewController.m in Sources */,
