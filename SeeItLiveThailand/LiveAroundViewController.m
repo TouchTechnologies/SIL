@@ -12,7 +12,7 @@
 #import "DataManager.h"
 #import "defs.h"
 #import "Streaming.h"
-
+#import "MyAnnotation.h"
 @interface LiveAroundViewController ()<UITableViewDelegate,UITableViewDataSource,MKMapViewDelegate>
 {
     
@@ -111,7 +111,8 @@
     
     [self initialSize];
     [self initial];
-    [self initMap];
+//    [self addAllPins];
+//    [self initMap];
 
     scrollView.delegate = self;
     tableView.delegate = self;
@@ -156,19 +157,19 @@
     mapView.backgroundColor = [UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1.0];
     [scrollView addSubview:mapView];
 
-    imgSnapshot = [[UIImageView alloc] initWithFrame:imgSnapshotRect];
-    imgSnapshot.image = [UIImage imageNamed:@"activities02.jpg"];
-    imgSnapshot.layer.borderWidth = 2 ;
-    imgSnapshot.layer.borderColor = [UIColor whiteColor].CGColor;
-    
-    imgWaterMark = [[UIImageView alloc] initWithFrame:imgWaterMarkRect];
-    imgWaterMark.image = [UIImage imageNamed:@"play.png"];
-    [imgSnapshot addSubview:imgWaterMark];
-    [mapView addSubview:imgSnapshot];
-    
-    imgPin = [[UIImageView alloc] initWithFrame:imgPinRect];
-    imgPin.image = [UIImage imageNamed:@"pin_2.png"];
-    [mapView addSubview:imgPin];
+//    imgSnapshot = [[UIImageView alloc] initWithFrame:imgSnapshotRect];
+//    imgSnapshot.image = [UIImage imageNamed:@"activities02.jpg"];
+//    imgSnapshot.layer.borderWidth = 2 ;
+//    imgSnapshot.layer.borderColor = [UIColor whiteColor].CGColor;
+//
+//    imgWaterMark = [[UIImageView alloc] initWithFrame:imgWaterMarkRect];
+//    imgWaterMark.image = [UIImage imageNamed:@"play.png"];
+//    [imgSnapshot addSubview:imgWaterMark];
+//    [mapView addSubview:imgSnapshot];
+//    
+//    imgPin = [[UIImageView alloc] initWithFrame:imgPinRect];
+//    imgPin.image = [UIImage imageNamed:@"pin_2.png"];
+//    [mapView addSubview:imgPin];
     
     detailView = [[UIView alloc] initWithFrame:detailViewRect];
     detailView.backgroundColor = [UIColor redColor];
@@ -430,7 +431,8 @@
             weakSelf.streamList = streamRecords;
             NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
 //            [self initMap];
-            videoCount.text = [NSString stringWithFormat:@"%d",weakSelf.streamList.count];
+            [self addAllPins];
+            videoCount.text = [NSString stringWithFormat:@"%lu",(unsigned long)weakSelf.streamList.count];
            
             
         } else {
@@ -454,7 +456,8 @@
 
 -(void)initMap
 {
-    MKPointAnnotation *mapPin = [[MKPointAnnotation alloc] init];
+    mapView.delegate = self;
+//    MKPointAnnotation *mapPin = [[MKPointAnnotation alloc] init];
     MKCoordinateRegion region;
     region.center.latitude = [self.objStreaming.latitude floatValue];
     region.center.longitude = [self.objStreaming.longitude floatValue];
@@ -462,24 +465,55 @@
     region.span.longitudeDelta = 1;
     
     [mapView setRegion:region animated:YES];
-    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([self.objStreaming.latitude floatValue], [self.objStreaming.longitude floatValue]);
-    mapPin.title = self.objStreaming.streamTitle;
-    mapPin.coordinate = coordinate;
-    [mapView addAnnotation:mapPin];
+//    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([self.objStreaming.latitude floatValue], [self.objStreaming.longitude floatValue]);
+//    mapPin.title = self.objStreaming.streamTitle;
+//    mapPin.coordinate = coordinate;
+//    [mapView addAnnotation:mapPin];
     
-    __weak LiveAroundViewController *weakSelf = self;
     
-    NSLog(@"Stream count : %lu",(unsigned long)weakSelf.streamList.count);
+    
+
+    
+//    coordinate = CLLocationCoordinate2DMake(13.75483015,100.57834743);
+//    mapPin.title = @"1";
+//    mapPin.coordinate = coordinate;
+//    [mapView addAnnotation:mapPin];
+//    
+//    coordinate = CLLocationCoordinate2DMake(13.75483015,100.67834743);
+//    mapPin.title = @"2";
+//    mapPin.coordinate = coordinate;
+//    [mapView addAnnotation:mapPin];
+//    
+//    coordinate = CLLocationCoordinate2DMake(13.75483015,100.77834743);
+//    mapPin.title = @"3";
+//    mapPin.coordinate = coordinate;
+//    [mapView addAnnotation:mapPin];
+    
+    
+    
+    
+    
+//    MyAnnotation *ann = [[MyAnnotation alloc] init];
+//    ann.title = @"I'm a pin";
+//    ann.subtitle = @"Your subtitle";
+//    ann.coordinate = region.center;
+//    [mapView addAnnotation:ann];
+//    
+//    __weak LiveAroundViewController *weakSelf = self;
+    
+//    NSLog(@"Stream count : %lu",(unsigned long)weakSelf.streamList.count);
     
     NSMutableArray* pinTitle = [[NSMutableArray alloc]init];
     NSMutableArray *arrCoordinateStr = [[NSMutableArray alloc] init];
 
-    for(Streaming *stream in weakSelf.streamList)
+    for(Streaming *stream in _streamList)
     {
-        NSLog(@"stream NAME %@ lat : %@ long : %@",stream.streamTitle,stream.latitude,stream.longitude);
+//        NSLog(@"stream NAME %@ lat : %@ long : %@",stream.streamTitle,stream.latitude,stream.longitude);
         
-        [pinTitle addObject:stream.streamTitle];
-        [arrCoordinateStr addObject:[NSString stringWithFormat:@"%@,%@",stream.latitude,stream.longitude]];
+//        [pinTitle addObject:stream.streamTitle];
+        [pinTitle addObject:@"wtf"];
+//        [arrCoordinateStr addObject:[NSString stringWithFormat:@"%@,%@",stream.latitude,stream.longitude]];
+        [arrCoordinateStr addObject:@"13.75483015,100.57834743"];
         
     }
 //    [pinTitle addObject:@"5555"];
@@ -498,7 +532,15 @@
 -(void)addAllPins
 {
     mapView.delegate=self;
+    MKCoordinateRegion region;
+    region.center.latitude = [self.objStreaming.latitude floatValue];
+    region.center.longitude = [self.objStreaming.longitude floatValue];
+    region.span.latitudeDelta = 1;
+    region.span.longitudeDelta = 1;
     
+    [mapView setRegion:region animated:YES];
+    
+    NSLog(@"addAllPins");
     NSArray *name=[[NSArray alloc]initWithObjects:
                    @"VelaCherry",
                    @"Perungudi",
@@ -506,18 +548,34 @@
     
     NSMutableArray *arrCoordinateStr = [[NSMutableArray alloc] initWithCapacity:name.count];
     
-    [arrCoordinateStr addObject:@"12.970760345459, 80.2190093994141"];
-    [arrCoordinateStr addObject:@"12.9752297537231, 80.2313079833984"];
-    [arrCoordinateStr addObject:@"12.9788103103638, 80.2412414550781"];
+    [arrCoordinateStr addObject:@"13.75483015,100.57834743"];
+    [arrCoordinateStr addObject:@"13.75483015,100.67834743"];
+    [arrCoordinateStr addObject:@"13.75483015,100.77834743"];
     
     for(int i = 0; i < name.count; i++)
     {
         [self addPinWithTitle:name[i] AndCoordinate:arrCoordinateStr[i]];
+//        MKPointAnnotation *mapPin = [[MKPointAnnotation alloc] init];
+//        NSArray *components = [arrCoordinateStr[i] componentsSeparatedByString:@","];
+//        double latitude = [components[0] doubleValue];
+//        double longitude = [components[1] doubleValue];
+//        NSLog(@"name %@ Lat %f Long %f",name[i],latitude,longitude);
+//        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+//        mapPin.title = name[i];
+//        mapPin.coordinate = coordinate;
+//        [mapView addAnnotation:mapPin];
     }
 }
 
 -(void)addPinWithTitle:(NSString *)title AndCoordinate:(NSString *)strCoordinate
 {
+    
+//    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([self.objStreaming.latitude floatValue], [self.objStreaming.longitude floatValue]);
+//    mapPin.title = self.objStreaming.streamTitle;
+//    mapPin.coordinate = coordinate;
+    
+    NSLog(@"addPinWithTitle");
+    NSLog(@"pinTitle %@",title);
     MKPointAnnotation *mapPin = [[MKPointAnnotation alloc] init];
     
     // clear out any white space
@@ -529,14 +587,99 @@
     double latitude = [components[0] doubleValue];
     double longitude = [components[1] doubleValue];
     
+    NSLog(@"lat : %f , long : %f",latitude,longitude);
     // setup the map pin with all data and add to map view
     CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
     
     mapPin.title = title;
     mapPin.coordinate = coordinate;
     
-    [mapView addAnnotation:mapPin];
+    [self->mapView addAnnotation:mapPin];
 }
+
+
+//- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
+//{
+//    NSLog(@"MKAnnotationView");
+//    if (annotation == mapView.userLocation)
+//        return nil;
+//    
+//    static NSString *s = @"identifier";
+//    MKAnnotationView *pin = [mapView dequeueReusableAnnotationViewWithIdentifier:s];
+//    if (!pin) {
+//        pin = [[MKPinAnnotationView alloc]initWithAnnotation:annotation reuseIdentifier:s];
+//        pin.canShowCallout = YES;
+//        pin.image = [UIImage imageNamed:@"maker.png"];
+//        pin.calloutOffset = CGPointMake(0, 0);
+//    }
+//    return pin;
+//}
+//-(MKAnnotationView *) mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+//    NSLog(@"MKAnnotationView");
+//    MKPinAnnotationView *MyPin=[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
+//    MyPin.pinColor = MKPinAnnotationColorPurple;
+//
+////    UIButton *advertButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+////    [advertButton addTarget:self action:@selector(button:) forControlEvents:UIControlEventTouchUpInside];
+//    
+//    /*MyPin.rightCalloutAccessoryView = advertButton;
+//     MyPin.draggable = YES;
+//     
+//     MyPin.animatesDrop=TRUE;
+//     MyPin.canShowCallout = YES;*/
+//    MyPin.highlighted = NO;
+//    MyPin.image = [UIImage imageNamed:@"maker.png"];
+//    
+//    return MyPin;
+//}
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id )annotation {
+    NSLog(@"MKAnnotationView");
+    
+    if (annotation == mapView.userLocation)
+        return nil;
+    
+    MKAnnotationView *annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
+    annotationView.canShowCallout = YES;
+//    UIImage *image = [UIImage imageNamed:@"pin_2.png"];
+//    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,50,50)];
+//    imageView.image = image;
+    
+    
+//    UIButton *advertButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+//    [advertButton addTarget:self action:@selector(annotationClick:) forControlEvents:UIControlEventTouchUpInside];
+//    annotationView.rightCalloutAccessoryView = advertButton;
+    
+    
+    imgSnapshot = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,100,70)];
+    imgSnapshot.image = [UIImage imageNamed:@"activities02.jpg"];
+    imgSnapshot.layer.borderWidth = 2 ;
+    imgSnapshot.layer.borderColor = [UIColor whiteColor].CGColor;
+    
+    
+    
+
+    [imgSnapshot setUserInteractionEnabled:YES];
+    UITapGestureRecognizer *singleTap =  [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(annotationClick:)];
+    [singleTap setNumberOfTapsRequired:1];
+    [imgSnapshot addGestureRecognizer:singleTap];
+    
+    
+    
+
+    
+    [annotationView addSubview:imgSnapshot];
+    MKPinAnnotationView *pinView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
+    [annotationView addSubview:pinView];
+    
+    return annotationView;
+    
+}
+- (void)annotationClick:(id)sender
+{
+    NSLog(@"annotationClick");
+}
+
 /*
 #pragma mark - Navigation
 

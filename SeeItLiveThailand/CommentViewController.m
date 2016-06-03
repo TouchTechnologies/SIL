@@ -135,6 +135,7 @@
             com.commentMsg = comment[@"comment_content"];
             com.commentPicture = comment[@"commentator"][@"profile_picture"];
             com.commentID = comment[@"id"];
+            com.commentName = [comment[@"first_name"] stringByAppendingFormat:@" %@ :",comment[@"last_name"]];
             NSLog(@"commentID %@",com.commentID);
             [self.comment addObject:com];
         }

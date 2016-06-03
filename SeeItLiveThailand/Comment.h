@@ -12,5 +12,6 @@
 @property (nonatomic, strong) NSString *commentMsg;
 @property (nonatomic, strong) NSString *commentPicture;
 @property (nonatomic, strong) NSString *commentID;
+@property (nonatomic, strong) NSString *commentName;
 
 @end
