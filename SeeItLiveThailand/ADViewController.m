@@ -39,9 +39,6 @@
 
 @interface ADViewController ()<ADPageControlDelegate , UICollectionViewDelegate , UICollectionViewDataSource,UICollectionViewDelegateFlowLayout> {
     
-    
-    
-    
     ADPageControl *_pageControl;
     BOOL isLazy;
     
@@ -121,6 +118,7 @@
     CGRect lblTitleliveRect;
     CGRect imgViewRect;
     CGRect lblViewCountRect;
+    CGRect pageControlRect;
     
     NSString *liveCount;
 
@@ -215,7 +213,7 @@
         // indicatorWidth = self.view.bounds.size.width;
         onAirViewRect = CGRectMake(0*scx, 0*scy, width, 240*scy);
        
-        scrollViewRect = CGRectMake(0*scx, imgPHW01, self.view.bounds.size.width, self.view.bounds.size.height - indicatorHeight);
+        scrollViewRect = CGRectMake(0*scx, imgPHW01, self.view.bounds.size.width, self.view.bounds.size.height + (titleHeight + indicatorHeight));
  
         liveStatusViewRect = CGRectMake(0*scx, 0*scy,width , 40*scy);
         collectionViewRect = CGRectMake(0*scx, 0*scy , width, onAirViewRect.size.height);
@@ -228,6 +226,8 @@
         imgOnairCountRect = CGRectMake(liveStatusViewRect.size.width - (60*scx), liveStatusViewRect.size.height/2 - (10*scy), 20*scx, 20*scy);
         
         lblOnairCountRect = CGRectMake(liveStatusViewRect.size.width - (45*scx), imgOnairCountRect.origin.y - (5*scy), 40*scx, 20*scy);
+        
+        pageControlRect = CGRectMake(0*scx, (collectionViewRect.size.height), self.view.bounds.size.width, self.view.bounds.size.height - (20*scy));
     } else {
         
         fontSize = 16.0;
@@ -245,7 +245,7 @@
         paddingSize = CGSizeMake(10.f, 10.f);
         imgPHW01 = 40.0;
         imgPHW02 = 25.0;
-         imgLiveRect = CGRectMake(5, 5, 60, 20);
+        imgLiveRect = CGRectMake(5, 5, 60, 20);
        // indicatorWidth = self.view.bounds.size.width;
         onAirViewRect = CGRectMake(0, 0, self.view.bounds.size.width, 240);
         scrollViewRect = CGRectMake(0, 40, self.view.bounds.size.width, self.view.bounds.size.height - indicatorHeight);
@@ -261,7 +261,7 @@
         imgOnairCountRect = CGRectMake(liveStatusViewRect.size.width - 60, liveStatusViewRect.size.height/2 - 10, 20, 20);
         
         lblOnairCountRect = CGRectMake(liveStatusViewRect.size.width - 45, imgOnairCountRect.origin.y - 5, 40, 20);
-        
+        pageControlRect =   CGRectMake(0,collectionViewRect.size.height, self.view.bounds.size.width, self.view.bounds.size.height - 20);
         
        
 
@@ -281,11 +281,83 @@
     
     CGRect parentFrame = onAirViewRect;
    // __weak StreamLiveViewController *weakSelf = self;
+    NSString *filter = [@"?" stringByAppendingFormat:@"filterLimit=%d&filtersPage=%d",3,1];
+    
+    
+    
+    
+//    [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
+//        
+//        if (success)
+//        {
+//            
+//            
+//            if (streamRecords.count > 0) {
+//                
+//                NSLog(@"Has LiveStream");
+//                
+//                self.streamList = streamRecords;
+//                liveCount = [NSString stringWithFormat:@"%ld",streamRecords.count];
+//                lblOnairCount = [[UILabel alloc] initWithFrame:lblOnairCountRect];
+//                lblOnairCount.text = liveCount;
+//                lblOnairCount.textColor = [UIColor whiteColor];
+//                lblOnairCount.font =[UIFont fontWithName:@"Helvetica-Bold" size:fontSize-2];
+//                lblOnairCount.textAlignment = NSTextAlignmentCenter;
+//                lblOnairCount.backgroundColor = [UIColor redColor];
+//                lblOnairCount.layer.borderWidth = 1;
+//                lblOnairCount.layer.borderColor = [UIColor whiteColor].CGColor;
+//                lblOnairCount.layer.cornerRadius = lblOnairCountRect.size.height/2;
+//                lblOnairCount.clipsToBounds = YES;
+//                [liveStatusView addSubview:lblOnairCount];
+//                
+//                _imgLiveStatus.hidden = YES;
+//                [_imgLiveStatus removeFromSuperview];
+//                [collectionView removeFromSuperview];
+//                [scrollView addSubview:collectionView];
+//                
+//                
+//                
+//                
+//            } else {
+//                NSLog(@"NoLiveStream");
+//                
+//                [liveStatusView setHidden:TRUE];
+//                [collectionView setHidden: TRUE];
+//                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//                    NSLog(@"set iPad");
+//                    [scrollView setFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+//                    
+//                    _pageControl.view.frame = CGRectMake(0, 0 , self.view.bounds.size.width, self.view.bounds.size.height - 20);
+//                }
+//                else
+//                {
+//                    [scrollView setFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+//                    
+//                    _pageControl.view.frame = CGRectMake(0, 0 , self.view.bounds.size.width, self.view.bounds.size.height - 20);
+//                    
+//                }
+//                
+//                
+//            }
+//            
+//        } else
+//        {
+//            
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:AlertTitle message:NotConnect delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//            [alert show];
+//            
+//        }
+//        
+//        [collectionView reloadData];
+//        
+//        
+//        
+//    } Filter:filter];
 
     
 ///////////////////////////////////////////////// History Live ///////////////////////////////////////////////
- //     [[DataManager shareManager] getStreamingWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
-     
+//      [[DataManager shareManager] getStreamingWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
+ 
     ///////////////////////////////////////////////// OnAir ///////////////////////////////////////////////
  [[DataManager shareManager] getStreamingLiveWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
 
@@ -313,26 +385,26 @@
                
                _imgLiveStatus.hidden = YES;
                 [_imgLiveStatus removeFromSuperview];
-              [collectionView removeFromSuperview];
-            //   scrollView = [[SBScrollView alloc] initWithFrame:scrollViewRect];
-              [scrollView addSubview:collectionView];
-//                
-//                self.gridView = [[KKGridView alloc] initWithFrame:CGRectMake(parentFrame.origin.x, parentFrame.origin.y , self.view.bounds.size.width, parentFrame.size.height)];
-//                self.gridView.pagingEnabled = TRUE;
-//                self.gridView.layoutDirection =KKGridViewLayoutDirectionHorizontal;
-//               self.gridView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-//                self.gridView.dataSource = self;
-//                self.gridView.delegate = self;
-//                [scrollView addSubview:self.gridView];
+                [collectionView removeFromSuperview];
+                [scrollView addSubview:collectionView];
+                
+                
 // 
-//                self.gridView.cellSize = cellSize;
-//                self.gridView.cellPadding = paddingSize;
-//                self.gridView.allowsMultipleSelection = NO;
-//                //self.gridView.scrollsToTop = YES;
-//                self.gridView.backgroundColor = [UIColor greenColor];
-//                 [liveStatusView setHidden:FALSE];
-//                 [scrollView setFrame:CGRectMake(0, 40, self.view.bounds.size.width, self.view.bounds.size.height - indicatorHeight)];
-//                _pageControl.view.frame = CGRectMake(0, 240 , self.view.bounds.size.width, self.view.bounds.size.height - 20);
+//                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//                    NSLog(@"set iPad");
+//                    [scrollView setFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+//                    
+//                    _pageControl.view.frame = CGRectMake(0,240 , self.view.bounds.size.width, self.view.bounds.size.height - 240);
+//                }
+//                else
+//                {
+//                    [scrollView setFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+//                    
+//                    _pageControl.view.frame = CGRectMake(0, 240 , self.view.bounds.size.width, self.view.bounds.size.height - 240);
+//                    
+//                }
+//                
+
                 
             } else {
                 NSLog(@"NoLiveStream");
@@ -474,12 +546,13 @@
     CGFloat scy = (1024.0/480.0);
     CGFloat scx = (768.0/360.0);
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        _pageControl.view.frame = CGRectMake(0*scx, 240*scy, self.view.bounds.size.width, self.view.bounds.size.height - (20*scy));
-    }
-    else{
-        _pageControl.view.frame = CGRectMake(0, (liveStatusView.bounds.size.height*6), self.view.bounds.size.width, self.view.bounds.size.height - 20);
-    }
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//        _pageControl.view.frame = CGRectMake(0*scx, 240*scy, self.view.bounds.size.width, self.view.bounds.size.height - (20*scy));
+//    }
+//    else{
+//        _pageControl.view.frame = CGRectMake(0, (liveStatusView.bounds.size.height*6), self.view.bounds.size.width, self.view.bounds.size.height - 20);
+//    }
+    _pageControl.view.frame = pageControlRect;
     [scrollView addSubview:_pageControl.view];
     
     
@@ -631,7 +704,7 @@
         //////////////////////////////////////////////////////////////////
         
         MyLivestreamViewController *myStream = [self.storyboard instantiateViewControllerWithIdentifier:@"livestream1"];
-        isLazy = TRUE;
+        isLazy = FALSE;
         return myStream;
     }
     return nil;
@@ -644,26 +717,47 @@
     NSLog(@"ADPageControl :: Current visible page index : %d",iCurrentVisiblePage);
     
     if (isLazy == FALSE) {
-        ADPageModel *pageModel = [_pageControl.arrPageModel objectAtIndex:iCurrentVisiblePage];
-        
-        if ([pageModel.viewController isKindOfClass:[StreamLiveViewController class]]) {
-//            NSLog(@"live live");
-            StreamLiveViewController *streamLive = (StreamLiveViewController *)pageModel.viewController;
-            [streamLive viewDidLoad];
-            
-        } else if ([pageModel.viewController isKindOfClass:[StreamHistoryViewController class]]) {
-//            NSLog(@"his tory");
-            StreamHistoryViewController *streamHistory = (StreamHistoryViewController *)pageModel.viewController;
-            [streamHistory viewDidLoad];
+        NSLog(@"LIVE:::");
+         ADPageModel *pageModel = [_pageControl.arrPageModel objectAtIndex:iCurrentVisiblePage];
+        if (iCurrentVisiblePage == 0) {
+            NSLog(@"HISTORYLIVE");
+      
+           
+            StreamHistoryViewController *streamVC = (StreamHistoryViewController *)pageModel.viewController;
+            [streamVC viewDidLoad];
+
         }
-        else if ([pageModel.viewController isKindOfClass:[MyLivestreamViewController class]]) {
-//            NSLog(@"My Live");
-            MyLivestreamViewController *MyLivestream = (MyLivestreamViewController *)pageModel.viewController;
-            [MyLivestream viewDidLoad];
+        else if (iCurrentVisiblePage == 1){
+        
+            NSLog(@"CATEGORY");
+        
+        }
+        else if (iCurrentVisiblePage == 2){
+            NSLog(@"MY LIVE");
+        
         }
 
-    }
-    
+       
+        
+//        if ([pageModel.viewController isKindOfClass:[StreamLiveViewController class]]) {
+//            NSLog(@"live live");
+//            StreamLiveViewController *streamLive = (StreamLiveViewController *)pageModel.viewController;
+//            
+//            [streamLive viewDidLoad];
+//            
+//        } else if ([pageModel.viewController isKindOfClass:[StreamHistoryViewController class]]) {
+////            NSLog(@"his tory");
+//            StreamHistoryViewController *streamHistory = (StreamHistoryViewController *)pageModel.viewController;
+//            [streamHistory viewDidLoad];
+//        }
+//        else if ([pageModel.viewController isKindOfClass:[MyLivestreamViewController class]]) {
+////            NSLog(@"My Live");
+//            MyLivestreamViewController *MyLivestream = (MyLivestreamViewController *)pageModel.viewController;
+//            [MyLivestream viewDidLoad];
+//        }
+//
+   }
+//    
     isLazy = FALSE;
     
 //

@@ -152,7 +152,8 @@
     SocketIOClient *socket;
     NSMutableArray* commentData;
 
-    
+    UILabel *objChatLbl;
+    CGRect objChatLblRect;
 }
 @property (nonatomic, strong) VKVideoPlayer* player;
 
@@ -513,6 +514,7 @@
         
        textchatLblRect = CGRectMake(0*scx, 0*scy, chatplaceViewRect.size.width, 20*scy);
        userChatLblRect = CGRectMake(0*scx, chatplaceViewRect.size.height - (20*scy) , self.view.bounds.size.width, 20*scy);
+        objChatLblRect = CGRectMake(0*scx, 0*scy, chatplaceViewRect.size.width, 20*scy);
         chatboxTxtPortRect = CGRectMake(20*scx, chatTblPortRect.origin.y + chatTblPortRect.size.height + (10*scy), self.view.bounds.size.width - (100*scx), 30*scy);
         sendchatBtnPortRect = CGRectMake(chatboxTxtPortRect.origin.x + chatboxTxtPortRect.size.width + ( 5*scx),  chatTblPortRect.origin.y + chatTblPortRect.size.height + (15*scy), 50*scx , 20*scy);
         
@@ -563,6 +565,9 @@
         
        textchatLblRect = CGRectMake(0, 0, chatplaceViewRect.size.width, 20);
        userChatLblRect = CGRectMake(0, chatplaceViewRect.size.height - 20 , self.view.bounds.size.width, 20);
+        
+        objChatLblRect = CGRectMake(0, 0, chatplaceViewRect.size.width, 20);
+        
         chatboxTxtPortRect = CGRectMake(20, chatTblPortRect.origin.y + chatTblPortRect.size.height + 10, self.view.bounds.size.width - 100, 30);
         sendchatBtnPortRect = CGRectMake(chatboxTxtPortRect.origin.x + chatboxTxtPortRect.size.width + 5,  chatTblPortRect.origin.y + chatTblPortRect.size.height + 15, 50 , 20);
 
@@ -1129,13 +1134,14 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
         chatplaceView = [[UIView alloc] initWithFrame:CGRectMake(55*scx, 2*scy ,chatTbl.bounds.size.width - (54*scx), cellH - (4*scy ))];
         textchatLbl = [[UILabel alloc] initWithFrame: CGRectMake(55*scx, 4*scy , chatplaceView.bounds.size.width - (10*scx) , 20*scy )];
         userChatLbl = [[UILabel alloc] initWithFrame:CGRectMake(55*scx,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + (2 *scy ) , chatplaceView.bounds.size.width - (10*scx), 20*scy )];
+        objChatLbl = [[UILabel alloc] initWithFrame: CGRectMake(55*scx, 4*scy , chatplaceView.bounds.size.width - (10*scx) , 20*scy )];
         
     }
     else{
         chatplaceView = [[UIView alloc] initWithFrame:CGRectMake(52, 2 ,chatTbl.bounds.size.width - 54, cellH - 4)];
         textchatLbl = [[UILabel alloc] initWithFrame: CGRectMake(55, 4, chatplaceView.bounds.size.width - 10 , 20)];
         userChatLbl = [[UILabel alloc] initWithFrame:CGRectMake(55,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + 2 , chatplaceView.bounds.size.width - 10, 20)];
-        
+        objChatLbl = [[UILabel alloc] initWithFrame: CGRectMake(55, 4, chatplaceView.bounds.size.width - 10 , 20)];
     }
     
   // [chatplaceView setFrame:];
@@ -1149,19 +1155,30 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
     
     textchatLbl.text = comment.comment_content;
     textchatLbl.font = [UIFont fontWithName:@"Helvetica" size: fontSize - 2];
-    textchatLbl.lineBreakMode = NSLineBreakByWordWrapping;
-    textchatLbl.numberOfLines = 0;
-    textchatLbl.textAlignment = NSTextAlignmentJustified;
-    [textchatLbl sizeToFit];
-    [cell.contentView addSubview:textchatLbl];
+//    textchatLbl.lineBreakMode = NSLineBreakByWordWrapping;
+//    textchatLbl.numberOfLines = 0;
+//    textchatLbl.textAlignment = NSTextAlignmentJustified;
+//    [textchatLbl sizeToFit];
+   // [cell.contentView addSubview:textchatLbl];
     
     
+    NSString *firstandlastname;
+    firstandlastname = [NSString stringWithFormat:@"%@ %@ : ",comment.first_name,comment.last_name];
+    userChatLbl.text = firstandlastname;
+   // userChatLbl.textColor = [UIColor Color];
+    userChatLbl.font = [UIFont fontWithName:@"Helvetica-Bold" size: fontSize - 4];
+    NSString *chatTxt;
+    chatTxt =[NSString stringWithFormat:@"%@%@",userChatLbl.text, textchatLbl.text];
+    
+    NSLog(@"ต่อสตริงจ้า ::: %@",chatTxt);
     
 
-    userChatLbl.text = comment.first_name;
-    userChatLbl.textColor = [UIColor grayColor];
-    userChatLbl.font = [UIFont fontWithName:@"Helvetica" size: fontSize - 4];
-    [cell.contentView addSubview:userChatLbl];
+    objChatLbl.text = chatTxt;
+    objChatLbl.lineBreakMode = NSLineBreakByWordWrapping;
+    objChatLbl.numberOfLines = 0;
+    objChatLbl.textAlignment = NSTextAlignmentJustified;
+    [objChatLbl sizeToFit];
+    [cell.contentView addSubview:objChatLbl];
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -1178,14 +1195,14 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
             [chatplaceView setFrame:CGRectMake(52*scx, 2*scy, chatTbl.bounds.size.width - (54*scx) ,textchatLbl.bounds.size.height + userChatLbl.bounds.size.height + (6*scy))];
             [userChatLbl setFrame:CGRectMake(55*scx,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + (2*scy) , chatplaceView.bounds.size.width - (10*scx), 20*scx)];
 
-            return textchatLbl.bounds.size.height + userChatLbl.bounds.size.height + (10*scy);
+            return  objChatLbl.bounds.size.height + (10*scy);
         }
         else{
             [chatplaceView setFrame:CGRectMake(52, 2, chatTbl.bounds.size.width - 54 ,textchatLbl.bounds.size.height + userChatLbl.bounds.size.height + 6)];
-          [userChatLbl setFrame:CGRectMake(55,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + 2 , chatplaceView.bounds.size.width - 10, 20)];
+           [userChatLbl setFrame:CGRectMake(55,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + 2 , chatplaceView.bounds.size.width - 10, 20)];
             
 
-            return textchatLbl.bounds.size.height + userChatLbl.bounds.size.height + 10;
+            return objChatLbl.bounds.size.height + 10;
         }
         
         
@@ -1388,6 +1405,9 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
         Commentator *comment = [[Commentator alloc]init];
         comment.comment_content = data[0][@"data"][@"comment_content"];
         comment.first_name = data[0][@"data"][@"commentator"][@"first_name"];
+        comment.last_name = data[0][@"data"][@"commentator"][@"last_name"];
+        
+        
         comment.profile_picture = data[0][@"data"][@"commentator"][@"profile_picture"];
         [commentData addObject:comment];
         [chatTbl reloadData];

@@ -1433,6 +1433,7 @@
 
 -(void)keyboardDidHide:(NSNotification *)notification
 {
+    NSLog(@"KEYBOARD DIDHIDE");
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
     CGFloat height = [UIScreen mainScreen].bounds.size.height;
     [self.view setFrame:CGRectMake(0,0,width,height)];

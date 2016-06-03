@@ -30,6 +30,7 @@
 #import "LiveStreamingCell.h"
 #import "LivestreamRealtimeViewController.h"
 #import "SBScrollView.h"
+#import "ADViewController.h"
 //#import "SVPullToRefresh.h"
 
 @interface StreamHistoryViewController () <UIAlertViewDelegate,UIGestureRecognizerDelegate,UIApplicationDelegate,KKGridViewDataSource, KKGridViewDelegate,UIScrollViewDelegate>//UIScrollViewDelegate
@@ -54,7 +55,7 @@
 //    MBProgressHUD *hud ;
 //    IBOutlet UIScrollView *scrollView;
     
-    IBOutlet SBScrollView *scrollView;
+     SBScrollView *scrollView;
     UIView *onAirView;
     CGRect onAirViewRect;
     
@@ -67,6 +68,8 @@
     
       UIButton *moreBtn;
      CGRect moreBtnRect;
+    
+    ADViewController *ADView;
 }
 
 
@@ -81,16 +84,14 @@
 @synthesize gridView = gridView;
 - (void)viewDidLoad {
     [super viewDidLoad];
+    scrollView.delegate = self;
+    gridView.delegate = self;
+    scrollView.delegate = self;
+
     // Do any additional setup after loading the view.
    // self.view.backgroundColor= [UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1.0];
     [self initialSize];
     [self initial];
-    scrollView.delegate = self;
-    gridView.delegate = self;
-    
-    scrollView.delegate = self;
-   
-    
     
     
 //     __weak StreamHistoryViewController *weakSelf = self;
@@ -107,15 +108,17 @@
 //    NSLog(@"StreamHistoryViewController");
     
 //    
-//   [[NSNotificationCenter defaultCenter] addObserver:self
-//                                            selector:@selector(refreshList:)
-//                                               name:@"refresh"
-//                                              object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self
+   [[NSNotificationCenter defaultCenter] addObserver:self
+                                            selector:@selector(refreshList:)
+                                               name:@"refresh"
+                                              object:nil];
+   // [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(refreshList:)
 //                                                 name:@"update"
 //                                               object:nil];
     //[self initialTest];
+    
+    
 }
 - (void)viewDidAppear:(BOOL)animated {
 //    [gridView triggerPullToRefresh];
@@ -205,8 +208,8 @@
         imgPHW01 = 40.0 * scy;
         imgPHW02 = 25.0 * scy;
         onAirViewRect = CGRectMake(0*scx, 0*scy, self.view.frame.size.width, 240*scy);
-        scrollViewRect = CGRectMake(0*scx, 0*scy, width, height - (100*scy));
-        gridViewRect = CGRectMake(0*scx, 240*scy , width, height);
+        scrollViewRect = CGRectMake(0*scx, 0*scy, width, height - (110*scy));
+        gridViewRect = CGRectMake(0*scx, 240*scy , parentFrame.size.width, parentFrame.size.height);
    //     moreBtnRect = CGRectMake(width/2 - (40*scx), scrollViewRect.size.height - (20*scy), 80*scx , 30*scy);
         
     } else {
@@ -220,7 +223,7 @@
         imgPHW01 = 40.0;
         imgPHW02 = 25.0;
         onAirViewRect = CGRectMake(0, 0, self.view.frame.size.width, 240);
-        scrollViewRect = CGRectMake(0, 0, parentFrame.size.width, parentFrame.size.height - 110);
+        scrollViewRect = CGRectMake(0, 0, width, height - 110);
         gridViewRect = CGRectMake(0, 240 , parentFrame.size.width, parentFrame.size.height);
   //      moreBtnRect = CGRectMake(parentFrame.size.width/2 - 40, scrollViewRect .size.height - 40  , 80 , 30);
     }
@@ -228,27 +231,43 @@
 
 - (void)initial {
    
-    scrollView = [[SBScrollView alloc] init];
+    scrollView = [[SBScrollView alloc] initWithFrame:scrollViewRect];
     scrollView.backgroundColor = [UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1.0];
-    [scrollView setFrame:scrollViewRect];
     [self.view addSubview: scrollView];
+//    //Check LIVE ////
+//    [[DataManager shareManager] getStreamingLiveWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
+//        
+//        if (success)
+//        {
+//            
+//            
+//            if (streamRecords.count > 0) {
+//                
+//                NSLog(@"Has LiveStream1");
+//                
+//                self.streamList = streamRecords;
+//                [scrollView setFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - 500 )];
+//              // [self.view addSubview: scrollView];
+//
+//                
+//            } else {
+//                NSLog(@"NoLiveStream");
+//                
+//                [scrollView setFrame:scrollViewRect];
+//            }
+//        }
+//        else{
+//            
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:AlertTitle message:NotConnect delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//            [alert show];
+//            
+//        }}
+//     ];
+//    
 
-    AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
+
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     appDelegate.pageName = @"StreamHistory";
-    
-    
-    moreBtn = [[UIButton alloc] init];
-    [moreBtn setTitle:@"more" forState:UIControlStateNormal];
-    [moreBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-    moreBtn.layer.borderWidth = 1;
-    moreBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    moreBtn.backgroundColor = [UIColor clearColor];
-    moreBtn.layer.cornerRadius = moreBtnRect.size.height/2;
-    moreBtn.clipsToBounds = YES;
-    [moreBtn addTarget:self action:@selector(loadmore:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    
     //NSLog(@"History Stream");
     // Show progress
     /*
@@ -339,6 +358,17 @@
 //        
 //    }];
 
+    
+    moreBtn = [[UIButton alloc] init];
+    [moreBtn setTitle:@"more" forState:UIControlStateNormal];
+    [moreBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    moreBtn.layer.borderWidth = 1;
+    moreBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    moreBtn.backgroundColor = [UIColor clearColor];
+    moreBtn.layer.cornerRadius = moreBtnRect.size.height/2;
+    moreBtn.clipsToBounds = YES;
+    [moreBtn addTarget:self action:@selector(loadmore:) forControlEvents:UIControlEventTouchUpInside];
+    
     [moreBtn removeFromSuperview];
     NSString *filter = [@"?" stringByAppendingFormat:@"filterLimit=%d&filtersPage=%d",filter_limit,1];
     
@@ -347,16 +377,15 @@
         if (success) {
             weakSelf.streamList = streamRecords;
             NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
-            
+          //
         } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
         }
         
         [weakSelf.gridView reloadData];
-    
         [scrollView addSubview:moreBtn];
-        
+
         
     } Filter:filter];
 
@@ -447,11 +476,9 @@
     NSLog(@"viewWillAppear");
     
     
-   // NSLog(@"stream Count:::::: %ld");
+    NSLog(@"stream Count:::::: %ld");
     
-    //self.gridVideo.frame = CGRectMake(0, 40, self.view.frame.size.width, self.view.frame.size.height);
-    //self.navigationController.navigationBar.barTintColor = [UIColor blueColor];
-    
+ 
 
 }
 
@@ -491,7 +518,7 @@
          moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - 40, setframe.size.height + 10, 80, 30);
     
     }
-  
+ 
 // gridView.contentSize = CGSizeMake(gridView.bounds.size.width/2 - 20 ,500);
    stream = [self.streamList objectAtIndex:[indexPath index]];
 //    if(stream.avatarUrl != nil) {
@@ -628,9 +655,8 @@
     
     
     cell.contentView.backgroundColor = [UIColor whiteColor];
-    CGRect parentFrame = self.view.bounds;
     [self.gridView setFrame:setframe];
-  
+    [scrollView reloadInputViews];
     moreBtn.layer.borderWidth = 1;
     moreBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
     moreBtn.backgroundColor = [UIColor clearColor];
@@ -638,7 +664,9 @@
     moreBtn.clipsToBounds = YES;
 
     [moreBtn setFrame:moreBtnRect];
-       return cell;
+    
+
+    return cell;
 }
 
 - (void)login:(id)sender

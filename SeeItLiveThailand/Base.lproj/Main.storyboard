@@ -947,7 +947,7 @@
                         <color key="separatorColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" rowHeight="79" id="FBz-qY-Z58">
-                                <rect key="frame" x="0.0" y="28" width="320" height="79"/>
+                                <rect key="frame" x="0.0" y="72" width="320" height="79"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FBz-qY-Z58" id="csz-7j-ZqJ">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="79"/>
@@ -1516,25 +1516,13 @@
                     <view key="view" contentMode="scaleToFill" id="vue-bH-5UU">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="U0J-8f-T79" customClass="SBScrollView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <connections>
-                                    <outlet property="delegate" destination="tjL-ya-UhY" id="33r-uR-mAN"/>
-                                </connections>
-                            </scrollView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="aK5-C9-UN6"/>
-                    <connections>
-                        <outlet property="scrollView" destination="U0J-8f-T79" id="hcC-58-cyC"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Mv-1z-Hpf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="967" y="3439"/>
+            <point key="canvasLocation" x="1009" y="3439"/>
         </scene>
         <!--My Livestream View Controller-->
         <scene sceneID="6z7-tD-oGe">

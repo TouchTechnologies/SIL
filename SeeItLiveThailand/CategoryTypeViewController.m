@@ -46,7 +46,7 @@
     Streaming *stream;
     
     NSString *cateCount;
-    
+    CGRect   scrollViewRect;
 }
 @property (nonatomic, strong) NSArray *streamList;
 @property (nonatomic,strong) NSDictionary *iconcategory;
@@ -63,6 +63,9 @@
     tableview.delegate = self;
     tableview.dataSource = self;
     [self.view setBackgroundColor:[UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0]];
+    
+   
+   // [self.view addSubview:scrollView];
 
     // Do any additional setup after loading the view.
 }
@@ -91,6 +94,7 @@
         lblCategoryTypeRect = CGRectMake(imgCategoryRect.origin.x + imgCategoryRect.size.width + 10 , bgCellViewRect.size.height/2 - 20, width - lblCategoryTypeRect.origin.x , 20);
         lblLivevideoRect = CGRectMake(imgCategoryRect.origin.x + imgCategoryRect.size.width + 10 ,  bgCellViewRect.size.height/2 + 5, 70, 20);
         lblLivevideoCountRect = CGRectMake(lblLivevideoRect.origin.x + lblLivevideoRect.size.width , bgCellViewRect.size.height/2 + 5, 100, 20);
+        scrollViewRect = CGRectMake(0, 0, width, height - 110);
     
     }
 
