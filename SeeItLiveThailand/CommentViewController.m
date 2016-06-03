@@ -221,7 +221,7 @@
     
     
     
-    [cell.usernameLbl setFrame:CGRectMake(cellH, 10 , [UIScreen mainScreen].bounds.size.width - (cellH+5), 30)];
+    [cell.usernameLbl setFrame:CGRectMake(cellH, 10 , [UIScreen mainScreen].bounds.size.width - (cellH), 30)];
     [cell.usernameLbl setText:comment.commentName];
     [cell.usernameLbl setFont:[UIFont fontWithName:@"Helvetica" size:font]];
     cell.usernameLbl.lineBreakMode = NSLineBreakByWordWrapping;
@@ -230,8 +230,10 @@
     [cell.usernameLbl sizeToFit];
     
     
+    
+    
     NSString *strPoint = comment.commentMsg;
-    [cell.commentLbl setFrame:CGRectMake(cellH, 30 , [UIScreen mainScreen].bounds.size.width - (cellH+5), 30)];
+    [cell.commentLbl setFrame:CGRectMake(cellH, 20 , [UIScreen mainScreen].bounds.size.width - (cellH+5), 30)];
     
     [cell.commentLbl setText:strPoint];
     [cell.commentLbl setFont:[UIFont fontWithName:@"Helvetica" size:font]];
@@ -240,10 +242,6 @@
     cell.commentLbl.textAlignment = NSTextAlignmentJustified;
     [cell.commentLbl sizeToFit];
     
-    
-
-//    NSLog(@"com %@ , %@",com.commentName,com.commentMsg);
-//     NSLog(@"com %@ , %@",com2.commentName,com2.commentMsg);
     
     
 //    cell.usercommentImg = [[UIImageView alloc] initWithFrame:CGRectMake(4, 4, cellH - 16, cellH - 16)];
