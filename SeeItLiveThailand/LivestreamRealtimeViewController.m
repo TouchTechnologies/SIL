@@ -562,9 +562,9 @@
       
         chatTblPortRect = CGRectMake(20, 10 , self.view.bounds.size.width - 50, chatViewPortRect.size.height - 60);
         userChatImgRect = CGRectMake(0, 0 , 40 , 40);
-        
+        userChatLblRect = CGRectMake(0, chatplaceViewRect.size.height - 20 , self.view.bounds.size.width, 20);
        textchatLblRect = CGRectMake(0, 0, chatplaceViewRect.size.width, 20);
-       userChatLblRect = CGRectMake(0, chatplaceViewRect.size.height - 20 , self.view.bounds.size.width, 20);
+
         
         objChatLblRect = CGRectMake(0, 0, chatplaceViewRect.size.width, 20);
         
@@ -1185,24 +1185,24 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
     NSLog(@"Select");
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (textchatLbl.bounds.size.height + userChatLbl.bounds.size.height + 5 <= cellH) {
+    if (objChatLbl.bounds.size.height + 5 <= cellH) {
         return cellH ;
     }
     else{
         CGFloat scy = (1024.0/480.0);
         CGFloat scx = (768.0/360.0);
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            [chatplaceView setFrame:CGRectMake(52*scx, 2*scy, chatTbl.bounds.size.width - (54*scx) ,textchatLbl.bounds.size.height + userChatLbl.bounds.size.height + (6*scy))];
-            [userChatLbl setFrame:CGRectMake(55*scx,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + (2*scy) , chatplaceView.bounds.size.width - (10*scx), 20*scx)];
+            [chatplaceView setFrame:CGRectMake(52*scx, 2*scy, chatTbl.bounds.size.width - (54*scx) ,objChatLbl.bounds.size.height + (10*scy))];
+//            [userChatLbl setFrame:CGRectMake(55*scx,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + (2*scy) , chatplaceView.bounds.size.width - (10*scx), 20*scx)];
 
-            return  objChatLbl.bounds.size.height + (10*scy);
+            return  chatplaceView.bounds.size.height + (10*scy);
         }
         else{
-            [chatplaceView setFrame:CGRectMake(52, 2, chatTbl.bounds.size.width - 54 ,textchatLbl.bounds.size.height + userChatLbl.bounds.size.height + 6)];
-           [userChatLbl setFrame:CGRectMake(55,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + 2 , chatplaceView.bounds.size.width - 10, 20)];
+            [chatplaceView setFrame:CGRectMake(52, 2, chatTbl.bounds.size.width - 54 ,objChatLbl.bounds.size.height + 10)];
+//           [userChatLbl setFrame:CGRectMake(55,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + 2 , chatplaceView.bounds.size.width - 10, 20)];
             
 
-            return objChatLbl.bounds.size.height + 10;
+            return chatplaceView.bounds.size.height + 10;
         }
         
         

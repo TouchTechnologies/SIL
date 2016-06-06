@@ -224,7 +224,8 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     
     var count = 5
     //var timecount = 5.00
-    
+    var chatplaceView = UIView()
+    var  objChatLbl = UILabel()
     
     
     func stopStream(sender: UIButton) {
@@ -1059,36 +1060,86 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         imgUserChat.image = UIImage(data: NSData(contentsOfURL: NSURL(string: cm.profile_picture)!)!)
         cell.contentView.addSubview(imgUserChat)
         
-        lblUserName = UILabel(frame :lblUserNameRect)
+        
+        let scy :CGFloat = (1024.0/480.0)
+        let scx :CGFloat = (768.0/360.0);
+        if (UI_USER_INTERFACE_IDIOM() == .Pad) {
+        
+            chatplaceView = UIView(frame:CGRectMake(55*scx, 2*scy ,tableView.bounds.size.width - (54*scx), cellH - (4*scy )))
+            lblTextChat = UILabel(frame : CGRectMake(55*scx, 4*scy , chatplaceView.bounds.size.width - (10*scx) , 20*scy ))
+            lblUserName = UILabel(frame : CGRectMake(55*scx ,lblTextChat.bounds.origin.y + lblTextChat.bounds.size.height + (2*scy) , chatplaceView.bounds.size.width - (10*scx), 20*scy ))
+            objChatLbl = UILabel(frame: CGRectMake(55*scx, 4*scy , chatplaceView.bounds.size.width - (10*scx) , 20*scy ));
+            
+        }
+        else{
+            chatplaceView = UIView(frame:CGRectMake(55, 2 ,tableView.bounds.size.width - (54), cellH - (4)))
+            lblTextChat = UILabel(frame : CGRectMake(55, 4 , chatplaceView.bounds.size.width - (10) , 20 ))
+            lblUserName = UILabel(frame : CGRectMake(55 ,lblTextChat.bounds.origin.y + lblTextChat.bounds.size.height + (2) , chatplaceView.bounds.size.width - (10), 20))
+            objChatLbl = UILabel(frame: CGRectMake(55, 4, chatplaceView.bounds.size.width - (10) , 20));
+        }
+
+        
+        chatplaceView.backgroundColor = UIColor.whiteColor()
+        chatplaceView.layer.cornerRadius = 5;
+        chatplaceView.clipsToBounds = true;
+        cell.contentView.addSubview(chatplaceView)
+        
+        let firstandlastname = "\(cm.first_name) \(cm.last_name) : "
+        
+       // lblUserName = UILabel(frame :lblUserNameRect)
         //        lblUserName.text = "User test"
-        lblUserName.text = cm.first_name
+        lblUserName.text = firstandlastname as String
         lblUserName.font = UIFont(name:  "Helvetica", size: font)
         lblUserName.textAlignment = NSTextAlignment.Justified
         lblUserName.sizeToFit()
         
         //cell.contentView.addSubview(lblUserName)
-        
-        lblTextChat = UILabel(frame: lblTextChatRect)
-        //        lblTextChat.text = "helloDRETSYSYS"
         lblTextChat.text = cm.comment_content
-        
         lblTextChat.font = UIFont(name:  "Helvetica", size: font)
-        lblTextChat.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        lblTextChat.numberOfLines = 0 ;
-        lblTextChat.textAlignment = NSTextAlignment.Justified
-        lblTextChat.sizeToFit()
-        cell.contentView.addSubview(lblTextChat)
+        
+        let textChat = lblUserName.text! + lblTextChat.text!
+        
+        objChatLbl.text = textChat as String
+        objChatLbl.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        objChatLbl.numberOfLines = 0;
+        objChatLbl.textAlignment = NSTextAlignment.Justified;
+        objChatLbl.sizeToFit()
+        chatplaceView.addSubview(objChatLbl)
+        
+//        lblTextChat.lineBreakMode = NSLineBreakMode.ByWordWrapping
+//        lblTextChat.numberOfLines = 0 ;
+//        lblTextChat.textAlignment = NSTextAlignment.Justified
+//        lblTextChat.sizeToFit()
+//        cell.contentView.addSubview(lblTextChat)
         
         return cell
     }
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if (lblUserName.bounds.size.height + 2 <= cellH) {
-            return cellH;
+        if (objChatLbl.bounds.size.height  + 5 <= cellH) {
+            return cellH ;
         }
         else{
-            return lblTextChat.bounds.size.height + 5;
+            let scy:CGFloat = (1024.0/480.0);
+            let scx:CGFloat = (768.0/360.0);
+            if (UI_USER_INTERFACE_IDIOM() == .Pad) {
+                
+                chatplaceView.frame = CGRectMake(52*scx, 2*scy, tableView.bounds.size.width - (54*scx) ,objChatLbl.bounds.size.height + (10*scy))
+                
+             //   lblUserName.frame = CGRectMake(55*scx,lblTextChat.bounds.origin.y + lblTextChat.bounds.size.height + (2*scy) , chatplaceView.bounds.size.width - (10*scx), 20*scx)
+                
+                return  chatplaceView.bounds.size.height + (10*scy);
+            }
+            else{
+                chatplaceView.frame = CGRectMake(52, 2, tableView.bounds.size.width - (54) ,objChatLbl.bounds.size.height + 10)
+                
+              //  lblUserName.frame = CGRectMake(55,lblTextChat.bounds.origin.y + lblTextChat.bounds.size.height + (2) , chatplaceView.bounds.size.width - (10), 20)
+                
+                return chatplaceView.bounds.size.height + 10;
+            }
+
         }
         
+        tableView.reloadData()
     }
     func initialCatPickerView(sender:UIButton){
         
