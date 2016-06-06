@@ -699,8 +699,51 @@
     NSLog(@"GO LIVEAROUND");
     LiveAroundViewController *livearound = [self.storyboard instantiateViewControllerWithIdentifier:@"livearound"];
     livearound.objStreaming = self.objStreaming;
-    [self presentViewController: livearound animated: YES completion:nil];
+
     
+    
+    
+    NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,1,10,1];
+    
+    [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
+        
+        if (success) {
+            
+//            NSLog(@"streamRecords : %@",streamRecords);
+            livearound.rowIndex = 1;
+            livearound.liveAroundData = streamRecords;
+            [self presentViewController: livearound animated: YES completion:nil];
+//            NSLog(@"LiveAround Data : %@",livearound.liveAroundData);
+            
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        
+    } Filter:filter];
+    
+    
+//
+//    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+//        //Background Thread
+//        [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
+//            
+//            if (success) {
+//                
+//            } else {
+//                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//                [alert show];
+//            }
+//            
+//        } Filter:filter];
+//        
+//        dispatch_async(dispatch_get_main_queue(), ^(void){
+//            //Run UI Updates
+//            
+//            
+//        });
+//        
+//    });
     
 
 }

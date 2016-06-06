@@ -13,6 +13,11 @@
 #import "defs.h"
 #import "Streaming.h"
 #import "MyAnnotation.h"
+
+#import "DXAnnotation.h"
+#import <DXAnnotationView.h>
+#import <DXAnnotationSettings.h>
+
 @interface LiveAroundViewController ()<UITableViewDelegate,UITableViewDataSource,MKMapViewDelegate>
 {
     
@@ -99,7 +104,8 @@
 
     
 }
-@property (nonatomic, strong) NSArray *streamList;
+//@property (nonatomic, strong) NSArray *streamList;
+
 @end
 
 @implementation LiveAroundViewController
@@ -111,8 +117,10 @@
     
     [self initialSize];
     [self initial];
+    [self LoadMap];
 //    [self addAllPins];
 //    [self initMap];
+    
 
     scrollView.delegate = self;
     tableView.delegate = self;
@@ -128,7 +136,7 @@
 }
 -(void)viewWillAppear:(BOOL)animated
 {
-    [self getNearStream];
+//    [self getNearStream];
 }
 - (void)initial{
     
@@ -208,7 +216,7 @@
     [scrollView addSubview:detailView];
     
     videoCount = [[UILabel alloc] initWithFrame:videoCountRect];
-    videoCount.text = [NSString stringWithFormat:@"%d",self.streamList.count];
+    videoCount.text = [NSString stringWithFormat:@"%lu",(unsigned long)_liveAroundData.count];
     videoCount.textColor = [UIColor blackColor];
     videoCount.textAlignment = NSTextAlignmentCenter;
     videoCount.font = [UIFont fontWithName:@"Helvetica-Bold" size:fontSize-2];
@@ -337,13 +345,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    return self.streamList.count;
+    return self.liveAroundData.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     __weak LiveAroundViewController *weakSelf = self;
     Streaming* stream = [[Streaming alloc]init];
-    stream = [weakSelf.streamList objectAtIndex:indexPath.row];
+    stream = [weakSelf.liveAroundData objectAtIndex:indexPath.row];
     
     CGRect setFrame ;
     CGFloat scy = (1024.0/480.0);
@@ -351,15 +359,15 @@
     CGFloat width = self.view.bounds.size.width;
     CGFloat height = self.view.bounds.size.height;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-      setFrame =  CGRectMake(0*scx, detailViewRect.origin.y + detailViewRect.size.height + (30*scy) , width , cellH*(self.streamList.count));
+      setFrame =  CGRectMake(0*scx, detailViewRect.origin.y + detailViewRect.size.height + (30*scy) , width , cellH*(self.liveAroundData.count));
 
     }
     else{
-       setFrame = CGRectMake(0, detailViewRect.origin.y + detailViewRect.size.height + 30 , width , cellH*(self.streamList.count));
+       setFrame = CGRectMake(0, detailViewRect.origin.y + detailViewRect.size.height + 30 , width , cellH*(self.liveAroundData.count));
 
     }
     
-    NSLog(@"tabelView Data : %@",stream.streamTitle);
+//    NSLog(@"tabelView Data : %@",stream.streamTitle);
     cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     imgSnapshotcell = [[UIImageView alloc] initWithFrame:imgSnapshotcellRect];
     imgSnapshotcell.backgroundColor = [UIColor greenColor];
@@ -418,39 +426,39 @@
 
 -(void)getNearStream
 {
-    __weak LiveAroundViewController *weakSelf = self;
-    
-    
-    NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,1,10,1];
-    
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-        //Background Thread
-    [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
-        
-        if (success) {
-            weakSelf.streamList = streamRecords;
-            NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
-//            [self initMap];
-            [self addAllPins];
-            videoCount.text = [NSString stringWithFormat:@"%lu",(unsigned long)weakSelf.streamList.count];
-           
-            
-        } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
-        }
-        [self initMap];
-         [tableView reloadData];
-        
-    } Filter:filter];
-        
-        dispatch_async(dispatch_get_main_queue(), ^(void){
-            //Run UI Updates
-
-            
-        });
-        
-    });
+//    __weak LiveAroundViewController *weakSelf = self;
+//    
+//    
+//    NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,1,10,1];
+//    
+//    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+//        //Background Thread
+//    [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
+//        
+//        if (success) {
+//            weakSelf.streamList = streamRecords;
+//            NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
+////            [self initMap];
+//            [self addAllPins];
+//            videoCount.text = [NSString stringWithFormat:@"%lu",(unsigned long)weakSelf.streamList.count];
+//           
+//            
+//        } else {
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//            [alert show];
+//        }
+//        [self initMap];
+//         [tableView reloadData];
+//        
+//    } Filter:filter];
+//        
+//        dispatch_async(dispatch_get_main_queue(), ^(void){
+//            //Run UI Updates
+//
+//            
+//        });
+//        
+//    });
     
 }
 
@@ -506,19 +514,20 @@
     NSMutableArray* pinTitle = [[NSMutableArray alloc]init];
     NSMutableArray *arrCoordinateStr = [[NSMutableArray alloc] init];
 
-    for(Streaming *stream in _streamList)
+    for(Streaming *stream in _liveAroundData)
     {
-//        NSLog(@"stream NAME %@ lat : %@ long : %@",stream.streamTitle,stream.latitude,stream.longitude);
+        NSLog(@"stream NAME %@ lat : %@ long : %@",stream.streamTitle,stream.latitude,stream.longitude);
         
-//        [pinTitle addObject:stream.streamTitle];
-        [pinTitle addObject:@"wtf"];
-//        [arrCoordinateStr addObject:[NSString stringWithFormat:@"%@,%@",stream.latitude,stream.longitude]];
-        [arrCoordinateStr addObject:@"13.75483015,100.57834743"];
+        [pinTitle addObject:stream.streamTitle];
+//        [pinTitle addObject:@"wtf"];
+        [arrCoordinateStr addObject:[NSString stringWithFormat:@"%@,%@",stream.latitude,stream.longitude]];
+//        [arrCoordinateStr addObject:@"13.75483015,100.57834743"];
         
     }
+    
 //    [pinTitle addObject:@"5555"];
 //    [arrCoordinateStr addObject:@"13.75482078, 100.55833035"];
-//    NSLog(@"pinTitle %@",pinTitle);
+//    NSLog(@"pinTitle %lu",(unsigned long)pinTitle.count);
 //    NSLog(@"arrCoordinateStr %@",arrCoordinateStr);
     
 //    NSLog(@"Pin Title count :%lu",(unsigned long)pinTitle.count);
@@ -633,52 +642,195 @@
 //    return MyPin;
 //}
 
-- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id )annotation {
-    NSLog(@"MKAnnotationView");
-    
-    if (annotation == mapView.userLocation)
-        return nil;
-    
-    MKAnnotationView *annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
-    annotationView.canShowCallout = YES;
-//    UIImage *image = [UIImage imageNamed:@"pin_2.png"];
-//    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,50,50)];
-//    imageView.image = image;
-    
-    
-//    UIButton *advertButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-//    [advertButton addTarget:self action:@selector(annotationClick:) forControlEvents:UIControlEventTouchUpInside];
-//    annotationView.rightCalloutAccessoryView = advertButton;
-    
-    
-    imgSnapshot = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,100,70)];
-    imgSnapshot.image = [UIImage imageNamed:@"activities02.jpg"];
-    imgSnapshot.layer.borderWidth = 2 ;
-    imgSnapshot.layer.borderColor = [UIColor whiteColor].CGColor;
-    
-    
-    
-
-    [imgSnapshot setUserInteractionEnabled:YES];
-    UITapGestureRecognizer *singleTap =  [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(annotationClick:)];
-    [singleTap setNumberOfTapsRequired:1];
-    [imgSnapshot addGestureRecognizer:singleTap];
-    
-    
-    
-
-    
-    [annotationView addSubview:imgSnapshot];
-    MKPinAnnotationView *pinView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
-    [annotationView addSubview:pinView];
-    
-    return annotationView;
-    
-}
+//- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id )annotation {
+//    NSLog(@"MKAnnotationView");
+//    
+//    if (annotation == mapView.userLocation)
+//        return nil;
+//    
+//    MKAnnotationView *annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
+//    annotationView.canShowCallout = YES;
+////    UIImage *image = [UIImage imageNamed:@"pin_2.png"];
+////    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,50,50)];
+////    imageView.image = image;
+//    
+//    
+////    UIButton *advertButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+////    [advertButton addTarget:self action:@selector(annotationClick:) forControlEvents:UIControlEventTouchUpInside];
+////    annotationView.rightCalloutAccessoryView = advertButton;
+//    
+//    
+//    imgSnapshot = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,100,70)];
+//    imgSnapshot.image = [UIImage imageNamed:@"activities02.jpg"];
+//    imgSnapshot.layer.borderWidth = 2 ;
+//    imgSnapshot.layer.borderColor = [UIColor whiteColor].CGColor;
+//    
+//    
+//    
+//
+//    [imgSnapshot setUserInteractionEnabled:YES];
+//    UITapGestureRecognizer *singleTap =  [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(annotationClick:)];
+//    [singleTap setNumberOfTapsRequired:1];
+//    [imgSnapshot addGestureRecognizer:singleTap];
+//    
+//    
+//    
+//
+//    
+//    [annotationView addSubview:imgSnapshot];
+//    MKPinAnnotationView *pinView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
+//    [annotationView addSubview:pinView];
+//    
+//    return annotationView;
+//    
+//}
 - (void)annotationClick:(id)sender
 {
     NSLog(@"annotationClick");
 }
+
+
+- (void)LoadMap {
+    
+    //CCTVS *cctvs = [self.roi.cctvs objectAtIndex:self.rowIndex];
+    
+    [self changeLocation:self.rowIndex];
+    
+}
+- (void)changeLocation:(NSInteger)rowIndex {
+    
+    NSLog(@"changeLocation");
+    [mapView removeAnnotations:mapView.annotations];
+    
+    [self.liveAroundData enumerateObjectsUsingBlock:^(Streaming *stream, NSUInteger idx, BOOL *stop) {
+        
+        if (idx != rowIndex) {
+            DXAnnotation *annotation1 = [DXAnnotation new];
+            annotation1.tag = idx;
+            annotation1.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
+            annotation1.pinName = @"mappin";
+            [mapView addAnnotation:annotation1];
+            [mapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 10000, 10000)];
+        }
+        
+    }];
+    
+    Streaming *stream = [self.liveAroundData objectAtIndex:rowIndex];
+    
+    DXAnnotation *annoActive = [DXAnnotation new];
+    annoActive.tag = rowIndex;
+    annoActive.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
+    annoActive.pinName = @"pin";
+    [mapView addAnnotation:annoActive];
+    [mapView setRegion:MKCoordinateRegionMakeWithDistance(annoActive.coordinate, 10000, 10000)];
+    
+}
+#pragma mark - ScrollView delegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    NSInteger pageIndex = scrollView.contentOffset.x / CGRectGetWidth(scrollView.frame);
+    
+    [self changePoint:pageIndex];
+    
+//    self.customPageControl.currentPage = pageIndex;
+    
+}
+
+- (void)changePoint:(NSInteger)index {
+    //change label
+    Streaming *stream = [self.liveAroundData objectAtIndex:index];
+//    lblPoint.frame = lblPointRect; //CGRectMake(35, 194, 400, 25);
+//    lblPoint.text = cctvs.cctvName;
+//    lblPoint.lineBreakMode = NSLineBreakByWordWrapping;
+//    lblPoint.numberOfLines = 0;
+//    lblPoint.textAlignment = NSTextAlignmentLeft;
+//    [lblPoint sizeToFit];
+    NSLog(@"stream changeLocation %@",stream.streamTitle);
+    
+    //change location
+    [self changeLocation:index];
+    
+    //change description
+    
+//    self.lblDesc.text = cctvs.cctvDesc;
+//    self.lblDesc.lineBreakMode = NSLineBreakByWordWrapping;
+//    self.lblDesc.numberOfLines = 0;
+//    self.lblDesc.textAlignment = NSTextAlignmentJustified;
+//    [self.lblDesc sizeToFit];
+    
+    
+}
+
+
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+    
+    NSLog(@"mapView");
+    if ([annotation isKindOfClass:[DXAnnotation class]]) {
+        
+        DXAnnotation *annotation1 = (DXAnnotation *)annotation;
+        //UIView *calloutView = [[[NSBundle mainBundle] loadNibNamed:@"myView" owner:self options:nil] firstObject];
+        
+        DXAnnotationView *annotationView = (DXAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:NSStringFromClass([DXAnnotationView class])];
+        NSLog(@"annotation tag = %d",annotation1.tag);
+//        
+//         NSString *pinName = @"";
+//         
+//         if (annotation1.tag == 1) {
+//         pinName = @"pin";
+//         } else {
+//         pinName = @"mappin";
+//         }
+        
+        
+        UIView *pinView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:annotation1.pinName]];
+        
+        
+        //if (!annotationView) {
+        
+        annotationView = [[DXAnnotationView alloc] initWithAnnotation:annotation
+                                                      reuseIdentifier:NSStringFromClass([DXAnnotationView class])
+                                                              pinView:pinView
+                                                          calloutView:nil
+                                                             settings:[DXAnnotationSettings defaultSettings]];
+        /*
+         } else {
+         [pinView removeFromSuperview];
+         [annotationView addSubview:pinView];
+         }
+         */
+        
+        /*
+         annotationView = [[DXAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:NSStringFromClass([DXAnnotationView class])];
+         [annotationView addSubview:pinView];
+         */
+        
+        //annotationView.image = [UIImage imageNamed:annotation1.pinName];
+        annotationView.tag = annotation1.tag;
+        
+        return annotationView;
+    }
+    
+    
+    return nil;
+}
+
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+    if ([view isKindOfClass:[DXAnnotationView class]]) {
+        
+        DXAnnotationView *dxView = (DXAnnotationView *)view;
+        
+        NSInteger indexObj = dxView.tag;
+        
+        NSLog(@"test annotation %ld",(long)indexObj);
+        
+//        [previewScrollView setContentOffset:CGPointMake(previewScrollView.frame.size.width * indexObj, 0.0f)];
+    }
+}
+
+- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
+    //NSLog(@"deselect test annotation");
+}
+
 
 /*
 #pragma mark - Navigation
