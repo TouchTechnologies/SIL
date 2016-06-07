@@ -266,60 +266,75 @@
 }
 -(void)setupPageControl{
     /**** 1. Setup pages using model class "ADPageModel" ****/
+    NSMutableArray *pageName = [[NSMutableArray alloc] init];
     
-    
-    ADPageModel *TravelModel = [[ADPageModel alloc] init];
-    TravelModel.strPageTitle = appDelegate.categoryData[0][@"category_name_en"];
-    TravelModel.iPageNumber = 0;
-    //historyModel.viewController = streamHistory;
-    TravelModel.bShouldLazyLoad = YES;
-    
-    
-    //Live
-    ADPageModel *CultureModel = [[ADPageModel alloc] init];
-    CultureModel.strPageTitle = appDelegate.categoryData[1][@"category_name_en"];
-    CultureModel.iPageNumber = 1;
-    CultureModel.bShouldLazyLoad = YES;
-    
-    
-    
-    ADPageModel *EventModel = [[ADPageModel alloc] init];
-    EventModel.strPageTitle = appDelegate.categoryData[2][@"category_name_en"];
-    EventModel.iPageNumber = 2;
-    //historyModel.viewController = streamHistory;
-    EventModel.bShouldLazyLoad = YES;
-    
-    ADPageModel *NewsModel = [[ADPageModel alloc] init];
-    NewsModel.strPageTitle = appDelegate.categoryData[3][@"category_name_en"];
-    NewsModel.iPageNumber = 3;
-    //historyModel.viewController = streamHistory;
-    NewsModel.bShouldLazyLoad = YES;
-
-    ADPageModel *LifestyleModel = [[ADPageModel alloc] init];
-    LifestyleModel.strPageTitle = appDelegate.categoryData[4][@"category_name_en"];
-    LifestyleModel.iPageNumber = 4;
-    //historyModel.viewController = streamHistory;
-    LifestyleModel.bShouldLazyLoad = YES;
-
-    ADPageModel *OtherModel = [[ADPageModel alloc] init];
-    OtherModel.strPageTitle = appDelegate.categoryData[5][@"category_name_en"];
-    OtherModel.iPageNumber = 5;
-    //historyModel.viewController = streamHistory;
-    OtherModel.bShouldLazyLoad = YES;
-
-    ADPageModel *MusicModel = [[ADPageModel alloc] init];
-    MusicModel.strPageTitle = appDelegate.categoryData[6][@"category_name_en"];
-    MusicModel.iPageNumber = 6;
-    //historyModel.viewController = streamHistory;
-    MusicModel.bShouldLazyLoad = YES;
+    NSLog(@"cat Count %lu",(unsigned long)appDelegate.categoryData.count);
+    for(int i = 0;i < appDelegate.categoryData.count;i++)
+    {
+        ADPageModel *Model = [[ADPageModel alloc] init];
+        Model.strPageTitle = appDelegate.categoryData[i][@"category_name_en"];
+        Model.iPageNumber = i;
+        //historyModel.viewController = streamHistory;
+        Model.bShouldLazyLoad = YES;
+        [pageName addObject:Model];
+    }
+    NSLog(@"pageName %@",pageName);
+//    
+//    ADPageModel *TravelModel = [[ADPageModel alloc] init];
+//    TravelModel.strPageTitle = appDelegate.categoryData[0][@"category_name_en"];
+//    TravelModel.iPageNumber = 0;
+//    //historyModel.viewController = streamHistory;
+//    TravelModel.bShouldLazyLoad = YES;
+//    
+//    
+//    //Live
+//    ADPageModel *CultureModel = [[ADPageModel alloc] init];
+//    CultureModel.strPageTitle = appDelegate.categoryData[1][@"category_name_en"];
+//    CultureModel.iPageNumber = 1;
+//    CultureModel.bShouldLazyLoad = YES;
+//    
+//    
+//    
+//    ADPageModel *EventModel = [[ADPageModel alloc] init];
+//    EventModel.strPageTitle = appDelegate.categoryData[2][@"category_name_en"];
+//    EventModel.iPageNumber = 2;
+//    //historyModel.viewController = streamHistory;
+//    EventModel.bShouldLazyLoad = YES;
+//    
+//    ADPageModel *NewsModel = [[ADPageModel alloc] init];
+//    NewsModel.strPageTitle = appDelegate.categoryData[3][@"category_name_en"];
+//    NewsModel.iPageNumber = 3;
+//    //historyModel.viewController = streamHistory;
+//    NewsModel.bShouldLazyLoad = YES;
+//
+//    ADPageModel *LifestyleModel = [[ADPageModel alloc] init];
+//    LifestyleModel.strPageTitle = appDelegate.categoryData[4][@"category_name_en"];
+//    LifestyleModel.iPageNumber = 4;
+//    //historyModel.viewController = streamHistory;
+//    LifestyleModel.bShouldLazyLoad = YES;
+//
+//    ADPageModel *OtherModel = [[ADPageModel alloc] init];
+//    OtherModel.strPageTitle = appDelegate.categoryData[5][@"category_name_en"];
+//    OtherModel.iPageNumber = 5;
+//    //historyModel.viewController = streamHistory;
+//    OtherModel.bShouldLazyLoad = YES;
+//
+//    ADPageModel *MusicModel = [[ADPageModel alloc] init];
+//    MusicModel.strPageTitle = appDelegate.categoryData[6][@"category_name_en"];
+//    MusicModel.iPageNumber = 6;
+//    //historyModel.viewController = streamHistory;
+//    MusicModel.bShouldLazyLoad = YES;
 
     /**** 2. Initialize page control ****/
     
     _pageControl = [[ADPageControl alloc] init];
     _pageControl.delegateADPageControl = self;
     //   _pageControl.arrPageModel = [[NSMutableArray alloc] initWithObjects:liveModel,historyModel, nil];
-    _pageControl.arrPageModel = [[NSMutableArray alloc] initWithObjects:TravelModel,CultureModel,EventModel,NewsModel,LifestyleModel,OtherModel,MusicModel , nil];
+    
+//    _pageControl.arrPageModel = [[NSMutableArray alloc] initWithObjects:TravelModel,CultureModel,EventModel,NewsModel,LifestyleModel,OtherModel,MusicModel , nil];
+    _pageControl.arrPageModel = [[NSMutableArray alloc] initWithArray:pageName];
     _pageControl.iTitleViewWidth = titleWidth;
+    
     
     
     /**** 3. Customize parameters (Optinal, as all have default value set) ****/

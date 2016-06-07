@@ -13,6 +13,8 @@
 		361C925E1C858BA5002742F5 /* Model_CCTVS.m in Sources */ = {isa = PBXBuildFile; fileRef = 361C925D1C858BA5002742F5 /* Model_CCTVS.m */; };
 		361C92611C892FF8002742F5 /* Model_TopPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 361C92601C892FF8002742F5 /* Model_TopPage.m */; };
 		361C92631C896FA5002742F5 /* SIL_db.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 361C92621C896FA5002742F5 /* SIL_db.sqlite */; };
+		363AA53A1D058B42006A99CC /* liveAroundAnnotation.xib in Resources */ = {isa = PBXBuildFile; fileRef = 363AA5391D058B42006A99CC /* liveAroundAnnotation.xib */; };
+		363AA53D1D06AD4C006A99CC /* liveAroundAnnotationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 363AA53C1D06AD4C006A99CC /* liveAroundAnnotationCell.m */; };
 		36448AD51CA90B32007A4AB4 /* SocketAckEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36448AC01CA90B32007A4AB4 /* SocketAckEmitter.swift */; };
 		36448AD61CA90B32007A4AB4 /* SocketAckManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36448AC11CA90B32007A4AB4 /* SocketAckManager.swift */; };
 		36448AD71CA90B32007A4AB4 /* SocketAnyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36448AC21CA90B32007A4AB4 /* SocketAnyEvent.swift */; };
@@ -333,6 +335,9 @@
 		361C925F1C892FEE002742F5 /* Model_TopPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Model_TopPage.h; sourceTree = "<group>"; };
 		361C92601C892FF8002742F5 /* Model_TopPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Model_TopPage.m; sourceTree = "<group>"; };
 		361C92621C896FA5002742F5 /* SIL_db.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = SIL_db.sqlite; sourceTree = "<group>"; };
+		363AA5391D058B42006A99CC /* liveAroundAnnotation.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = liveAroundAnnotation.xib; sourceTree = "<group>"; };
+		363AA53B1D06AD3F006A99CC /* liveAroundAnnotationCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = liveAroundAnnotationCell.h; sourceTree = "<group>"; };
+		363AA53C1D06AD4C006A99CC /* liveAroundAnnotationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = liveAroundAnnotationCell.m; sourceTree = "<group>"; };
 		36448AC01CA90B32007A4AB4 /* SocketAckEmitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketAckEmitter.swift; path = "Socket.IO-Client-Swift/Source/SocketAckEmitter.swift"; sourceTree = "<group>"; };
 		36448AC11CA90B32007A4AB4 /* SocketAckManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketAckManager.swift; path = "Socket.IO-Client-Swift/Source/SocketAckManager.swift"; sourceTree = "<group>"; };
 		36448AC21CA90B32007A4AB4 /* SocketAnyEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketAnyEvent.swift; path = "Socket.IO-Client-Swift/Source/SocketAnyEvent.swift"; sourceTree = "<group>"; };
@@ -1037,6 +1042,9 @@
 				F3F713641CD21D4E00856DC6 /* OnAirCell.m */,
 				F318B88F1CD36BA300FCC0BF /* CategoryLiveCell.h */,
 				F318B8901CD36BA300FCC0BF /* CategoryLiveCell.m */,
+				363AA5391D058B42006A99CC /* liveAroundAnnotation.xib */,
+				363AA53B1D06AD3F006A99CC /* liveAroundAnnotationCell.h */,
+				363AA53C1D06AD4C006A99CC /* liveAroundAnnotationCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1617,6 +1625,7 @@
 				F303DD091C8043ED00EFBA41 /* call.png in Resources */,
 				36785B711C29260C004E77BE /* icon_B.png in Resources */,
 				36785B7C1C29260C004E77BE /* icon_I.png in Resources */,
+				363AA53A1D058B42006A99CC /* liveAroundAnnotation.xib in Resources */,
 				36785B6F1C29260C004E77BE /* icon_A.png in Resources */,
 				F3D3E3641C7EB2B200574DE3 /* ic_love2.png in Resources */,
 				F39BC39D1CB63320001F3020 /* Heart.png in Resources */,
@@ -1904,6 +1913,7 @@
 				369EADD51C2A84C300CC811E /* StreamContrainerViewController.m in Sources */,
 				F3F414AD1CA13DFC00F2A962 /* DestinationCell.m in Sources */,
 				36785AD41C2911A3004E77BE /* AppDelegate.m in Sources */,
+				363AA53D1D06AD4C006A99CC /* liveAroundAnnotationCell.m in Sources */,
 				369EADE51C2A8C9A00CC811E /* UIImage+HanekeDemo.m in Sources */,
 				36603E3D1CDC4137002E504D /* Commentator.m in Sources */,
 				36448AE91CA90B32007A4AB4 /* WebSocket.swift in Sources */,

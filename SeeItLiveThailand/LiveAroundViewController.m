@@ -17,8 +17,10 @@
 #import "DXAnnotation.h"
 #import <DXAnnotationView.h>
 #import <DXAnnotationSettings.h>
+#import "liveAroundAnnotationCell.h"
 
-@interface LiveAroundViewController ()<UITableViewDelegate,UITableViewDataSource,MKMapViewDelegate>
+
+@interface LiveAroundViewController ()<UITableViewDelegate,UITableViewDataSource,MKMapViewDelegate,MKAnnotation>
 {
     
     AppDelegate *appDelegate;
@@ -117,9 +119,7 @@
     
     [self initialSize];
     [self initial];
-    [self LoadMap];
-//    [self addAllPins];
-//    [self initMap];
+    [self initMap];
     
 
     scrollView.delegate = self;
@@ -133,10 +133,12 @@
     
 //    NSLog(@"Live Around %@",self.objStreaming);
     // Do any additional setup after loading the view.
+    
+    
+
 }
 -(void)viewWillAppear:(BOOL)animated
 {
-//    [self getNearStream];
 }
 - (void)initial{
     
@@ -424,43 +426,6 @@
     return cellH ;
 }
 
--(void)getNearStream
-{
-//    __weak LiveAroundViewController *weakSelf = self;
-//    
-//    
-//    NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,1,10,1];
-//    
-//    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-//        //Background Thread
-//    [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
-//        
-//        if (success) {
-//            weakSelf.streamList = streamRecords;
-//            NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
-////            [self initMap];
-//            [self addAllPins];
-//            videoCount.text = [NSString stringWithFormat:@"%lu",(unsigned long)weakSelf.streamList.count];
-//           
-//            
-//        } else {
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//            [alert show];
-//        }
-//        [self initMap];
-//         [tableView reloadData];
-//        
-//    } Filter:filter];
-//        
-//        dispatch_async(dispatch_get_main_queue(), ^(void){
-//            //Run UI Updates
-//
-//            
-//        });
-//        
-//    });
-    
-}
 
 -(void)initMap
 {
@@ -473,138 +438,26 @@
     region.span.longitudeDelta = 1;
     
     [mapView setRegion:region animated:YES];
-//    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([self.objStreaming.latitude floatValue], [self.objStreaming.longitude floatValue]);
-//    mapPin.title = self.objStreaming.streamTitle;
-//    mapPin.coordinate = coordinate;
-//    [mapView addAnnotation:mapPin];
+    
+    
+    DXAnnotation *annotation1 = [DXAnnotation new];
+    annotation1.coordinate = CLLocationCoordinate2DMake([self.objStreaming.latitude floatValue],[self.objStreaming.longitude floatValue]);
+    [mapView addAnnotation:annotation1];
     
     
     
-
-    
-//    coordinate = CLLocationCoordinate2DMake(13.75483015,100.57834743);
-//    mapPin.title = @"1";
-//    mapPin.coordinate = coordinate;
-//    [mapView addAnnotation:mapPin];
-//    
-//    coordinate = CLLocationCoordinate2DMake(13.75483015,100.67834743);
-//    mapPin.title = @"2";
-//    mapPin.coordinate = coordinate;
-//    [mapView addAnnotation:mapPin];
-//    
-//    coordinate = CLLocationCoordinate2DMake(13.75483015,100.77834743);
-//    mapPin.title = @"3";
-//    mapPin.coordinate = coordinate;
-//    [mapView addAnnotation:mapPin];
-    
-    
-    
-    
-    
-//    MyAnnotation *ann = [[MyAnnotation alloc] init];
-//    ann.title = @"I'm a pin";
-//    ann.subtitle = @"Your subtitle";
-//    ann.coordinate = region.center;
-//    [mapView addAnnotation:ann];
-//    
-//    __weak LiveAroundViewController *weakSelf = self;
-    
-//    NSLog(@"Stream count : %lu",(unsigned long)weakSelf.streamList.count);
-    
-    NSMutableArray* pinTitle = [[NSMutableArray alloc]init];
-    NSMutableArray *arrCoordinateStr = [[NSMutableArray alloc] init];
-
     for(Streaming *stream in _liveAroundData)
     {
         NSLog(@"stream NAME %@ lat : %@ long : %@",stream.streamTitle,stream.latitude,stream.longitude);
-        
-        [pinTitle addObject:stream.streamTitle];
-//        [pinTitle addObject:@"wtf"];
-        [arrCoordinateStr addObject:[NSString stringWithFormat:@"%@,%@",stream.latitude,stream.longitude]];
-//        [arrCoordinateStr addObject:@"13.75483015,100.57834743"];
-        
+        DXAnnotation *ann = [DXAnnotation new];
+        ann.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
+        [mapView addAnnotation:ann];
     }
-    
-//    [pinTitle addObject:@"5555"];
-//    [arrCoordinateStr addObject:@"13.75482078, 100.55833035"];
-//    NSLog(@"pinTitle %lu",(unsigned long)pinTitle.count);
-//    NSLog(@"arrCoordinateStr %@",arrCoordinateStr);
-    
-//    NSLog(@"Pin Title count :%lu",(unsigned long)pinTitle.count);
-    for(int i = 0; i < pinTitle.count; i++)
-    {
-        [self addPinWithTitle:pinTitle[i] AndCoordinate:arrCoordinateStr[i]];
-    }
+
     
 }
 
--(void)addAllPins
-{
-    mapView.delegate=self;
-    MKCoordinateRegion region;
-    region.center.latitude = [self.objStreaming.latitude floatValue];
-    region.center.longitude = [self.objStreaming.longitude floatValue];
-    region.span.latitudeDelta = 1;
-    region.span.longitudeDelta = 1;
-    
-    [mapView setRegion:region animated:YES];
-    
-    NSLog(@"addAllPins");
-    NSArray *name=[[NSArray alloc]initWithObjects:
-                   @"VelaCherry",
-                   @"Perungudi",
-                   @"Tharamani", nil];
-    
-    NSMutableArray *arrCoordinateStr = [[NSMutableArray alloc] initWithCapacity:name.count];
-    
-    [arrCoordinateStr addObject:@"13.75483015,100.57834743"];
-    [arrCoordinateStr addObject:@"13.75483015,100.67834743"];
-    [arrCoordinateStr addObject:@"13.75483015,100.77834743"];
-    
-    for(int i = 0; i < name.count; i++)
-    {
-        [self addPinWithTitle:name[i] AndCoordinate:arrCoordinateStr[i]];
-//        MKPointAnnotation *mapPin = [[MKPointAnnotation alloc] init];
-//        NSArray *components = [arrCoordinateStr[i] componentsSeparatedByString:@","];
-//        double latitude = [components[0] doubleValue];
-//        double longitude = [components[1] doubleValue];
-//        NSLog(@"name %@ Lat %f Long %f",name[i],latitude,longitude);
-//        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
-//        mapPin.title = name[i];
-//        mapPin.coordinate = coordinate;
-//        [mapView addAnnotation:mapPin];
-    }
-}
 
--(void)addPinWithTitle:(NSString *)title AndCoordinate:(NSString *)strCoordinate
-{
-    
-//    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([self.objStreaming.latitude floatValue], [self.objStreaming.longitude floatValue]);
-//    mapPin.title = self.objStreaming.streamTitle;
-//    mapPin.coordinate = coordinate;
-    
-    NSLog(@"addPinWithTitle");
-    NSLog(@"pinTitle %@",title);
-    MKPointAnnotation *mapPin = [[MKPointAnnotation alloc] init];
-    
-    // clear out any white space
-    strCoordinate = [strCoordinate stringByReplacingOccurrencesOfString:@" " withString:@""];
-    
-    // convert string into actual latitude and longitude values
-    NSArray *components = [strCoordinate componentsSeparatedByString:@","];
-    
-    double latitude = [components[0] doubleValue];
-    double longitude = [components[1] doubleValue];
-    
-    NSLog(@"lat : %f , long : %f",latitude,longitude);
-    // setup the map pin with all data and add to map view
-    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
-    
-    mapPin.title = title;
-    mapPin.coordinate = coordinate;
-    
-    [self->mapView addAnnotation:mapPin];
-}
 
 
 //- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
@@ -690,147 +543,103 @@
 }
 
 
-- (void)LoadMap {
-    
-    //CCTVS *cctvs = [self.roi.cctvs objectAtIndex:self.rowIndex];
-    
-    [self changeLocation:self.rowIndex];
-    
-}
-- (void)changeLocation:(NSInteger)rowIndex {
-    
-    NSLog(@"changeLocation");
-    [mapView removeAnnotations:mapView.annotations];
-    
-    [self.liveAroundData enumerateObjectsUsingBlock:^(Streaming *stream, NSUInteger idx, BOOL *stop) {
-        
-        if (idx != rowIndex) {
-            DXAnnotation *annotation1 = [DXAnnotation new];
-            annotation1.tag = idx;
-            annotation1.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
-            annotation1.pinName = @"mappin";
-            [mapView addAnnotation:annotation1];
-            [mapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 10000, 10000)];
-        }
-        
-    }];
-    
-    Streaming *stream = [self.liveAroundData objectAtIndex:rowIndex];
-    
-    DXAnnotation *annoActive = [DXAnnotation new];
-    annoActive.tag = rowIndex;
-    annoActive.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
-    annoActive.pinName = @"pin";
-    [mapView addAnnotation:annoActive];
-    [mapView setRegion:MKCoordinateRegionMakeWithDistance(annoActive.coordinate, 10000, 10000)];
-    
-}
-#pragma mark - ScrollView delegate
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    NSInteger pageIndex = scrollView.contentOffset.x / CGRectGetWidth(scrollView.frame);
-    
-    [self changePoint:pageIndex];
-    
-//    self.customPageControl.currentPage = pageIndex;
-    
-}
-
-- (void)changePoint:(NSInteger)index {
-    //change label
-    Streaming *stream = [self.liveAroundData objectAtIndex:index];
-//    lblPoint.frame = lblPointRect; //CGRectMake(35, 194, 400, 25);
-//    lblPoint.text = cctvs.cctvName;
-//    lblPoint.lineBreakMode = NSLineBreakByWordWrapping;
-//    lblPoint.numberOfLines = 0;
-//    lblPoint.textAlignment = NSTextAlignmentLeft;
-//    [lblPoint sizeToFit];
-    NSLog(@"stream changeLocation %@",stream.streamTitle);
-    
-    //change location
-    [self changeLocation:index];
-    
-    //change description
-    
-//    self.lblDesc.text = cctvs.cctvDesc;
-//    self.lblDesc.lineBreakMode = NSLineBreakByWordWrapping;
-//    self.lblDesc.numberOfLines = 0;
-//    self.lblDesc.textAlignment = NSTextAlignmentJustified;
-//    [self.lblDesc sizeToFit];
-    
-    
-}
 
 
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
     
-    NSLog(@"mapView");
+    NSLog(@"mapView : %d",mapView.tag);
+    
+    liveAroundAnnotationCell* aaa = [liveAroundAnnotationCell alloc];
+    aaa.annoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"activities02.jpg"]];
     if ([annotation isKindOfClass:[DXAnnotation class]]) {
         
-        DXAnnotation *annotation1 = (DXAnnotation *)annotation;
-        //UIView *calloutView = [[[NSBundle mainBundle] loadNibNamed:@"myView" owner:self options:nil] firstObject];
-        
-        DXAnnotationView *annotationView = (DXAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:NSStringFromClass([DXAnnotationView class])];
-        NSLog(@"annotation tag = %d",annotation1.tag);
-//        
-//         NSString *pinName = @"";
-//         
-//         if (annotation1.tag == 1) {
-//         pinName = @"pin";
-//         } else {
-//         pinName = @"mappin";
-//         }
+        UIImageView *pinView = nil;
+        UIView *calloutView = nil;
         
         
-        UIView *pinView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:annotation1.pinName]];
+        DXAnnotationView *annotationView = (DXAnnotationView *)[self->mapView dequeueReusableAnnotationViewWithIdentifier:NSStringFromClass([DXAnnotationView class])];
+        if (!annotationView) {
+//            pinView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ic_pin_checkin"]];
+            pinView = [[UIImageView alloc] initWithImage:[self resizeImage:[UIImage imageNamed:@"ic_pin_checkin"] imageSize:CGSizeMake(30, 60)]];
+            pinView.contentMode = UIViewContentModeScaleAspectFit;
+            pinView.clipsToBounds = YES;
+            calloutView = [[[NSBundle mainBundle] loadNibNamed:@"liveAroundAnnotation" owner:self options:nil] firstObject];
+//            UIImageView *annoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"activities02.jpg"]];
+//            [calloutView addSubview:annoImage];
+            annotationView = [[DXAnnotationView alloc] initWithAnnotation:annotation
+                                                          reuseIdentifier:NSStringFromClass([DXAnnotationView class])
+                                                                  pinView:pinView
+                                                              calloutView:calloutView
+                                                                 settings:[DXAnnotationSettings defaultSettings]];
+//            annotationView.image = [UIImage imageNamed:@"activities02.jpg"];
+        }else {
+            
+            //Changing PinView's image to test the recycle
+//            pinView = (UIImageView *)annotationView.pinView;
+//            pinView.image = [UIImage imageNamed:@"car-blue-icorn"];
+        }
         
         
-        //if (!annotationView) {
         
-        annotationView = [[DXAnnotationView alloc] initWithAnnotation:annotation
-                                                      reuseIdentifier:NSStringFromClass([DXAnnotationView class])
-                                                              pinView:pinView
-                                                          calloutView:nil
-                                                             settings:[DXAnnotationSettings defaultSettings]];
-        /*
-         } else {
-         [pinView removeFromSuperview];
-         [annotationView addSubview:pinView];
-         }
-         */
-        
-        /*
-         annotationView = [[DXAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:NSStringFromClass([DXAnnotationView class])];
-         [annotationView addSubview:pinView];
-         */
-        
-        //annotationView.image = [UIImage imageNamed:annotation1.pinName];
-        annotationView.tag = annotation1.tag;
         
         return annotationView;
     }
-    
-    
     return nil;
+}
+//
+//-(void)configureDetailView:(MKAnnotationView*)annotationView {
+//    
+//    int width = 300;
+//    int height = 200;
+//    
+//    UIView *snapshotView;
+//    let views = ["snapshotView": snapshotView]
+//    snapshotView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[snapshotView(300)]", options: [], metrics: nil, views: views))
+//    snapshotView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[snapshotView(200)]", options: [], metrics: nil, views: views))
+//    
+//    let options = MKMapSnapshotOptions()
+//    options.size = CGSize(width: width, height: height)
+//    options.mapType = .SatelliteFlyover
+//    options.camera = MKMapCamera(lookingAtCenterCoordinate: annotationView.annotation!.coordinate, fromDistance: 250, pitch: 65, heading: 0)
+//    
+//    let snapshotter = MKMapSnapshotter(options: options)
+//    snapshotter.startWithCompletionHandler { snapshot, error in
+//        if snapshot != nil {
+//            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: width, height: height))
+//            imageView.image = snapshot!.image
+//            snapshotView.addSubview(imageView)
+//        }
+//    }
+//    
+//    annotationView.detailCalloutAccessoryView = snapshotView
+//}
+
+- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
+    if ([view isKindOfClass:[DXAnnotationView class]]) {
+        [((DXAnnotationView *)view)hideCalloutView];
+        view.layer.zPosition = -1;
+    }
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
     if ([view isKindOfClass:[DXAnnotationView class]]) {
-        
-        DXAnnotationView *dxView = (DXAnnotationView *)view;
-        
-        NSInteger indexObj = dxView.tag;
-        
-        NSLog(@"test annotation %ld",(long)indexObj);
-        
-//        [previewScrollView setContentOffset:CGPointMake(previewScrollView.frame.size.width * indexObj, 0.0f)];
+        [((DXAnnotationView *)view)showCalloutView];
+        view.layer.zPosition = 0;
+        NSLog(@"select anno : %ld",(long)view.tag);
     }
 }
 
-- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
-    //NSLog(@"deselect test annotation");
+-(UIImage*)resizeImage:(UIImage *)image imageSize:(CGSize)size
+{
+    UIGraphicsBeginImageContext(size);
+    [image drawInRect:CGRectMake(0,0,size.width,size.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    //here is the scaled image which has been changed to the size specified
+    UIGraphicsEndImageContext();
+    return newImage;
+    
 }
-
 
 /*
 #pragma mark - Navigation
