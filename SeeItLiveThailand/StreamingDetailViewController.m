@@ -12,6 +12,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <CoreLocation/CoreLocation.h>
 #import "Streaming.h"
+#import "Haneke.h"
 #import "CommentViewController.h"
 #import "UserProfileViewController.h"
 #import "UserManager.h"
@@ -703,7 +704,7 @@
     
     
     
-    NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,1,10,1];
+    NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,2,20,1];
     
     [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
         
@@ -1367,6 +1368,18 @@
 //        NSLog(@"liveSnapshortImg valid");
 //        liveSnapshortImg.image = image;
 //    }
+    HNKCacheFormat *format = [HNKCache sharedCache].formats[@"thumbnail"];
+    if (!format)
+    {
+        format = [[HNKCacheFormat alloc] initWithName:@"thumbnail"];
+        format.size = CGSizeMake(320, 240);
+        format.scaleMode = HNKScaleModeAspectFill;
+        format.compressionQuality = 0.5;
+        format.diskCapacity = 1 * 1024 * 1024; // 1MB
+        format.preloadPolicy = HNKPreloadPolicyLastSession;
+    }
+    liveSnapshortImg.hnk_cacheFormat = format;
+    [liveSnapshortImg hnk_setImageFromURL:[NSURL URLWithString:stream.snapshot]];
     
     
     
@@ -1406,8 +1419,14 @@
     loveCountCellLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize-2];
     [cell.contentView addSubview:loveCountCellLbl];
 
+    
+
+    
     userAvatarCellimg = [[UIImageView alloc] initWithFrame:userAvatarCellimgRect];
-    userAvatarCellimg.image = (stream.streamUserImage != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:stream.streamUserImage]]]:[UIImage imageNamed:@"blank.png"];
+    userAvatarCellimg.image = [UIImage imageNamed:@"blank.png"];
+    userAvatarCellimg.hnk_cacheFormat = format;
+    [userAvatarCellimg hnk_setImageFromURL:[NSURL URLWithString:stream.streamUserImage]];
+    
     userAvatarCellimg.layer.cornerRadius = userAvatarCellimgRect.size.width/2;
     userAvatarCellimg.clipsToBounds = YES;
     [cell addSubview:userAvatarCellimg];

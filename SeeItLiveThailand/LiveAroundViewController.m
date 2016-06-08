@@ -13,11 +13,10 @@
 #import "defs.h"
 #import "Streaming.h"
 #import "MyAnnotation.h"
-
+#import "Haneke.h"
 #import "DXAnnotation.h"
 #import <DXAnnotationView.h>
 #import <DXAnnotationSettings.h>
-#import "liveAroundAnnotationCell.h"
 
 
 @interface LiveAroundViewController ()<UITableViewDelegate,UITableViewDataSource,MKMapViewDelegate,MKAnnotation>
@@ -370,10 +369,25 @@
     }
     
 //    NSLog(@"tabelView Data : %@",stream.streamTitle);
+    
+    HNKCacheFormat *format = [HNKCache sharedCache].formats[@"thumbnail"];
+    if (!format)
+    {
+        format = [[HNKCacheFormat alloc] initWithName:@"thumbnail"];
+        format.size = CGSizeMake(320, 240);
+        format.scaleMode = HNKScaleModeAspectFill;
+        format.compressionQuality = 0.5;
+        format.diskCapacity = 1 * 1024 * 1024; // 1MB
+        format.preloadPolicy = HNKPreloadPolicyLastSession;
+    }
+
+    
     cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     imgSnapshotcell = [[UIImageView alloc] initWithFrame:imgSnapshotcellRect];
     imgSnapshotcell.backgroundColor = [UIColor greenColor];
     imgSnapshotcell.image = [UIImage imageNamed:@"sil_big.jpg"];
+    imgSnapshotcell.hnk_cacheFormat = format;
+    [imgSnapshotcell hnk_setImageFromURL:[NSURL URLWithString:stream.snapshot]];
     
     imgWaterMarkcell = [[UIImageView alloc] initWithFrame:imgWaterMarkcellRect];
     imgWaterMarkcell.image = [UIImage imageNamed:@"play.png"];
@@ -410,8 +424,10 @@
     [cell.contentView addSubview:loveCountCellLbl];
     
     userAvatarCellimg = [[UIImageView alloc] initWithFrame:userAvatarCellimgRect];
-//    userAvatarCellimg.image = [UIImage imageNamed:@"blank.png"];
-    userAvatarCellimg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:stream.streamUserImage]]];
+    userAvatarCellimg.image = [UIImage imageNamed:@"blank.png"];
+    
+    userAvatarCellimg.hnk_cacheFormat = format;
+    [userAvatarCellimg hnk_setImageFromURL:[NSURL URLWithString:stream.streamUserImage]];
     userAvatarCellimg.layer.cornerRadius = userAvatarCellimgRect.size.width/2;
     userAvatarCellimg.clipsToBounds = YES;
     [cell addSubview:userAvatarCellimg];
@@ -431,28 +447,30 @@
 {
     mapView.delegate = self;
 //    MKPointAnnotation *mapPin = [[MKPointAnnotation alloc] init];
-    MKCoordinateRegion region;
-    region.center.latitude = [self.objStreaming.latitude floatValue];
-    region.center.longitude = [self.objStreaming.longitude floatValue];
-    region.span.latitudeDelta = 1;
-    region.span.longitudeDelta = 1;
-    
-    [mapView setRegion:region animated:YES];
+//    MKCoordinateRegion region;
+//    region.center.latitude = [self.objStreaming.latitude floatValue];
+//    region.center.longitude = [self.objStreaming.longitude floatValue];
+//    region.span.latitudeDelta = 1;
+//    region.span.longitudeDelta = 1;
+//    
+//    [mapView setRegion:region animated:YES];
     
     
     DXAnnotation *annotation1 = [DXAnnotation new];
     annotation1.coordinate = CLLocationCoordinate2DMake([self.objStreaming.latitude floatValue],[self.objStreaming.longitude floatValue]);
     [mapView addAnnotation:annotation1];
-    
-    
-    
+    _rowIndex = 0;
     for(Streaming *stream in _liveAroundData)
     {
-        NSLog(@"stream NAME %@ lat : %@ long : %@",stream.streamTitle,stream.latitude,stream.longitude);
+        NSLog(@"stream NAME %lu %@ lat : %@ long : %@",_rowIndex,stream.streamTitle,stream.latitude,stream.longitude);
         DXAnnotation *ann = [DXAnnotation new];
         ann.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
         [mapView addAnnotation:ann];
+        Streaming *data = [_liveAroundData objectAtIndex:_rowIndex];
+        NSLog(@"_liveAroundData %@",data.snapshot);
+        _rowIndex++;
     }
+    [mapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 10000, 10000)];
 
     
 }
@@ -548,31 +566,47 @@
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
     
-    NSLog(@"mapView : %d",mapView.tag);
-    
-    liveAroundAnnotationCell* aaa = [liveAroundAnnotationCell alloc];
-    aaa.annoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"activities02.jpg"]];
+    NSLog(@"mapView");
     if ([annotation isKindOfClass:[DXAnnotation class]]) {
         
         UIImageView *pinView = nil;
         UIView *calloutView = nil;
         
+        HNKCacheFormat *format = [HNKCache sharedCache].formats[@"thumbnail"];
+        if (!format)
+        {
+            format = [[HNKCacheFormat alloc] initWithName:@"thumbnail"];
+            format.size = CGSizeMake(320, 240);
+            format.scaleMode = HNKScaleModeAspectFill;
+            format.compressionQuality = 0.5;
+            format.diskCapacity = 1 * 1024 * 1024; // 1MB
+            format.preloadPolicy = HNKPreloadPolicyLastSession;
+        }
+
         
         DXAnnotationView *annotationView = (DXAnnotationView *)[self->mapView dequeueReusableAnnotationViewWithIdentifier:NSStringFromClass([DXAnnotationView class])];
         if (!annotationView) {
-//            pinView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ic_pin_checkin"]];
-            pinView = [[UIImageView alloc] initWithImage:[self resizeImage:[UIImage imageNamed:@"ic_pin_checkin"] imageSize:CGSizeMake(30, 60)]];
+            pinView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ic_pin_checkin"]];
+//            pinView = [[UIImageView alloc] initWithImage:[self resizeImage:[UIImage imageNamed:@"ic_pin_checkin"] imageSize:CGSizeMake(30, 60)]];
             pinView.contentMode = UIViewContentModeScaleAspectFit;
             pinView.clipsToBounds = YES;
             calloutView = [[[NSBundle mainBundle] loadNibNamed:@"liveAroundAnnotation" owner:self options:nil] firstObject];
 //            UIImageView *annoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"activities02.jpg"]];
-//            [calloutView addSubview:annoImage];
+//            UIImageView *annoImage = [[UIImageView alloc] initWithImage:[self resizeImage:[UIImage imageNamed:@"activities02.jpg"] imageSize:CGSizeMake(200, 100)]];
+            Streaming *data = [_liveAroundData objectAtIndex:_rowIndex-1 ];
+            NSLog(@"_liveAroundData %@",data.snapshot);
+//            UIImageView *annoImage = [[UIImageView alloc] init];
+            UIImageView *annoImage = [[UIImageView alloc] initWithImage:[self resizeImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:data.snapshot]]] imageSize:CGSizeMake(200, 100)]];
+//            annoImage.hnk_cacheFormat = format;
+//            [annoImage hnk_setImageFromURL:[NSURL URLWithString:@"https://pixabay.com/static/uploads/photo/2016/04/12/20/12/cat-1325297_960_720.jpg"]];
+            [calloutView addSubview:annoImage];
+            
             annotationView = [[DXAnnotationView alloc] initWithAnnotation:annotation
                                                           reuseIdentifier:NSStringFromClass([DXAnnotationView class])
                                                                   pinView:pinView
                                                               calloutView:calloutView
                                                                  settings:[DXAnnotationSettings defaultSettings]];
-//            annotationView.image = [UIImage imageNamed:@"activities02.jpg"];
+            
         }else {
             
             //Changing PinView's image to test the recycle
@@ -581,39 +615,10 @@
         }
         
         
-        
-        
         return annotationView;
     }
     return nil;
 }
-//
-//-(void)configureDetailView:(MKAnnotationView*)annotationView {
-//    
-//    int width = 300;
-//    int height = 200;
-//    
-//    UIView *snapshotView;
-//    let views = ["snapshotView": snapshotView]
-//    snapshotView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[snapshotView(300)]", options: [], metrics: nil, views: views))
-//    snapshotView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[snapshotView(200)]", options: [], metrics: nil, views: views))
-//    
-//    let options = MKMapSnapshotOptions()
-//    options.size = CGSize(width: width, height: height)
-//    options.mapType = .SatelliteFlyover
-//    options.camera = MKMapCamera(lookingAtCenterCoordinate: annotationView.annotation!.coordinate, fromDistance: 250, pitch: 65, heading: 0)
-//    
-//    let snapshotter = MKMapSnapshotter(options: options)
-//    snapshotter.startWithCompletionHandler { snapshot, error in
-//        if snapshot != nil {
-//            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: width, height: height))
-//            imageView.image = snapshot!.image
-//            snapshotView.addSubview(imageView)
-//        }
-//    }
-//    
-//    annotationView.detailCalloutAccessoryView = snapshotView
-//}
 
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
     if ([view isKindOfClass:[DXAnnotationView class]]) {
