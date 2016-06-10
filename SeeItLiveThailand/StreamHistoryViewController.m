@@ -677,7 +677,7 @@
       UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)sender;
         NSLog(@"is not login ");
 
-       // LoginViewController *stream = [[UIViewController alloc] init];
+         // LoginViewController *stream = [[UIViewController alloc] init];
          LoginViewController *stream = [self.storyboard instantiateViewControllerWithIdentifier:@"loginnav"];
         stream.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self.view.window.rootViewController presentViewController:stream animated:YES completion:Nil];
@@ -686,7 +686,7 @@
 {
     NSLog(@"Love Love");
     UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)sender;
-    NSLog (@"Tag %d",[tapRecognizer.view tag]);
+    NSLog (@"Tag %ld",[tapRecognizer.view tag]);
     NSInteger loveTag = [tapRecognizer.view tag];
     
     Streaming *stream = [self.streamList objectAtIndex:loveTag];
@@ -708,7 +708,6 @@
             NSLog(@"loveSendresult : %@",result);
              stream.isLoved = true;
              stream.lovesCount++;
-        
              [self.gridView reloadData];
 //        [hud hide:YES];
     }];
@@ -722,14 +721,10 @@
 
             stream.lovesCount--;
             stream.isLoved = false;
-
             [self.gridView reloadData];
 //          [hud hide:YES];
-
         }];
-        
     }
-    
 }
 -(void)commentStream:(id)sender
 {

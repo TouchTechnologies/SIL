@@ -300,6 +300,8 @@
 }
 - (void)initial{
     
+   ///[scrollView setBackgroundColor:[UIColor blackColor]];
+   
     self.player = [[VKVideoPlayer alloc] init];
     profileView.hidden = FALSE;
     NSLog(@"streamID %@",self.objStreaming.ID);
@@ -312,7 +314,7 @@
     
     if (self.player.isFullScreen) {
         
-        self.player.view.frame = CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height); //self.view.bounds;
+        self.player.view.frame = CGRectMake(0,50, self.view.bounds.size.width, self.view.bounds.size.height); //self.view.bounds;
         NSLog(@"NOT FULLSCREEN");
         self.player.view.doneButton.frame = doneButtonPortRect;
         
@@ -326,18 +328,19 @@
         [ self.player.view.doneButton setImage:back forState:UIControlStateNormal];
 
     }
-    self.player.view.playerControlsAutoHideTime = @1000;
+    self.player.view.playerControlsAutoHideTime = @5;
     self.player.forceRotate = NO;
     self.player.view.fullscreenButton.hidden = TRUE;
     self.player.view.nextButton.hidden = TRUE;
     self.player.view.rewindButton.hidden = TRUE;
-    self.player.view.topControlOverlay.hidden = TRUE;
-    self.player.view.bottomControlOverlay.hidden = FALSE;
+        self.player.view.bottomControlOverlay.hidden = FALSE;
     
     
     
     propViewPort = [[UIView alloc] initWithFrame:propViewPortRect];
     propViewPort.backgroundColor = [UIColor blackColor];
+    
+  //  [self.player.view addSubviewForControl:propViewPort toView:self.view];
     [self.view addSubview:propViewPort];
     [self.view addSubview:self.player.view];
     
@@ -345,6 +348,7 @@
     topView = [[UIView alloc] initWithFrame:topViewPortRect];
     topView.backgroundColor = [UIColor blackColor];
     [topView addSubview:self.player.view.doneButton];
+   // [self.player.view addSubviewForControl:topView toView:self.view];
     [self.view addSubview:topView];
     
     font = [UIFont fontWithName:@"Helvetica" size:fontSize];
@@ -355,7 +359,8 @@
     steamingTitle.backgroundColor = [UIColor clearColor];
     steamingTitle.textAlignment = NSTextAlignmentLeft;
     steamingTitle.font =  [UIFont fontWithName:@"Helvetica" size: fontSize];
-    [topView addSubview:steamingTitle];
+   
+   //
     
     lblcategoryDesc = [[UILabel alloc] initWithFrame:lblcategoryDescRect];
     lblcategoryDesc.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -364,7 +369,8 @@
     lblcategoryDesc.backgroundColor = [UIColor clearColor];
     lblcategoryDesc.textAlignment = NSTextAlignmentLeft;
     lblcategoryDesc.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 2];
-    [topView addSubview:lblcategoryDesc];
+
+   //
     
     lblcategoryType = [[UILabel alloc] initWithFrame:lblcategoryTypeRect];
     lblcategoryType.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -373,8 +379,26 @@
     lblcategoryType.backgroundColor = [UIColor clearColor];
     lblcategoryType.textAlignment = NSTextAlignmentLeft;
     lblcategoryType.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 2];
-    [topView addSubview:lblcategoryType];
 
+   //
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self.player.view addSubviewForControl:steamingTitle toView:topView];
+           [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
+           [self.player.view addSubviewForControl:lblcategoryType toView:topView];
+        self.player.view.topControlOverlay.hidden = TRUE;
+
+//
+//        [topView addSubview:steamingTitle];
+//        [topView addSubview:lblcategoryDesc];
+//        [topView addSubview:lblcategoryType];
+    }
+    else{
+        self.player.view.topControlOverlay.hidden = FALSE;
+
+      [self.player.view.topControlOverlay addSubview:steamingTitle];
+            [self.player.view.topControlOverlay addSubview:lblcategoryDesc];
+            [self.player.view.topControlOverlay addSubview:lblcategoryType];
+    }
     
     
     lblLocationDesc = [[UILabel alloc] initWithFrame:lblLocationDescRect];
@@ -775,7 +799,7 @@
         
         doneButtonPortRect = CGRectMake(10*scx, topViewPortRect.size.height/2 - (10*scy) , 30*scx, 30*scy);
         
-        vdoLabelPortRect = CGRectMake(doneButtonPortRect.size.width + (10*scx) ,topViewPortRect.size.height/2 - (10*scy) , 200*scx, 20*scy);
+        vdoLabelPortRect = CGRectMake(doneButtonPortRect.size.width+(10*scx) ,topViewPortRect.size.height/2 - (10*scy) , 200*scx, 20*scy);
         
         lblcategoryDescRect = CGRectMake(doneButtonPortRect.size.width + (10*scx) , topViewPortRect.size.height/2 + (8*scy), 70*scx, 15*scy);
         
@@ -853,9 +877,9 @@
         imgPinPortRect = CGRectMake(10,topViewPortRect.size.height/2 - 13, 25, 25);
        
         doneButtonPortRect = CGRectMake(10, topViewPortRect.size.height/2 - 10 , 30, 30);
-        vdoLabelPortRect = CGRectMake(doneButtonPortRect.size.width + 10 ,topViewPortRect.size.height/2 - 10 , 200, 20);
-        lblcategoryDescRect = CGRectMake(doneButtonPortRect.size.width + 10 , topViewPortRect.size.height/2 + 8, 60, 15);
-        lblcategoryTypeRect = CGRectMake(lblcategoryDescRect.origin.x + 60 , topViewPortRect.size.height/2 + 8, topViewPortRect.size.width/2, 15);
+        vdoLabelPortRect = CGRectMake(10 ,5 , 200, 20);
+        lblcategoryDescRect = CGRectMake(10 , 25, 60, 15);
+        lblcategoryTypeRect = CGRectMake(lblcategoryDescRect.origin.x + 60 ,25, topViewPortRect.size.width/2, 15);
         propViewPortRect = CGRectMake(0,250, self.view.bounds.size.width, 50);
         imgLivePortRect = CGRectMake(20, 2, 35, 35);
         

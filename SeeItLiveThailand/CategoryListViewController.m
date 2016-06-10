@@ -72,11 +72,18 @@
     CGRect moreBtnRect;
     
     CGRect gridViewRect;
+    
+     int iCurrentVisiblePage;
+     ADPageModel *pageModel;
+    
+    NSInteger filterPage;
+    
 }
 @property (nonatomic, strong) NSMutableArray *fillerData;
 @property (nonatomic, strong) NSArray *streamList;
 @property (nonatomic) NSString *loadingTitle;
 @property (nonatomic, strong) UILabel *lblPlace;
+@property (nonatomic) NSInteger *count;
 @end
 
 @implementation CategoryListViewController
@@ -90,6 +97,8 @@
     [self setupPageControl];
     [self initial];
     NSLog(@"Cat ID : %d",self.catID);
+    filterPage = 1;
+
     
 }
 
@@ -400,36 +409,32 @@
     
     if(pageModel.iPageNumber == 0)
     {
-        
      //   [_gridView reloadData];
-     
     }
     else if(pageModel.iPageNumber == 1)
     {
      //   [_gridView reloadData];
-    
     }
     else if(pageModel.iPageNumber == 2)
     {
      //   [_gridView reloadData];
-    
     }
     else if(pageModel.iPageNumber == 3)
     {
      //   [_gridView reloadData];
-       }
+    }
     else if(pageModel.iPageNumber == 4)
     {
      //   [_gridView reloadData];
-           }
+    }
     else if(pageModel.iPageNumber == 5)
     {
      //   [_gridView reloadData];
-          }
+    }
     else if(pageModel.iPageNumber == 6)
     {
      //   [_gridView reloadData];
-      
+
     }
     return nil;
 }
@@ -448,8 +453,9 @@
         //                [hud hide:YES];
         if (success) {
             weakSelf.streamList = streamRecords;
-            NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
-           
+            NSLog(@"STREAMLIST COUNT CAT:::: %ld", (unsigned long)weakSelf.streamList.count);
+          //
+
             //[moreBtn reloadInputViews];
             
             
@@ -457,10 +463,10 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
         }
-        
+        _count = weakSelf.streamList.count*filterPage;
         [weakSelf.gridView reloadData];
       
-        
+       // getStreamingWithCompletionBlockByCatgoryID:(StreamingCompletionBlock)block :(int)catID{
     } :[appDelegate.categoryData[iCurrentVisiblePage][@"id"] integerValue]];
    
     
@@ -546,10 +552,42 @@
     //UIViewController *controller = [_pageControl.arrPageModel objectAtIndex:iCurrentVisiblePage];
     //[controller viewDidLoad];
 }
--(void)loadmore:(id)sender{
-    
+
+
+-(NSInteger)loadmore:(UIButton *)sender{
+ //   pageModel.iPageNumber;
     NSLog(@"LOAD MORE ACTIVE");
     
+    sender.tag = sender.tag + 1;
+    NSLog(@"LOAD MORE ACTIVE");
+    __weak CategoryListViewController *weakSelf = self;
+   //   weakSelf.streamList = [[NSArray alloc]init];
+    
+    filterPage = 1;
+    filterPage += sender.tag;
+    NSLog(@"filterPage :%lu",filterPage);
+    
+    return filterPage;
+    [weakSelf.gridView reloadData];
+//  count = weakSelf.streamList.count*filterPage;
+    
+     //[moreBtn reloadInputViews];
+//[[DataManager shareManager] getStreamingWithCompletionBlockByCatgoryID:^(BOOL success, NSArray *streamRecords, NSError *error) {
+//        //                [hud hide:YES];
+//       if (success) {
+//       weakSelf.streamList = streamRecords;
+//        NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
+//                      NSLog(@"LOAD MORE COUNT ::: %ld ", _count);
+//            
+//        } else {
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//            [alert show];
+//        }
+////      _count = weakSelf.streamList.count*filterPage;
+//     //      [weakSelf.gridView reloadData];
+// NSLog(@"กด MOre %ld",_count);
+//        
+//    } :[appDelegate.categoryData[iCurrentVisiblePage][@"id"] integerValue]];
 }
 
 #pragma mark - KKGridView
@@ -561,7 +599,7 @@
 
 - (NSUInteger)gridView:(KKGridView *)gridView numberOfItemsInSection:(NSUInteger)section
 {
-    return self.streamList.count;
+    return self.streamList.count*filterPage;
 }
 
 
