@@ -583,7 +583,8 @@
             NSLog(@"loveSendresult : %@",result);
             stream.isLoved = true;
             stream.lovesCount++;
-            [self viewDidLoad];
+        
+            [self.gridView reloadData];
             
         }];
     }else
@@ -593,7 +594,7 @@
             NSLog(@"unloveloveSendresult : %@",result);
             stream.isLoved = false;
             stream.lovesCount--;
-            [self viewDidLoad];
+            [self.gridView reloadData];
         }];
     }
     

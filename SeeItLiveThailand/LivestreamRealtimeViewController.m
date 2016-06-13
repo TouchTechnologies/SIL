@@ -1116,6 +1116,8 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
     cell.backgroundColor = [UIColor clearColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
+    [cell.contentView removeFromSuperview];
+    
     //get Comment Data
     Commentator *comment = [[Commentator alloc]init];
     comment = [commentData objectAtIndex:indexPath.row];
@@ -1179,6 +1181,7 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
     objChatLbl.textAlignment = NSTextAlignmentJustified;
     [objChatLbl sizeToFit];
     [cell.contentView addSubview:objChatLbl];
+
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -1204,12 +1207,7 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
 
             return chatplaceView.bounds.size.height + 10;
         }
-        
-        
-
     }
-  
-
 }
 
 -(BOOL) textFieldShouldReturn: (UITextField *) textField
