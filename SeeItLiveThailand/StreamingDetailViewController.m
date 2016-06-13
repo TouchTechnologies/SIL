@@ -645,7 +645,9 @@
     [moreBtn addSubview:titlemoreLbl];
     [moreBtn addTarget:self action:@selector(clickmore:) forControlEvents:UIControlEventTouchUpInside];
     
-    [scrollView addSubview:moreBtn];
+//    [scrollView addSubview:moreBtn];
+    
+    
     
     //    chatboxTxt = [[UITextField alloc] initWithFrame:chatboxTxtPortRect];
 //    chatboxTxt.borderStyle = UITextBorderStyleNone;
@@ -728,7 +730,7 @@
     
     
     
-    NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,2,20,1];
+    NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,2,5,1];
     
     [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
         
@@ -1460,6 +1462,10 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSLog(@"Select");
+    self.objStreaming = [_streamList objectAtIndex:indexPath.row];
+//    [liveIncategoryTbl reloadData];
+    [self viewDidAppear:true];
+    
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     

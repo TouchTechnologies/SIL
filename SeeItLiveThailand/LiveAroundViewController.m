@@ -35,7 +35,7 @@
     UILabel *navTitleLbl;
     CGRect navTitleLblRect;
     
-    MKMapView *mapView;
+    MKMapView *myMapView;
     CGRect mapViewRect;
     
     UIImageView *imgSnapshot;
@@ -121,7 +121,7 @@
     [self initialSize];
     [self initial];
     [self LoadMap];
-    [self initMap];
+//    [self initMap];
     
     format = [HNKCache sharedCache].formats[@"thumbnail"];
     if (!format)
@@ -139,9 +139,9 @@
     scrollView.delegate = self;
     tableView.delegate = self;
     tableView.dataSource = self;
-    mapView = [[MKMapView alloc] init];
-    mapView.delegate = self;
-    mapView.showsUserLocation = YES;
+    myMapView = [[MKMapView alloc] init];
+    myMapView.delegate = self;
+    myMapView.showsUserLocation = YES;
     
     
     
@@ -177,9 +177,9 @@
     //= [[UIScrollView alloc] initWithFrame:scrollViewRect];
   //  [self.view addSubview:scrollView];
     
-    mapView = [[MKMapView alloc] initWithFrame:mapViewRect];
-    mapView.backgroundColor = [UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1.0];
-    [scrollView addSubview:mapView];
+    myMapView = [[MKMapView alloc] initWithFrame:mapViewRect];
+    myMapView.backgroundColor = [UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1.0];
+    [scrollView addSubview:myMapView];
 
 //    imgSnapshot = [[UIImageView alloc] initWithFrame:imgSnapshotRect];
 //    imgSnapshot.image = [UIImage imageNamed:@"activities02.jpg"];
@@ -460,20 +460,20 @@
 
 -(void)initMap
 {
-    mapView.delegate = self;
-//    MKPointAnnotation *mapPin = [[MKPointAnnotation alloc] init];
-//    MKCoordinateRegion region;
-//    region.center.latitude = [self.objStreaming.latitude floatValue];
-//    region.center.longitude = [self.objStreaming.longitude floatValue];
-//    region.span.latitudeDelta = 1;
-//    region.span.longitudeDelta = 1;
-//    
-//    [mapView setRegion:region animated:YES];
+    myMapView.delegate = self;
+    MKPointAnnotation *mapPin = [[MKPointAnnotation alloc] init];
+    MKCoordinateRegion region;
+    region.center.latitude = [self.objStreaming.latitude floatValue];
+    region.center.longitude = [self.objStreaming.longitude floatValue];
+    region.span.latitudeDelta = 1;
+    region.span.longitudeDelta = 1;
+    
+    [myMapView setRegion:region animated:YES];
     
     
     DXAnnotation *annotation1 = [DXAnnotation new];
     annotation1.coordinate = CLLocationCoordinate2DMake([self.objStreaming.latitude floatValue],[self.objStreaming.longitude floatValue]);
-    [mapView addAnnotation:annotation1];
+    [myMapView addAnnotation:annotation1];
     _rowIndex = 0;
     for(Streaming *stream in _liveAroundData)
     {
@@ -482,12 +482,12 @@
         NSLog(@"pinSnapShot %@",pinSnapShot);
         DXAnnotation *ann = [DXAnnotation new];
         ann.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
-        [mapView addAnnotation:ann];
+        [myMapView addAnnotation:ann];
 //        Streaming *data = [_liveAroundData objectAtIndex:_rowIndex];
 //        NSLog(@"_liveAroundData %@",data.snapshot);
         _rowIndex++;
     }
-    [mapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 10000, 10000)];
+    [myMapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 10000, 10000)];
 
     
 }
@@ -657,8 +657,8 @@
 }
 - (void)changeLocation:(NSInteger)rowIndex {
     NSLog(@"changeLocation");
-    mapView.delegate = self;
-    [mapView removeAnnotations:mapView.annotations];
+//    myMapView.delegate = self;
+    [myMapView removeAnnotations:myMapView.annotations];
     
     [self.liveAroundData enumerateObjectsUsingBlock:^(Streaming *stream, NSUInteger idx, BOOL *stop) {
         
@@ -667,10 +667,11 @@
             NSLog(@"rowIndex idx %lu",(unsigned long)rowIndex);
             DXAnnotation *annotation1 = [DXAnnotation new];
             annotation1.tag = idx;
+//            annotation1.tag = [stream.ID integerValue];
             annotation1.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
             annotation1.pinName = @"mappin";
-            [mapView addAnnotation:annotation1];
-            [mapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 10000, 10000)];
+            [myMapView addAnnotation:annotation1];
+            [myMapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 10000, 10000)];
         }
         
     }];
@@ -681,8 +682,8 @@
     annoActive.tag = rowIndex;
     annoActive.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
     annoActive.pinName = @"pin";
-    [mapView addAnnotation:annoActive];
-    [mapView setRegion:MKCoordinateRegionMakeWithDistance(annoActive.coordinate, 10000, 10000)];
+    [myMapView addAnnotation:annoActive];
+    [myMapView setRegion:MKCoordinateRegionMakeWithDistance(annoActive.coordinate, 10000, 10000)];
     
 }
 
@@ -726,7 +727,7 @@
         DXAnnotation *annotation1 = (DXAnnotation *)annotation;
         UIView *calloutView = [[[NSBundle mainBundle] loadNibNamed:@"liveAroundAnnotation" owner:self options:nil] firstObject];
         
-        DXAnnotationView *annotationView = (DXAnnotationView *)[self->mapView dequeueReusableAnnotationViewWithIdentifier:NSStringFromClass([DXAnnotationView class])];
+        DXAnnotationView *annotationView = (DXAnnotationView *)[myMapView dequeueReusableAnnotationViewWithIdentifier:NSStringFromClass([DXAnnotationView class])];
         /*
          NSString *pinName = @"";
          
@@ -763,6 +764,7 @@
         
         
         annotationView.tag = annotation1.tag;
+//        annotationView.tag = 5555;
         
         return annotationView;
     }
@@ -780,17 +782,19 @@
         NSInteger indexObj = dxView.tag;
         
         NSLog(@"test annotation %ld",(long)indexObj);
-        [self->mapView removeAnnotations:self->mapView.annotations];
-//        [self changeLocation:5];
+
+        [myMapView removeAnnotations:myMapView.annotations];
         
-//        [previewScrollView setContentOffset:CGPointMake(previewScrollView.frame.size.width * indexObj, 0.0f)];
+//        [self changeLocation:indexObj];
+        
+//        [scrollView setContentOffset:CGPointMake(scrollView.frame.size.width * indexObj, 0.0f)];
     }
 }
 
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
     [((DXAnnotationView *)view)hideCalloutView];
     view.layer.zPosition = -1;
-    //NSLog(@"deselect test annotation");
+    NSLog(@"deselect test annotation");
 }
 
 
