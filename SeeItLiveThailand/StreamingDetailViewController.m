@@ -567,7 +567,7 @@
     mapImg = [[UIImageView alloc] initWithFrame:mapImgRect];
 //    mapImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:mapURL]]];
     mapImg.backgroundColor = [UIColor greenColor];
-    [scrollView addSubview:mapImg];
+//    [scrollView addSubview:mapImg];
     
     
     profileView = [[UIView alloc] initWithFrame:profileViewRect];
@@ -699,6 +699,12 @@
     
     NSString *mapURL = [@"https://maps.googleapis.com/maps/api/staticmap?center=" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:[@"&zoom=15&size=800x150&markers=color:red%7C" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:@"&key=AIzaSyAimot0aIsIsItn1F_BYXy6YVG-2Jc8MYs"]]]]]]]];
     mapImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:mapURL]]];
+    if(([self.objStreaming.latitude doubleValue] != 0.0 ) && ([self.objStreaming.longitude doubleValue] != 0.0))
+    {
+        NSLog(@"set map lat : %f long : %f",[self.objStreaming.latitude doubleValue],[self.objStreaming.longitude doubleValue]);
+        [scrollView addSubview:mapImg];
+        
+    }
     avatarImg.image = (self.objStreaming.streamUserImage != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.objStreaming.streamUserImage]]]:[UIImage imageNamed:@"blank.png"];
     
     usernameLbl.text = self.objStreaming.streamUserName;
@@ -1495,10 +1501,20 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSLog(@"Select");
+    [socket on:@"ack-connected" callback:^(NSArray* data, SocketAckEmitter* ack) {
+        NSLog(@"leave connected %@",data);
+        NSString* roomName = [@"streaming/" stringByAppendingString:[NSString stringWithFormat:@"%d",[self.objStreaming.ID intValue]]];
+        [socket emit:@"leave" withItems:@[roomName]];
+    }];
     self.objStreaming = [_streamList objectAtIndex:indexPath.row];
     
 //    self.player.state = VKVideoPlayerStateContentPaused;
 //    [socket disconnect];
+    [socket on:@"ack-connected" callback:^(NSArray* data, SocketAckEmitter* ack) {
+        NSLog(@"socket connected %@",data);
+        NSString* roomName = [@"streaming/" stringByAppendingString:[NSString stringWithFormat:@"%d",[self.objStreaming.ID intValue]]];
+        [socket emit:@"join" withItems:@[roomName]];
+    }];
     
     [self playSampleClip1];
     [self setVideoData];
