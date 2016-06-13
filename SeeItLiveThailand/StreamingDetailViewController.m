@@ -536,7 +536,7 @@
     [propViewPort addSubview:lblCommentCount];
     
 //    NSLog(@"Lat %@ Long %@",self.objStreaming.latitude,self.objStreaming.longitude);
-    NSString *mapURL = [@"https://maps.googleapis.com/maps/api/staticmap?center=" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:[@"&zoom=15&size=800x150&markers=color:red%7C" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:@"&key=AIzaSyALoQE2hBd8Za7sVvCm5wrqjkDCdd0Olto"]]]]]]]];
+    NSString *mapURL = [@"https://maps.googleapis.com/maps/api/staticmap?center=" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:[@"&zoom=15&size=800x150&markers=color:red%7C" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:@"&key=AIzaSyAimot0aIsIsItn1F_BYXy6YVG-2Jc8MYs"]]]]]]]];
     
 //    NSLog(@"Map URL : %@",mapURL);
     mapImg = [[UIImageView alloc] initWithFrame:mapImgRect];
@@ -711,7 +711,7 @@
         if (success) {
             
 //            NSLog(@"streamRecords : %@",streamRecords);
-            livearound.rowIndex = 1;
+            livearound.rowIndex = 0;
             livearound.liveAroundData = streamRecords;
             [self presentViewController: livearound animated: YES completion:nil];
 //            NSLog(@"LiveAround Data : %@",livearound.liveAroundData);

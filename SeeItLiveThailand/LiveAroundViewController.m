@@ -102,6 +102,8 @@
 
     IBOutlet UIScrollView *scrollView;
     CGRect scrollViewRect;
+    NSString* pinSnapShot;
+    HNKCacheFormat *format;
 
     
 }
@@ -118,7 +120,20 @@
     
     [self initialSize];
     [self initial];
+    [self LoadMap];
     [self initMap];
+    
+    format = [HNKCache sharedCache].formats[@"thumbnail"];
+    if (!format)
+    {
+        format = [[HNKCacheFormat alloc] initWithName:@"thumbnail"];
+        format.size = CGSizeMake(320, 240);
+        format.scaleMode = HNKScaleModeAspectFill;
+        format.compressionQuality = 0.5;
+        format.diskCapacity = 1 * 1024 * 1024; // 1MB
+        format.preloadPolicy = HNKPreloadPolicyLastSession;
+    }
+    
     
 
     scrollView.delegate = self;
@@ -370,16 +385,16 @@
     
 //    NSLog(@"tabelView Data : %@",stream.streamTitle);
     
-    HNKCacheFormat *format = [HNKCache sharedCache].formats[@"thumbnail"];
-    if (!format)
-    {
-        format = [[HNKCacheFormat alloc] initWithName:@"thumbnail"];
-        format.size = CGSizeMake(320, 240);
-        format.scaleMode = HNKScaleModeAspectFill;
-        format.compressionQuality = 0.5;
-        format.diskCapacity = 1 * 1024 * 1024; // 1MB
-        format.preloadPolicy = HNKPreloadPolicyLastSession;
-    }
+//    HNKCacheFormat *format = [HNKCache sharedCache].formats[@"thumbnail"];
+//    if (!format)
+//    {
+//        format = [[HNKCacheFormat alloc] initWithName:@"thumbnail"];
+//        format.size = CGSizeMake(320, 240);
+//        format.scaleMode = HNKScaleModeAspectFill;
+//        format.compressionQuality = 0.5;
+//        format.diskCapacity = 1 * 1024 * 1024; // 1MB
+//        format.preloadPolicy = HNKPreloadPolicyLastSession;
+//    }
 
     
     cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
@@ -462,12 +477,14 @@
     _rowIndex = 0;
     for(Streaming *stream in _liveAroundData)
     {
-        NSLog(@"stream NAME %lu %@ lat : %@ long : %@",_rowIndex,stream.streamTitle,stream.latitude,stream.longitude);
+//        NSLog(@"stream NAME %lu %@ lat : %@ long : %@",_rowIndex,stream.streamTitle,stream.latitude,stream.longitude);
+        pinSnapShot = stream.snapshot;
+        NSLog(@"pinSnapShot %@",pinSnapShot);
         DXAnnotation *ann = [DXAnnotation new];
         ann.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
         [mapView addAnnotation:ann];
-        Streaming *data = [_liveAroundData objectAtIndex:_rowIndex];
-        NSLog(@"_liveAroundData %@",data.snapshot);
+//        Streaming *data = [_liveAroundData objectAtIndex:_rowIndex];
+//        NSLog(@"_liveAroundData %@",data.snapshot);
         _rowIndex++;
     }
     [mapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 10000, 10000)];
@@ -564,76 +581,218 @@
 
 
 
+//- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+//    
+//    NSLog(@"mapView");
+//    if ([annotation isKindOfClass:[DXAnnotation class]]) {
+//        
+//        UIImageView *pinView = nil;
+//        UIView *calloutView = nil;
+//        
+//         DXAnnotation *annotation1 = (DXAnnotation *)annotation;
+//        
+//        DXAnnotationView *annotationView = (DXAnnotationView *)[self->mapView dequeueReusableAnnotationViewWithIdentifier:NSStringFromClass([DXAnnotationView class])];
+//        if (!annotationView) {
+//            pinView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ic_pin_checkin"]];
+////            pinView = [[UIImageView alloc] initWithImage:[self resizeImage:[UIImage imageNamed:@"ic_pin_checkin"] imageSize:CGSizeMake(30, 60)]];
+//            pinView.contentMode = UIViewContentModeScaleAspectFit;
+//            pinView.clipsToBounds = YES;
+//            calloutView = [[[NSBundle mainBundle] loadNibNamed:@"liveAroundAnnotation" owner:self options:nil] firstObject];
+//            UIImageView *annoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"activities02.jpg"]];
+////            UIImageView *annoImage = [[UIImageView alloc] initWithImage:[self resizeImage:[UIImage imageNamed:@"activities02.jpg"] imageSize:CGSizeMake(200, 100)]];
+//
+////            UIImageView *annoImage = [[UIImageView alloc] init];
+////            UIImageView *annoImage = [[UIImageView alloc] initWithImage:[self resizeImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:pinSnapShot]]] imageSize:CGSizeMake(200, 100)]];
+////            annoImage.hnk_cacheFormat = format;
+////            [annoImage hnk_setImageFromURL:[NSURL URLWithString:pinSnapShot]];
+////            [calloutView addSubview:annoImage];
+//            
+//            annotationView = [[DXAnnotationView alloc] initWithAnnotation:annotation
+//                                                          reuseIdentifier:NSStringFromClass([DXAnnotationView class])
+//                                                                  pinView:pinView
+//                                                              calloutView:calloutView
+//                                                                 settings:[DXAnnotationSettings defaultSettings]];
+//            
+//        }else {
+//            
+//            //Changing PinView's image to test the recycle
+////            pinView = (UIImageView *)annotationView.pinView;
+////            pinView.image = [UIImage imageNamed:@"car-blue-icorn"];
+//        }
+//        
+//        annotationView.tag = annotation1.tag;
+//        return annotationView;
+//    }
+//    return nil;
+//}
+//
+//
+//
+//- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
+//    if ([view isKindOfClass:[DXAnnotationView class]]) {
+//        [((DXAnnotationView *)view)hideCalloutView];
+//        view.layer.zPosition = -1;
+//    }
+//}
+//
+//- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+//    if ([view isKindOfClass:[DXAnnotationView class]]) {
+//        [((DXAnnotationView *)view)showCalloutView];
+//        view.layer.zPosition = 0;
+//        
+//        DXAnnotationView *dxView = (DXAnnotationView *)view;
+//        NSInteger indexObj = dxView.tag;
+//        NSLog(@"select anno : %ld",indexObj);
+//    }
+//}
+
+
+
+- (void)LoadMap {
+    
+    //CCTVS *cctvs = [self.roi.cctvs objectAtIndex:self.rowIndex];
+    
+    [self changeLocation:self.rowIndex];
+    
+}
+- (void)changeLocation:(NSInteger)rowIndex {
+    NSLog(@"changeLocation");
+    mapView.delegate = self;
+    [mapView removeAnnotations:mapView.annotations];
+    
+    [self.liveAroundData enumerateObjectsUsingBlock:^(Streaming *stream, NSUInteger idx, BOOL *stop) {
+        
+        NSLog(@"index idx %lu",(unsigned long)idx);
+        if (idx != rowIndex) {
+            NSLog(@"rowIndex idx %lu",(unsigned long)rowIndex);
+            DXAnnotation *annotation1 = [DXAnnotation new];
+            annotation1.tag = idx;
+            annotation1.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
+            annotation1.pinName = @"mappin";
+            [mapView addAnnotation:annotation1];
+            [mapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 10000, 10000)];
+        }
+        
+    }];
+    
+    Streaming *stream = [self.liveAroundData objectAtIndex:rowIndex];
+    
+    DXAnnotation *annoActive = [DXAnnotation new];
+    annoActive.tag = rowIndex;
+    annoActive.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
+    annoActive.pinName = @"pin";
+    [mapView addAnnotation:annoActive];
+    [mapView setRegion:MKCoordinateRegionMakeWithDistance(annoActive.coordinate, 10000, 10000)];
+    
+}
+
+#pragma mark - ScrollView delegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    NSInteger pageIndex = scrollView.contentOffset.x / CGRectGetWidth(scrollView.frame);
+    
+    [self changePoint:pageIndex];
+    
+//    self.customPageControl.currentPage = pageIndex;
+    
+}
+
+- (void)changePoint:(NSInteger)index {
+    //change label
+    Streaming *stream = [self.liveAroundData objectAtIndex:index];
+//    lblPoint.frame = lblPointRect; //CGRectMake(35, 194, 400, 25);
+//    lblPoint.text = cctvs.cctvName;
+//    lblPoint.lineBreakMode = NSLineBreakByWordWrapping;
+//    lblPoint.numberOfLines = 0;
+//    lblPoint.textAlignment = NSTextAlignmentLeft;
+//    [lblPoint sizeToFit];
+    
+    //change location
+    [self changeLocation:index];
+    
+    //change description
+    
+//    self.lblDesc.text = cctvs.cctvDesc;
+//    self.lblDesc.lineBreakMode = NSLineBreakByWordWrapping;
+//    self.lblDesc.numberOfLines = 0;
+//    self.lblDesc.textAlignment = NSTextAlignmentJustified;
+//    [self.lblDesc sizeToFit];
+    
+    
+}
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
     
-    NSLog(@"mapView");
     if ([annotation isKindOfClass:[DXAnnotation class]]) {
         
-        UIImageView *pinView = nil;
-        UIView *calloutView = nil;
-        
-        HNKCacheFormat *format = [HNKCache sharedCache].formats[@"thumbnail"];
-        if (!format)
-        {
-            format = [[HNKCacheFormat alloc] initWithName:@"thumbnail"];
-            format.size = CGSizeMake(320, 240);
-            format.scaleMode = HNKScaleModeAspectFill;
-            format.compressionQuality = 0.5;
-            format.diskCapacity = 1 * 1024 * 1024; // 1MB
-            format.preloadPolicy = HNKPreloadPolicyLastSession;
-        }
-
+        DXAnnotation *annotation1 = (DXAnnotation *)annotation;
+        UIView *calloutView = [[[NSBundle mainBundle] loadNibNamed:@"liveAroundAnnotation" owner:self options:nil] firstObject];
         
         DXAnnotationView *annotationView = (DXAnnotationView *)[self->mapView dequeueReusableAnnotationViewWithIdentifier:NSStringFromClass([DXAnnotationView class])];
-        if (!annotationView) {
-            pinView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ic_pin_checkin"]];
-//            pinView = [[UIImageView alloc] initWithImage:[self resizeImage:[UIImage imageNamed:@"ic_pin_checkin"] imageSize:CGSizeMake(30, 60)]];
-            pinView.contentMode = UIViewContentModeScaleAspectFit;
-            pinView.clipsToBounds = YES;
-            calloutView = [[[NSBundle mainBundle] loadNibNamed:@"liveAroundAnnotation" owner:self options:nil] firstObject];
-//            UIImageView *annoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"activities02.jpg"]];
-//            UIImageView *annoImage = [[UIImageView alloc] initWithImage:[self resizeImage:[UIImage imageNamed:@"activities02.jpg"] imageSize:CGSizeMake(200, 100)]];
-            Streaming *data = [_liveAroundData objectAtIndex:_rowIndex-1 ];
-            NSLog(@"_liveAroundData %@",data.snapshot);
-//            UIImageView *annoImage = [[UIImageView alloc] init];
-            UIImageView *annoImage = [[UIImageView alloc] initWithImage:[self resizeImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:data.snapshot]]] imageSize:CGSizeMake(200, 100)]];
-//            annoImage.hnk_cacheFormat = format;
-//            [annoImage hnk_setImageFromURL:[NSURL URLWithString:@"https://pixabay.com/static/uploads/photo/2016/04/12/20/12/cat-1325297_960_720.jpg"]];
-            [calloutView addSubview:annoImage];
-            
-            annotationView = [[DXAnnotationView alloc] initWithAnnotation:annotation
-                                                          reuseIdentifier:NSStringFromClass([DXAnnotationView class])
-                                                                  pinView:pinView
-                                                              calloutView:calloutView
-                                                                 settings:[DXAnnotationSettings defaultSettings]];
-            
-        }else {
-            
-            //Changing PinView's image to test the recycle
-//            pinView = (UIImageView *)annotationView.pinView;
-//            pinView.image = [UIImage imageNamed:@"car-blue-icorn"];
-        }
+        /*
+         NSString *pinName = @"";
+         
+         if (annotation1.tag == 1) {
+         pinName = @"pin";
+         } else {
+         pinName = @"mappin";
+         }
+         */
         
+        UIView *pinView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:annotation1.pinName]];
+        
+        
+        //if (!annotationView) {
+        
+        annotationView = [[DXAnnotationView alloc] initWithAnnotation:annotation
+                                                      reuseIdentifier:NSStringFromClass([DXAnnotationView class])
+                                                              pinView:pinView
+                                                          calloutView:nil
+                                                             settings:[DXAnnotationSettings defaultSettings]];
+        /*
+         } else {
+         [pinView removeFromSuperview];
+         [annotationView addSubview:pinView];
+         }
+         */
+        
+        /*
+         annotationView = [[DXAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:NSStringFromClass([DXAnnotationView class])];
+         [annotationView addSubview:pinView];
+         */
+        
+        //annotationView.image = [UIImage imageNamed:annotation1.pinName];
+        
+        
+        annotationView.tag = annotation1.tag;
         
         return annotationView;
     }
+    
+    
     return nil;
-}
-
-- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
-    if ([view isKindOfClass:[DXAnnotationView class]]) {
-        [((DXAnnotationView *)view)hideCalloutView];
-        view.layer.zPosition = -1;
-    }
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
     if ([view isKindOfClass:[DXAnnotationView class]]) {
         [((DXAnnotationView *)view)showCalloutView];
         view.layer.zPosition = 0;
-        NSLog(@"select anno : %ld",(long)view.tag);
+        DXAnnotationView *dxView = (DXAnnotationView *)view;
+        
+        NSInteger indexObj = dxView.tag;
+        
+        NSLog(@"test annotation %ld",(long)indexObj);
+        [self->mapView removeAnnotations:self->mapView.annotations];
+//        [self changeLocation:5];
+        
+//        [previewScrollView setContentOffset:CGPointMake(previewScrollView.frame.size.width * indexObj, 0.0f)];
     }
 }
+
+- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
+    [((DXAnnotationView *)view)hideCalloutView];
+    view.layer.zPosition = -1;
+    //NSLog(@"deselect test annotation");
+}
+
 
 -(UIImage*)resizeImage:(UIImage *)image imageSize:(CGSize)size
 {

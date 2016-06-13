@@ -695,6 +695,8 @@
          */
         
         //annotationView.image = [UIImage imageNamed:annotation1.pinName];
+        
+        
         annotationView.tag = annotation1.tag;
         
         return annotationView;
@@ -711,7 +713,7 @@
         
         NSInteger indexObj = dxView.tag;
         
-        //NSLog(@"test annotation %ld",(long)indexObj);
+        NSLog(@"test annotation %ld",(long)indexObj);
         
         [previewScrollView setContentOffset:CGPointMake(previewScrollView.frame.size.width * indexObj, 0.0f)];
     }
