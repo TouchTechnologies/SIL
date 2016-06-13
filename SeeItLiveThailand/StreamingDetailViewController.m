@@ -217,6 +217,7 @@
     [super viewDidLoad];
     [self initialSize];
     [self initial];
+    [self setVideoData];
     [self addLabel];
     self.view.backgroundColor = [UIColor whiteColor];
     NSLog(@"IS FULLSCREEN ::: %@" , self.player.isFullScreen ? @"true":@"false");
@@ -226,37 +227,9 @@
     liveIncategoryTbl.dataSource = self;
     scrollView.delegate = self;
     appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
-    
+    [self getCategoryList];
    // [liveIncategoryTbl removeFromSuperview];
-    __weak StreamingDetailViewController *weakSelf = self;
-    weakSelf.streamList = [[NSArray alloc]init];
- 
 
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-        //Background Thread
-        [[DataManager shareManager] getStreamingWithCompletionBlockByCatgoryID:^(BOOL success, NSArray *streamRecords, NSError *error) {
-            if (success) {
-              
-                weakSelf.streamList = streamRecords;
-                NSLog(@"STREAMLIST Cat COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
-                
-                
-            } else {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [alert show];
-            }
-            
-           count = [weakSelf.streamList count];
-           [liveIncategoryTbl reloadData];
-        } :self.objStreaming.categoryID];
-       
-        
-        dispatch_async(dispatch_get_main_queue(), ^(void){
-            //Run UI Updates
-            
-        });
-        
-    });
     
     
 //        [[NSNotificationCenter defaultCenter] addObserver:self
@@ -298,17 +271,45 @@
     //[self addDemoControl];
     
 }
+- (void)getCategoryList
+{
+    __weak StreamingDetailViewController *weakSelf = self;
+    weakSelf.streamList = [[NSArray alloc]init];
+    
+    
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+        //Background Thread
+        [[DataManager shareManager] getStreamingWithCompletionBlockByCatgoryID:^(BOOL success, NSArray *streamRecords, NSError *error) {
+            if (success) {
+                
+                weakSelf.streamList = streamRecords;
+                NSLog(@"STREAMLIST Cat COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
+                
+                
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+            }
+            
+            count = [weakSelf.streamList count];
+            [liveIncategoryTbl reloadData];
+        } :self.objStreaming.categoryID];
+        
+        
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            //Run UI Updates
+            
+        });
+        
+    });
+}
 - (void)initial{
     
    ///[scrollView setBackgroundColor:[UIColor blackColor]];
    
     self.player = [[VKVideoPlayer alloc] init];
     profileView.hidden = FALSE;
-    NSLog(@"streamID %@",self.objStreaming.ID);
-    CLLocation* location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake([self.objStreaming.latitude floatValue], [self.objStreaming.longitude floatValue]) altitude:0 horizontalAccuracy:0 verticalAccuracy:0 course:0 speed:0 timestamp:nil];
-    
-    [self getAddressFromLocation:location];
-    [self setSocket:[self.objStreaming.ID integerValue]];
+
     CGFloat ss;
     ss = 100;
     
@@ -354,7 +355,7 @@
     font = [UIFont fontWithName:@"Helvetica" size:fontSize];
     steamingTitle = [[UILabel alloc] initWithFrame:vdoLabelPortRect];
     steamingTitle.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    steamingTitle.text = self.objStreaming.streamTitle;
+//    steamingTitle.text = self.objStreaming.streamTitle;
     steamingTitle.textColor = [UIColor whiteColor];
     steamingTitle.backgroundColor = [UIColor clearColor];
     steamingTitle.textAlignment = NSTextAlignmentLeft;
@@ -374,7 +375,7 @@
     
     lblcategoryType = [[UILabel alloc] initWithFrame:lblcategoryTypeRect];
     lblcategoryType.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    lblcategoryType.text = self.objStreaming.categoryName;
+//    lblcategoryType.text = self.objStreaming.categoryName;
     lblcategoryType.textColor = [UIColor redColor];
     lblcategoryType.backgroundColor = [UIColor clearColor];
     lblcategoryType.textAlignment = NSTextAlignmentLeft;
@@ -463,7 +464,7 @@
     
     lblViewCount = [[UILabel alloc] initWithFrame:lblViewCountPortRect];
     lblViewCount.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    lblViewCount.text = self.objStreaming.streamTotalView;
+//    lblViewCount.text = self.objStreaming.streamTotalView;
     lblViewCount.textColor = [UIColor whiteColor];
     lblViewCount.backgroundColor = [UIColor clearColor];
     lblViewCount.textAlignment = NSTextAlignmentLeft;
@@ -484,7 +485,7 @@
     //[propViewPort addSubview:btnLove];
     
     loveCount = [[UITextField alloc] initWithFrame:lblLoveCountPortRect];
-    [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
+//    [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
     loveCount.textColor = [UIColor whiteColor];
     //  loveCount.backgroundColor = [UIColor whiteColor];
     loveCount.textAlignment = NSTextAlignmentLeft;
@@ -495,14 +496,14 @@
     
     
 //    NSLog(@"isLove : %d",self.objStreaming.isLoved);
-    if (self.objStreaming.isLoved)
-    {
-        [btnLove setImage:[UIImage imageNamed:@"ic_love2.png"] forState:UIControlStateNormal];
-    }
-    else
-    {
-       [btnLove setImage:[UIImage imageNamed:@"ic_love.png"] forState:UIControlStateNormal];
-    }
+//    if (self.objStreaming.isLoved)
+//    {
+//        [btnLove setImage:[UIImage imageNamed:@"ic_love2.png"] forState:UIControlStateNormal];
+//    }
+//    else
+//    {
+//       [btnLove setImage:[UIImage imageNamed:@"ic_love.png"] forState:UIControlStateNormal];
+//    }
     
     
     
@@ -552,7 +553,7 @@
     
     lblCommentCount = [[UILabel alloc] initWithFrame:lblCommentCountPortRect];
     lblCommentCount.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    lblCommentCount.text = (self.objStreaming.count_comment != nil)?[NSString stringWithFormat:@"%@" ,self.objStreaming.count_comment]:@"0";
+//    lblCommentCount.text = (self.objStreaming.count_comment != nil)?[NSString stringWithFormat:@"%@" ,self.objStreaming.count_comment]:@"0";
     lblCommentCount.textColor = [UIColor whiteColor];
     lblCommentCount.backgroundColor = [UIColor clearColor];
     lblCommentCount.textAlignment = NSTextAlignmentLeft;
@@ -560,11 +561,11 @@
     [propViewPort addSubview:lblCommentCount];
     
 //    NSLog(@"Lat %@ Long %@",self.objStreaming.latitude,self.objStreaming.longitude);
-    NSString *mapURL = [@"https://maps.googleapis.com/maps/api/staticmap?center=" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:[@"&zoom=15&size=800x150&markers=color:red%7C" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:@"&key=AIzaSyAimot0aIsIsItn1F_BYXy6YVG-2Jc8MYs"]]]]]]]];
+//    NSString *mapURL = [@"https://maps.googleapis.com/maps/api/staticmap?center=" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:[@"&zoom=15&size=800x150&markers=color:red%7C" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:@"&key=AIzaSyAimot0aIsIsItn1F_BYXy6YVG-2Jc8MYs"]]]]]]]];
     
 //    NSLog(@"Map URL : %@",mapURL);
     mapImg = [[UIImageView alloc] initWithFrame:mapImgRect];
-    mapImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:mapURL]]];
+//    mapImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:mapURL]]];
     mapImg.backgroundColor = [UIColor greenColor];
     [scrollView addSubview:mapImg];
     
@@ -573,13 +574,13 @@
     profileView.backgroundColor = [UIColor blackColor];
     
     avatarImg = [[UIImageView alloc] initWithFrame:AvatarRect];
-    avatarImg.image = (self.objStreaming.streamUserImage != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.objStreaming.streamUserImage]]]:[UIImage imageNamed:@"blank.png"];
+    avatarImg.image = [UIImage imageNamed:@"blank.png"];
     avatarImg.layer.cornerRadius = AvatarRect.size.width/2;
     avatarImg.clipsToBounds = YES;
     [profileView addSubview:avatarImg];
     
     usernameLbl = [[UILabel alloc]initWithFrame:usernameLblRect];
-    usernameLbl.text = self.objStreaming.streamUserName;
+//    usernameLbl.text = self.objStreaming.streamUserName;
     usernameLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize];
     usernameLbl.textColor = [UIColor whiteColor];
     [profileView addSubview:usernameLbl];
@@ -591,7 +592,7 @@
     [profileView addSubview:followerLbl];
 
     followerCountLbl = [[UILabel alloc]initWithFrame:followerCountLblRect];
-    followerCountLbl.text = self.objStreaming.streamUserFollowerCount;
+//    followerCountLbl.text = self.objStreaming.streamUserFollowerCount;
     followerCountLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 2];
     followerCountLbl.textColor = [UIColor redColor];
     [profileView addSubview:followerCountLbl];
@@ -602,7 +603,7 @@
     tableHeaderView.backgroundColor = [UIColor whiteColor];
     
     iconCategoryImg = [[UIImageView alloc] initWithFrame:iconCategoryImgRect];
-    iconCategoryImg.image = (self.objStreaming.streamUserImage != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.objStreaming.streamUserImage]]]:[UIImage imageNamed:@"blank.png"];
+    iconCategoryImg.image = (self.objStreaming.categoryImage != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.objStreaming.categoryImage]]]:[UIImage imageNamed:@"blank.png"];
     iconCategoryImg.layer.cornerRadius = iconCategoryImgRect.size.width/2;
     iconCategoryImg.clipsToBounds = YES;
     [tableHeaderView addSubview:iconCategoryImg];
@@ -671,6 +672,38 @@
 //    [chatTbl registerClass:UITableViewCell.self forCellReuseIdentifier:@"cell"];
 //    //  chatplaceView = [[UIView alloc] initWithFrame:CGRectMake(42, 2 ,chatTblRect.size.width - 44, cellH - 4)];
 
+}
+- (void)setVideoData
+{
+    CLLocation* location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake([self.objStreaming.latitude floatValue], [self.objStreaming.longitude floatValue]) altitude:0 horizontalAccuracy:0 verticalAccuracy:0 course:0 speed:0 timestamp:nil];
+    
+    [self getAddressFromLocation:location];
+    
+    NSLog(@"streamID %@",self.objStreaming.ID);
+    
+    [self setSocket:[self.objStreaming.ID intValue]];
+    
+    steamingTitle.text = self.objStreaming.streamTitle;
+    lblcategoryType.text = self.objStreaming.categoryName;
+    lblViewCount.text = self.objStreaming.streamTotalView;
+    [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
+    if (self.objStreaming.isLoved)
+    {
+        [btnLove setImage:[UIImage imageNamed:@"ic_love2.png"] forState:UIControlStateNormal];
+    }
+    else
+    {
+        [btnLove setImage:[UIImage imageNamed:@"ic_love.png"] forState:UIControlStateNormal];
+    }
+    lblCommentCount.text = (self.objStreaming.count_comment != nil)?[NSString stringWithFormat:@"%@" ,self.objStreaming.count_comment]:@"0";
+    
+    NSString *mapURL = [@"https://maps.googleapis.com/maps/api/staticmap?center=" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:[@"&zoom=15&size=800x150&markers=color:red%7C" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:@"&key=AIzaSyAimot0aIsIsItn1F_BYXy6YVG-2Jc8MYs"]]]]]]]];
+    mapImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:mapURL]]];
+    avatarImg.image = (self.objStreaming.streamUserImage != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.objStreaming.streamUserImage]]]:[UIImage imageNamed:@"blank.png"];
+    
+    usernameLbl.text = self.objStreaming.streamUserName;
+    followerCountLbl.text = self.objStreaming.streamUserFollowerCount;
+    
 }
 - (void)shareStream:(id)sender
 {
@@ -1463,8 +1496,14 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSLog(@"Select");
     self.objStreaming = [_streamList objectAtIndex:indexPath.row];
-//    [liveIncategoryTbl reloadData];
-    [self viewDidAppear:true];
+    
+//    self.player.state = VKVideoPlayerStateContentPaused;
+//    [socket disconnect];
+    
+    [self playSampleClip1];
+    [self setVideoData];
+//    [self initial];
+    
     
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
