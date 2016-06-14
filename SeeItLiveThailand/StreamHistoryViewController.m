@@ -371,7 +371,7 @@
     
     [moreBtn removeFromSuperview];
     NSString *filter = [@"?" stringByAppendingFormat:@"filterLimit=%d&filtersPage=%d",filter_limit,1];
-    
+     NSLog(@"FILTER ::: %@",filter);
     [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
         
         if (success) {
@@ -404,6 +404,7 @@
     
     
     NSString *filter = [@"?" stringByAppendingFormat:@"filterLimit=%d&filtersPage=%d",filter_limit*filterPage ,1];
+  
     
     [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
         

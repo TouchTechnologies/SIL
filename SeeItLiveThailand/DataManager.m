@@ -271,6 +271,21 @@ static DataManager *staticManager = nil;
         [self downloadStreamingDetailForRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:StreamingHistoryURL]]];
     }
 }
+- (void)getStreamingWithCompletionBlockWithFilterCat:(StreamingCompletionBlock)block  Filter:(NSString*)filter{
+    if (block) {
+        
+        NSString *StreamingHistoryFilterURL ;
+        if(filter != nil)
+        {
+            StreamingHistoryFilterURL = [StreamingHistoryURLByCatgory stringByAppendingFormat:@"%@",filter];
+        }else
+        {
+            StreamingHistoryFilterURL = StreamingHistoryURLByCatgory;
+        }
+        self.streamingBlock = block;
+        [self downloadStreamingDetailForRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:StreamingHistoryFilterURL]]];
+    }
+}
 - (void)getStreamingWithCompletionBlockWithFilter:(StreamingCompletionBlock)block  Filter:(NSString*)filter{
     if (block) {
         

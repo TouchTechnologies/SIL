@@ -16,6 +16,7 @@ typedef void (^StreamingLiveCompletionBlock)(BOOL success,NSArray *streamRecords
 @interface DataManager : NSObject
 
 + (id)shareManager;
+- (void)getStreamingWithCompletionBlockWithFilterCat:(StreamingCompletionBlock)block  Filter:(NSString*)filter;
 - (void)getCCTVwithCompletionBlock:(ROICompletionBlock)block;
 - (void)getCCTVwithCompletionBlockDatabase:(ROICompletionBlock)block;
 - (void)getStreamingWithCompletionBlock:(StreamingCompletionBlock)block;
