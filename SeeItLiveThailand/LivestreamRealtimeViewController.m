@@ -507,7 +507,7 @@
         bottomHeight = 100.0*scy;
         
         
-         chatViewPortRect = CGRectMake(0*scx, self.view.bounds.size.height / 2 + (70*scy) , self.view.bounds.size.width, self.view.bounds.size.height - (self.view.bounds.size.height / 2 + (70*scy)));
+        chatViewPortRect = CGRectMake(0*scx, self.view.bounds.size.height / 2 + (70*scy) , self.view.bounds.size.width, self.view.bounds.size.height - (self.view.bounds.size.height / 2 + (70*scy)));
         
         chatTblPortRect = CGRectMake(20*scx, 10*scy , self.view.bounds.size.width - (50*scx), chatViewPortRect.size.height - (60*scy));
         userChatImgRect = CGRectMake(0*scx, 0*scy , 40*scx , 40*scy);
@@ -1116,17 +1116,19 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
     cell.backgroundColor = [UIColor clearColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    [cell.contentView removeFromSuperview];
+  //  [cell.contentView removeFromSuperview];
     
     //get Comment Data
     Commentator *comment = [[Commentator alloc]init];
     comment = [commentData objectAtIndex:indexPath.row];
+    NSLog(@"COOMMENTT%@",comment);
     
     userChatImg = [[UIImageView alloc] initWithFrame:userChatImgRect];
     
 
     userChatImg.layer.cornerRadius = 5;
     userChatImg.clipsToBounds = YES;
+    
     userChatImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:comment.profile_picture]]];
      [cell.contentView addSubview:userChatImg];
     
@@ -1136,14 +1138,14 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
         chatplaceView = [[UIView alloc] initWithFrame:CGRectMake(55*scx, 2*scy ,chatTbl.bounds.size.width - (54*scx), cellH - (4*scy ))];
         textchatLbl = [[UILabel alloc] initWithFrame: CGRectMake(55*scx, 4*scy , chatplaceView.bounds.size.width - (10*scx) , 20*scy )];
         userChatLbl = [[UILabel alloc] initWithFrame:CGRectMake(55*scx,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + (2 *scy ) , chatplaceView.bounds.size.width - (10*scx), 20*scy )];
-        objChatLbl = [[UILabel alloc] initWithFrame: CGRectMake(55*scx, 4*scy , chatplaceView.bounds.size.width - (10*scx) , 20*scy )];
+        objChatLbl = [[UILabel alloc] initWithFrame: CGRectMake(5*scx, 4*scy , chatplaceView.bounds.size.width - (10*scx) , 20*scy )];
         
     }
     else{
         chatplaceView = [[UIView alloc] initWithFrame:CGRectMake(52, 2 ,chatTbl.bounds.size.width - 54, cellH - 4)];
-        textchatLbl = [[UILabel alloc] initWithFrame: CGRectMake(55, 4, chatplaceView.bounds.size.width - 10 , 20)];
-        userChatLbl = [[UILabel alloc] initWithFrame:CGRectMake(55,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + 2 , chatplaceView.bounds.size.width - 10, 20)];
-        objChatLbl = [[UILabel alloc] initWithFrame: CGRectMake(55, 4, chatplaceView.bounds.size.width - 10 , 20)];
+       textchatLbl = [[UILabel alloc] initWithFrame: CGRectMake(55, 4, chatplaceView.bounds.size.width - 10 , 20)];
+       userChatLbl = [[UILabel alloc] initWithFrame:CGRectMake(55,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + 2 , chatplaceView.bounds.size.width - 10, 20)];
+        objChatLbl = [[UILabel alloc] initWithFrame: CGRectMake(5, 4, chatplaceView.bounds.size.width - 10 , 20)];
     }
     
   // [chatplaceView setFrame:];
@@ -1176,11 +1178,13 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
     
 
     objChatLbl.text = chatTxt;
+    objChatLbl.textColor=[UIColor blackColor];
+    objChatLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 4];
     objChatLbl.lineBreakMode = NSLineBreakByWordWrapping;
     objChatLbl.numberOfLines = 0;
     objChatLbl.textAlignment = NSTextAlignmentJustified;
     [objChatLbl sizeToFit];
-    [cell.contentView addSubview:objChatLbl];
+    [chatplaceView addSubview:objChatLbl];
 
     return cell;
 }
@@ -1188,7 +1192,7 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
     NSLog(@"Select");
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (objChatLbl.bounds.size.height + 5 <= cellH) {
+    if (objChatLbl.bounds.size.height <= cellH) {
         return cellH ;
     }
     else{
@@ -1210,7 +1214,7 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
     }
 }
 
--(BOOL) textFieldShouldReturn: (UITextField *) textField
+-(BOOL) textFieldShouldReturn: (UITextField *)textField
 {
     [textField resignFirstResponder];
     return YES;
@@ -1243,7 +1247,7 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
         NSLog(@"22");
         width = [UIScreen mainScreen].bounds.size.width;
         height = [UIScreen mainScreen].bounds.size.height;
-        [self.view setFrame:CGRectMake(0, -keyboardFrameBeginRect.size.height ,width,height)];
+        [self.view setFrame:CGRectMake(0,-keyboardFrameBeginRect.size.height ,width,height)];
    }
 -(void)keyboardDidHide:(NSNotification *)notification
 {

@@ -666,7 +666,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/LivestreamRealtimeViewController.m"
-            timestampString = "486638377.501559"
+            timestampString = "487498942.777373"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "748"
@@ -906,7 +906,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/LivestreamRealtimeViewController.m"
-            timestampString = "486638377.501559"
+            timestampString = "487498942.777373"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1102"
@@ -922,11 +922,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/CategoryListViewController.m"
-            timestampString = "487157444.826337"
+            timestampString = "487484413.076377"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "689"
-            endingLineNumber = "689"
+            startingLineNumber = "688"
+            endingLineNumber = "688"
             landmarkName = "-gridView:cellForItemAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -938,11 +938,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/CategoryListViewController.m"
-            timestampString = "487157444.826337"
+            timestampString = "487484413.076377"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "694"
-            endingLineNumber = "694"
+            startingLineNumber = "693"
+            endingLineNumber = "693"
             landmarkName = "-gridView:cellForItemAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1146,11 +1146,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/LiveStreamVC.swift"
-            timestampString = "486897385.04518"
+            timestampString = "487567016.060465"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1644"
-            endingLineNumber = "1644"
+            startingLineNumber = "1655"
+            endingLineNumber = "1655"
             landmarkName = "getLocationName()"
             landmarkType = "5">
             <Locations>
@@ -1194,11 +1194,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/CategoryListViewController.m"
-            timestampString = "487157135.431285"
+            timestampString = "487484413.076377"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "557"
-            endingLineNumber = "557"
+            startingLineNumber = "556"
+            endingLineNumber = "556"
             landmarkName = "-loadmore:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1210,11 +1210,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/CategoryListViewController.m"
-            timestampString = "487156989.388698"
+            timestampString = "487484413.076377"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "470"
-            endingLineNumber = "470"
+            startingLineNumber = "469"
+            endingLineNumber = "469"
             landmarkName = "-adPageControlCurrentVisiblePageIndex:"
             landmarkType = "5">
             <Locations>
@@ -1288,11 +1288,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/CategoryListViewController.m"
-            timestampString = "487157135.431285"
+            timestampString = "487484413.076377"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "555"
-            endingLineNumber = "555"
+            startingLineNumber = "554"
+            endingLineNumber = "554"
             landmarkName = "@implementation CategoryListViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -1310,6 +1310,22 @@
             startingLineNumber = "411"
             endingLineNumber = "411"
             landmarkName = "-adPageControlGetViewControllerForPageModel:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SeeItLiveThailand/StreamingDetailViewController.m"
+            timestampString = "487494668.411747"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1459"
+            endingLineNumber = "1459"
+            landmarkName = "-scrollViewDidScroll:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

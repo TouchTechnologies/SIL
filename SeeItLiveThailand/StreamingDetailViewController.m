@@ -853,9 +853,9 @@
         
         waterMarkRect = CGRectMake((liveSnapshortImgRect.size.width) - (imgHeight+(5*scx)), (liveSnapshortImgRect.size.height)-(imgHeight+(5*scy)), imgHeight, imgHeight);
 
-        streamTitleCellLblRect = CGRectMake(self.view.bounds.size.width/2 - (20*scx), cellH/4 - (fontSize/2), self.view.bounds.size.width/2, fontSize);
-        categoryTitleCellLblRect =  CGRectMake(self.view.bounds.size.width/2 - (20*scx), cellH/2 - (fontSize/2), 60*scy, fontSize);
-        categoryTypeCellLblRect = CGRectMake(self.view.bounds.size.width/2 + (40*scx), cellH/2 - (fontSize/2), 100*scx, fontSize);
+        streamTitleCellLblRect = CGRectMake(self.view.bounds.size.width/2 - (20*scx), cellH/4 - (fontSize), self.view.bounds.size.width/2, fontSize+(2*scy));
+        categoryTitleCellLblRect =  CGRectMake(self.view.bounds.size.width/2 - (20*scx), cellH/2 - (fontSize), 60*scy, fontSize);
+        categoryTypeCellLblRect = CGRectMake(self.view.bounds.size.width/2 + (40*scx), cellH/2 - (fontSize), 100*scx, fontSize);
         imgLoveCellRect = CGRectMake(self.view.bounds.size.width/2 - (20*scx), cellH - (30*scy), 20*scx, 20*scy);
         loveCountCellLblRect = CGRectMake(self.view.bounds.size.width/2 + (5*scx) , cellH - (25*scy), 50*scx, fontSize);
         userAvatarCellimgRect = CGRectMake(self.view.bounds.size.width - (50*scx), cellH - (50*scy) , 40*scx, 40*scy);
@@ -927,9 +927,9 @@
       
         waterMarkRect = CGRectMake((liveSnapshortImgRect.size.width) - (imgHeight+5), (liveSnapshortImgRect.size.height)-(imgHeight+5), imgHeight, imgHeight);
         
-         streamTitleCellLblRect = CGRectMake(self.view.bounds.size.width/2 - 20, cellH/4 - (fontSize/2), self.view.bounds.size.width/2, fontSize);
-         categoryTitleCellLblRect =  CGRectMake(self.view.bounds.size.width/2 - 20, cellH/2 - (fontSize/2), 60, fontSize);
-         categoryTypeCellLblRect = CGRectMake(self.view.bounds.size.width/2 + 40, cellH/2 - (fontSize/2), 100, fontSize);
+         streamTitleCellLblRect = CGRectMake(self.view.bounds.size.width/2 - 20, cellH/4 - (fontSize/2), self.view.bounds.size.width/2, fontSize+2);
+         categoryTitleCellLblRect =  CGRectMake(self.view.bounds.size.width/2 - 20, cellH/2 - (fontSize), 60, fontSize);
+         categoryTypeCellLblRect = CGRectMake(self.view.bounds.size.width/2 + 40, cellH/2 - (fontSize), 100, fontSize);
          imgLoveCellRect = CGRectMake(self.view.bounds.size.width/2 - 20, cellH - 30, 20, 20);
          loveCountCellLblRect = CGRectMake(self.view.bounds.size.width/2 + 5 , cellH - 25, 50, fontSize);
          userAvatarCellimgRect = CGRectMake(self.view.bounds.size.width - 50, cellH - 50 , 40, 40);
@@ -1389,8 +1389,7 @@
 //        liveSnapshortImg.image = [UIImage imageNamed:@"sil_big.jpg"];
 //    }
 //    else{
-//        NSLog(@"liveSnapshortImg valid");
-//        liveSnapshortImg.image = image;
+//        NSLog(@"liveSnapshortImg valid");//        liveSnapshortImg.image = image;
 //    }
     HNKCacheFormat *format = [HNKCache sharedCache].formats[@"thumbnail"];
     if (!format)
@@ -1404,8 +1403,7 @@
     }
     liveSnapshortImg.hnk_cacheFormat = format;
     [liveSnapshortImg hnk_setImageFromURL:[NSURL URLWithString:stream.snapshot]];
-    
-    
+    liveSnapshortImg.contentMode = UIViewContentModeScaleToFill;
     
     waterMark = [[UIImageView alloc] initWithFrame:waterMarkRect];
     waterMark.image = [UIImage imageNamed:@"play.png"];
@@ -1458,7 +1456,29 @@
     [liveIncategoryTbl setFrame:tblSetframe];
     return cell;
 }
+- (void)scrollViewDidScroll:(UIScrollView *)sender {
+    
+    if (scrollView.contentOffset.y == 0) {
+        self.player.view.topControlOverlay.hidden = FALSE;
+        self.player.view.bottomControlOverlay.hidden = FALSE;
+    }
+    else{
+        self.player.view.topControlOverlay.hidden = TRUE;
+        self.player.view.bottomControlOverlay.hidden = TRUE;
+    }
+}
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+
+//   UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)indexPath;
+//    NSLog (@"Tag Playyyyy %ld",[tapRecognizer.view tag]);
+    //    UserTag = [tapRecognizer.view tag];
+    NSInteger playTag = [indexPath row];
+
+
+    self.objStreaming = [self.streamList objectAtIndex:playTag];
+       [self.view reloadInputViews];
+
+    
     NSLog(@"Select");
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

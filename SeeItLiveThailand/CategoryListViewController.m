@@ -448,7 +448,6 @@
     __weak CategoryListViewController *weakSelf = self;
     weakSelf.streamList = [[NSArray alloc]init];
     
-    
     [[DataManager shareManager] getStreamingWithCompletionBlockByCatgoryID:^(BOOL success, NSArray *streamRecords, NSError *error) {
         //                [hud hide:YES];
         if (success) {
