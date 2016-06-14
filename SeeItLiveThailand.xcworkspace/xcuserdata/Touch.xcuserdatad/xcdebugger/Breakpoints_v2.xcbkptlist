@@ -474,7 +474,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/CommentViewController.m"
-            timestampString = "479632844.103565"
+            timestampString = "487589738.769894"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "94"
@@ -666,11 +666,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/LivestreamRealtimeViewController.m"
-            timestampString = "487498942.777373"
+            timestampString = "487585340.776649"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "748"
-            endingLineNumber = "748"
+            startingLineNumber = "752"
+            endingLineNumber = "752"
             landmarkName = "-sendComment:"
             landmarkType = "5">
          </BreakpointContent>
@@ -714,11 +714,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/LivestreamRealtimeViewController.m"
-            timestampString = "486638377.501559"
+            timestampString = "487585340.776649"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "594"
-            endingLineNumber = "594"
+            startingLineNumber = "598"
+            endingLineNumber = "598"
             landmarkName = "-prefersStatusBarHidden"
             landmarkType = "5">
          </BreakpointContent>
@@ -751,7 +751,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "704"
             endingLineNumber = "704"
-            landmarkName = "-shareStream:"
+            landmarkName = "-setVideoData"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -906,11 +906,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/LivestreamRealtimeViewController.m"
-            timestampString = "487498942.777373"
+            timestampString = "487585340.776649"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1102"
-            endingLineNumber = "1102"
+            startingLineNumber = "1106"
+            endingLineNumber = "1106"
             landmarkName = "-videoPlayer:didChangeOrientationFrom:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1247,7 +1247,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1459"
             endingLineNumber = "1459"
-            landmarkName = "-scrollViewDidScroll:"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1322,12 +1322,12 @@
                   moduleName = "SeeItLiveThailand"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Touch/Documents/TouchGit/SIL/SeeItLiveThailand/CategoryListViewController.m"
-                  timestampString = "487580249.437685"
+                  timestampString = "487588493.513998"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "455"
-                  endingLineNumber = "455"
-                  offsetFromSymbolStart = "991">
+                  startingLineNumber = "457"
+                  endingLineNumber = "457"
+                  offsetFromSymbolStart = "872">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -1337,12 +1337,12 @@
                   moduleName = "SeeItLiveThailand"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Touch/Documents/TouchGit/SIL/SeeItLiveThailand/CategoryListViewController.m"
-                  timestampString = "487580249.437806"
+                  timestampString = "487588493.51412"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "457"
-                  endingLineNumber = "457"
-                  offsetFromSymbolStart = "90">
+                  startingLineNumber = "459"
+                  endingLineNumber = "459"
+                  offsetFromSymbolStart = "56">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -1360,6 +1360,38 @@
             startingLineNumber = "453"
             endingLineNumber = "453"
             landmarkName = "-adPageControlCurrentVisiblePageIndex:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SeeItLiveThailand/CommentViewController.m"
+            timestampString = "487589738.769894"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "268"
+            endingLineNumber = "268"
+            landmarkName = "-tableView:heightForRowAtIndexPath:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SeeItLiveThailand/CommentViewController.m"
+            timestampString = "487589738.769894"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "270"
+            endingLineNumber = "270"
+            landmarkName = "-tableView:heightForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
