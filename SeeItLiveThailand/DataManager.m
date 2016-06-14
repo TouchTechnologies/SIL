@@ -294,6 +294,8 @@ static DataManager *staticManager = nil;
 }
 - (void)getStreamingWithCompletionBlockByCatgoryID:(StreamingCompletionBlock)block :(int)catID{
     if (block) {
+        
+        
         self.streamingBlock = block;
 //        NSLog(@"StreamingHistoryURLByCatgory : %@",[StreamingHistoryURLByCatgory stringByAppendingFormat:@"%d",catID]);
         [self downloadStreamingDetailForRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[StreamingHistoryURLByCatgory stringByAppendingFormat:@"%d",catID]]]];

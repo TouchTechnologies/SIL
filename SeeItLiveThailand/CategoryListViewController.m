@@ -91,7 +91,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
+    appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     scrollView.delegate = self;
     [self initialSize];
     [self setupPageControl];
@@ -462,7 +462,7 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
         }
-        _count = weakSelf.streamList.count*filterPage;
+       // _count = weakSelf.streamList.count*filterPage;
         [weakSelf.gridView reloadData];
       
        // getStreamingWithCompletionBlockByCatgoryID:(StreamingCompletionBlock)block :(int)catID{
@@ -553,7 +553,7 @@
 }
 
 
--(NSInteger)loadmore:(UIButton *)sender{
+-(void)loadmore:(UIButton *)sender{
  //   pageModel.iPageNumber;
     NSLog(@"LOAD MORE ACTIVE");
     
@@ -566,8 +566,11 @@
     filterPage += sender.tag;
     NSLog(@"filterPage :%lu",filterPage);
     
-    return filterPage;
     [weakSelf.gridView reloadData];
+    
+    
+    
+    
 //  count = weakSelf.streamList.count*filterPage;
     
      //[moreBtn reloadInputViews];
@@ -598,7 +601,7 @@
 
 - (NSUInteger)gridView:(KKGridView *)gridView numberOfItemsInSection:(NSUInteger)section
 {
-    return self.streamList.count*filterPage;
+        return self.streamList.count;
 }
 
 
