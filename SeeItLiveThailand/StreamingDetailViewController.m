@@ -518,11 +518,13 @@
     [TapLogin setNumberOfTouchesRequired:1];
     [TapLogin setDelegate:self];
     if (appDelegate.isLogin) {
+        NSLog(@"login");
         [btnLove addGestureRecognizer:TapLove];
         TapLove.enabled = YES;
         TapLogin.enabled = NO;
     }
     else{
+        NSLog(@"not login");
         TapLove.enabled = NO;
         TapLogin.enabled = YES;
         [btnLove addGestureRecognizer:TapLogin];

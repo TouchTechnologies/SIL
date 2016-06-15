@@ -25,7 +25,6 @@
 #import "UserProfileViewController.h"
 #import "UserData.h"
 #import "CommentViewController.h"
-#import "AppDelegate.h"
 #import "LoginViewController.h"
 #import "LiveStreamingCell.h"
 #import "LivestreamRealtimeViewController.h"
