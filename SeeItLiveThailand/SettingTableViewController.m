@@ -24,6 +24,7 @@
     
     UIButton *upgradeBtn;
     CGRect upgradeViewRect;
+    CGRect closePopupRect;
     CGRect upgradeBtnRect;
     CGRect titleRect;
     CGRect keyTxtRect;
@@ -229,7 +230,7 @@
         cellH = 70 * SCALING_Y;
         // scHeight = 240 * SCALING_Y;
         upgradeBtnRect = CGRectMake(self.view.bounds.size.width/2 - (40*scx), cellH/2 - (20*scy), 80*scx, 40*scy);
-        upgradeViewRect = CGRectMake(0*scx, 0*scy, self.view.bounds.size.width/1.5 , self.view.bounds.size.height/4 );
+        upgradeViewRect = CGRectMake(0*scx, 0*scy, self.view.bounds.size.width/1.5 ,150*scy);
         titleRect = CGRectMake(0*scx, 20*scy, upgradeViewRect.size.width , 30*scy);
         keyTxtRect = CGRectMake(10*scx, 50*scy, upgradeViewRect.size.width - (20*scx), 30*scy) ;
         submitBtnRect = CGRectMake(upgradeViewRect.size.width/2 - (20*scx),keyTxtRect.origin.y + keyTxtRect.size.height + (5*scy), 40*scx, 30*scy);
@@ -237,10 +238,10 @@
     else {
         cellH = 70;
         upgradeBtnRect = CGRectMake(self.view.bounds.size.width/2 - 40, cellH/2 - 20, 80, 40);
-        upgradeViewRect = CGRectMake(0, 0, self.view.bounds.size.width/1.5 , self.view.bounds.size.height/4 );
+        upgradeViewRect = CGRectMake(0, 0, self.view.bounds.size.width/1.5 , 150);
         titleRect = CGRectMake(0, 20, upgradeViewRect.size.width , 30);
         keyTxtRect = CGRectMake(10, 50, upgradeViewRect.size.width - 20, 30) ;
-        submitBtnRect = CGRectMake(upgradeViewRect.size.width/2 - 20, upgradeViewRect.size.height - 50, 40, 30);
+        submitBtnRect = CGRectMake(upgradeViewRect.size.width/2 - 20, keyTxtRect.size.height + keyTxtRect.origin.y + 5, 40, 30);
     
     }
     
