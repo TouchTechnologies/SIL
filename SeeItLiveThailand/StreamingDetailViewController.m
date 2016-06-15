@@ -576,7 +576,7 @@
     profileView.backgroundColor = [UIColor blackColor];
     
     avatarImg = [[UIImageView alloc] initWithFrame:AvatarRect];
-    avatarImg.image = [UIImage imageNamed:@"blank.png"];
+    avatarImg.image = [UIImage imageNamed:@"anonymous.png"];
     avatarImg.layer.cornerRadius = AvatarRect.size.width/2;
     avatarImg.clipsToBounds = YES;
     [profileView addSubview:avatarImg];
@@ -707,7 +707,7 @@
         [scrollView addSubview:mapImg];
         
     }
-    avatarImg.image = (self.objStreaming.streamUserImage != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.objStreaming.streamUserImage]]]:[UIImage imageNamed:@"blank.png"];
+    avatarImg.image = (self.objStreaming.streamUserImage != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.objStreaming.streamUserImage]]]:[UIImage imageNamed:@"anonymous.png"];
     
     usernameLbl.text = self.objStreaming.streamUserName;
     followerCountLbl.text = self.objStreaming.streamUserFollowerCount;
@@ -1488,7 +1488,7 @@
 
     
     userAvatarCellimg = [[UIImageView alloc] initWithFrame:userAvatarCellimgRect];
-    userAvatarCellimg.image = [UIImage imageNamed:@"blank.png"];
+    userAvatarCellimg.image = [UIImage imageNamed:@"anonymous.png"];
     userAvatarCellimg.hnk_cacheFormat = format;
     [userAvatarCellimg hnk_setImageFromURL:[NSURL URLWithString:stream.streamUserImage]];
     

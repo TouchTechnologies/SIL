@@ -222,7 +222,7 @@
 
     
     AvatarDetailImg = [[UIImageView alloc] initWithFrame:AvatarDetailImgRect];
-    AvatarDetailImg.image = (self.objStreaming.streamUserImage != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.objStreaming.streamUserImage]]]:[UIImage imageNamed:@"blank.png"];
+    AvatarDetailImg.image = (self.objStreaming.streamUserImage != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.objStreaming.streamUserImage]]]:[UIImage imageNamed:@"anonymous.png"];
     AvatarDetailImg.layer.cornerRadius = AvatarDetailImgRect.size.width/2;
     AvatarDetailImg.clipsToBounds =YES ;
     AvatarDetailImg.contentMode = UIViewContentModeScaleAspectFill;
@@ -439,7 +439,7 @@
     [cell.contentView addSubview:loveCountCellLbl];
     
     userAvatarCellimg = [[UIImageView alloc] initWithFrame:userAvatarCellimgRect];
-    userAvatarCellimg.image = [UIImage imageNamed:@"blank.png"];
+    userAvatarCellimg.image = [UIImage imageNamed:@"anonymous.png"];
     
     userAvatarCellimg.hnk_cacheFormat = format;
     [userAvatarCellimg hnk_setImageFromURL:[NSURL URLWithString:stream.streamUserImage]];
