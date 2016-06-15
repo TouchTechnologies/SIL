@@ -862,7 +862,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         
         if (UIDevice.currentDevice().userInterfaceIdiom == .Pad){
             font = 14*scy
-            cellH = 80*scy
+            cellH = 40*scy
             fonttitle = 16*scy
             popUpViewCenX = UIScreen.mainScreen().bounds.size.height/(1.7*scy)
             popUpViewCenY = UIScreen.mainScreen().bounds.size.width/(1.6*scx)
@@ -905,7 +905,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             shareBtnRect = CGRectMake(UIScreen.mainScreen().bounds.size.height/2-popUpViewCenX/2,0*scy,50*scx,50*scy)
             
             popUpViewChatRect = CGRectMake(45*scx, 60*scy , streamViewRect.size.width/2 , streamViewRect.size.height - (150*scy));
-            imgUserChatRect = CGRectMake(2*scx, 2*scy, 40*scx , 40*scy)
+            imgUserChatRect = CGRectMake(2*scx, 2*scy, 35*scx , 35*scy)
             lblUserNameRect = CGRectMake((imgUserChatRect.size.width + imgUserChatRect.origin.x) + (5*scx), 2*scy, 70*scx , 30*scy)
             lblTextChatRect = CGRectMake(lblUserNameRect.origin.x + lblUserNameRect.size.width + (2*scx) , 2*scy, popUpViewChatRect.size.width - (50*scx), 30*scy)
             
@@ -980,7 +980,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             qualityPickerViewRect = CGRectMake(topCenViewRect.size.width/2+10,120,topCenViewRect.size.width/2,100)
             shareBtnRect = CGRectMake(UIScreen.mainScreen().bounds.size.height/2-popUpViewCenX/2,0,50,50)
             popUpViewChatRect = CGRectMake(45, 60 , streamViewRect.size.width/2 , streamViewRect.size.height - 150);
-            imgUserChatRect = CGRectMake(2, 2, 40 , 40)
+            imgUserChatRect = CGRectMake(2, 2, 35 , 35)
             lblUserNameRect = CGRectMake((imgUserChatRect.size.width + imgUserChatRect.origin.x)+10, 2, 70 , 30)
             lblTextChatRect = CGRectMake((imgUserChatRect.size.width + imgUserChatRect.origin.x)+10 , 2, popUpViewChatRect.size.width - 50, 30)
             
@@ -1045,11 +1045,11 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         cell.backgroundColor = UIColor.clearColor()
         cell.alpha = 0.5
         
-        let view = UIView(frame:CGRectMake(imgUserChatRect.size.width + 10,2,cell.contentView.bounds.size.width - (imgUserChatRect.size.width + 10) ,cell.contentView.bounds.size.height - 4))
-        view.backgroundColor = UIColor.whiteColor()
-        view.layer.cornerRadius = 5
-        view.clipsToBounds = true
-        cell.contentView.addSubview(view)
+//        let view = UIView(frame:CGRectMake(imgUserChatRect.size.width + 10,2,cell.contentView.bounds.size.width - (imgUserChatRect.size.width + 10) ,cell.contentView.bounds.size.height - 4))
+//        view.backgroundColor = UIColor.whiteColor()
+//        view.layer.cornerRadius = 5
+//        view.clipsToBounds = true
+//        cell.contentView.addSubview(view)
         
         //        var cm = Commentator()
         let cm = comments.objectAtIndex(indexPath.row) as! Commentator
@@ -1058,6 +1058,8 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         imgUserChat = UIImageView(frame:imgUserChatRect)
         //        imgUserChat.image = UIImage(named: "image1.jpg")
         imgUserChat.image = UIImage(data: NSData(contentsOfURL: NSURL(string: cm.profile_picture)!)!)
+        imgUserChat.layer.cornerRadius = 5
+        imgUserChat.clipsToBounds = true
         cell.contentView.addSubview(imgUserChat)
         
         
@@ -1068,43 +1070,51 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             chatplaceView = UIView(frame:CGRectMake(55*scx, 2*scy ,tableView.bounds.size.width - (54*scx), cellH - (4*scy )))
             lblTextChat = UILabel(frame : CGRectMake(55*scx, 4*scy , chatplaceView.bounds.size.width - (10*scx) , 20*scy ))
             lblUserName = UILabel(frame : CGRectMake(55*scx ,lblTextChat.bounds.origin.y + lblTextChat.bounds.size.height + (2*scy) , chatplaceView.bounds.size.width - (10*scx), 20*scy ))
-            objChatLbl = UILabel(frame: CGRectMake(55*scx, 4*scy , chatplaceView.bounds.size.width - (10*scx) , 20*scy ));
+            objChatLbl = UILabel(frame: CGRectMake(imgUserChatRect.size.width + (10*scx), 2*scy , chatplaceView.bounds.size.width-10, 30*scy ));
             
         }
         else{
             chatplaceView = UIView(frame:CGRectMake(55, 2 ,tableView.bounds.size.width - (54), cellH - (4)))
             lblTextChat = UILabel(frame : CGRectMake(55, 4 , chatplaceView.bounds.size.width - (10) , 20 ))
             lblUserName = UILabel(frame : CGRectMake(55 ,lblTextChat.bounds.origin.y + lblTextChat.bounds.size.height + (2) , chatplaceView.bounds.size.width - (10), 20))
-            objChatLbl = UILabel(frame: CGRectMake(55, 4, chatplaceView.bounds.size.width - (10) , 20));
+            objChatLbl = UILabel(frame: CGRectMake(imgUserChatRect.size.width + 10, 2, chatplaceView.bounds.size.width-10 , 30));
         }
 
+        
+        
+        let firstandlastname = "\(cm.first_name) \(cm.last_name) : "
+        
+        
+        print("LAST NAME ::: \(cm.last_name) ")
+        // lblUserName = UILabel(frame :lblUserNameRect)
+        //        lblUserName.text = "User test"
+//        lblUserName.text = firstandlastname as String
+//        lblUserName.font = UIFont(name:  "Helvetica", size: font)
+//        lblUserName.textAlignment = NSTextAlignment.Justified
+//        lblUserName.sizeToFit()
+        
+        //cell.contentView.addSubview(lblUserName)
+      //   lblTextChat.text =
+       // lblTextChat.font = UIFont(name:  "Helvetica", size: font)
+        
+        let textChat = cm.comment_content as String
         
         chatplaceView.backgroundColor = UIColor.whiteColor()
         chatplaceView.layer.cornerRadius = 5;
         chatplaceView.clipsToBounds = true;
-        cell.contentView.addSubview(chatplaceView)
-        
-        let firstandlastname = "\(cm.first_name) \(cm.last_name) : "
-        
-       // lblUserName = UILabel(frame :lblUserNameRect)
-        //        lblUserName.text = "User test"
-        lblUserName.text = firstandlastname as String
-        lblUserName.font = UIFont(name:  "Helvetica", size: font)
-        lblUserName.textAlignment = NSTextAlignment.Justified
-        lblUserName.sizeToFit()
-        
-        //cell.contentView.addSubview(lblUserName)
-        lblTextChat.text = cm.comment_content
-        lblTextChat.font = UIFont(name:  "Helvetica", size: font)
-        
-        let textChat = lblUserName.text! + lblTextChat.text!
-        
-        objChatLbl.text = textChat as String
+     //   cell.contentView.addSubview(chatplaceView)
+
+        objChatLbl.text = firstandlastname + textChat
+        objChatLbl.backgroundColor = UIColor.whiteColor()
         objChatLbl.lineBreakMode = NSLineBreakMode.ByWordWrapping
         objChatLbl.numberOfLines = 0;
         objChatLbl.textAlignment = NSTextAlignment.Justified;
         objChatLbl.sizeToFit()
-        chatplaceView.addSubview(objChatLbl)
+        objChatLbl.layer.cornerRadius = 5
+        objChatLbl.clipsToBounds = true
+        cell.contentView.addSubview(objChatLbl)
+        
+        
         
 //        lblTextChat.lineBreakMode = NSLineBreakMode.ByWordWrapping
 //        lblTextChat.numberOfLines = 0 ;
@@ -1115,7 +1125,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         return cell
     }
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if (objChatLbl.bounds.size.height  + 5 <= cellH) {
+        if (objChatLbl.bounds.size.height <= cellH) {
             return cellH ;
         }
         else{
@@ -1124,17 +1134,17 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             if (UI_USER_INTERFACE_IDIOM() == .Pad) {
                 
                 chatplaceView.frame = CGRectMake(52*scx, 2*scy, tableView.bounds.size.width - (54*scx) ,objChatLbl.bounds.size.height + (10*scy))
-                
+            //chatplaceView.backgroundColor = UIColor.clearColor()
              //   lblUserName.frame = CGRectMake(55*scx,lblTextChat.bounds.origin.y + lblTextChat.bounds.size.height + (2*scy) , chatplaceView.bounds.size.width - (10*scx), 20*scx)
-                
-                return  chatplaceView.bounds.size.height + (10*scy);
+            
+                return  objChatLbl.bounds.size.height + (10*scy);
             }
             else{
-                chatplaceView.frame = CGRectMake(52, 2, tableView.bounds.size.width - (54) ,objChatLbl.bounds.size.height + 10)
+                chatplaceView.frame = CGRectMake(52, 2 , tableView.bounds.size.width - (54) ,objChatLbl.bounds.size.height + 10)
                 
               //  lblUserName.frame = CGRectMake(55,lblTextChat.bounds.origin.y + lblTextChat.bounds.size.height + (2) , chatplaceView.bounds.size.width - (10), 20)
                 
-                return chatplaceView.bounds.size.height + 10;
+                return chatplaceView.bounds.size.height;
             }
 
         }
@@ -1536,6 +1546,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             let comment = Commentator()
             comment.comment_content = data[0]["data"]!!["comment_content"] as? String
             comment.first_name = data[0]["data"]!!["commentator"]!!["first_name"] as? String
+            comment.last_name = data[0]["data"]!!["commentator"]!!["last_name"] as? String
             comment.profile_picture = data[0]["data"]!!["commentator"]!!["profile_picture"] as! String
             self.comments.addObject(comment)
             self.tableView?.reloadData()

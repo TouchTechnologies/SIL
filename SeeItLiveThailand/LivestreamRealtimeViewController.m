@@ -434,6 +434,10 @@
     chatTbl = [[UITableView alloc] initWithFrame:chatTblPortRect];
     chatTbl.backgroundColor = [UIColor clearColor];
     chatTbl.separatorStyle = UITableViewCellSeparatorStyleNone;
+   
+    //    [chatTbl scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[commentData count]-1 inSection:0]
+//atScrollPosition:UITableViewScrollPositionBottom
+//animated:YES];
     [chatView addSubview:chatTbl];
     
     
@@ -475,7 +479,7 @@
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         bottomHeight = 100.0 *scy;
-        fontSize = 14.0*scy;
+        fontSize = 16;
         
         topViewPortRect = CGRectMake(0 *scx, 0*scy, [[UIScreen mainScreen] bounds].size.width, 50*scy);
         imgPinPortRect = CGRectMake(10*scx,topViewPortRect.size.height/2 - (13*scy), 25*scx, 25*scy);
@@ -507,7 +511,7 @@
         bottomHeight = 100.0*scy;
         
         
-         chatViewPortRect = CGRectMake(0*scx, self.view.bounds.size.height / 2 + (70*scy) , self.view.bounds.size.width, self.view.bounds.size.height - (self.view.bounds.size.height / 2 + (70*scy)));
+        chatViewPortRect = CGRectMake(0*scx, self.view.bounds.size.height / 2 + (70*scy) , self.view.bounds.size.width, self.view.bounds.size.height - (self.view.bounds.size.height / 2 + (70*scy)));
         
         chatTblPortRect = CGRectMake(20*scx, 10*scy , self.view.bounds.size.width - (50*scx), chatViewPortRect.size.height - (60*scy));
         userChatImgRect = CGRectMake(0*scx, 0*scy , 40*scx , 40*scy);
@@ -1116,69 +1120,74 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
     cell.backgroundColor = [UIColor clearColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    [cell.contentView removeFromSuperview];
+  //  [cell.contentView removeFromSuperview];
     
     //get Comment Data
     Commentator *comment = [[Commentator alloc]init];
     comment = [commentData objectAtIndex:indexPath.row];
+    NSLog(@"COOMMENTT%@",comment);
     
     userChatImg = [[UIImageView alloc] initWithFrame:userChatImgRect];
-    
-
     userChatImg.layer.cornerRadius = 5;
     userChatImg.clipsToBounds = YES;
+    
     userChatImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:comment.profile_picture]]];
      [cell.contentView addSubview:userChatImg];
     
+    UIFont *font;
     CGFloat scy = (1024.0/480.0);
     CGFloat scx = (768.0/360.0);
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         chatplaceView = [[UIView alloc] initWithFrame:CGRectMake(55*scx, 2*scy ,chatTbl.bounds.size.width - (54*scx), cellH - (4*scy ))];
-        textchatLbl = [[UILabel alloc] initWithFrame: CGRectMake(55*scx, 4*scy , chatplaceView.bounds.size.width - (10*scx) , 20*scy )];
-        userChatLbl = [[UILabel alloc] initWithFrame:CGRectMake(55*scx,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + (2 *scy ) , chatplaceView.bounds.size.width - (10*scx), 20*scy )];
-        objChatLbl = [[UILabel alloc] initWithFrame: CGRectMake(55*scx, 4*scy , chatplaceView.bounds.size.width - (10*scx) , 20*scy )];
+     //   textchatLbl = [[UILabel alloc] initWithFrame: CGRectMake(55*scx, 4*scy , chatplaceView.bounds.size.width - (10*scx) , 20*scy )];
+    //    userChatLbl = [[UILabel alloc] initWithFrame:CGRectMake(55*scx,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + (2 *scy ) , chatplaceView.bounds.size.width - (10*scx), 20*scy )];
+        objChatLbl = [[UILabel alloc] initWithFrame: CGRectMake(55*scx, 4*scy , chatplaceView.bounds.size.width - (10*scx) , 30*scy )];
         
     }
     else{
         chatplaceView = [[UIView alloc] initWithFrame:CGRectMake(52, 2 ,chatTbl.bounds.size.width - 54, cellH - 4)];
-        textchatLbl = [[UILabel alloc] initWithFrame: CGRectMake(55, 4, chatplaceView.bounds.size.width - 10 , 20)];
-        userChatLbl = [[UILabel alloc] initWithFrame:CGRectMake(55,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + 2 , chatplaceView.bounds.size.width - 10, 20)];
-        objChatLbl = [[UILabel alloc] initWithFrame: CGRectMake(55, 4, chatplaceView.bounds.size.width - 10 , 20)];
+     //  textchatLbl = [[UILabel alloc] initWithFrame: CGRectMake(55, 4, chatplaceView.bounds.size.width - 10 , 20)];
+      // userChatLbl = [[UILabel alloc] initWithFrame:CGRectMake(55,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + 2 , chatplaceView.bounds.size.width - 10, 20)];
+        objChatLbl = [[UILabel alloc] initWithFrame: CGRectMake(55, 4, chatplaceView.bounds.size.width - 10 , 30)];
+       
     }
     
-  // [chatplaceView setFrame:];
-    chatplaceView.backgroundColor = [UIColor whiteColor];
-    chatplaceView.layer.cornerRadius = 5;
-    chatplaceView.clipsToBounds = YES;
-    [cell.contentView addSubview:chatplaceView];
+ 
     
 
     
-    
-    textchatLbl.text = comment.comment_content;
-    textchatLbl.font = [UIFont fontWithName:@"Helvetica" size: fontSize - 2];
-//    textchatLbl.lineBreakMode = NSLineBreakByWordWrapping;
-//    textchatLbl.numberOfLines = 0;
-//    textchatLbl.textAlignment = NSTextAlignmentJustified;
-//    [textchatLbl sizeToFit];
-   // [cell.contentView addSubview:textchatLbl];
-    
-    
-    NSString *firstandlastname;
+//    
+//    textchatLbl.text = comment.comment_content;
+//    textchatLbl.font = [UIFont fontWithName:@"Helvetica" size: fontSize - 2];
+////    textchatLbl.lineBreakMode = NSLineBreakByWordWrapping;
+////    textchatLbl.numberOfLines = 0;
+////    textchatLbl.textAlignment = NSTextAlignmentJustified;
+////    [textchatLbl sizeToFit];
+//   // [cell.contentView addSubview:textchatLbl];
+//    
+//    
+   NSString *firstandlastname;
     firstandlastname = [NSString stringWithFormat:@"%@ %@ : ",comment.first_name,comment.last_name];
-    userChatLbl.text = firstandlastname;
-   // userChatLbl.textColor = [UIColor Color];
-    userChatLbl.font = [UIFont fontWithName:@"Helvetica-Bold" size: fontSize - 4];
+//    userChatLbl.text = firstandlastname;
+//   // userChatLbl.textColor = [UIColor Color];
+//    userChatLbl.font = [UIFont fontWithName:@"Helvetica-Bold" size: fontSize - 4];
+   
+    
     NSString *chatTxt;
-    chatTxt =[NSString stringWithFormat:@"%@%@",userChatLbl.text, textchatLbl.text];
+    chatTxt =[NSString stringWithFormat:@"%@%@",firstandlastname, comment.comment_content];
     
     NSLog(@"ต่อสตริงจ้า ::: %@",chatTxt);
     
 
     objChatLbl.text = chatTxt;
+    objChatLbl.textColor=[UIColor blackColor];
+    objChatLbl.backgroundColor = [UIColor whiteColor];
+    objChatLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize];
     objChatLbl.lineBreakMode = NSLineBreakByWordWrapping;
     objChatLbl.numberOfLines = 0;
     objChatLbl.textAlignment = NSTextAlignmentJustified;
+    objChatLbl.layer.cornerRadius = 5 ;
+    objChatLbl.clipsToBounds = true ;
     [objChatLbl sizeToFit];
     [cell.contentView addSubview:objChatLbl];
 
@@ -1188,7 +1197,7 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
     NSLog(@"Select");
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (objChatLbl.bounds.size.height + 5 <= cellH) {
+    if (objChatLbl.bounds.size.height <= cellH) {
         return cellH ;
     }
     else{
@@ -1198,19 +1207,28 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
             [chatplaceView setFrame:CGRectMake(52*scx, 2*scy, chatTbl.bounds.size.width - (54*scx) ,objChatLbl.bounds.size.height + (10*scy))];
 //            [userChatLbl setFrame:CGRectMake(55*scx,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + (2*scy) , chatplaceView.bounds.size.width - (10*scx), 20*scx)];
 
-            return  chatplaceView.bounds.size.height + (10*scy);
+            return  objChatLbl.bounds.size.height + (10*scy);
         }
         else{
             [chatplaceView setFrame:CGRectMake(52, 2, chatTbl.bounds.size.width - 54 ,objChatLbl.bounds.size.height + 10)];
 //           [userChatLbl setFrame:CGRectMake(55,textchatLbl.bounds.origin.y + textchatLbl.bounds.size.height + 2 , chatplaceView.bounds.size.width - 10, 20)];
             
 
-            return chatplaceView.bounds.size.height + 10;
+            return objChatLbl.bounds.size.height + 10;
         }
     }
 }
-
--(BOOL) textFieldShouldReturn: (UITextField *) textField
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    // Prevent crashing undo bug – see note below.
+    if(range.length + range.location > [textField.text length])
+    {
+        return NO;
+    }
+    
+    NSUInteger newLength = [textField.text length] + [string length] - range.length;
+    return newLength <= 200;
+}
+-(BOOL) textFieldShouldReturn: (UITextField *)textField
 {
     [textField resignFirstResponder];
     return YES;
@@ -1243,7 +1261,7 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
         NSLog(@"22");
         width = [UIScreen mainScreen].bounds.size.width;
         height = [UIScreen mainScreen].bounds.size.height;
-        [self.view setFrame:CGRectMake(0, -keyboardFrameBeginRect.size.height ,width,height)];
+        [self.view setFrame:CGRectMake(0,-keyboardFrameBeginRect.size.height ,width,height)];
    }
 -(void)keyboardDidHide:(NSNotification *)notification
 {

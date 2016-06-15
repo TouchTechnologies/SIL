@@ -271,6 +271,21 @@ static DataManager *staticManager = nil;
         [self downloadStreamingDetailForRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:StreamingHistoryURL]]];
     }
 }
+- (void)getStreamingWithCompletionBlockWithFilterCat:(StreamingCompletionBlock)block  Filter:(NSString*)filter{
+    if (block) {
+        
+        NSString *StreamingHistoryFilterURL ;
+        if(filter != nil)
+        {
+            StreamingHistoryFilterURL = [StreamingHistoryURLByCatgory stringByAppendingFormat:@"%@",filter];
+        }else
+        {
+            StreamingHistoryFilterURL = StreamingHistoryURLByCatgory;
+        }
+        self.streamingBlock = block;
+        [self downloadStreamingDetailForRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:StreamingHistoryFilterURL]]];
+    }
+}
 - (void)getStreamingWithCompletionBlockWithFilter:(StreamingCompletionBlock)block  Filter:(NSString*)filter{
     if (block) {
         
@@ -294,6 +309,8 @@ static DataManager *staticManager = nil;
 }
 - (void)getStreamingWithCompletionBlockByCatgoryID:(StreamingCompletionBlock)block :(int)catID{
     if (block) {
+        
+        
         self.streamingBlock = block;
 //        NSLog(@"StreamingHistoryURLByCatgory : %@",[StreamingHistoryURLByCatgory stringByAppendingFormat:@"%d",catID]);
         [self downloadStreamingDetailForRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[StreamingHistoryURLByCatgory stringByAppendingFormat:@"%d",catID]]]];

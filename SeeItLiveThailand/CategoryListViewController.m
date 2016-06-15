@@ -77,6 +77,7 @@
      ADPageModel *pageModel;
     
     NSInteger filterPage;
+    NSInteger IDcat;
     
 }
 @property (nonatomic, strong) NSMutableArray *fillerData;
@@ -91,7 +92,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
+    appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     scrollView.delegate = self;
     [self initialSize];
     [self setupPageControl];
@@ -447,81 +448,29 @@
     
     __weak CategoryListViewController *weakSelf = self;
     weakSelf.streamList = [[NSArray alloc]init];
+    IDcat = [appDelegate.categoryData[iCurrentVisiblePage][@"id"] integerValue];
+    NSLog(@"CAT ID ::: %d",self.catID);
+    NSString *filter = [@"?" stringByAppendingFormat:@"filters[stream_media][category_id][operator]==&filtersPage=%d&filterLimit=%d&filters[stream_media][category_id][value]=%ld",1,filter_limit,IDcat];
+      NSLog(@"FILTER1 ::: %@",filter);
+    NSLog(@"CURRENT ::: %ld",[appDelegate.categoryData[iCurrentVisiblePage][@"id"] integerValue]);
     
-    
-    [[DataManager shareManager] getStreamingWithCompletionBlockByCatgoryID:^(BOOL success, NSArray *streamRecords, NSError *error) {
-        //                [hud hide:YES];
+    [[DataManager shareManager] getStreamingWithCompletionBlockWithFilterCat:^(BOOL success, NSArray *streamRecords, NSError *error) {
+        
         if (success) {
             weakSelf.streamList = streamRecords;
-            NSLog(@"STREAMLIST COUNT CAT:::: %ld", (unsigned long)weakSelf.streamList.count);
-          //
-
-            //[moreBtn reloadInputViews];
-            
-            
+            NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
+            //
         } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
         }
-        _count = weakSelf.streamList.count*filterPage;
+        
         [weakSelf.gridView reloadData];
-      
-       // getStreamingWithCompletionBlockByCatgoryID:(StreamingCompletionBlock)block :(int)catID{
-    } :[appDelegate.categoryData[iCurrentVisiblePage][@"id"] integerValue]];
-   
+     
+        
+        
+    } Filter:filter];
     
-//    NSLog(@"screenName : %@",appDelegate.categoryData[iCurrentVisiblePage][@"category_name_en"]);
-    
-//    switch (iCurrentVisiblePage) {
-//        case 0:
-//        {
-//            NSLog(@"case 0");
-//            [[DataManager shareManager] getStreamingWithCompletionBlockByCatgoryID:^(BOOL success, NSArray *streamRecords, NSError *error) {
-////                [hud hide:YES];
-//                if (success) {
-//                    weakSelf.streamList = streamRecords;
-//                    NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
-//                    
-//                    
-//                    
-//                } else {
-//                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//                    [alert show];
-//                }
-//                
-//                
-//                
-//                [weakSelf.gridView reloadData];
-//            } :[appDelegate.categoryData[iCurrentVisiblePage][@"id"] integerValue]];
-//            NSLog(@"screenName : %@",appDelegate.categoryData[iCurrentVisiblePage][@"category_name_en"]);
-//        }
-//            break;
-//        case 1:
-//        {
-//            NSLog(@"case 1");
-//            [[DataManager shareManager] getStreamingWithCompletionBlockByCatgoryID:^(BOOL success, NSArray *streamRecords, NSError *error) {
-//                [hud hide:YES];
-//                if (success) {
-//                    weakSelf.streamList = streamRecords;
-//                    NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
-//                    
-//                    
-//                    
-//                } else {
-//                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//                    [alert show];
-//                }
-//                [weakSelf.gridView reloadData];
-//            } :[appDelegate.categoryData[iCurrentVisiblePage][@"id"] integerValue]];
-//            NSLog(@"screenName : %@",appDelegate.categoryData[iCurrentVisiblePage][@"category_name_en"]);
-//        }
-//            break;
-//        default:
-//            NSLog(@"aaaaaaaaaaaaaaa");
-//            
-//            [weakSelf.gridView reloadData];
-//            break;
-//    }
     
     
     if (isLazy == FALSE) {
@@ -547,14 +496,11 @@
     }
     
     isLazy = FALSE;
-    
-    
-    //UIViewController *controller = [_pageControl.arrPageModel objectAtIndex:iCurrentVisiblePage];
-    //[controller viewDidLoad];
+
 }
 
 
--(NSInteger)loadmore:(UIButton *)sender{
+-(void)loadmore:(UIButton *)sender{
  //   pageModel.iPageNumber;
     NSLog(@"LOAD MORE ACTIVE");
     
@@ -567,27 +513,24 @@
     filterPage += sender.tag;
     NSLog(@"filterPage :%lu",filterPage);
     
-    return filterPage;
-    [weakSelf.gridView reloadData];
-//  count = weakSelf.streamList.count*filterPage;
     
-     //[moreBtn reloadInputViews];
-//[[DataManager shareManager] getStreamingWithCompletionBlockByCatgoryID:^(BOOL success, NSArray *streamRecords, NSError *error) {
-//        //                [hud hide:YES];
-//       if (success) {
-//       weakSelf.streamList = streamRecords;
-//        NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
-//                      NSLog(@"LOAD MORE COUNT ::: %ld ", _count);
-//            
-//        } else {
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//            [alert show];
-//        }
-////      _count = weakSelf.streamList.count*filterPage;
-//     //      [weakSelf.gridView reloadData];
-// NSLog(@"กด MOre %ld",_count);
-//        
-//    } :[appDelegate.categoryData[iCurrentVisiblePage][@"id"] integerValue]];
+     NSString *filter = [@"?" stringByAppendingFormat:@"filters[stream_media][category_id][operator]==&filtersPage=%d&filterLimit=%ld&filters[stream_media][category_id][value]=%ld",1,filter_limit*filterPage,IDcat];
+   
+   // NSLog(@"CURREtttt :: %ld",IDcat);
+    [[DataManager shareManager] getStreamingWithCompletionBlockWithFilterCat:^(BOOL success, NSArray *streamRecords, NSError *error) {
+        
+        if (success) {
+            weakSelf.streamList = streamRecords;
+            NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
+            //
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        
+        [weakSelf.gridView reloadData];
+    } Filter:filter];
+
 }
 
 #pragma mark - KKGridView
@@ -599,7 +542,7 @@
 
 - (NSUInteger)gridView:(KKGridView *)gridView numberOfItemsInSection:(NSUInteger)section
 {
-    return self.streamList.count*filterPage;
+        return self.streamList.count;
 }
 
 
