@@ -181,6 +181,9 @@
 		F303DD0B1C8043ED00EFBA41 /* view.png in Resources */ = {isa = PBXBuildFile; fileRef = F303DD081C8043ED00EFBA41 /* view.png */; };
 		F303DD0D1C80684300EFBA41 /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F303DD0C1C80684300EFBA41 /* CommentCell.xib */; };
 		F30E5F521CD0764A007E010C /* LiveAroundViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F30E5F511CD0764A007E010C /* LiveAroundViewController.m */; };
+		F313AF791D125BE30091D753 /* replay_bl.png in Resources */ = {isa = PBXBuildFile; fileRef = F313AF761D125BE30091D753 /* replay_bl.png */; };
+		F313AF7A1D125BE30091D753 /* replay_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = F313AF771D125BE30091D753 /* replay_grey.png */; };
+		F313AF7B1D125BE30091D753 /* replay_wh.png in Resources */ = {isa = PBXBuildFile; fileRef = F313AF781D125BE30091D753 /* replay_wh.png */; };
 		F3145EFA1C4516A000BDCACA /* MyLivestreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F3145EF91C4516A000BDCACA /* MyLivestreamViewController.m */; };
 		F3145EFF1C460D7B00BDCACA /* popupStreaming.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3145EFE1C460D7B00BDCACA /* popupStreaming.xib */; };
 		F3145F021C460F3000BDCACA /* popupStreaming.m in Sources */ = {isa = PBXBuildFile; fileRef = F3145F011C460F3000BDCACA /* popupStreaming.m */; };
@@ -595,6 +598,9 @@
 		F303DD0C1C80684300EFBA41 /* CommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentCell.xib; sourceTree = "<group>"; };
 		F30E5F501CD0764A007E010C /* LiveAroundViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveAroundViewController.h; sourceTree = "<group>"; };
 		F30E5F511CD0764A007E010C /* LiveAroundViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveAroundViewController.m; sourceTree = "<group>"; };
+		F313AF761D125BE30091D753 /* replay_bl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = replay_bl.png; path = Image/replay_bl.png; sourceTree = "<group>"; };
+		F313AF771D125BE30091D753 /* replay_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = replay_grey.png; path = Image/replay_grey.png; sourceTree = "<group>"; };
+		F313AF781D125BE30091D753 /* replay_wh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = replay_wh.png; path = Image/replay_wh.png; sourceTree = "<group>"; };
 		F3145EF81C4516A000BDCACA /* MyLivestreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLivestreamViewController.h; sourceTree = "<group>"; };
 		F3145EF91C4516A000BDCACA /* MyLivestreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLivestreamViewController.m; sourceTree = "<group>"; };
 		F3145EFE1C460D7B00BDCACA /* popupStreaming.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = popupStreaming.xib; sourceTree = "<group>"; };
@@ -1080,6 +1086,9 @@
 		36785B341C29258F004E77BE /* Image */ = {
 			isa = PBXGroup;
 			children = (
+				F313AF761D125BE30091D753 /* replay_bl.png */,
+				F313AF771D125BE30091D753 /* replay_grey.png */,
+				F313AF781D125BE30091D753 /* replay_wh.png */,
 				F360C1351CE468D10021FD26 /* back_black.png */,
 				F36F70B21CE324B9009238D1 /* Left Filled-100.png */,
 				F36F70AE1CE0353E009238D1 /* back.png */,
@@ -1646,6 +1655,7 @@
 				36785B681C29260C004E77BE /* dotActive@3x.png in Resources */,
 				F3C7F9311C9F9E7300F32866 /* call_icon.png in Resources */,
 				F32985C21CD88FCF00C72901 /* lifestyle.png in Resources */,
+				F313AF7A1D125BE30091D753 /* replay_grey.png in Resources */,
 				F332FC131C5F75CE00153BDE /* Main_iPad.storyboard in Resources */,
 				36785BBB1C292E6F004E77BE /* ic_new_imgaccount2.png in Resources */,
 				36785B131C291447004E77BE /* VideoCell.xib in Resources */,
@@ -1702,6 +1712,7 @@
 				36785B7F1C29260C004E77BE /* icon_J1.png in Resources */,
 				36785BBE1C292E6F004E77BE /* ic_new_password_newlogin.png in Resources */,
 				36FABCFB1C58729200D78026 /* GoogleService-Info.plist in Resources */,
+				F313AF791D125BE30091D753 /* replay_bl.png in Resources */,
 				F3F11FE31C4CD88A0048F95E /* ic_live_history.png in Resources */,
 				F303DD0D1C80684300EFBA41 /* CommentCell.xib in Resources */,
 				F3F414AA1CA1341400F2A962 /* ic_more_checkin.png in Resources */,
@@ -1737,6 +1748,7 @@
 				F3D2C56E1C43B5F8004F4CE3 /* icon_fb.png in Resources */,
 				F39C33581C4F303C00FDE9FA /* NotVDOview.xib in Resources */,
 				36785B761C29260C004E77BE /* icon_D1.png in Resources */,
+				F313AF7B1D125BE30091D753 /* replay_wh.png in Resources */,
 				36785B8B1C29260C004E77BE /* share.png in Resources */,
 				36785B751C29260C004E77BE /* icon_D.png in Resources */,
 				36785BB91C292E6F004E77BE /* ic_new_birthday.png in Resources */,

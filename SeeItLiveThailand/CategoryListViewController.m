@@ -100,7 +100,10 @@
     NSLog(@"Cat ID : %d",self.catID);
     filterPage = 1;
 
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshList:)
+                                                 name:@"refresh"
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -935,15 +938,16 @@
     // [notification name] should always be @"TestNotification"
     // unless you use this method for observation of other notifications
     // as well.
-    NSLog(@"ADView Notiname: %@",[refreshName name]);
-    if ([[refreshName name] isEqualToString:@"update"])
+    NSLog(@"Stream history Notiname : %@",[refreshName name]);
+    if ([[refreshName name] isEqualToString:@"refresh"])
     {
-        NSLog (@"Update successfully");
-    }else if ([[refreshName name] isEqualToString:@"refresh"])
-    {
-        [self dismissViewControllerAnimated:YES completion:nil];
-        //        [self viewDidLoad];
-        NSLog (@"Reload successfully");
+        
+        [self viewDidLoad];
+        [self.gridView reloadContentSize];
+      //  [self dismissViewControllerAnimated:YES completion:nil];
+        
+        NSLog(@"REfresh catID:::%d",[appDelegate.categoryData[iCurrentVisiblePage][@"id"] integerValue]);
+        NSLog (@"Reload Category successfully");
     }
     
 }

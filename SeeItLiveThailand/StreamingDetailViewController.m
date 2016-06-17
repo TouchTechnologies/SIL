@@ -333,15 +333,23 @@
     self.player.forceRotate = NO;
     self.player.view.fullscreenButton.hidden = TRUE;
     self.player.view.nextButton.hidden = TRUE;
-    self.player.view.rewindButton.hidden = TRUE;
-        self.player.view.bottomControlOverlay.hidden = FALSE;
+    self.player.view.rewindButton.hidden = FALSE;
+    self.player.view.isControlsEnabled = FALSE;
+    self.player.view.bottomControlOverlay.hidden = FALSE;
+    UIImage *replay = [[UIImage alloc] init];
+    replay = [UIImage imageNamed:@"replay_grey.png"] ;
     
+    [self.player.view.rewindButton setImage:replay forState:UIControlStateNormal];
+      [self.player.view.rewindButton sizeThatFits:CGSizeMake(30, 30)];
+       [self.player.view.bottomControlOverlay addSubview:self.player.view.rewindButton];
+    
+ //   [self.player.view.rewindButton setContentMode:UIViewContentModeScaleToFill];
     
     
     propViewPort = [[UIView alloc] initWithFrame:propViewPortRect];
     propViewPort.backgroundColor = [UIColor blackColor];
     
-  //  [self.player.view addSubviewForControl:propViewPort toView:self.view];
+  //[self.player.view addSubviewForControl:propViewPort toView:self.view];
     [self.view addSubview:propViewPort];
     [self.view addSubview:self.player.view];
     
@@ -355,13 +363,13 @@
     font = [UIFont fontWithName:@"Helvetica" size:fontSize];
     steamingTitle = [[UILabel alloc] initWithFrame:vdoLabelPortRect];
     steamingTitle.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-//    steamingTitle.text = self.objStreaming.streamTitle;
+    
+    //steamingTitle.text = self.objStreaming.streamTitle;
+    
     steamingTitle.textColor = [UIColor whiteColor];
     steamingTitle.backgroundColor = [UIColor clearColor];
     steamingTitle.textAlignment = NSTextAlignmentLeft;
     steamingTitle.font =  [UIFont fontWithName:@"Helvetica" size: fontSize];
-   
-   //
     
     lblcategoryDesc = [[UILabel alloc] initWithFrame:lblcategoryDescRect];
     lblcategoryDesc.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -382,16 +390,15 @@
     lblcategoryType.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 2];
 
    //
+    CGFloat scy = (1024.0/480.0);
+    CGFloat scx = (768.0/360.0);
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [self.player.view addSubviewForControl:steamingTitle toView:topView];
            [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
            [self.player.view addSubviewForControl:lblcategoryType toView:topView];
         self.player.view.topControlOverlay.hidden = TRUE;
+        [self.player.view.rewindButton setFrame:CGRectMake(self.player.view.bottomControlOverlay.bounds.size.width/2 + (125*scx), 5*scy , 30, 30)];
 
-//
-//        [topView addSubview:steamingTitle];
-//        [topView addSubview:lblcategoryDesc];
-//        [topView addSubview:lblcategoryType];
     }
     else{
         self.player.view.topControlOverlay.hidden = FALSE;
@@ -399,9 +406,9 @@
       [self.player.view.topControlOverlay addSubview:steamingTitle];
             [self.player.view.topControlOverlay addSubview:lblcategoryDesc];
             [self.player.view.topControlOverlay addSubview:lblcategoryType];
+        [self.player.view.rewindButton setFrame:CGRectMake(self.player.view.bottomControlOverlay.bounds.size.width/2 +35, 5 , 30, 30)];
     }
-    
-    
+
     lblLocationDesc = [[UILabel alloc] initWithFrame:lblLocationDescRect];
     lblLocationDesc.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     lblLocationDesc.text = @"Location : " ;
@@ -518,17 +525,19 @@
     [TapLogin setNumberOfTouchesRequired:1];
     [TapLogin setDelegate:self];
     if (appDelegate.isLogin) {
-        NSLog(@"login");
-        [btnLove addGestureRecognizer:TapLove];
-        TapLove.enabled = YES;
-        TapLogin.enabled = NO;
-    }
-    else{
+        
         NSLog(@"not login");
         TapLove.enabled = NO;
         TapLogin.enabled = YES;
         [btnLove addGestureRecognizer:TapLogin];
+
     }
+    else{
+        NSLog(@"login");
+        [btnLove addGestureRecognizer:TapLove];
+        TapLove.enabled = YES;
+        TapLogin.enabled = NO;
+          }
     
     UITapGestureRecognizer* TapShare = [[UITapGestureRecognizer alloc]
                                         initWithTarget:self action:@selector(shareStream:)];//Here should be actionViewTap:
@@ -675,6 +684,7 @@
 //    //  chatplaceView = [[UIView alloc] initWithFrame:CGRectMake(42, 2 ,chatTblRect.size.width - 44, cellH - 4)];
 
 }
+
 - (void)setVideoData
 {
     CLLocation* location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake([self.objStreaming.latitude floatValue], [self.objStreaming.longitude floatValue]) altitude:0 horizontalAccuracy:0 verticalAccuracy:0 course:0 speed:0 timestamp:nil];
@@ -1076,7 +1086,6 @@
     }
     
 }
-
 - (void)loveSend:(id)sender
 {
     NSLog(@"Love Love");
@@ -1195,7 +1204,9 @@
     
     
 }
+- (void)videoPlayer:(VKVideoPlayer*)videoPlayer didPlayToEnd:(id<VKVideoPlayerTrackProtocol>)track{
 
+}
 -(void)shareAction:(id)sender
 {
     

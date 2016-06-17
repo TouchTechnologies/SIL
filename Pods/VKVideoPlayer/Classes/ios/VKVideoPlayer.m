@@ -1008,7 +1008,7 @@ typedef enum {
 
 - (void)rewindButtonPressed {
   
-  float seekToTime = [self currentTime] - 30;
+  float seekToTime = [self currentTime] - [self currentTime];
   [self seekToTimeInSecond:seekToTime userAction:YES completionHandler:^(BOOL finished) {
     if (finished) [self playContent];
   }];
