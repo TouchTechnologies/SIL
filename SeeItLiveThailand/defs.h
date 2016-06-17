@@ -11,7 +11,7 @@
 //#define StreamingHistoryURL @"http://www.seeitlivethailand.com/api/stream/histories"
 //#define StreamingLiveURL @"http://www.seeitlivethailand.com/api/liveStreamChannels?hasStreaming=Y"
 //#define SocketURL @"http://seeitlivethailand.com:3008"
-//#define StreamingHistoryURLByCatgory @"http://www.seeitlivethailand.com/api/liveStreamHistories?filters[stream_media][category_id][operator]==&filtersPage=1&filterLimit=10&filters[stream_media][category_id][value]="
+//#define StreamingHistoryURLByCatgory @"http://www.seeitlivethailand.com/api/liveStreamHistories"
 
 ///////////////Dev///////////////////
 #define service @"http://192.168.9.117/seeitlivethailand/"

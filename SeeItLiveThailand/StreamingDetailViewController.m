@@ -279,22 +279,38 @@
     
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
         //Background Thread
-        [[DataManager shareManager] getStreamingWithCompletionBlockByCatgoryID:^(BOOL success, NSArray *streamRecords, NSError *error) {
+//        [[DataManager shareManager] getStreamingWithCompletionBlockByCatgoryID:^(BOOL success, NSArray *streamRecords, NSError *error) {
+//            if (success) {
+//                
+//                weakSelf.streamList = streamRecords;
+//                NSLog(@"STREAMLIST Cat COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
+//                
+//                
+//            } else {
+//                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//                [alert show];
+//            }
+//            
+//            count = [weakSelf.streamList count];
+//            [liveIncategoryTbl reloadData];
+//        } :self.objStreaming.categoryID];
+        
+        NSString *filter = [@"?" stringByAppendingFormat:@"filters[stream_media][category_id][operator]==&filters[stream_media][category_id][value]=%d",self.objStreaming.categoryID];
+        NSLog(@"FILTER1 ::: %@",filter);
+        
+        [[DataManager shareManager] getStreamingWithCompletionBlockWithFilterCat:^(BOOL success, NSArray *streamRecords, NSError *error) {
+            
             if (success) {
-                
                 weakSelf.streamList = streamRecords;
-                NSLog(@"STREAMLIST Cat COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
-                
-                
+                NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
+                //
             } else {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
             }
-            
-            count = [weakSelf.streamList count];
             [liveIncategoryTbl reloadData];
-        } :self.objStreaming.categoryID];
-        
+            
+        } Filter:filter];
         
         dispatch_async(dispatch_get_main_queue(), ^(void){
             //Run UI Updates
