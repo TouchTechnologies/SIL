@@ -640,7 +640,7 @@
     }else if ([[refreshName name] isEqualToString:@"refresh"] && [appDelegate.pageName isEqualToString:@"StreamLive"])
     {
         appDelegate.pageName = @"";
-        NSLog (@"StreamLive Reload successfully");
+        NSLog (@"StreamLive Reload successfully (refresh,StreamLive)");
         dispatch_async(dispatch_get_main_queue(),
                        ^{
                            ADPageModel *pageModel = [_arrPageModel objectAtIndex:0];
@@ -655,7 +655,7 @@
     }else if ([[refreshName name] isEqualToString:@"refresh"] && [appDelegate.pageName isEqualToString:@"StreamHistory"])
     {
         appDelegate.pageName = @"";
-        NSLog (@"StreamHistory Reload successfully");
+        NSLog (@"StreamHistory Reload successfully (refresh,StreamHistory)");
         dispatch_async(dispatch_get_main_queue(),
                        ^{
                            ADPageModel *pageModel = [_arrPageModel objectAtIndex:0];
@@ -670,7 +670,7 @@
     }else if ([[refreshName name] isEqualToString:@"refresh"] && [appDelegate.pageName isEqualToString:@"MyStream"])
     {
         appDelegate.pageName = @"";
-        NSLog (@"MyStream Reload successfully");
+        NSLog (@"MyStream Reload successfully (refresh,MyStream)");
         dispatch_async(dispatch_get_main_queue(),
                        ^{
                            ADPageModel *pageModel = [_arrPageModel objectAtIndex:2];
@@ -681,6 +681,21 @@
                                                         completion:^(BOOL finished){}];
                            
                            [self setPageIndicatorToPageNumber:2 andShouldHighlightCurrentPage:YES];
+                       });
+    }else if ([[refreshName name] isEqualToString:@"refresh"] && [appDelegate.pageName isEqualToString:@"StreamCat"])
+    {
+        appDelegate.pageName = @"";
+        NSLog (@"StreamHistory Reload successfully (refresh,StreamCat)");
+        dispatch_async(dispatch_get_main_queue(),
+                       ^{
+                           ADPageModel *pageModel = [_arrPageModel objectAtIndex:0];
+                           //animate to next page
+                           [_pageViewController setViewControllers:@[[self getViewControllerForPageModel:pageModel]]
+                                                         direction: (_iCurrentVisiblePage < 3) ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse
+                                                          animated:NO
+                                                        completion:^(BOOL finished){}];
+                           
+                           [self setPageIndicatorToPageNumber:0 andShouldHighlightCurrentPage:YES];
                        });
     }else{
         NSLog(@"appDelegate.pageName ????????");

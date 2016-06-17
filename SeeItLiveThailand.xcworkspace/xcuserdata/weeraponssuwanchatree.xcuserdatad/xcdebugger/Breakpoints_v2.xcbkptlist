@@ -218,11 +218,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/StreamHistoryViewController.m"
-            timestampString = "487495098.255639"
+            timestampString = "487842456.971022"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "498"
-            endingLineNumber = "498"
+            startingLineNumber = "499"
+            endingLineNumber = "499"
             landmarkName = "@implementation StreamHistoryViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -512,6 +512,38 @@
             startingLineNumber = "184"
             endingLineNumber = "184"
             landmarkName = "-initialPort"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SeeItLiveThailand/StreamingDetailViewController.m"
+            timestampString = "487842209.491187"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1181"
+            endingLineNumber = "1181"
+            landmarkName = "-videoPlayer:didControlByEvent:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SeeItLiveThailand/StreamingDetailViewController.m"
+            timestampString = "487842211.626561"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1177"
+            endingLineNumber = "1177"
+            landmarkName = "-videoPlayer:didControlByEvent:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

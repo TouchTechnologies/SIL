@@ -111,7 +111,7 @@
     // Dispose of any resources that can be recreated.
 }
 -(void)initial{
-    
+    appDelegate.pageName = @"StreamCat";
     navView = [[UIView alloc] initWithFrame:navViewRect];
     navView.backgroundColor = [UIColor blackColor];
     [self.view addSubview:navView];
@@ -451,6 +451,7 @@
     weakSelf.streamList = [[NSArray alloc]init];
     IDcat = [appDelegate.categoryData[iCurrentVisiblePage][@"id"] integerValue];
     NSLog(@"CAT ID ::: %d",self.catID);
+    NSLog(@"IDcat ::: %ld",(long)IDcat);
     NSString *filter = [@"?" stringByAppendingFormat:@"filters[stream_media][category_id][operator]==&filtersPage=%d&filterLimit=%d&filters[stream_media][category_id][value]=%ld",1,filter_limit,IDcat];
       NSLog(@"FILTER1 ::: %@",filter);
     NSLog(@"CURRENT ::: %ld",[appDelegate.categoryData[iCurrentVisiblePage][@"id"] integerValue]);
@@ -906,7 +907,6 @@
     NSLog (@"Tag Playyyyy %ld",[tapRecognizer.view tag]);
     //    UserTag = [tapRecognizer.view tag];
     NSInteger playTag = [tapRecognizer.view tag];
-    
     Streaming *stream = [self.streamList objectAtIndex:playTag];
     StreamingDetailViewController *streamingDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"streamingdetail"];
     streamingDetail.objStreaming = stream;
@@ -936,14 +936,13 @@
     // [notification name] should always be @"TestNotification"
     // unless you use this method for observation of other notifications
     // as well.
-    NSLog(@"Stream history Notiname : %@",[refreshName name]);
-    if ([[refreshName name] isEqualToString:@"refresh"])
+    NSLog(@"Stream Category Notiname : %@",[refreshName name]);
+    if ([[refreshName name] isEqualToString:@"refresh"]  && [appDelegate.pageName isEqualToString:@"StreamCat"])
     {
         
 //        [self viewDidLoad];
 //        [self.gridView reloadContentSize];
 //      //  [self dismissViewControllerAnimated:YES completion:nil];
-        
         [_pageControl reloadInputViews];
         
         NSLog(@"REfresh catID:::%d",[appDelegate.categoryData[iCurrentVisiblePage][@"id"] integerValue]);

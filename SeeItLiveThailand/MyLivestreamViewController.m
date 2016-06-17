@@ -801,7 +801,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex{
     {
         [self updateData];
         NSLog (@"Update successfully");
-    }else if ([[refreshName name] isEqualToString:@"refresh"])
+    }else if ([[refreshName name] isEqualToString:@"refresh"] && [appDelegate.pageName isEqualToString:@"StreamLive"])
     {
        // _lblNoStream.hidden = YES;
       //  imgLiveStatus.hidden = YES;
