@@ -18,6 +18,7 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "SeeItLiveThailand-Swift.h"
 #import "termViewVC.h"
+#import "Bolts.h"
 
 @interface AppDelegate ()<HarpyDelegate>
 
@@ -135,10 +136,18 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
+    
+    BFURL *parsedUrl = [BFURL URLWithInboundURL:url sourceApplication:sourceApplication];
+    if ([parsedUrl appLinkData]) {
+        // this is an applink url, handle it here
+        NSURL *targetUrl = [parsedUrl targetURL];
+        NSLog(@"AppLink : %@",targetUrl);
+    }
     return [[FBSDKApplicationDelegate sharedInstance] application:application
                                                           openURL:url
                                                 sourceApplication:sourceApplication
                                                        annotation:annotation];
+    
 }
 
 
@@ -286,5 +295,6 @@
 //        int jobID = [[notification objectForKey:@"job_id"] intValue];
 //    }
 }
+
 
 @end
