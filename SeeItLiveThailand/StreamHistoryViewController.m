@@ -69,6 +69,7 @@
      CGRect moreBtnRect;
     
     ADViewController *ADView;
+    AppDelegate *appDelegate;
 }
 
 
@@ -265,7 +266,7 @@
 //    
 
 
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     appDelegate.pageName = @"StreamHistory";
     //NSLog(@"History Stream");
     // Show progress
@@ -938,7 +939,7 @@
     // unless you use this method for observation of other notifications
     // as well.
     NSLog(@"Stream history Notiname : %@",[refreshName name]);
-    if ([[refreshName name] isEqualToString:@"refresh"])
+    if ([[refreshName name] isEqualToString:@"refresh"] && [appDelegate.pageName isEqualToString:@"StreamHistory"])
     {
        
         [self viewDidLoad];

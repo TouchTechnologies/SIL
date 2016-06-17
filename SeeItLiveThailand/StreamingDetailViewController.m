@@ -1192,7 +1192,7 @@
              */
         }
         else {
-            [self dismissViewControllerAnimated:YES completion:nil];
+//            [self dismissViewControllerAnimated:YES completion:nil];
             [[NSNotificationCenter defaultCenter]
              postNotificationName:@"refresh"
              object:nil];

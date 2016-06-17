@@ -224,7 +224,7 @@
     // [notification name] should always be @"TestNotification"
     // unless you use this method for observation of other notifications
     // as well.
-    NSLog(@"Stream history Notiname : %@",[refreshName name]);
+    NSLog(@"Stream userPage Notiname : %@",[refreshName name]);
     if ([[refreshName name] isEqualToString:@"refresh"])
     {
         [self viewDidLoad];
