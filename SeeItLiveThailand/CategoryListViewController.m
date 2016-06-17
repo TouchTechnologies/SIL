@@ -363,7 +363,6 @@
     
     
     _pageControl.iFirstVisiblePageNumber = self.catID - 1;
-    
     _pageControl.iTitleViewHeight = titleHeight;
     _pageControl.iPageIndicatorHeight = indicatorHeight;
     _pageControl.fontTitleTabText =  [UIFont fontWithName:@"Helvetica" size:fontSize];
@@ -371,12 +370,11 @@
     _pageControl.bEnablePagesEndBounceEffect = NO;
     _pageControl.bEnableTitlesEndBounceEffect = NO;
     
-    _pageControl.colorTabText = [UIColor blackColor]; //orangeColor
+    _pageControl.colorTabText = [UIColor blackColor];
     _pageControl.colorTitleBarBackground = [UIColor whiteColor];
     _pageControl.colorPageIndicator = [UIColor redColor];
     //[UIColor colorWithRed:0.071 green:0.459 blue:0.714 alpha:1]; //[UIColor orangeColor]; //blueColor
     _pageControl.colorPageOverscrollBackground = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0];
-    
     _pageControl.bShowMoreTabAvailableIndicator = NO;
     
     
@@ -942,11 +940,15 @@
     if ([[refreshName name] isEqualToString:@"refresh"])
     {
         
-        [self viewDidLoad];
-        [self.gridView reloadContentSize];
-      //  [self dismissViewControllerAnimated:YES completion:nil];
+//        [self viewDidLoad];
+//        [self.gridView reloadContentSize];
+//      //  [self dismissViewControllerAnimated:YES completion:nil];
+        
+        [_pageControl reloadInputViews];
         
         NSLog(@"REfresh catID:::%d",[appDelegate.categoryData[iCurrentVisiblePage][@"id"] integerValue]);
+        
+        
         NSLog (@"Reload Category successfully");
     }
     
