@@ -21,6 +21,8 @@
     CGRect txtCommentRect;
     CGRect btnSendCommentRect;
     CGRect propViewRect;
+    CGRect commentLblRect;
+    CGRect userCommentRect;
     
     CGFloat propViewW;
     CGFloat propViewH;
@@ -80,32 +82,39 @@
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
     CGFloat height = [UIScreen mainScreen].bounds.size.height;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        font = 14*scy;
+        font = 14*scy ;
         propViewW = width;
         propViewH = 70*scy;
+            cellH = 100*scy ;
         propViewRect = CGRectMake(0, height - propViewH, width, propViewH);
+        
+        userCommentRect =CGRectMake(4*scx, 8*scy, 40*scx, 40*scy);
+        commentLblRect = CGRectMake(60*scx, 8*scy , [UIScreen mainScreen].bounds.size.width - (cellH +(10*scx)), font+2);
+        
          ImgProfileRect = CGRectMake(4*scx, 8*scy, propViewH - (20*scx), propViewH - (20*scy));
         txtCommentRect = CGRectMake(ImgProfileRect.size.width + 4, 20*scy, 80*scx, 30*scy);
          btnSendCommentRect = CGRectMake(txtCommentRect.size.width + 4, 20*scy, 50*scx, 30*scy);
         
         tblH = height - propViewH;
         tblW = width;
-        cellH = 60*scy;
         }
     else{
         font = 14;
         propViewW = width;
         propViewH = 70;
+        cellH = 100 ;
         propViewRect = CGRectMake(0, height - propViewH, width, propViewH);
         
-        ImgProfileRect = CGRectMake(4, 8, propViewH - 20, propViewH - 20);
+        userCommentRect =CGRectMake(4, 8, 40 ,  40 );
+        commentLblRect = CGRectMake(60 , 8 , [UIScreen mainScreen].bounds.size.width - (cellH+10), font+2);
         
+        ImgProfileRect = CGRectMake(4, 8,50, 50);
         txtCommentRect = CGRectMake(ImgProfileRect.size.width + 8, 20, 100, 30);
         btnSendCommentRect = CGRectMake(txtCommentRect.size.width + 4, 20, 50, 30);
         
         tblH = (self.view.bounds.size.height - propViewH - self.navigationController.navigationBar.bounds.size.height);
         tblW = width;
-        cellH = 60 ;
+       
     
     }
 
@@ -211,8 +220,8 @@
     cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    [cell.usercommentImg setFrame:CGRectMake(4, 8, cellH - 16, cellH - 16)];
-    cell.usercommentImg.layer.cornerRadius =(cellH - 16)/2;
+    [cell.usercommentImg setFrame:userCommentRect];
+     cell.usercommentImg.layer.cornerRadius = userCommentRect.size.width/2 ;
     cell.usercommentImg.clipsToBounds = TRUE;
 
     cell.usercommentImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:comment.commentPicture]]];
@@ -220,7 +229,7 @@
     NSString *strCommentWname = [NSString stringWithFormat:@"%@ %@",comment.commentName,comment.commentMsg];
     
     
-    [cell.usernameLbl setFrame:CGRectMake(cellH, 2 , [UIScreen mainScreen].bounds.size.width - (cellH), 30)];
+    [cell.usernameLbl setFrame:commentLblRect];
     [cell.usernameLbl setText:strCommentWname];
     [cell.usernameLbl setFont:[UIFont fontWithName:@"Helvetica" size:font]];
     cell.usernameLbl.lineBreakMode = NSLineBreakByWordWrapping;
@@ -228,25 +237,8 @@
     cell.usernameLbl.textAlignment = NSTextAlignmentJustified;
     [cell.usernameLbl sizeToFit];
 
-    NSString *strPoint = comment.commentMsg;
-  //  [cell.commentLbl setFrame:CGRectMake(cellH, 30 , [UIScreen mainScreen].bounds.size.width - (cellH+5), 30)];
-    [cell.commentLbl setText:strPoint];
-    [cell.commentLbl setFont:[UIFont fontWithName:@"Helvetica" size:font]];
-    cell.commentLbl.lineBreakMode = NSLineBreakByWordWrapping;
-    cell.commentLbl.numberOfLines = 0 ;
-    cell.commentLbl.textAlignment = NSTextAlignmentJustified;
-    [cell.commentLbl sizeToFit];
-
-//    cell.usercommentImg = [[UIImageView alloc] initWithFrame:CGRectMake(4, 4, cellH - 16, cellH - 16)];
-//    cell.usercommentImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:com.commentPicture]]];
-//    
-//    cell.commentLbl = [[UILabel alloc] init];
-//    [cell.commentLbl setFrame:CGRectMake(cellH, 4 , [UIScreen mainScreen].bounds.size.width - (cellH+5), 30)];
-//    cell.commentLbl.backgroundColor = [UIColor redColor];
-//    
-//    NSString *strPoint = com.commentMsg;
-//    cell.commentLbl.text = strPoint;
-   // NSLog(@"COMMENT COUNT ::: %d",self.comment.count);
+    //cellH = cell.usernameLbl.bounds.size.height +10 ;
+    
     return cell;
 
 
@@ -267,12 +259,14 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     //CGFloat rowHeight = self.vdoList.count ? 260 : 100;
-    if (cell.usernameLbl.bounds.size.height  + 20 <= cellH) {
+   //if (cell.usernameLbl.bounds.size.height + 10 < cellH) {
         return cellH;
-    }
-    else{
-    return cell.usernameLbl.bounds.size.height  + 20 ;
-    }
+  // }
+  //  return cell.usernameLbl.bounds.size.height ;
+//    else{
+//        
+//    return cell.usernameLbl.bounds.size.height  + 20 ;
+//    }
 }
 
 - (void)addItem:sender {
@@ -397,7 +391,16 @@
     CGFloat height = [UIScreen mainScreen].bounds.size.height;
     [self.view setFrame:CGRectMake(0,0,width,height)];
 }
-
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    // Prevent crashing undo bug – see note below.
+    if(range.length + range.location > textField.text.length)
+    {
+        return NO;
+    }
+    
+    NSUInteger newLength = [textField.text length] + [string length] - range.length;
+    return newLength <= 100;
+}
 /*
 #pragma mark - Navigation
 

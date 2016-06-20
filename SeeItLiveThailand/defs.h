@@ -28,7 +28,7 @@
 //#define StreamingHistoryURL @"http://203.151.189.172/seeitlivethailand/api/liveStreamHistories"
 //#define StreamingLiveURL @"http://203.151.189.172/seeitlivethailand/api/liveStreamChannels?hasStreaming=Y"
 //#define SocketURL @"http://192.168.9.117:3008"
-
+//#define StreamingHistoryURLByCatgory @"http://203.151.189.172/seeitlivethailand/api/liveStreamHistories"
 
 
 /////////PON////////////
