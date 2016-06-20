@@ -619,7 +619,7 @@
     //cell.imgSnapshot.image = imgPH;
     //cell.lblPlace.text = [_fillerData objectAtIndex:[indexPath index]];
     cell.lblPlace.text = stream.streamTitle;
-    //cell.lblCreateBy.text = stream.createBy;
+    cell.lblcommentCount.text = [NSString stringWithFormat:@"%@",stream.count_comment];
     cell.lblCreateBy.text = stream.createBy;
     cell.lblViewCount.text = stream.streamTotalView;
     cell.lblLoveCount.text = [NSString stringWithFormat:@"%ld",(long)stream.lovesCount];
@@ -805,7 +805,8 @@
     UINavigationController *navigationController = [self.storyboard instantiateViewControllerWithIdentifier:@"commentNav"];
     // CommentViewController *comment = navigationController.viewControllers[0];
     // Comment.userData = userData;
-    [self.view.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
+        [self presentViewController:navigationController animated:YES completion:nil];
+   // [self.view.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
     
 }
 - (void)shareMyStream:(id)sender

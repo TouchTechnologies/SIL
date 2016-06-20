@@ -655,7 +655,7 @@
     
     liveIncategoryTbl = [[UITableView alloc] initWithFrame:liveIncategoryTblRect];
     liveIncategoryTbl.backgroundColor = [UIColor whiteColor];
-    liveIncategoryTbl.separatorStyle = UITableViewCellStyleDefault;
+    liveIncategoryTbl.separatorStyle = UITableViewCellSeparatorStyleNone;
     [liveIncategoryTbl registerClass:UITableViewCell.self forCellReuseIdentifier:@"cell"];
     [scrollView addSubview:liveIncategoryTbl];
     

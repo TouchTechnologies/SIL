@@ -561,7 +561,7 @@
     cell.lblPlace.text = stream.streamTitle;
 //    NSLog(@"COMMENT COUNT : %@",stream.count_comment);
     
-    cell.lblcommentCount.text = [NSString stringWithFormat:@"%@",stream.count_comment];;
+    cell.lblcommentCount.text = [NSString stringWithFormat:@"%@",stream.count_comment];
     //cell.lblCreateBy.text = stream.createBy;
     cell.lblCreateBy.text = stream.createBy;
     cell.lblViewCount.text = stream.streamTotalView;
