@@ -192,7 +192,7 @@
         followCountLblRect = CGRectMake(AvatarRect.size.width + 40, followerViewRect.size.height/2 - (fontSize - 2), 50, (fontSize - 2));
         lblfollowRect = CGRectMake(AvatarRect.size.width + 40, followerViewRect.size.height/2, 50, (fontSize - 4));
         lblMyLivestreamRect = CGRectMake(0 , gridviewHeaderRect.size.height/2 - fontSize, self.view.bounds.size.width, fontSize) ;
-        lblVideoRect= CGRectMake(0 , gridviewHeaderRect.size.height/2 + 5 , self.view.bounds.size.width/2 , fontSize - 4) ;
+        lblVideoRect = CGRectMake(0 , gridviewHeaderRect.size.height/2 + 5 , self.view.bounds.size.width/2 , fontSize - 4) ;
         lblVideoCountRect = CGRectMake(self.view.bounds.size.width/2 , gridviewHeaderRect.size.height/2 + 5 , self.view.bounds.size.width/2, fontSize - 4) ;
         gridViewRect = CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y + 170 , self.view.bounds.size.width, self.view.bounds.size.height - (220));
     }

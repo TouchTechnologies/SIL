@@ -221,7 +221,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     
     var countdownLbl = UILabel()
     var countDownLblRect = CGRect()
-    
+    var countdownLblFontsize = CGFloat()
     var count = 5
     //var timecount = 5.00
     var chatplaceView = UIView()
@@ -792,10 +792,12 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         timeStreamLbl.textColor = UIColor.whiteColor()
         popUpViewBot!.addSubview(timeStreamLbl)
         
-        countdownLbl.frame = CGRectMake(popUpView!.frame.size.width/2 - 25, popUpView!.frame.size.height/2 - 25, 50, 50);
+        countdownLbl.frame = countDownRect
      //   countdownLbl.text = "5"
-        countdownLbl.font = UIFont.systemFontOfSize(30)
+        countdownLbl.font = UIFont.systemFontOfSize(countdownLblFontsize)
         countdownLbl.textColor = UIColor.whiteColor()
+      
+        
        popUpView?.addSubview(countdownLbl)
       //  popUpVie.addSubview(countdownLbl)
         //countdownLbl.hidden = true;
@@ -864,6 +866,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             font = 14*scy
             cellH = 40*scy
             fonttitle = 16*scy
+            countdownLblFontsize = 30*scy
             popUpViewCenX = UIScreen.mainScreen().bounds.size.height/(1.7*scy)
             popUpViewCenY = UIScreen.mainScreen().bounds.size.width/(1.6*scx)
             streamViewRect = CGRectMake(0*scx, 0*scy, UIScreen.mainScreen().bounds.size.height, UIScreen.mainScreen().bounds.size.width)
@@ -936,11 +939,13 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             okBtnAlertRect = CGRectMake(0*scx,alertViewRect.size.height - (40*scy) , alertViewRect.size.width/2, 40*scy);
             cancelBtnAlertRect = CGRectMake(alertViewRect.size.width/2,alertViewRect.size.height - (40*scy) , alertViewRect.size.width/2, 40*scy);
             titimeStreamLblRect = CGRectMake(streamButtonRect.origin.x - (60*scx), popUpViewBotRect.size.height/2 - (15*scy), 60*scx, 30*scy);
+            countDownRect = CGRectMake(popUpViewRect.size.width/2 - (30*scx), popUpViewRect.size.height/2 - (30*scy), 60*scx, 60*scy);
         }
         else{
             font = 14
             cellH = 45
             fonttitle = 16
+            countdownLblFontsize = 30
             popUpViewCenX = UIScreen.mainScreen().bounds.size.height/1.7
             popUpViewCenY = UIScreen.mainScreen().bounds.size.width/1.6
             streamViewRect = CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.height, UIScreen.mainScreen().bounds.size.width)
@@ -1014,6 +1019,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             cancelBtnAlertRect = CGRectMake(alertViewRect.size.width/2,alertViewRect.size.height - 40 , alertViewRect.size.width/2, 40);
             
             titimeStreamLblRect = CGRectMake(streamButtonRect.origin.x - 60, popUpViewBotRect.size.height/2 - 15, 60, 30);
+            countDownRect = CGRectMake(popUpViewRect.size.width/2 - 30, popUpViewRect.size.height/2 - 30, 60, 60);
 
         }
         
@@ -1610,6 +1616,12 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             self.presentingViewController!.dismissViewControllerAnimated(true, completion: nil)
         }else if(self.timerValue <= 5){
             countdownLbl.text = String(self.timerValue)
+            countdownLbl.textAlignment = .Center
+          //  countdownLbl.contentMode = .Normal
+            countdownLbl.backgroundColor = UIColor.clearColor()
+            countdownLbl.layer.borderWidth = 2
+            countdownLbl.layer.borderColor = UIColor.whiteColor().CGColor
+            countdownLbl.layer.cornerRadius = countdownLbl.frame.size.width/2
             timeStreamLbl.text = String(self.timeFormatted(self.timerValue))
             
         }
