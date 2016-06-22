@@ -137,18 +137,29 @@
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
     
+    
     BFURL *parsedUrl = [BFURL URLWithInboundURL:url sourceApplication:sourceApplication];
+    NSLog(@"openURL : %@",[parsedUrl appLinkReferer]);
     if ([parsedUrl appLinkData]) {
         // this is an applink url, handle it here
         NSURL *targetUrl = [parsedUrl targetURL];
         NSLog(@"AppLink : %@",targetUrl);
+        [[[UIAlertView alloc] initWithTitle:@"Received link:"
+                                    message:[targetUrl absoluteString]
+                                   delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil] show];
+        
     }
     return [[FBSDKApplicationDelegate sharedInstance] application:application
                                                           openURL:url
                                                 sourceApplication:sourceApplication
                                                        annotation:annotation];
     
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"sil://main"]];
+    
 }
+
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {

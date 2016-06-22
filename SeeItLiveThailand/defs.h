@@ -13,20 +13,20 @@
 //#define StreamingHistoryURLByCatgory @"http://www.seeitlivethailand.com/api/liveStreamHistories"
 
 ///////////////Dev///////////////////
-//#define service @"http://192.168.9.117/seeitlivethailand/"
-//#define PromotionURL @"http://192.168.9.117/seeitlivethailand"
-//#define StreamingHistoryURL @"http://192.168.9.117/seeitlivethailand/api/stream/histories"
-//#define StreamingLiveURL @"http://192.168.9.117/seeitlivethailand/api/liveStreamChannels?hasStreaming=Y"
-//#define SocketURL @"http://192.168.9.117:3008"
-//#define StreamingHistoryURLByCatgory @"http://192.168.9.117/seeitlivethailand/api/liveStreamHistories"
+#define service @"http://192.168.9.117/seeitlivethailand/"
+#define PromotionURL @"http://192.168.9.117/seeitlivethailand"
+#define StreamingHistoryURL @"http://192.168.9.117/seeitlivethailand/api/stream/histories"
+#define StreamingLiveURL @"http://192.168.9.117/seeitlivethailand/api/liveStreamChannels?hasStreaming=Y"
+#define SocketURL @"http://192.168.9.117:3008"
+#define StreamingHistoryURLByCatgory @"http://192.168.9.117/seeitlivethailand/api/liveStreamHistories"
 
 //Dev2
-#define service @"http://203.151.189.172/seeitlivethailand/"
-#define PromotionURL @"http://203.151.189.172/seeitlivethailand"
-#define StreamingHistoryURL @"http://203.151.189.172/seeitlivethailand/api/stream/histories"
-#define StreamingLiveURL @"http://203.151.189.172/seeitlivethailand/api/liveStreamChannels?hasStreaming=Y"
-#define SocketURL @"http://203.151.189.172:3008"
-#define StreamingHistoryURLByCatgory @"http://203.151.189.172/seeitlivethailand/api/liveStreamHistories"
+//#define service @"http://203.151.189.172/seeitlivethailand/"
+//#define PromotionURL @"http://203.151.189.172/seeitlivethailand"
+//#define StreamingHistoryURL @"http://203.151.189.172/seeitlivethailand/api/stream/histories"
+//#define StreamingLiveURL @"http://203.151.189.172/seeitlivethailand/api/liveStreamChannels?hasStreaming=Y"
+//#define SocketURL @"http://203.151.189.172:3008"
+//#define StreamingHistoryURLByCatgory @"http://203.151.189.172/seeitlivethailand/api/liveStreamHistories"
 
 
 

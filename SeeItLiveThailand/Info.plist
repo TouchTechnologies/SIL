@@ -25,8 +25,13 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.Touchtechnologies.SeeItLiveThailand</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>sil</string>
 				<string>fb632688723507409</string>
 			</array>
 		</dict>
