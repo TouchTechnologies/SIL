@@ -40,8 +40,6 @@
 @property _Bool isChat;
 @property _Bool isShare;
 
-
-
 @property (strong,nonatomic) NSString *pageName;
 @property _Bool isLogin;
 @property _Bool isMoreVedio;

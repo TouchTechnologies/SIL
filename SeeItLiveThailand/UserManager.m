@@ -204,7 +204,6 @@ static UserManager * shareObject;
     //    [manager.requestSerializer setValue:appDelegate.access_token forHTTPHeaderField:@"-X-TIT-ACCESS-TOKEN"];
     
 //    "rawAgent":"htc\/htc_asia_wwe\/endeavoru:4.2.2\/JDQ39\/244600.5:user\/release-keys",
-
     
 //    NSDictionary * param = @{
 //                             @"title":title,

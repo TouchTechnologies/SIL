@@ -727,11 +727,19 @@
     
     NSString *mapURL = [@"https://maps.googleapis.com/maps/api/staticmap?center=" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:[@"&zoom=15&size=800x150&markers=color:red%7C" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:@"&key=AIzaSyAimot0aIsIsItn1F_BYXy6YVG-2Jc8MYs"]]]]]]]];
     mapImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:mapURL]]];
+//    [scrollView removeFromSuperview];
     if(([self.objStreaming.latitude doubleValue] != 0.0 ) && ([self.objStreaming.longitude doubleValue] != 0.0))
     {
+        [scrollView reloadInputViews];
         NSLog(@"set map lat : %f long : %f",[self.objStreaming.latitude doubleValue],[self.objStreaming.longitude doubleValue]);
         [scrollView addSubview:mapImg];
         
+    }
+    else{
+
+        [scrollView reloadInputViews];
+        [scrollView setFrame:CGRectMake(0, -mapImgRect.size.height, self.view.bounds.size.height,  self.view.bounds.size.height-(-mapImgRect.size.height))];
+    
     }
     avatarImg.image = (self.objStreaming.streamUserImage != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.objStreaming.streamUserImage]]]:[UIImage imageNamed:@"anonymous.png"];
     
