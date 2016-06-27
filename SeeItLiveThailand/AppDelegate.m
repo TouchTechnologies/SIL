@@ -144,11 +144,11 @@
         // this is an applink url, handle it here
         NSURL *targetUrl = [parsedUrl targetURL];
         NSLog(@"AppLink : %@",targetUrl);
-        [[[UIAlertView alloc] initWithTitle:@"Received link:"
-                                    message:[targetUrl absoluteString]
-                                   delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil] show];
+//        [[[UIAlertView alloc] initWithTitle:@"Received link:"
+//                                    message:[targetUrl absoluteString]
+//                                   delegate:nil
+//                          cancelButtonTitle:@"OK"
+//                          otherButtonTitles:nil] show];
         
     }
     return [[FBSDKApplicationDelegate sharedInstance] application:application

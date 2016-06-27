@@ -173,7 +173,7 @@
     NSLog(@"Key OK : %@ ",keyTxt.text);
     
     // Store the data
-    if([keyTxt.text isEqualToString:@"SeeItLive"])
+    if([keyTxt.text isEqualToString:@"S331tLiv3Th@il@nd"])
     {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults setBool:true forKey:@"isActivate"];
