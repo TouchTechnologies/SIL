@@ -14,7 +14,9 @@
 {
  bool *isPresented;
 }
+
 //@property (strong, nonatomic) REDPuzzleGridView *puzzleGridView;
+
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) KKGridView *gridView;
 
