@@ -550,7 +550,7 @@
 
 - (KKGridViewCell *)gridView:(KKGridView *)gridView cellForItemAtIndexPath:(KKIndexPath *)indexPath
 {
-//    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+   // AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     CGFloat scy = (1024.0/480.0);
     CGFloat scx = (768.0/360.0);
     CGFloat imgWidth = cell.frame.size.width;
@@ -627,9 +627,6 @@
     
 //    NSLog(@"isLove : %d",stream.isLoved);
     if (stream.isLoved && appDelegate.isLogin) {
-        //        UIImageView *img = [[UIImageView alloc] initWithFrame:cell.btnLoveicon.bounds];
-        //        img.image = [UIImage imageNamed:@"ic_love2.png"];
-        //        [cell.btnLoveicon addSubview:img];
         
         [cell.btnLoveicon setImage:[UIImage imageNamed:@"ic_love2.png"] forState:UIControlStateNormal] ;
         cell.imgLoveicon.image = [UIImage imageNamed:@"ic_love2.png"];
@@ -753,16 +750,19 @@
 //    [tempWindow addSubview:hud];
 //    [hud show:YES];
     
-    if(!stream.isLoved)
+    if(stream.isLoved)
     {
         [[UserManager shareIntance] loveAPI:@"love" streamID:stream.streamID userID:@"" Completion:^(NSError *error, NSDictionary *result, NSString *message) {
             
             NSLog(@"loveSendresult : %@",result);
+//            [cell.btnLoveicon setImage:[UIImage imageNamed:@"ic_love2.png"] forState:UIControlStateNormal] ;
+//            cell.imgLoveicon.image = [UIImage imageNamed:@"ic_love2.png"];
+//            cell.lblLoveCount.textColor = [UIColor redColor];
+
             stream.isLoved = true;
             stream.lovesCount++;
-            
             [self.gridView reloadData];
- //           [hud hide:YES];
+           // [self.gridView layoutIfNeeded];
         }];
         
     }
@@ -771,16 +771,19 @@
         [[UserManager shareIntance] loveAPI:@"unlove" streamID:stream.streamID userID:@"" Completion:^(NSError *error, NSDictionary *result, NSString *message) {
             
             NSLog(@"unloveloveSendresult : %@",result);
-            
+//            [cell.btnLoveicon setImage:[UIImage imageNamed:@"ic_love.png"] forState:UIControlStateNormal] ;
+//            cell.imgLoveicon.image = [UIImage imageNamed:@"ic_love.png"];
+//            cell.lblLoveCount.textColor = [UIColor blackColor];
+
+       
             stream.lovesCount--;
             stream.isLoved = false;
-            
             [self.gridView reloadData];
-   //         [hud hide:YES];
-            
+           // [self.gridView layoutIfNeeded];
+       
         }];
-        
     }
+ 
     
 }
 -(void)commentStream:(id)sender
