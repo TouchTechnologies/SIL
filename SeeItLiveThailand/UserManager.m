@@ -337,7 +337,7 @@ static UserManager * shareObject;
         completion(error,nil,@"Failed");
     }];
 }
--(void)updateMyStream:(NSString *)streamID title:(NSString*)title note:(NSString*)note public:(BOOL)public Completion:(void (^)(NSError *, NSDictionary *, NSString *))completion{
+-(void)updateMyStream:(NSString *)streamID title:(NSString*)title note:(NSString*)note catID:(NSString*)catID public:(BOOL)public Completion:(void (^)(NSError *, NSDictionary *, NSString *))completion{
     AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
@@ -351,7 +351,7 @@ static UserManager * shareObject;
     NSDictionary * param = @{
                              @"title" : title,
                              @"note" : note,
-//                             @"category_id" : @1,
+                             @"category_id" : catID,
                              @"public" : (public)? @1 : @0
                              };
     NSString * command = [@"api/stream/history/" stringByAppendingString:[streamID stringByAppendingString:@"/"]];
