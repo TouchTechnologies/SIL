@@ -78,6 +78,7 @@
 - (void)initData
 {
     AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
+    NSLog(@"Data %d",self.objStreaming.categoryID);
     NSLog(@"Creata by %@",self.objStreaming.createBy);
     NSLog(@"streamTotalViewEdit : %@",self.objStreaming.streamTotalView);
     NSLog(@"StreamImage : %@",self.objStreaming.snapshot);
@@ -215,9 +216,11 @@
 - (IBAction)updateMyStream:(id)sender {
     NSLog(@"Title : %@",self.titleTF.text);
     NSLog(@"Note : %@",self.detailTV.text);
+    NSLog(@"Cat ID : %d",self.objStreaming.categoryID);
     NSLog(@"Switch state %lu",(unsigned long)self.setPublicSwitch.isOn);
+    NSString *categoryID = [NSString stringWithFormat:@"%d", self.objStreaming.categoryID];
     
-    [[UserManager shareIntance] updateMyStream:self.objStreaming.streamID title:self.titleTF.text note:self.detailTV.text public:self.setPublicSwitch.isOn Completion:^(NSError *error, NSDictionary *result, NSString *message) {
+    [[UserManager shareIntance] updateMyStream:self.objStreaming.streamID title:self.titleTF.text note:self.detailTV.text catID:categoryID public:self.setPublicSwitch.isOn Completion:^(NSError *error, NSDictionary *result, NSString *message) {
         
         NSLog(@"UpdateMyStream : %@",result);
         [[NSNotificationCenter defaultCenter]

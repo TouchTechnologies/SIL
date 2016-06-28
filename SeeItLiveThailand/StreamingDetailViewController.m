@@ -1502,7 +1502,7 @@
     [cell.contentView addSubview:categoryTitleCellLbl];
     
     categoryTypeCellLbl = [[UILabel alloc] initWithFrame:categoryTypeCellLblRect];
-//    NSLog(@"categoryName : %@",self.objStreaming.categoryName);
+    NSLog(@"categoryName ::: %@",self.objStreaming.categoryName);
     categoryTypeCellLbl.text = stream.categoryName;
     categoryTypeCellLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 2];
     categoryTypeCellLbl.textColor = [UIColor redColor];

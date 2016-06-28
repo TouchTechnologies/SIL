@@ -446,6 +446,20 @@ static DataManager *staticManager = nil;
         stream.avatarUrl = stmRecord[@"user"][@"profile_picture"];
         stream.count_comment = stmRecord[@"count_comment"];
         
+        stream.categoryID = [stmRecord[@"category_id"] integerValue];
+        
+        for(NSDictionary *cateName in appDelegate.categoryData)
+        {
+            if(stream.categoryID == [cateName[@"id"] integerValue])
+            {
+//                NSLog(@"CateName : %@",cateName[@"category_name_en"]);
+                stream.categoryName  = cateName[@"category_name_en"];
+                stream.categoryImage = cateName[@"icon_category"];
+            }
+            
+        }
+
+        
         
 //        NSLog(@"stream title :%@",stmRecord[@"title"]);
 //        NSLog(@"stmRecord URL :%@",stmRecord[@"list_url"][@"http"]);
