@@ -281,7 +281,7 @@
     [hud show:YES];
     */
     
-    UIWindow *tempWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
+ //   UIWindow *tempWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
 //    hud = [[MBProgressHUD alloc] initWithWindow:tempWindow];
 //    hud.mode = MBProgressHUDModeIndeterminate;
 //    hud.labelText = @"Loading...";
@@ -500,7 +500,7 @@
 
 - (KKGridViewCell *)gridView:(KKGridView *)gridView cellForItemAtIndexPath:(KKIndexPath *)indexPath
 {
-  AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+ // AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     CGFloat scy = (1024.0/480.0);
     CGFloat scx = (768.0/360.0);
     CGFloat imgWidth = cell.frame.size.width;
@@ -692,12 +692,7 @@
     NSLog(@"islove? :%d ",stream.isLoved);
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"lovepress" object:nil];
-    UIWindow *tempWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
-//    hud = [[MBProgressHUD alloc] initWithWindow:tempWindow];
-//    hud.mode = MBProgressHUDModeIndeterminate;
-//   // hud.labelText = @"Loading...";
-//    [tempWindow addSubview:hud];
-//    [hud show:YES];
+
     
     if(!stream.isLoved)
     {
@@ -708,7 +703,7 @@
             stream.isLoved = true;
             stream.lovesCount++;
            [self.gridView reloadData];
-//        [hud hide:YES];
+
     }];
         
     }
@@ -721,7 +716,6 @@
             stream.lovesCount--;
             stream.isLoved = false;
             [self.gridView reloadData];
-//          [hud hide:YES];
         }];
     }
 }

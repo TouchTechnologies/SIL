@@ -88,12 +88,14 @@
 @end
 
 @implementation CategoryListViewController
+@synthesize gridView = gridView;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     scrollView.delegate = self;
+    gridView.delegate = self;
     [self initialSize];
     [self setupPageControl];
     [self initial];
@@ -166,7 +168,7 @@
     self.gridView.backgroundColor = [UIColor clearColor];
     [scrollView addSubview:self.gridView];
     
-    __weak CategoryListViewController *weakSelf = self;
+  //  __weak CategoryListViewController *weakSelf = self;
     
     
 //    [[DataManager shareManager] getStreamingWithCompletionBlockByCatgoryID:^(BOOL success, NSArray *streamRecords, NSError *error) {
@@ -342,9 +344,6 @@
     
     _pageControl = [[ADPageControl alloc] init];
     _pageControl.delegateADPageControl = self;
-    //   _pageControl.arrPageModel = [[NSMutableArray alloc] initWithObjects:liveModel,historyModel, nil];
-    
-//    _pageControl.arrPageModel = [[NSMutableArray alloc] initWithObjects:TravelModel,CultureModel,EventModel,NewsModel,LifestyleModel,OtherModel,MusicModel , nil];
     _pageControl.arrPageModel = [[NSMutableArray alloc] initWithArray:pageName];
     _pageControl.iTitleViewWidth = titleWidth;
     
@@ -624,23 +623,18 @@
     cell.lblViewCount.text = stream.streamTotalView;
     cell.lblLoveCount.text = [NSString stringWithFormat:@"%ld",(long)stream.lovesCount];
     
-    
-//    NSLog(@"isLove : %d",stream.isLoved);
     if (stream.isLoved && appDelegate.isLogin) {
         
         [cell.btnLoveicon setImage:[UIImage imageNamed:@"ic_love2.png"] forState:UIControlStateNormal] ;
         cell.imgLoveicon.image = [UIImage imageNamed:@"ic_love2.png"];
         cell.lblLoveCount.textColor = [UIColor redColor];
         
-        //        [cell.contentView addSubview:cell.btnLoveicon];
     }
     else
     {
         [cell.btnLoveicon setImage:[UIImage imageNamed:@"ic_love.png"] forState:UIControlStateNormal] ;
         cell.imgLoveicon.image = [UIImage imageNamed:@"ic_love.png"];
         cell.lblLoveCount.textColor = [UIColor blackColor];
-        //    [cell.btnLoveicon setImage:[UIImage animatedImageNamed:@"ic_love.png" duration:1.0] forState:UIControlStateHighlighted];//        [cell.contentView addSubview:cell.btnLoveicon];
-        
     }
     
     NSLog(@"<<<<<<<<<<<<<<<<<== %lu ==>>>>>>>>>>>>>>>>>>>>>>>",(unsigned long)[indexPath index]);
@@ -732,59 +726,42 @@
 }
 - (void)loveSend:(id)sender
 {
+    
     NSLog(@"Love Love");
     UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)sender;
     NSLog (@"Tag %ld",[tapRecognizer.view tag]);
     NSInteger loveTag = [tapRecognizer.view tag];
     
+    
     Streaming *stream = [self.streamList objectAtIndex:loveTag];
     NSLog(@"streamID :%@ ",stream.streamID);
     NSLog(@"islove? :%d ",stream.isLoved);
    
-    
+
     [[NSNotificationCenter defaultCenter] postNotificationName:@"lovepress" object:nil];
-    UIWindow *tempWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
-//    hud = [[MBProgressHUD alloc] initWithWindow:tempWindow];
-//    hud.mode = MBProgressHUDModeIndeterminate;
-//    // hud.labelText = @"Loading...";
-//    [tempWindow addSubview:hud];
-//    [hud show:YES];
-    
-    if(stream.isLoved)
+  
+    if(!stream.isLoved)
     {
         [[UserManager shareIntance] loveAPI:@"love" streamID:stream.streamID userID:@"" Completion:^(NSError *error, NSDictionary *result, NSString *message) {
             
             NSLog(@"loveSendresult : %@",result);
-//            [cell.btnLoveicon setImage:[UIImage imageNamed:@"ic_love2.png"] forState:UIControlStateNormal] ;
-//            cell.imgLoveicon.image = [UIImage imageNamed:@"ic_love2.png"];
-//            cell.lblLoveCount.textColor = [UIColor redColor];
-
-            stream.isLoved = true;
-            stream.lovesCount++;
-            [self.gridView reloadData];
-           // [self.gridView layoutIfNeeded];
+             stream.isLoved = true;
+             stream.lovesCount++;
+             [self.gridView reloadData];
         }];
-        
     }
     else
     {
         [[UserManager shareIntance] loveAPI:@"unlove" streamID:stream.streamID userID:@"" Completion:^(NSError *error, NSDictionary *result, NSString *message) {
             
             NSLog(@"unloveloveSendresult : %@",result);
-//            [cell.btnLoveicon setImage:[UIImage imageNamed:@"ic_love.png"] forState:UIControlStateNormal] ;
-//            cell.imgLoveicon.image = [UIImage imageNamed:@"ic_love.png"];
-//            cell.lblLoveCount.textColor = [UIColor blackColor];
 
-       
             stream.lovesCount--;
             stream.isLoved = false;
             [self.gridView reloadData];
-           // [self.gridView layoutIfNeeded];
-       
         }];
-    }
- 
-    
+          }
+
 }
 -(void)commentStream:(id)sender
 {
