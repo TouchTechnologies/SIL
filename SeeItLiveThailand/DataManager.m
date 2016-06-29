@@ -418,7 +418,7 @@ static DataManager *staticManager = nil;
 - (void)createMyStreamingObjectForRecords:(NSArray *)record {
     AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     NSMutableArray *recordObjects = [NSMutableArray array];
-//    NSLog(@"RecordMyStream %@",record);
+    NSLog(@"RecordMyStream:: %@",record);
     for (NSDictionary *stmRecord in record) {
         Streaming *stream = [[Streaming alloc] init];
         stream.ID = stmRecord[@"id_stream"];
@@ -445,8 +445,11 @@ static DataManager *staticManager = nil;
         stream.longitude = stmRecord[@"longitude"];
         stream.avatarUrl = stmRecord[@"user"][@"profile_picture"];
         stream.count_comment = stmRecord[@"count_comment"];
-        
         stream.categoryID = [stmRecord[@"category_id"] integerValue];
+
+        stream.count_follower = [stmRecord[@"user"][@"count_follower"] integerValue];
+        stream.count_following = [stmRecord[@"user"][@"count_following"] integerValue];
+//        NSLog(@"count_following %@",stmRecord[@"user"][@"count_following"]);
         
         for(NSDictionary *cateName in appDelegate.categoryData)
         {
