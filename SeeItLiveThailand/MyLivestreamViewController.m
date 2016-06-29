@@ -30,6 +30,7 @@
 {
     VCSimpleSession *session ;
     AppDelegate *appDelegate;
+    UserData *userData;
     UIView *recordBar;
     CGFloat rcGrapY;
     CGFloat rcBarH;
@@ -220,8 +221,11 @@
      self.followerView.backgroundColor = [UIColor whiteColor];
     
     self.followCountLbl = [[UILabel alloc] initWithFrame:followCountLblRect];
-    self.followCountLbl.textColor = [UIColor grayColor];
-    self.followCountLbl.text = [NSString stringWithFormat:@"%d" , (int)appDelegate.followData.count_follower ];
+    self.followCountLbl.textColor = [UIColor redColor];
+    self.followCountLbl.text = [NSString stringWithFormat:@"%d" , (int)appDelegate.followData.count_following ];
+    NSLog(@"FOLLOWER ::: %@",userData.count_follower);
+    
+    
     self.followCountLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 2];
     self.followCountLbl.textAlignment = NSTextAlignmentCenter;
     [self.followerView addSubview:self.followCountLbl];

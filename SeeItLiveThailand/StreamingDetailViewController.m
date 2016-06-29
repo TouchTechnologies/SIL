@@ -228,9 +228,7 @@
     scrollView.delegate = self;
     appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     [self getCategoryList];
-   // [liveIncategoryTbl removeFromSuperview];
-
-    
+  
     
 //        [[NSNotificationCenter defaultCenter] addObserver:self
 //                                                 selector:@selector(refreshList:)
@@ -303,15 +301,16 @@
             if (success) {
                 weakSelf.streamList = streamRecords;
                 NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
-                //
+                
             } else {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
             }
-            [liveIncategoryTbl reloadData];
+            [scrollView addSubview:liveIncategoryTbl];
+           // [liveIncategoryTbl reloadData];
             
         } Filter:filter];
-        
+      
         dispatch_async(dispatch_get_main_queue(), ^(void){
             //Run UI Updates
             
@@ -607,7 +606,7 @@
     [profileView addSubview:avatarImg];
     
     usernameLbl = [[UILabel alloc]initWithFrame:usernameLblRect];
-//    usernameLbl.text = self.objStreaming.streamUserName;
+   // usernameLbl.text = self.objStreaming.streamUserName;
     usernameLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize];
     usernameLbl.textColor = [UIColor whiteColor];
     [profileView addSubview:usernameLbl];
@@ -657,7 +656,7 @@
     liveIncategoryTbl.backgroundColor = [UIColor whiteColor];
     liveIncategoryTbl.separatorStyle = UITableViewCellSeparatorStyleNone;
     [liveIncategoryTbl registerClass:UITableViewCell.self forCellReuseIdentifier:@"cell"];
-    [scrollView addSubview:liveIncategoryTbl];
+    
     
     moreBtn = [[UIButton alloc] initWithFrame: moreBtnRect];
     moreBtn.layer.borderWidth = 1;
@@ -739,11 +738,10 @@
 
         [scrollView reloadInputViews];
         [scrollView setFrame:CGRectMake(0, -mapImgRect.size.height, self.view.bounds.size.height,  self.view.bounds.size.height-(-mapImgRect.size.height))];
-    
     }
     avatarImg.image = (self.objStreaming.streamUserImage != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.objStreaming.streamUserImage]]]:[UIImage imageNamed:@"anonymous.png"];
     
-    usernameLbl.text = self.objStreaming.streamUserName;
+    usernameLbl.text = self.objStreaming.createBy;
     followerCountLbl.text = self.objStreaming.streamUserFollowerCount;
     
 }
