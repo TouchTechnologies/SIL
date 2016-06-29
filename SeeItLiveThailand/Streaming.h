@@ -28,6 +28,8 @@
 @property (nonatomic, strong) NSString *categoryCountStream;
 @property (nonatomic, strong) NSString *count_comment;
 @property  NSInteger lovesCount;
+@property  NSInteger count_follower;
+@property  NSInteger count_following;
 
 @property _Bool isLoved;
 @property _Bool isPublic;
