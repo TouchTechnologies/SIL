@@ -31,6 +31,7 @@
     VCSimpleSession *session ;
     AppDelegate *appDelegate;
     UserData *userData;
+    Streaming *userStream;
     UIView *recordBar;
     CGFloat rcGrapY;
     CGFloat rcBarH;
@@ -211,6 +212,7 @@
 //    NSLog(@"streamTotalViewEdit ::::: %@",self.objStreaming.streamTotalView);
 //    NSLog(@"StreamImage ::::: %@",self.objStreaming.snapshot);
     
+    //userStream = [self.streamList objectAtIndex:0];
     self.view.backgroundColor = [UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1.0];
 
     self.viewHeader = [[UIView alloc] initWithFrame:viewHeaderRect];
@@ -222,8 +224,7 @@
     
     self.followCountLbl = [[UILabel alloc] initWithFrame:followCountLblRect];
     self.followCountLbl.textColor = [UIColor redColor];
-    self.followCountLbl.text = [NSString stringWithFormat:@"%d" , (int)appDelegate.followData.count_following ];
-    NSLog(@"FOLLOWER ::: %@",userData.count_follower);
+   
     
     
     self.followCountLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 2];
@@ -315,7 +316,9 @@
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
             }
-            
+            userStream = [weakSelf.streamList objectAtIndex:0];
+            self.followCountLbl.text = [NSString stringWithFormat:@"%d" , (int)userStream.count_follower];
+            NSLog(@"FOLLOWER ::: %ld",(long)userStream.count_follower);
             [weakSelf.gridView reloadData];
         }];
     }else{
