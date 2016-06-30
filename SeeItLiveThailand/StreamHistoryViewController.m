@@ -689,7 +689,6 @@
     NSLog(@"islove? :%d ",stream.isLoved);
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"lovepress" object:nil];
-
     
     if(!stream.isLoved)
     {
@@ -697,8 +696,8 @@
             
             NSLog(@"loveSendresult : %@",result);
            
-            stream.isLoved = true;
-            stream.lovesCount++;
+             stream.isLoved = true;
+             stream.lovesCount++;
            [self.gridView reloadData];
 
     }];
@@ -710,8 +709,10 @@
             
             NSLog(@"unloveloveSendresult : %@",result);
 
-            stream.lovesCount--;
+            
             stream.isLoved = false;
+            stream.lovesCount--;
+        
             [self.gridView reloadData];
         }];
     }
