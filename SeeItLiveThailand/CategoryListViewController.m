@@ -755,11 +755,12 @@
     if(!stream.isLoved)
     {
         [[UserManager shareIntance] loveAPI:@"love" streamID:stream.streamID userID:@"" Completion:^(NSError *error, NSDictionary *result, NSString *message) {
-            
+        if ([result[@"message"] isEqualToString:@"Success"]) {
+            stream.lovesCount = [result[@"data"][@"count"] integerValue];
             NSLog(@"loveSendresult : %@",result);
              stream.isLoved = true;
-             stream.lovesCount++;
              [self.gridView reloadData];
+            }
         }];
     }
     else
@@ -768,9 +769,11 @@
             
             NSLog(@"unloveloveSendresult : %@",result);
 
-            stream.lovesCount--;
+        if ([result[@"message"] isEqualToString:@"Success"]) {
+            stream.lovesCount = [result[@"data"][@"count"] integerValue];
             stream.isLoved = false;
             [self.gridView reloadData];
+        }
         }];
           }
 

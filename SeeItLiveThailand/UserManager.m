@@ -420,7 +420,7 @@ static UserManager * shareObject;
     if ([apiName isEqualToString:@"love"]) {
         apiName = [streamID stringByAppendingString:@"/loves"];
         NSString *apiLink = [@"api/stream/history/" stringByAppendingString:apiName];
-        NSLog(@"Full love API : %@",apiLink);
+//        NSLog(@"Full love API : %@",apiLink);
         [manager POST:[service stringByAppendingString:apiLink] parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
             
             completion(nil,responseObject,@"Success");
@@ -433,7 +433,7 @@ static UserManager * shareObject;
     {
         apiName = [streamID stringByAppendingString:@"/loves"];
         NSString *apiLink = [@"api/stream/history/" stringByAppendingString:apiName];
-        NSLog(@"Full love API : %@",apiLink);
+//        NSLog(@"Full love API : %@",apiLink);
         [manager DELETE:[service stringByAppendingString:apiLink] parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
             
             completion(nil,responseObject,@"Success");
