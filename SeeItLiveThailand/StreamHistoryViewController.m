@@ -784,7 +784,6 @@
         [popup presentPopoverFromRect:CGRectMake(self.view.frame.size.width-35, 60, 0, 0)inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
     
-    
 }
 
 - (void)goProfile:(id)sender
