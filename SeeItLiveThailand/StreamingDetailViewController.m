@@ -1125,11 +1125,13 @@
         [[UserManager shareIntance] loveAPI:@"love" streamID:self.objStreaming.streamID userID:@"" Completion:^(NSError *error, NSDictionary *result, NSString *message) {
             
             NSLog(@"loveSendresult : %@",result);
-            self.objStreaming.lovesCount++;
+            if ([result[@"message"] isEqualToString:@"Success"]) {
+            self.objStreaming.lovesCount = [result[@"data"][@"count"] integerValue];
             [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
             [btnLove setImage:[UIImage imageNamed:@"ic_love2.png"] forState:UIControlStateNormal];
             self.objStreaming.isLoved = true;
             
+            }
             // [self viewDidLoad];
             
         }];
@@ -1138,12 +1140,13 @@
         [[UserManager shareIntance] loveAPI:@"unlove" streamID:self.objStreaming.streamID userID:@"" Completion:^(NSError *error, NSDictionary *result, NSString *message) {
             
             NSLog(@"unloveloveSendresult : %@",result);
-            
-            self.objStreaming.lovesCount--;
+            if ([result[@"message"] isEqualToString:@"Success"]) {
+            self.objStreaming.lovesCount = [result[@"data"][@"count"] integerValue];
             [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
            [btnLove setImage:[UIImage imageNamed:@"ic_love.png"] forState:UIControlStateNormal];
             //[self viewDidLoad];
             self.objStreaming.isLoved = false;
+            }
         }];
     }
     

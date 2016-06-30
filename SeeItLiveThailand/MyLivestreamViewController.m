@@ -303,22 +303,30 @@
         NSLog(@"is login ");
         [[DataManager shareManager] getMyStreamingWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
             
-            
+            NSLog(@"streamRecords : %@",streamRecords);
        //     [hud hide:YES];
+            self.followCountLbl.text = @"0";
+            self.lblVideoCount.text = @"0";
             if (success) {
-                NSLog(@"streamRecords : %@",streamRecords);
-                weakSelf.streamList = streamRecords;
-                self.lblVideoCount.text = [NSString stringWithFormat:@"%d",streamRecords.count];
-                _lblNoStream.hidden = YES;
-                imgLiveStatus.hidden = YES;
+                if (streamRecords.count != 0) {
+                    weakSelf.streamList = streamRecords;
+                    userStream = [weakSelf.streamList objectAtIndex:0];
+                    self.followCountLbl.text = [NSString stringWithFormat:@"%d" , (int)userStream.count_follower];
+//                    NSLog(@"FOLLOWER ::: %ld",(long)userStream.count_follower);
+                    self.lblVideoCount.text = [NSString stringWithFormat:@"%lu",(unsigned long)streamRecords.count];
+                    _lblNoStream.hidden = YES;
+                    imgLiveStatus.hidden = YES;
+                }else{
+                    NSLog(@"streamRecords.count %lu",(unsigned long)streamRecords.count);
+
+                }
+
                 
             } else {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
             }
-            userStream = [weakSelf.streamList objectAtIndex:0];
-            self.followCountLbl.text = [NSString stringWithFormat:@"%d" , (int)userStream.count_follower];
-            NSLog(@"FOLLOWER ::: %ld",(long)userStream.count_follower);
+
             [weakSelf.gridView reloadData];
         }];
     }else{
