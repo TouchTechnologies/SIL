@@ -689,7 +689,6 @@
     NSLog(@"islove? :%d ",stream.isLoved);
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"lovepress" object:nil];
-
     
     if(!stream.isLoved)
     {
@@ -701,7 +700,6 @@
                 NSLog(@"Count : %@",result[@"data"][@"count"]);
                 stream.lovesCount = [result[@"data"][@"count"] integerValue];
             }
-
            [self.gridView reloadData];
 
     }];
@@ -712,7 +710,6 @@
         [[UserManager shareIntance] loveAPI:@"unlove" streamID:stream.streamID userID:@"" Completion:^(NSError *error, NSDictionary *result, NSString *message) {
             
             NSLog(@"unloveloveSendresult : %@",result);
-
             if ([result[@"message"] isEqualToString:@"Success"]) {
                 stream.lovesCount = [result[@"data"][@"count"] integerValue];
                  NSLog(@"Count : %@",result[@"data"][@"count"]);
