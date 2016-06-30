@@ -60,7 +60,7 @@
     NSUInteger UserTag;
     NSUInteger CellTag;
     
-    SBScrollView *scrollView;
+    UIScrollView *scrollView;
     CGRect scrollViewRect;
     CGRect pageControlRect;
 
@@ -108,118 +108,7 @@
                                                object:nil];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
--(void)initial{
-    appDelegate.pageName = @"StreamCat";
-    navView = [[UIView alloc] initWithFrame:navViewRect];
-    navView.backgroundColor = [UIColor blackColor];
-    [self.view addSubview:navView];
-    
-    backBtn = [[UIButton alloc] initWithFrame:backBtnRect];
-    UIImage *backimg = [UIImage imageNamed:@"back.png"];
- //   backBtn.backgroundColor = [UIColor whiteColor];
-    [backBtn setImage:backimg forState:UIControlStateNormal];
-    [backBtn addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
-    [navView addSubview:backBtn];
-    
-    scrollView = [[SBScrollView alloc] initWithFrame:scrollViewRect];
-    scrollView.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0];
-    [_pageControl.view addSubview:scrollView];
-    
-        moreBtn = [[UIButton alloc] initWithFrame:moreBtnRect];
-        [moreBtn setTitle:@"more" forState:UIControlStateNormal];
-        [moreBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-        moreBtn.layer.borderWidth = 1;
-        moreBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        moreBtn.backgroundColor = [UIColor clearColor];
-        moreBtn.layer.cornerRadius = moreBtnRect.size.height/2;
-        moreBtn.clipsToBounds = YES;
-        [moreBtn addTarget:self action:@selector(loadmore:) forControlEvents:UIControlEventTouchUpInside];
-     [_pageControl.view addSubview:moreBtn];
-    
-//    UIWindow *tempWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
-//    hud = [[MBProgressHUD alloc] initWithWindow:tempWindow];
-//    hud.mode = MBProgressHUDModeIndeterminate;
-//    hud.labelText = @"Loading...";
-//    [tempWindow addSubview:hud];
-//    [hud show:YES];
-    
-    [self.gridView removeFromSuperview];
-    
-     CGRect parentFrame = scrollViewRect;
-    
-    //    onAirView = [[UIView alloc] initWithFrame:onAirViewRect];
-    //    onAirView.backgroundColor = [UIColor redColor];
-    //    [scrollView addSubview:onAirView];
-    
-    
-    //   self.gridView = [[KKGridView alloc] initWithFrame:CGRectMake(parentFrame.origin.x, parentFrame.origin.y, parentFrame.size.width, (weakSelf.streamList.count*(cellH+10))+10)];
-    self.gridView = [[KKGridView alloc] initWithFrame:gridViewRect];
-    self.gridView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-    self.gridView.dataSource = self;
-    self.gridView.delegate = self;
-    self.gridView.cellSize = cellSize;
-    self.gridView.cellPadding = paddingSize;
-    self.gridView.bounces = NO;
-    self.gridView.allowsMultipleSelection = NO;
-    self.gridView.backgroundColor = [UIColor clearColor];
-    [scrollView addSubview:self.gridView];
-    
-  //  __weak CategoryListViewController *weakSelf = self;
-    
-    
-//    [[DataManager shareManager] getStreamingWithCompletionBlockByCatgoryID:^(BOOL success, NSArray *streamRecords, NSError *error) {
-//        [hud hide:YES];
-//        if (success) {
-//            weakSelf.streamList = streamRecords;
-//            NSLog(@"STREAMLIST COUNT :::: %ld", weakSelf.streamList.count);
-//            
-//            
-//            
-//        } else {
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//            [alert show];
-//        }
-//        
-//        
-//        
-//        [weakSelf.gridView reloadData];
-//    } :self.catID];
-    
-//    [[DataManager shareManager] getStreamingWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
-//        
-//        
-//        [hud hide:YES];
-//        if (success) {
-//            weakSelf.streamList = streamRecords;
-//            NSLog(@"STREAMLIST COUNT :::: %ld", weakSelf.streamList.count);
-//           
-//            
-//            
-//        } else {
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//            [alert show];
-//            /*
-//             CGFloat xLbl = (weakSelf.view.bounds.size.width / 2) - 100;
-//             UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(xLbl, 20, 200, 25)];
-//             lblTitle.text = NotConnect;
-//             lblTitle.textAlignment = NSTextAlignmentCenter;
-//             [weakSelf.view addSubview:lblTitle];
-//             */
-//            //NSLog(@"%@",error);
-//        }
-//        
-//        
-//        
-//        [weakSelf.gridView reloadData];
-//    }];
-    
 
-
-}
 -(void)initialSize{
     CGFloat scy = (1024.0/480.0);
     CGFloat scx = (768.0/360.0);
@@ -251,10 +140,10 @@
         imgPHW02 = 25.0*scy;
         navViewRect = CGRectMake(0*scx, 20*scy, width, 40*scy);
         backBtnRect = CGRectMake(5*scx, navViewRect.size.height/2 -(15*scy) , 30*scx , 30*scy);
-        scrollViewRect = CGRectMake(0*scx, titleHeight, width, height - (150*scy));
+         scrollViewRect = CGRectMake(0, navViewRect.origin.y+ navViewRect.size.height + titleHeight, width, height - (navViewRect.origin.y+ navViewRect.size.height + titleHeight + (50*scy)));
         pageControlRect = CGRectMake(0*scx, 60*scy, self.view.bounds.size.width, self.view.bounds.size.height - (100*scy));
         moreBtnRect = CGRectMake(width/2 - (40*scx), scrollViewRect.size.height + (50*scy), 80*scx , 30*scy);
-        gridViewRect = CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y - (240*scy) , self.view.bounds.size.width,  self.view.bounds.size.height);
+        gridViewRect = CGRectMake(0,0 , scrollViewRect.size.width, scrollViewRect.size.height);
 
         
     } else {
@@ -272,13 +161,121 @@
         imgPHW02 = 25.0;
         navViewRect = CGRectMake(0, 20, width, 40);
         backBtnRect = CGRectMake(5, navViewRect.size.height/2 -15 , 30 , 30);
-        scrollViewRect = CGRectMake(0, titleHeight, width, height - 150);
+        scrollViewRect = CGRectMake(0, navViewRect.origin.y+ navViewRect.size.height + titleHeight, width, height - (navViewRect.origin.y+ navViewRect.size.height + titleHeight + 50 ));
         pageControlRect = CGRectMake(0, 60, self.view.bounds.size.width, self.view.bounds.size.height - 20);
        moreBtnRect = CGRectMake(width/2 - 40, scrollViewRect.size.height + 50 , 80 , 30);
-        gridViewRect = CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y - 240 , self.view.bounds.size.width,  self.view.bounds.size.height);
+       gridViewRect = CGRectMake(0,0 , scrollViewRect.size.width, scrollViewRect.size.height);
+        // gridViewRect = CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y - 240 , self.view.bounds.size.width,  self.view.bounds.size.height);
     }
 
 }
+-(void)initial{
+    
+    appDelegate.pageName = @"StreamCat";
+    navView = [[UIView alloc] initWithFrame:navViewRect];
+    navView.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:navView];
+    
+    backBtn = [[UIButton alloc] initWithFrame:backBtnRect];
+    UIImage *backimg = [UIImage imageNamed:@"back.png"];
+    //   backBtn.backgroundColor = [UIColor whiteColor];
+    [backBtn setImage:backimg forState:UIControlStateNormal];
+    [backBtn addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
+    [navView addSubview:backBtn];
+    
+    scrollView = [[UIScrollView alloc] initWithFrame:scrollViewRect];
+    scrollView.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0];
+    self.scrollView.scrollEnabled = false;
+    [self.scrollView setScrollEnabled:NO];
+    [self.view addSubview:scrollView];
+    
+    moreBtn = [[UIButton alloc] initWithFrame:moreBtnRect];
+    [moreBtn setTitle:@"more" forState:UIControlStateNormal];
+    [moreBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    moreBtn.layer.borderWidth = 1;
+    moreBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    moreBtn.backgroundColor = [UIColor clearColor];
+    moreBtn.layer.cornerRadius = moreBtnRect.size.height/2;
+    moreBtn.clipsToBounds = YES;
+    [moreBtn addTarget:self action:@selector(loadmore:) forControlEvents:UIControlEventTouchUpInside];
+    [_pageControl.view addSubview:moreBtn];
+    
+   
+    
+    [self.gridView removeFromSuperview];
+    
+    CGRect parentFrame = scrollViewRect;
+    
+    //    onAirView = [[UIView alloc] initWithFrame:onAirViewRect];
+    //    onAirView.backgroundColor = [UIColor redColor];
+    //    [scrollView addSubview:onAirView];
+    
+    
+    //   self.gridView = [[KKGridView alloc] initWithFrame:CGRectMake(parentFrame.origin.x, parentFrame.origin.y, parentFrame.size.width, (weakSelf.streamList.count*(cellH+10))+10)];
+    self.gridView = [[KKGridView alloc] initWithFrame:gridViewRect];
+    self.gridView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+    self.gridView.dataSource = self;
+    self.gridView.delegate = self;
+    self.gridView.cellSize = cellSize;
+    self.gridView.cellPadding = paddingSize;
+    self.gridView.bounces = NO;
+    self.gridView.allowsMultipleSelection = NO;
+    self.gridView.backgroundColor = [UIColor clearColor];
+    [scrollView addSubview:self.gridView];
+    
+    //  __weak CategoryListViewController *weakSelf = self;
+    
+    
+    //    [[DataManager shareManager] getStreamingWithCompletionBlockByCatgoryID:^(BOOL success, NSArray *streamRecords, NSError *error) {
+    //        [hud hide:YES];
+    //        if (success) {
+    //            weakSelf.streamList = streamRecords;
+    //            NSLog(@"STREAMLIST COUNT :::: %ld", weakSelf.streamList.count);
+    //
+    //
+    //
+    //        } else {
+    //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    //            [alert show];
+    //        }
+    //
+    //
+    //
+    //        [weakSelf.gridView reloadData];
+    //    } :self.catID];
+    
+    //    [[DataManager shareManager] getStreamingWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
+    //
+    //
+    //        [hud hide:YES];
+    //        if (success) {
+    //            weakSelf.streamList = streamRecords;
+    //            NSLog(@"STREAMLIST COUNT :::: %ld", weakSelf.streamList.count);
+    //
+    //
+    //
+    //        } else {
+    //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    //            [alert show];
+    //            /*
+    //             CGFloat xLbl = (weakSelf.view.bounds.size.width / 2) - 100;
+    //             UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(xLbl, 20, 200, 25)];
+    //             lblTitle.text = NotConnect;
+    //             lblTitle.textAlignment = NSTextAlignmentCenter;
+    //             [weakSelf.view addSubview:lblTitle];
+    //             */
+    //            //NSLog(@"%@",error);
+    //        }
+    //        
+    //        
+    //        
+    //        [weakSelf.gridView reloadData];
+    //    }];
+    
+    
+    
+}
+
 -(void)setupPageControl{
     /**** 1. Setup pages using model class "ADPageModel" ****/
     NSMutableArray *pageName = [[NSMutableArray alloc] init];
@@ -446,6 +443,8 @@
 {
     NSLog(@"ADPageControl :: Current visible page index : %d",iCurrentVisiblePage);
     
+
+    
     __weak CategoryListViewController *weakSelf = self;
     weakSelf.streamList = [[NSArray alloc]init];
     IDcat = [appDelegate.categoryData[iCurrentVisiblePage][@"id"] integerValue];
@@ -454,7 +453,7 @@
     NSString *filter = [@"?" stringByAppendingFormat:@"filters[stream_media][category_id][operator]==&filtersPage=%d&filterLimit=%d&filters[stream_media][category_id][value]=%ld",1,filter_limit,IDcat];
       NSLog(@"FILTER1 ::: %@",filter);
     NSLog(@"CURRENT ::: %ld",[appDelegate.categoryData[iCurrentVisiblePage][@"id"] integerValue]);
-    
+
     [[DataManager shareManager] getStreamingWithCompletionBlockWithFilterCat:^(BOOL success, NSArray *streamRecords, NSError *error) {
         
         if (success) {
@@ -467,7 +466,6 @@
         }
         
         [weakSelf.gridView reloadData];
-     
         
         
     } Filter:filter];
@@ -504,7 +502,12 @@
 -(void)loadmore:(UIButton *)sender{
  //   pageModel.iPageNumber;
     NSLog(@"LOAD MORE ACTIVE");
-    
+        UIWindow *tempWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
+        hud = [[MBProgressHUD alloc] initWithWindow:tempWindow];
+        hud.mode = MBProgressHUDModeIndeterminate;
+        hud.labelText = @"Loading...more";
+        [tempWindow addSubview:hud];
+        [hud show:YES];
     sender.tag = sender.tag + 1;
     NSLog(@"LOAD MORE ACTIVE");
     __weak CategoryListViewController *weakSelf = self;
@@ -528,8 +531,8 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
         }
-        
         [weakSelf.gridView reloadData];
+       [hud hide:YES];
     } Filter:filter];
 
 }
@@ -550,25 +553,27 @@
 - (KKGridViewCell *)gridView:(KKGridView *)gridView cellForItemAtIndexPath:(KKIndexPath *)indexPath
 {
    // AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    CGFloat scy = (1024.0/480.0);
+   CGFloat scy = (1024.0/480.0);
     CGFloat scx = (768.0/360.0);
-    CGFloat imgWidth = cell.frame.size.width;
-    CGFloat imgHeight = cell.frame.size.height - imgPHW01;
-    CGRect setframe ;
-    CGRect parentFrame = scrollView.bounds;
+   CGFloat imgWidth = cell.frame.size.width;
+   CGFloat imgHeight = cell.frame.size.height - imgPHW01;
+//   CGRect setframe ;
+//    CGRect parentFrame = scrollView.bounds;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        cellH = 300 * scy ;
-        gridView.cellSize = CGSizeMake(gridView.bounds.size.width - (20*scx) , cellH);
-        setframe = CGRectMake(parentFrame.origin.x, parentFrame.origin.y, parentFrame.size.width, self.streamList.count*(cellH+(10*scy)) + (10*scy));
-   //     moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - (40* scx),self.streamList.count*(cellH+(10*scy)) + (30*scy), 80* scx, 30* scy);
+    cellH = 300 * scy ;
+       gridView.cellSize = CGSizeMake(gridView.bounds.size.width - (20*scx) , cellH);
+//        setframe = CGRectMake(parentFrame.origin.x, parentFrame.origin.y, parentFrame.size.width, self.streamList.count*(cellH+(10*scy)) + (10*scy));
+//        //moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - (40* scx),self.streamList.count*(cellH+(10*scy)) + (30*scy), 80* scx, 30* scy);
     }
-    else{
-        cellH = 300;
-        gridView.cellSize = CGSizeMake(gridView.bounds.size.width - 20 , cellH);
-        setframe = CGRectMake(parentFrame.origin.x, parentFrame.origin.y , parentFrame.size.width, self.streamList.count*(cellH+10) + 10);
-  //      moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - 40, self.streamList.count*(cellH+10) + 30, 80, 30);
-        
-    }
+  else{
+     cellH = 300;
+       gridView.cellSize = CGSizeMake(gridView.bounds.size.width - 20 , cellH);
+//        setframe = CGRectMake(parentFrame.origin.x, parentFrame.origin.y , parentFrame.size.width, parentFrame.size.height);
+//        
+//        //setframe = CGRectMake(parentFrame.origin.x, parentFrame.origin.y , parentFrame.size.width, self.streamList.count*(cellH+10) + 10);
+//    // moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - 40, self.streamList.count*(cellH+10) + 30, 80, 30);
+//        
+   }
     
     // gridView.contentSize = CGSizeMake(gridView.bounds.size.width/2 - 20 ,500);
     stream = [self.streamList objectAtIndex:[indexPath index]];
@@ -702,8 +707,15 @@
     [cell.commentLivebtn addGestureRecognizer:TapComment];
     TapComment.enabled = YES;
     
-    [self.gridView setFrame:setframe];
-
+//    [self.gridView setFrame:setframe];
+ 
+//    [scrollView reloadInputViews];
+//    moreBtn.layer.borderWidth = 1;
+//    moreBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//    moreBtn.backgroundColor = [UIColor clearColor];
+//    moreBtn.layer.cornerRadius = moreBtnRect.size.height/2;
+//    moreBtn.clipsToBounds = YES;
+//
 //
 //  //  [moreBtn setFrame:moreBtnRect];
 //    [scrollView addSubview:moreBtn];
@@ -933,7 +945,10 @@
     }
     
 }
-
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
 
 /*
 #pragma mark - Navigation
