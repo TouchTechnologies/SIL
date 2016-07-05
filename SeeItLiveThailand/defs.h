@@ -21,7 +21,6 @@
 #define StreamingHistoryURLByCatgory @"http://192.168.9.117/seeitlivethailand/api/liveStreamHistories"
 
 
-
 //Dev2
 //#define service @"http://203.151.189.172/seeitlivethailand/"
 //#define PromotionURL @"http://203.151.189.172/seeitlivethailand"
