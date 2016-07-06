@@ -609,7 +609,7 @@
     
     UIView *top1View = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewCountLblW, viewCountLblH)];
     UILabel *totalName2 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, viewCountLblW, viewCountLblH)];
-    totalName2.text = @"PATTAYA" ;
+    totalName2.text = @"PHUKET" ;
     totalName2.textAlignment = NSTextAlignmentCenter ;
     totalName2.textColor = [UIColor whiteColor];
     totalName2.layer.borderWidth = 1 ;
@@ -620,7 +620,7 @@
     
     UIView *top2View = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewCountLblW, viewCountLblH)];
     UILabel *totalName3 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, viewCountLblW, viewCountLblH)];
-    totalName3.text = @"PHUKET" ;
+    totalName3.text = @"PATTAYA" ;
     totalName3.textAlignment = NSTextAlignmentCenter ;
     totalName3.textColor = [UIColor whiteColor];
     totalName3.layer.borderWidth = 1 ;

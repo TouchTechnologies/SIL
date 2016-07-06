@@ -187,7 +187,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     
     var cellH = CGFloat()
     var fonttitle = CGFloat()
-    var session:VCSimpleSession = VCSimpleSession(videoSize: CGSize(width: 1280, height: 720), frameRate: 30, bitrate: 1000000, useInterfaceOrientation: false, cameraState: VCCameraState.Back , aspectMode:VCAspectMode.AspectModeFit)
+    var session:VCSimpleSession = VCSimpleSession(videoSize: CGSize(width: 1920, height: 1080), frameRate: 30, bitrate: 1000000, useInterfaceOrientation: false, cameraState: VCCameraState.Back , aspectMode:VCAspectMode.AspectModeFit)
     //    var session:VCSimpleSession = VCSimpleSession()
     
     
@@ -273,7 +273,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             let title:String = (titleTxt!.text != "" ) ? titleTxt!.text! : "\(appDelegate.first_name) \(appDelegate.last_name)_\(appDelegate.date)"
             print("Title : \(title) Category ID : \(catID)")
             stream.getStreamURL(title,categoryID: catID, note: "",dateTime: dateTime) { (error , result , message) in
-                
+            
                 print("result stream \(result)")
                 print("message stream \(message)")
                 if(error != nil)
@@ -295,6 +295,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
                     
                     self.titletopLbl.text = (result["title"] as! String)
                     self.setSocketLive(result["id"] as! Int)
+                    self.session.useAdaptiveBitrate = true
                     self.session.startRtmpSessionWithURL(self.streamURL!, andStreamKey: self.streamKey!)
                     if(self.timerValue != 0)
                     {
@@ -309,6 +310,8 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
                 }
                 
             }
+            
+//            session.startRtmpSessionWithURL("rtmp://192.168.9.111:1935/live", andStreamKey: "stream")
             //        session.startRtmpSessionWithURL("rtmp://streaming.touch-ics.com:1935/live", andStreamKey: "myStream")
             
         default:
