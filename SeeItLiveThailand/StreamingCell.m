@@ -71,11 +71,11 @@
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             fontSize = 13.0 * scy;
             imgSnapshotRect = CGRectMake(5*scx, 70* scy, cWidth - (10*scx), cHeight - cHeight/(2.5));
-            imgAvatarRect = CGRectMake(5*scx, 10* scy, 50*scx, 50 * scy);
+            imgAvatarRect = CGRectMake(5*scx, 10* scy, 40*scx, 40 * scy);
             
             lblPlaceRect = CGRectMake(2*scx, imgSnapshotRect.size.height - (20* scy) , imgSnapshotRect.size.width - (4*scx), 20* scy);
-            lblCategorytitleRect = CGRectMake(70*scx,imgAvatarRect.size.height/2 + (10* scy) , 100*scx, 20* scy);
-            lblCreateByRect = CGRectMake(70*scx , imgAvatarRect.size.height/2 - (10* scy) , cWidth - (32*scx), 20* scy);
+            lblCategorytitleRect = CGRectMake(60*scx,imgAvatarRect.size.height/2 + (10* scy) , 100*scx, 20* scy);
+            lblCreateByRect = CGRectMake(60*scx , imgAvatarRect.size.height/2 - (10* scy) , cWidth - (32*scx), 20* scy);
             
             imgViewiconRect = CGRectMake(10*scx, self.bounds.size.height - (35* scy) , 20*scx, 20* scy);
             lblViewcountRect = CGRectMake(35*scx, self.bounds.size.height - (35* scy), 40*scx, 20* scy);
@@ -95,11 +95,11 @@
         } else {
             fontSize = 13.0;
             imgSnapshotRect = CGRectMake(5, 70, cWidth - 10, cHeight - cHeight/2.5);
-            imgAvatarRect = CGRectMake(5, 10, 50, 50 );
+            imgAvatarRect = CGRectMake(5, 10, 40, 40 );
 
             lblPlaceRect = CGRectMake(2, imgSnapshotRect.size.height - 20 , imgSnapshotRect.size.width - 4, 20);
-            lblCategorytitleRect = CGRectMake(70,imgAvatarRect.size.height/2 + 10 , 100, 20);
-            lblCreateByRect = CGRectMake(70 , imgAvatarRect.size.height/2 - 10 , cWidth - 32, 20);
+            lblCategorytitleRect = CGRectMake(60,imgAvatarRect.size.height/2 + 10 , 100, 20);
+            lblCreateByRect = CGRectMake(60 , imgAvatarRect.size.height/2 - 10 , cWidth - 32, 20);
             
             imgViewiconRect = CGRectMake(10, self.bounds.size.height - 35 , 20, 20);
             lblViewcountRect = CGRectMake(35, self.bounds.size.height - 35, 40, 20);
@@ -119,7 +119,7 @@
     
         UIFont *font = [UIFont fontWithName:@"Helvetica" size:fontSize];
         self.imgAvatar = [[UIImageView alloc] initWithFrame:imgAvatarRect];
-        self.imgAvatar.contentMode = UIViewContentModeScaleAspectFit;
+        self.imgAvatar.contentMode = UIViewContentModeScaleAspectFill;
         self.imgAvatar.layer.cornerRadius = imgAvatarRect.size.width/2 ;
         self.imgAvatar.clipsToBounds = TRUE;
         [self.contentView addSubview:self.imgAvatar];

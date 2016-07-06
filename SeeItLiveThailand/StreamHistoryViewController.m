@@ -598,11 +598,25 @@
     
     [goProfile setNumberOfTouchesRequired:1];
     [goProfile setDelegate:self];
+    goProfile.enabled = YES;
+    
     cell.lblCreateBy.userInteractionEnabled = YES;
     cell.lblCreateBy.tag = [indexPath index];
     [cell.lblCreateBy addGestureRecognizer:goProfile];
-    goProfile.enabled = YES;
     
+    UITapGestureRecognizer* tapAvatar = [[UITapGestureRecognizer alloc]
+                                         initWithTarget:self action:@selector(goProfile:)];
+    //Here should be actionViewTap:
+    
+    [tapAvatar setNumberOfTouchesRequired:1];
+    [tapAvatar setDelegate:self];
+    tapAvatar.enabled = YES;
+    
+    cell.imgAvatar.userInteractionEnabled = YES;
+    cell.imgAvatar.tag = [indexPath index];
+    [cell.imgAvatar addGestureRecognizer:tapAvatar];
+  
+
     UITapGestureRecognizer* TapShare = [[UITapGestureRecognizer alloc]
                                         initWithTarget:self action:@selector(shareMyStream:)];//Here should be actionViewTap:
     [TapShare setNumberOfTouchesRequired:1];

@@ -5,21 +5,20 @@
 
 
 //Production
-//#define service @"http://www.seeitlivethailand.com/"
-//#define PromotionURL @"http://www.seeitlivethailand.com"
-//#define StreamingHistoryURL @"http://www.seeitlivethailand.com/api/stream/histories"
-//#define StreamingLiveURL @"http://www.seeitlivethailand.com/api/liveStreamChannels?hasStreaming=Y"
-//#define SocketURL @"http://seeitlivethailand.com:3008"
-//#define StreamingHistoryURLByCatgory @"http://www.seeitlivethailand.com/api/liveStreamHistories"
+#define service @"http://www.seeitlivethailand.com/"
+#define PromotionURL @"http://www.seeitlivethailand.com"
+#define StreamingHistoryURL @"http://www.seeitlivethailand.com/api/stream/histories"
+#define StreamingLiveURL @"http://www.seeitlivethailand.com/api/liveStreamChannels?hasStreaming=Y"
+#define SocketURL @"http://seeitlivethailand.com:3008"
+#define StreamingHistoryURLByCatgory @"http://www.seeitlivethailand.com/api/liveStreamHistories"
 
 ///////////////Dev///////////////////
-#define service @"http://192.168.9.117/seeitlivethailand/"
-#define PromotionURL @"http://192.168.9.117/seeitlivethailand"
-#define StreamingHistoryURL @"http://192.168.9.117/seeitlivethailand/api/stream/histories"
-#define StreamingLiveURL @"http://192.168.9.117/seeitlivethailand/api/liveStreamChannels?hasStreaming=Y"
-#define SocketURL @"http://192.168.9.117:3008"
-#define StreamingHistoryURLByCatgory @"http://192.168.9.117/seeitlivethailand/api/liveStreamHistories"
-
+//#define service @"http://192.168.9.117/seeitlivethailand/"
+//#define PromotionURL @"http://192.168.9.117/seeitlivethailand"
+//#define StreamingHistoryURL @"http://192.168.9.117/seeitlivethailand/api/stream/histories"
+//#define StreamingLiveURL @"http://192.168.9.117/seeitlivethailand/api/liveStreamChannels?hasStreaming=Y"
+//#define SocketURL @"http://192.168.9.117:3008"
+//#define StreamingHistoryURLByCatgory @"http://192.168.9.117/seeitlivethailand/api/liveStreamHistories"
 
 
 //Dev2
@@ -33,7 +32,6 @@
 
 
 /////////PON////////////
-
 #define CouponURL @"http://www.seeitlivethailand.com/coupon"
 #define BlogURL @"http://www.seeitlivethailand.com/blogs"
 #define MessageNotFound @"ไม่พบข้อความแล้ว"

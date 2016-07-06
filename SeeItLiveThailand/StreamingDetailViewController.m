@@ -654,7 +654,6 @@
     
     liveIncategoryTbl = [[UITableView alloc] initWithFrame:liveIncategoryTblRect];
     liveIncategoryTbl.backgroundColor = [UIColor whiteColor];
-    liveIncategoryTbl.separatorStyle = UITableViewCellSeparatorStyleNone;
     [liveIncategoryTbl registerClass:UITableViewCell.self forCellReuseIdentifier:@"cell"];
     
     
@@ -671,8 +670,7 @@
     titlemoreLbl.textColor = [UIColor whiteColor];
     [moreBtn addSubview:titlemoreLbl];
     [moreBtn addTarget:self action:@selector(clickmore:) forControlEvents:UIControlEventTouchUpInside];
-    
-//    [scrollView addSubview:moreBtn];
+    [scrollView addSubview:moreBtn];
     
     
     
@@ -732,6 +730,7 @@
         [scrollView reloadInputViews];
         NSLog(@"set map lat : %f long : %f",[self.objStreaming.latitude doubleValue],[self.objStreaming.longitude doubleValue]);
         [scrollView addSubview:mapImg];
+        [scrollView addSubview:moreBtn];
         
     }
     else{

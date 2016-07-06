@@ -524,6 +524,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         shareLiveBtn!.setImage(UIImage(named: "share_2.png"), forState: UIControlState.Normal)
         shareLiveBtn!.addTarget(self, action: #selector(LiveStreamVC.startShare(_:)), forControlEvents: .TouchUpInside)
         shareLiveBtn!.enabled = false;
+        shareLiveBtn!.hidden = true ;
         popUpViewBot!.addSubview(shareLiveBtn!)
         
         shareListView = UIView(frame : shareListViewRect)

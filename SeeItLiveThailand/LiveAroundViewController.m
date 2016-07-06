@@ -105,8 +105,10 @@
     NSString* pinSnapShot;
     HNKCacheFormat *format;
 
+
     
 }
+@property (nonatomic, strong) NSArray *streamList;
 //@property (nonatomic, strong) NSArray *streamList;
 
 @end
@@ -121,7 +123,7 @@
     [self initialSize];
     [self initial];
     [self LoadMap];
-//    [self initMap];
+   // [self initMap];
     
     format = [HNKCache sharedCache].formats[@"thumbnail"];
     if (!format)
@@ -140,12 +142,10 @@
     tableView.delegate = self;
     tableView.dataSource = self;
     myMapView = [[MKMapView alloc] init];
-    myMapView.delegate = self;
+   // myMapView.delegate = self;
     myMapView.showsUserLocation = YES;
     
-    
-    
-//    NSLog(@"Live Around %@",self.objStreaming);
+    // NSLog(@"Live Around %@",self.objStreaming);
     // Do any additional setup after loading the view.
     
     
@@ -153,20 +153,22 @@
 }
 -(void)viewWillAppear:(BOOL)animated
 {
+    
 }
 - (void)initial{
     
     
     navView = [[UIView alloc] initWithFrame:navViewRect];
-    navView.backgroundColor = [UIColor whiteColor];
+    navView.backgroundColor = [UIColor blackColor];
     
     doneBtn = [[UIButton alloc] initWithFrame:doneBtnRect];
-    [doneBtn setImage:[UIImage imageNamed:@"back_black.png"] forState:UIControlStateNormal];
+    [doneBtn setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
     [doneBtn addTarget:self action:@selector(doneAction:) forControlEvents:UIControlEventTouchUpInside];
     [navView addSubview:doneBtn];
     
     navTitleLbl = [[UILabel alloc] initWithFrame:navTitleLblRect];
     navTitleLbl.text = @"Live Around";
+    navTitleLbl.textColor = [UIColor whiteColor];
     navTitleLbl.textAlignment = NSTextAlignmentCenter;
     navTitleLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize + 4];
     [navView addSubview:navTitleLbl];
@@ -199,11 +201,22 @@
     detailView.backgroundColor = [UIColor redColor];
     
     snapshotDetailImg = [[UIImageView alloc] initWithFrame:snapshotDetailImgRect];
-    snapshotDetailImg.image = (self.objStreaming.snapshot != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.objStreaming.snapshot]]]:[UIImage imageNamed:@"sil_big.jpg"];
+    snapshotDetailImg.backgroundColor = [UIColor greenColor];
+     snapshotDetailImg.image = [UIImage imageNamed:@"sil_big.jpg"];
+    snapshotDetailImg.hnk_cacheFormat = format;
+    [snapshotDetailImg hnk_setImageFromURL:[NSURL URLWithString:self.objStreaming.snapshot]];
+
+//    if (self.objStreaming.snapshot != nil) {
+//        snapshotDetailImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.objStreaming.snapshot]]];
+//        
+//    }
+//  snapshotDetailImg.image = (self.objStreaming.snapshot != nil)?[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.objStreaming.snapshot]]]:[UIImage imageNamed:@"sil_big.jpg"];
+    snapshotDetailImg.contentMode = UIViewContentModeScaleToFill;
+    [detailView addSubview:snapshotDetailImg];
+    
     waterMarkDetailImg = [[UIImageView alloc] initWithFrame:waterMarkDetailImgRect];
     waterMarkDetailImg.image = [UIImage imageNamed:@"play.png"];
     [snapshotDetailImg addSubview:waterMarkDetailImg];
-    [detailView addSubview:snapshotDetailImg];
     
     TitleDetailLbl = [[UILabel alloc] initWithFrame:TitleDetailLblRect];
     TitleDetailLbl.text = self.objStreaming.streamTitle;
@@ -249,7 +262,7 @@
     tableView = [[UITableView alloc] initWithFrame:tableViewRect];
     tableView.backgroundColor = [UIColor grayColor];
     tableView.scrollEnabled = NO;
-    tableView.separatorStyle = UITableViewCellStyleDefault;
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [tableView registerClass:UITableViewCell.self forCellReuseIdentifier:@"cell"];
 
     [scrollView addSubview:tableView];
@@ -403,12 +416,35 @@
     imgSnapshotcell.image = [UIImage imageNamed:@"sil_big.jpg"];
     imgSnapshotcell.hnk_cacheFormat = format;
     [imgSnapshotcell hnk_setImageFromURL:[NSURL URLWithString:stream.snapshot]];
-    
+    imgSnapshotcell.contentMode = UIViewContentModeScaleToFill;
+    imgSnapshotcell.tag =  [indexPath row];
+
     imgWaterMarkcell = [[UIImageView alloc] initWithFrame:imgWaterMarkcellRect];
     imgWaterMarkcell.image = [UIImage imageNamed:@"play.png"];
     [imgSnapshotcell addSubview:imgWaterMarkcell];
-    
     [cell.contentView addSubview:imgSnapshotcell];
+
+//    UITapGestureRecognizer* playStream = [[UITapGestureRecognizer alloc]
+//                                          initWithTarget:self action:@selector(play:)];
+//    [playStream setNumberOfTouchesRequired:1];
+//    [playStream setDelegate:self];
+//    imgSnapshotcell.userInteractionEnabled = YES;
+//    [imgSnapshotcell addGestureRecognizer:playStream];
+//  [cell addGestureRecognizer:tapGestureRec];
+    
+//  UITapGestureRecognizer* goProfile = [[UITapGestureRecognizer alloc]
+//                                         initWithTarget:self action:@selector(goProfile:)];
+//    Here should be actionViewTap:
+//    
+//    [goProfile setNumberOfTouchesRequired:1];
+//    [goProfile setDelegate:self];
+//    goProfile.enabled = YES;
+//    
+//    cell.lblCreateBy.userInteractionEnabled = YES;
+//    cell.lblCreateBy.tag = [indexPath index];
+//    [cell.lblCreateBy addGestureRecognizer:goProfile];
+//    
+//    [imgWaterMark addGestureRecognizer:];
     
     streamTitleCellLbl = [[UILabel alloc] initWithFrame:streamTitleCellLblRect];
     streamTitleCellLbl.text = stream.streamTitle;
@@ -456,11 +492,27 @@
     
     return cellH ;
 }
+//-(void)play:(id)sender
+//{
+//    
+//    UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)sender;
+//    NSLog (@"Tag Playyyyy %ld",[tapRecognizer.view tag]);
+//    //    UserTag = [tapRecognizer.view tag];
+//    NSInteger playTag = [tapRecognizer.view tag];
+//    
+//    Streaming *stream = [self.streamList objectAtIndex:playTag];
+//    StreamingDetailViewController *streamingDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"streamingdetail"];
+//    streamingDetail.objStreaming = stream;
+//    streamingDetail.streamingType = @"history";
+//    
+//    [self.view.window.rootViewController presentViewController:streamingDetail animated:YES completion:nil];
+//
+//}
 
 
 -(void)initMap
 {
-    myMapView.delegate = self;
+    // myMapView.delegate = self;
     MKPointAnnotation *mapPin = [[MKPointAnnotation alloc] init];
     MKCoordinateRegion region;
     region.center.latitude = [self.objStreaming.latitude floatValue];
@@ -473,6 +525,7 @@
     
     DXAnnotation *annotation1 = [DXAnnotation new];
     annotation1.coordinate = CLLocationCoordinate2DMake([self.objStreaming.latitude floatValue],[self.objStreaming.longitude floatValue]);
+    
     [myMapView addAnnotation:annotation1];
     _rowIndex = 0;
     for(Streaming *stream in _liveAroundData)
@@ -482,13 +535,17 @@
         NSLog(@"pinSnapShot %@",pinSnapShot);
         DXAnnotation *ann = [DXAnnotation new];
         ann.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
-        [myMapView addAnnotation:ann];
-//        Streaming *data = [_liveAroundData objectAtIndex:_rowIndex];
-//        NSLog(@"_liveAroundData %@",data.snapshot);
+       [myMapView addAnnotation:ann];
+        
+        
+     Streaming *data = [_liveAroundData objectAtIndex:_rowIndex];
+    NSLog(@"_liveAroundData %@",data.snapshot);
         _rowIndex++;
+       
     }
+     NSLog(@"ROWINDEX::: %ld",(long)_rowIndex);
     [myMapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 10000, 10000)];
-
+    
     
 }
 
@@ -529,7 +586,7 @@
 //    
 //    return MyPin;
 //}
-
+//
 //- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id )annotation {
 //    NSLog(@"MKAnnotationView");
 //    
@@ -538,16 +595,7 @@
 //    
 //    MKAnnotationView *annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
 //    annotationView.canShowCallout = YES;
-////    UIImage *image = [UIImage imageNamed:@"pin_2.png"];
-////    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,50,50)];
-////    imageView.image = image;
-//    
-//    
-////    UIButton *advertButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-////    [advertButton addTarget:self action:@selector(annotationClick:) forControlEvents:UIControlEventTouchUpInside];
-////    annotationView.rightCalloutAccessoryView = advertButton;
-//    
-//    
+// 
 //    imgSnapshot = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,100,70)];
 //    imgSnapshot.image = [UIImage imageNamed:@"activities02.jpg"];
 //    imgSnapshot.layer.borderWidth = 2 ;
@@ -572,15 +620,15 @@
 //    return annotationView;
 //    
 //}
-- (void)annotationClick:(id)sender
-{
-    NSLog(@"annotationClick");
-}
-
-
-
-
-
+//- (void)annotationClick:(id)sender
+//{
+//    NSLog(@"annotationClick");
+//}
+//
+//
+//
+//
+//
 //- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
 //    
 //    NSLog(@"mapView");
@@ -591,7 +639,7 @@
 //        
 //         DXAnnotation *annotation1 = (DXAnnotation *)annotation;
 //        
-//        DXAnnotationView *annotationView = (DXAnnotationView *)[self->mapView dequeueReusableAnnotationViewWithIdentifier:NSStringFromClass([DXAnnotationView class])];
+//          DXAnnotationView *annotationView = (DXAnnotationView *)[self->mapView dequeueReusableAnnotationViewWithIdentifier:NSStringFromClass([DXAnnotationView class])];
 //        if (!annotationView) {
 //            pinView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ic_pin_checkin"]];
 ////            pinView = [[UIImageView alloc] initWithImage:[self resizeImage:[UIImage imageNamed:@"ic_pin_checkin"] imageSize:CGSizeMake(30, 60)]];
@@ -657,10 +705,11 @@
 }
 - (void)changeLocation:(NSInteger)rowIndex {
     NSLog(@"changeLocation");
-//    myMapView.delegate = self;
+   // myMapView.delegate = self;
     [myMapView removeAnnotations:myMapView.annotations];
-    
+  
     [self.liveAroundData enumerateObjectsUsingBlock:^(Streaming *stream, NSUInteger idx, BOOL *stop) {
+         myMapView.delegate = self;
         
         NSLog(@"index idx %lu",(unsigned long)idx);
         if (idx != rowIndex) {
@@ -773,6 +822,13 @@
     return nil;
 }
 
+
+- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
+    [((DXAnnotationView *)view)hideCalloutView];
+    view.layer.zPosition = -1;
+    NSLog(@"deselect test annotation");
+}
+
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
     if ([view isKindOfClass:[DXAnnotationView class]]) {
         [((DXAnnotationView *)view)showCalloutView];
@@ -782,21 +838,14 @@
         NSInteger indexObj = dxView.tag;
         
         NSLog(@"test annotation %ld",(long)indexObj);
-
-        [myMapView removeAnnotations:myMapView.annotations];
         
-//        [self changeLocation:indexObj];
+        //[myMapView removeAnnotations:myMapView.annotations];
         
-//        [scrollView setContentOffset:CGPointMake(scrollView.frame.size.width * indexObj, 0.0f)];
+        //   [self changeLocation:indexObj];
+        
+        //        [scrollView setContentOffset:CGPointMake(scrollView.frame.size.width * indexObj, 0.0f)];
     }
 }
-
-- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
-    [((DXAnnotationView *)view)hideCalloutView];
-    view.layer.zPosition = -1;
-    NSLog(@"deselect test annotation");
-}
-
 
 -(UIImage*)resizeImage:(UIImage *)image imageSize:(CGSize)size
 {

@@ -374,7 +374,6 @@
     _pageControl.bShowMoreTabAvailableIndicator = NO;
     
     
-    
     /**** 3. Add as subview ****/
     
     
@@ -459,7 +458,16 @@
         if (success) {
             weakSelf.streamList = streamRecords;
             NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
-            //
+            UIView *notvideoView = [[UIView alloc] initWithFrame:CGRectMake(0, scrollView.bounds.size.height/2 - 50 ,  scrollView.bounds.size.width, 100)];
+            notvideoView.backgroundColor = [UIColor yellowColor];
+             [scrollView addSubview:notvideoView];
+             notvideoView.hidden = true;
+            if (weakSelf.streamList.count == 0) {
+                notvideoView.hidden = false;
+//                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Information" message:@"Not video in this category" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//                [alert show];
+            }
+
         } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
@@ -659,11 +667,26 @@
     
     [goProfile setNumberOfTouchesRequired:1];
     [goProfile setDelegate:self];
+    goProfile.enabled = YES;
     cell.lblCreateBy.userInteractionEnabled = YES;
     cell.lblCreateBy.tag = [indexPath index];
     [cell.lblCreateBy addGestureRecognizer:goProfile];
-    goProfile.enabled = YES;
     
+    UITapGestureRecognizer* tapAvatar = [[UITapGestureRecognizer alloc]
+                                         initWithTarget:self action:@selector(goProfile:)];
+    //Here should be actionViewTap:
+    
+    [tapAvatar setNumberOfTouchesRequired:1];
+    [tapAvatar setDelegate:self];
+    tapAvatar.enabled = YES;
+
+    cell.imgAvatar.userInteractionEnabled = YES;
+    cell.imgAvatar.tag = [indexPath index];
+    [cell.imgAvatar addGestureRecognizer:tapAvatar];
+
+        cell.lblCreateBy.userInteractionEnabled = YES;
+        cell.lblCreateBy.tag = [indexPath index];
+        [cell.lblCreateBy addGestureRecognizer:goProfile];
     UITapGestureRecognizer* TapShare = [[UITapGestureRecognizer alloc]
                                         initWithTarget:self action:@selector(shareMyStream:)];//Here should be actionViewTap:
     [TapShare setNumberOfTouchesRequired:1];
@@ -889,7 +912,7 @@
         UINavigationController *navigationController = [self.storyboard instantiateViewControllerWithIdentifier:@"userprofile"];
         UserProfileViewController *userprofile = navigationController.viewControllers[0];
         userprofile.userData = userData;
-        [self.view.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
+        [self presentViewController:navigationController animated:YES completion:nil];
         
         
     }];
@@ -948,6 +971,12 @@
     }
     
 }
+//-(void)setPageIndicatorToPageNumber:(int) pageNumber andShouldHighlightCurrentPage:(BOOL) bShouldHighlight
+//{
+//    pageNumber = _pageControl.iFirstVisiblePageNumber;
+//    bShouldHighlight = true;
+//    
+//}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

@@ -69,8 +69,10 @@
         [self initialSize];
         [self initial];
         [self setupPageControl];
+    [self.navigationController.navigationBar setBarTintColor:[UIColor blackColor]];
+    [self.view setBackgroundColor:[UIColor blackColor]];
     
-        [[NSNotificationCenter defaultCenter] addObserver:self
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                                   selector:@selector(refreshList:)
                                                      name:@"refresh"
                                                    object:nil];
@@ -109,7 +111,7 @@
         FollowBtnRect = CGRectMake(ScreenW/2 + followersCountRect.size.width/(4*scx), headerViewRect.size.height/2 + (40*scy), ScreenW/3 , 30*scy);
         containerViewRect =CGRectMake(0, (headerViewRect.origin.y + headerViewRect.size.height)*scy, self.view.bounds.size.width ,  self.view.bounds.size.height - (headerViewRect.origin.y + headerViewRect.size.height));
           
-       pageControlRect = CGRectMake(0*scx, headerViewRect.origin.y + headerViewRect.size.height + (titleHeight-(40*scy)) , self.view.bounds.size.width, self.view.bounds.size.height-(headerViewRect.origin.y + headerViewRect.size.height + titleHeight ) );
+       pageControlRect = CGRectMake(0*scx, headerViewRect.origin.y + headerViewRect.size.height + (titleHeight-(45*scy)) , self.view.bounds.size.width, self.view.bounds.size.height-(headerViewRect.origin.y + headerViewRect.size.height));
     }
     else{
         
@@ -133,7 +135,7 @@
         FollowBtnRect = CGRectMake(ScreenW/2 + followersCountRect.size.width/4, headerViewRect.size.height/2 + 40, ScreenW/3 , 30);
        containerViewRect =CGRectMake(0,  headerViewRect.origin.y + headerViewRect.size.height, self.view.bounds.size.width ,  self.view.bounds.size.height - (headerViewRect.origin.y + headerViewRect.size.height));
 
-        pageControlRect = CGRectMake(0, headerViewRect.origin.y + headerViewRect.size.height + (titleHeight-40) , self.view.bounds.size.width, self.view.bounds.size.height-(headerViewRect.origin.y + headerViewRect.size.height + titleHeight ) );
+        pageControlRect = CGRectMake(0, headerViewRect.origin.y + headerViewRect.size.height + (titleHeight-45) , self.view.bounds.size.width, self.view.bounds.size.height-(headerViewRect.origin.y + headerViewRect.size.height) );
     
     }
     
@@ -161,7 +163,8 @@
     userName.text = [userData.first_name stringByAppendingString:[@" " stringByAppendingString:userData.last_name]];
     userName.font = [UIFont fontWithName:@"Helvetica" size:font+6];
 //    userName.font = [UIFont fo]
-    userName.textColor = (__bridge UIColor * _Nullable)((__bridge CGColorRef _Nullable)([UIColor colorWithRed:0.071 green:0.459 blue:0.714 alpha:1]));
+    userName.textColor = [UIColor blackColor];
+    //(__bridge UIColor * _Nullable)((__bridge CGColorRef _Nullable)([UIColor colorWithRed:0.071 green:0.459 blue:0.714 alpha:1]));
     [headerView addSubview:userName];
     
     UILabel *followerLbl = [[UILabel alloc] initWithFrame:followerLblRect];
@@ -181,7 +184,8 @@
     followersCount.text = userData.count_follower;
     followersCount.font =[UIFont fontWithName:@"Helvetica" size:font];
     followersCount.textAlignment = NSTextAlignmentCenter ;
-    followersCount.textColor =  (__bridge UIColor * _Nullable)((__bridge CGColorRef _Nullable)([UIColor colorWithRed:0.071 green:0.459 blue:0.714 alpha:1]));
+    followersCount.textColor = [UIColor redColor];
+//    (__bridge UIColor * _Nullable)((__bridge CGColorRef _Nullable)([UIColor colorWithRed:0.071 green:0.459 blue:0.714 alpha:1]));
     followersCount.layer.borderWidth = 1;
     followersCount.layer.borderColor = [UIColor grayColor].CGColor;
   
@@ -194,7 +198,8 @@
     followingCount.text = userData.count_following;
     followingCount.font =[UIFont fontWithName:@"Helvetica" size:font];
     followingCount.textAlignment = NSTextAlignmentCenter ;
-    followingCount.textColor =  (__bridge UIColor * _Nullable)((__bridge CGColorRef _Nullable)([UIColor colorWithRed:0.071 green:0.459 blue:0.714 alpha:1]));
+    followingCount.textColor = [UIColor redColor];
+    //(__bridge UIColor * _Nullable)((__bridge CGColorRef _Nullable)([UIColor colorWithRed:0.071 green:0.459 blue:0.714 alpha:1]));
     followingCount.layer.borderWidth = 1;
     followingCount.layer.borderColor =   [UIColor grayColor].CGColor;
     followingCount.layer.cornerRadius = 5;
@@ -218,11 +223,15 @@
     if(userData.is_followed && ![appDelegate.user_ID isEqualToString:userData.userId])
     {
         btnLbl.textColor = [UIColor whiteColor];
-        FollowBtn.backgroundColor = [UIColor colorWithRed:0.071 green:0.459 blue:0.714 alpha:1];
+        [btnLbl setText:@"Following"];
+        FollowBtn.backgroundColor = [UIColor redColor];
+        //[UIColor colorWithRed:0.071 green:0.459 blue:0.714 alpha:1];
     }else
     {
-        btnLbl.textColor = [UIColor colorWithRed:0.071 green:0.459 blue:0.714 alpha:1];
+        btnLbl.textColor = [UIColor blackColor];
+        //[UIColor colorWithRed:0.071 green:0.459 blue:0.714 alpha:1];
         FollowBtn.backgroundColor = [UIColor whiteColor];
+        
     }
     FollowBtn.tag = 7;
     [FollowBtn addTarget:self action:@selector(setFollow:) forControlEvents:UIControlEventTouchUpInside];
@@ -270,7 +279,8 @@
     
     _pageControl.colorTabText = [UIColor blackColor]; //orangeColor
     _pageControl.colorTitleBarBackground = [UIColor whiteColor];
-    _pageControl.colorPageIndicator = [UIColor colorWithRed:0.071 green:0.459 blue:0.714 alpha:1]; //[UIColor orangeColor]; //blueColor
+    _pageControl.colorPageIndicator = [UIColor redColor];
+    //[UIColor colorWithRed:0.071 green:0.459 blue:0.714 alpha:1]; //[UIColor orangeColor]; //blueColor
     _pageControl.colorPageOverscrollBackground = [UIColor whiteColor];
     
     _pageControl.bShowMoreTabAvailableIndicator = NO;
@@ -428,10 +438,15 @@
 //            [headerView reloadInputViews];
 
 //            [self viewDidLoad];
+            
+              userData.is_followed = true;
+             [self initial];
+             [headerView reloadInputViews];
+            
         }];
-        userData.is_followed = true;
-        [self initial];
-        [headerView reloadInputViews];
+      
+       
+       
     }else
     {
         [[UserManager shareIntance] followAPI:@"unfollow" userID:userData.userId Completion:^(NSError *error, NSDictionary *result, NSString *message) {
@@ -447,11 +462,14 @@
 //            [headerView reloadInputViews];
 
 //            [self viewDidLoad];
+              userData.is_followed = false;
             
+            [self initial];
+
+            [headerView reloadInputViews];
         }];
-        userData.is_followed = false;
-        [self initial];
-        [headerView reloadInputViews];
+      
+        
     }
 
 }
