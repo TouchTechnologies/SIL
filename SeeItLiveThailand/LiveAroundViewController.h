@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 #import "Streaming.h"
-@interface LiveAroundViewController : UIViewController
-
+@interface LiveAroundViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,MKMapViewDelegate>
 {
 
 }

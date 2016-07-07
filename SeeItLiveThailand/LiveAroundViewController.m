@@ -7,7 +7,7 @@
 //
 
 #import "LiveAroundViewController.h"
-#import <MapKit/MapKit.h>
+//#import <MapKit/MapKit.h>
 #import "AppDelegate.h"
 #import "DataManager.h"
 #import "defs.h"
@@ -19,8 +19,7 @@
 #import <DXAnnotationSettings.h>
 
 
-@interface LiveAroundViewController ()<UITableViewDelegate,UITableViewDataSource,MKMapViewDelegate,MKAnnotation>
-{
+@interface LiveAroundViewController (){
     
     AppDelegate *appDelegate;
     CGFloat fontSize;
@@ -35,7 +34,7 @@
     UILabel *navTitleLbl;
     CGRect navTitleLblRect;
     
-    MKMapView *myMapView;
+//    MKMapView *myMapView;
     CGRect mapViewRect;
     
     UIImageView *imgSnapshot;
@@ -108,6 +107,7 @@
 
     
 }
+@property(nonatomic, strong) IBOutlet MKMapView *myMapView;
 @property (nonatomic, strong) NSArray *streamList;
 //@property (nonatomic, strong) NSArray *streamList;
 
@@ -118,7 +118,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
-
+  
     
     [self initialSize];
     [self initial];
@@ -141,16 +141,15 @@
     scrollView.delegate = self;
     tableView.delegate = self;
     tableView.dataSource = self;
-    myMapView = [[MKMapView alloc] init];
+    self.myMapView.delegate = self;
+    
+   // myMapView = [[MKMapView alloc] init];
    // myMapView.delegate = self;
-    myMapView.showsUserLocation = YES;
+    //myMapView.showsUserLocation = YES;
     
     // NSLog(@"Live Around %@",self.objStreaming);
     // Do any additional setup after loading the view.
-    
-    
-
-}
+    }
 -(void)viewWillAppear:(BOOL)animated
 {
     
@@ -176,12 +175,12 @@
     [self.view addSubview:navView];
     
     [scrollView setFrame:scrollViewRect];
-    //= [[UIScrollView alloc] initWithFrame:scrollViewRect];
-  //  [self.view addSubview:scrollView];
+
     
-    myMapView = [[MKMapView alloc] initWithFrame:mapViewRect];
-    myMapView.backgroundColor = [UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1.0];
-    [scrollView addSubview:myMapView];
+    self.myMapView = [[MKMapView alloc] initWithFrame:mapViewRect];
+    self.myMapView.backgroundColor = [UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1.0];
+    self.myMapView.showsUserLocation = YES;
+    [scrollView addSubview:self.myMapView];
 
 //    imgSnapshot = [[UIImageView alloc] initWithFrame:imgSnapshotRect];
 //    imgSnapshot.image = [UIImage imageNamed:@"activities02.jpg"];
@@ -366,7 +365,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-//#init tableview
+//init tableview
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
     return 1;
@@ -520,13 +520,13 @@
     region.span.latitudeDelta = 1;
     region.span.longitudeDelta = 1;
     
-    [myMapView setRegion:region animated:YES];
+    [self.myMapView setRegion:region animated:YES];
     
     
     DXAnnotation *annotation1 = [DXAnnotation new];
     annotation1.coordinate = CLLocationCoordinate2DMake([self.objStreaming.latitude floatValue],[self.objStreaming.longitude floatValue]);
     
-    [myMapView addAnnotation:annotation1];
+    [self.myMapView addAnnotation:annotation1];
     _rowIndex = 0;
     for(Streaming *stream in _liveAroundData)
     {
@@ -535,7 +535,7 @@
         NSLog(@"pinSnapShot %@",pinSnapShot);
         DXAnnotation *ann = [DXAnnotation new];
         ann.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
-       [myMapView addAnnotation:ann];
+       [self.myMapView addAnnotation:ann];
         
         
      Streaming *data = [_liveAroundData objectAtIndex:_rowIndex];
@@ -544,7 +544,7 @@
        
     }
      NSLog(@"ROWINDEX::: %ld",(long)_rowIndex);
-    [myMapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 10000, 10000)];
+    [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 10000, 10000)];
     
     
 }
@@ -705,13 +705,13 @@
 }
 - (void)changeLocation:(NSInteger)rowIndex {
     NSLog(@"changeLocation");
-   // myMapView.delegate = self;
-    [myMapView removeAnnotations:myMapView.annotations];
-  
+    [self.myMapView setDelegate:self];
+
+    [self.myMapView removeAnnotations:self.myMapView.annotations];
+   // [self.myMapView setDelegate:self];
     [self.liveAroundData enumerateObjectsUsingBlock:^(Streaming *stream, NSUInteger idx, BOOL *stop) {
-         myMapView.delegate = self;
         
-        NSLog(@"index idx %lu",(unsigned long)idx);
+              NSLog(@"index idx %lu",(unsigned long)idx);
         if (idx != rowIndex) {
             NSLog(@"rowIndex idx %lu",(unsigned long)rowIndex);
             DXAnnotation *annotation1 = [DXAnnotation new];
@@ -719,9 +719,12 @@
 //            annotation1.tag = [stream.ID integerValue];
             annotation1.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
             annotation1.pinName = @"mappin";
-            [myMapView addAnnotation:annotation1];
-            [myMapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 10000, 10000)];
+            [self.myMapView addAnnotation:annotation1];
+            [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 10000, 10000)];
+            NSLog(@"Long ::: %@",stream.longitude);
+            NSLog(@"Lat ::: %@", stream.latitude);
         }
+        
         
     }];
     
@@ -731,8 +734,8 @@
     annoActive.tag = rowIndex;
     annoActive.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
     annoActive.pinName = @"pin";
-    [myMapView addAnnotation:annoActive];
-    [myMapView setRegion:MKCoordinateRegionMakeWithDistance(annoActive.coordinate, 10000, 10000)];
+    [self.myMapView addAnnotation:annoActive];
+    [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annoActive.coordinate, 10000, 10000)];
     
 }
 
@@ -776,7 +779,7 @@
         DXAnnotation *annotation1 = (DXAnnotation *)annotation;
         UIView *calloutView = [[[NSBundle mainBundle] loadNibNamed:@"liveAroundAnnotation" owner:self options:nil] firstObject];
         
-        DXAnnotationView *annotationView = (DXAnnotationView *)[myMapView dequeueReusableAnnotationViewWithIdentifier:NSStringFromClass([DXAnnotationView class])];
+        DXAnnotationView *annotationView = (DXAnnotationView *)[self.myMapView dequeueReusableAnnotationViewWithIdentifier:NSStringFromClass([DXAnnotationView class])];
         /*
          NSString *pinName = @"";
          
@@ -817,8 +820,7 @@
         
         return annotationView;
     }
-    
-    
+
     return nil;
 }
 
