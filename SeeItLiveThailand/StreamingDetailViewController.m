@@ -202,7 +202,6 @@
     IBOutlet UIScrollView *scrollView;
     AppDelegate *appDelegate;
     SocketIOClient *socket;
-    
     int *count;
 }
 @property (nonatomic, strong) NSArray *streamList;
@@ -227,46 +226,11 @@
     liveIncategoryTbl.dataSource = self;
     scrollView.delegate = self;
     appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
-    [self getCategoryList];
-  
     
-//        [[NSNotificationCenter defaultCenter] addObserver:self
-//                                                 selector:@selector(refreshList:)
-//                                                     name:@"refresh"
-//                                                   object:nil];
-//        [[NSNotificationCenter defaultCenter] addObserver:self
-//                                                 selector:@selector(refreshList:)
-//                                                     name:@"update"
-//                                                   object:nil];
-    //[[[[UIApplication sharedApplication] delegate] window] setWindowLevel:UIWindowLevelStatusBar+5];
+//    [self getCategoryList];
     
-    /*
-    self.vdoPlayer = [[KSVideoPlayerView alloc] initWithFrame:CGRectMake(0, 20, 320, 180) contentURL:[NSURL URLWithString:@"http://203.151.133.7:1935/live/ch3_1/playlist.m3u8"]];
-    [self.view addSubview:self.vdoPlayer];
-    self.vdoPlayer.tintColor = [UIColor redColor];
     
-    [self.vdoPlayer pause];
-    [self.vdoPlayer play];
-     */
-    
-    // Do any additional setup after loading the view.
-    /*
-    UILabel *lblStringID = [[UILabel alloc] initWithFrame:CGRectMake(30,100 , 100, 20)];
-    lblStringID.text = self.streamingID;
-    
-    [self.view addSubview:lblStringID];
-    */
-    /*
-    NSString *videoURLString = @"http://203.151.133.7:1935/live/ch3_1/playlist.m3u8";
-    NSURL *videoURL = [NSURL URLWithString:videoURLString];
-    MPMoviePlayerController *moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:videoURL];
-    moviePlayer.view.frame = self.view.bounds;
-    [moviePlayer prepareToPlay];
-    [moviePlayer play];
-    [self.view addSubview:moviePlayer.view];
-    */
 
-    //[self addDemoControl];
     
 }
 - (void)getCategoryList
@@ -298,15 +262,17 @@
         
         [[DataManager shareManager] getStreamingWithCompletionBlockWithFilterCat:^(BOOL success, NSArray *streamRecords, NSError *error) {
             
-            if (success) {
-                weakSelf.streamList = streamRecords;
-                NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
+                if (success) {
+                    weakSelf.streamList = streamRecords;
+                    NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
+                    [scrollView addSubview:liveIncategoryTbl];
                 
-            } else {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [alert show];
-            }
-            [scrollView addSubview:liveIncategoryTbl];
+                } else {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                }
+
+
            // [liveIncategoryTbl reloadData];
             
         } Filter:filter];
@@ -809,6 +775,7 @@
         if (success) {
             
 
+//            NSLog(@"filter LiveAround Data : %@",streamRecords);
             livearound.rowIndex = 0;
             livearound.liveAroundData = streamRecords;
             [self presentViewController: livearound animated: YES completion:nil];
@@ -820,6 +787,7 @@
         }
         
     } Filter:filter];
+    
     
     
 //
