@@ -345,8 +345,8 @@
 
     }
     self.player.view.playerControlsAutoHideTime = @5;
-    self.player.forceRotate = NO;
-    self.player.view.fullscreenButton.hidden = TRUE;
+    self.player.forceRotate = YES;
+    self.player.view.fullscreenButton.hidden = FALSE;
     self.player.view.nextButton.hidden = TRUE;
     self.player.view.rewindButton.hidden = FALSE;
     self.player.view.isControlsEnabled = FALSE;
@@ -1206,19 +1206,20 @@
              object:nil];
             [videoPlayer pauseContent:YES completionHandler:nil];
         }
-        
-   
         [self dismissViewControllerAnimated:YES completion:nil];
+    
     } else if (event == VKVideoPlayerControlEventTapFullScreen) {
         if (self.player.isFullScreen) {
             NSLog(@"11");
             self.player.view.doneButton.frame = CGRectMake(self.player.view.bounds.size.width - 30, 0, 30, 30);
+            self.player.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
             self.player.isFullScreen = false;
         }
         else{
             NSLog(@"12");
             
             self.player.view.doneButton.frame = CGRectMake(self.player.view.bounds.size.width - 30, 0, 30, 30);
+            self.player.view.frame = playerRect;
             self.player.isFullScreen = true;
             
         }
