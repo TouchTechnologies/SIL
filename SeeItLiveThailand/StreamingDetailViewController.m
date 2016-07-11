@@ -311,20 +311,20 @@
 
     }
     self.player.view.playerControlsAutoHideTime = @5;
-    self.player.forceRotate = YES;
+    self.player.forceRotate = NO;
     self.player.view.fullscreenButton.hidden = FALSE;
     self.player.view.nextButton.hidden = TRUE;
     self.player.view.rewindButton.hidden = FALSE;
     self.player.view.isControlsEnabled = FALSE;
     self.player.view.bottomControlOverlay.hidden = FALSE;
+    
     UIImage *replay = [[UIImage alloc] init];
     replay = [UIImage imageNamed:@"replay_grey.png"] ;
     
     [self.player.view.rewindButton setImage:replay forState:UIControlStateNormal];
       [self.player.view.rewindButton sizeThatFits:CGSizeMake(30, 30)];
        [self.player.view.bottomControlOverlay addSubview:self.player.view.rewindButton];
-    
- //   [self.player.view.rewindButton setContentMode:UIViewContentModeScaleToFill];
+    //[self.player.view.rewindButton setContentMode:UIViewContentModeScaleToFill];
     
     
     propViewPort = [[UIView alloc] initWithFrame:propViewPortRect];
@@ -360,11 +360,9 @@
     lblcategoryDesc.textAlignment = NSTextAlignmentLeft;
     lblcategoryDesc.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 2];
 
-   //
-    
     lblcategoryType = [[UILabel alloc] initWithFrame:lblcategoryTypeRect];
     lblcategoryType.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-//    lblcategoryType.text = self.objStreaming.categoryName;
+//  lblcategoryType.text = self.objStreaming.categoryName;
     lblcategoryType.textColor = [UIColor redColor];
     lblcategoryType.backgroundColor = [UIColor clearColor];
     lblcategoryType.textAlignment = NSTextAlignmentLeft;
@@ -373,20 +371,18 @@
    //
     CGFloat scy = (1024.0/480.0);
     CGFloat scx = (768.0/360.0);
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
         [self.player.view addSubviewForControl:steamingTitle toView:topView];
-           [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
-           [self.player.view addSubviewForControl:lblcategoryType toView:topView];
+        [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
+        [self.player.view addSubviewForControl:lblcategoryType toView:topView];
         self.player.view.topControlOverlay.hidden = TRUE;
         [self.player.view.rewindButton setFrame:CGRectMake(self.player.view.bottomControlOverlay.bounds.size.width/2 + (125*scx), 5*scy , 30, 30)];
-
     }
     else{
         self.player.view.topControlOverlay.hidden = FALSE;
-
-      [self.player.view.topControlOverlay addSubview:steamingTitle];
-            [self.player.view.topControlOverlay addSubview:lblcategoryDesc];
-            [self.player.view.topControlOverlay addSubview:lblcategoryType];
+        [self.player.view.topControlOverlay addSubview:steamingTitle];
+        [self.player.view.topControlOverlay addSubview:lblcategoryDesc];
+        [self.player.view.topControlOverlay addSubview:lblcategoryType];
         [self.player.view.rewindButton setFrame:CGRectMake(self.player.view.bottomControlOverlay.bounds.size.width/2 +35, 5 , 30, 30)];
     }
 
@@ -398,7 +394,6 @@
     lblLocationDesc.backgroundColor = [UIColor clearColor];
     lblLocationDesc.textAlignment = NSTextAlignmentLeft;
     lblLocationDesc.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 2];
-    //font;
     [propViewPort addSubview:lblLocationDesc];
     
     lblLocationLive = [[UILabel alloc] initWithFrame:lblLocationLivePortRect];
@@ -412,8 +407,8 @@
     
     UITapGestureRecognizer* goProfile = [[UITapGestureRecognizer alloc]
                                          initWithTarget:self action:@selector(goProfile:)];
-    //    [goProfile setNumberOfTouchesRequired:1];
-    //     goProfile.enabled = YES;
+    //[goProfile setNumberOfTouchesRequired:1];
+    //goProfile.enabled = YES;
     [imgLive addGestureRecognizer:goProfile];
     [lblLocationDesc addGestureRecognizer:goProfile];
     
@@ -629,12 +624,13 @@
     moreBtn.backgroundColor = [UIColor redColor];
     moreBtn.layer.cornerRadius = moreBtnRect.size.height/2;
     moreBtn.clipsToBounds = YES;
-    UILabel *titlemoreLbl = [[UILabel alloc] initWithFrame:moreBtn.bounds];
-    titlemoreLbl.text = @"Live Around";
-    titlemoreLbl.textAlignment = NSTextAlignmentCenter;
-    titlemoreLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize];
-    titlemoreLbl.textColor = [UIColor whiteColor];
-    [moreBtn addSubview:titlemoreLbl];
+    [moreBtn setTitle:@"Live Around" forState:UIControlStateNormal];
+//    UILabel *titlemoreLbl = [[UILabel alloc] initWithFrame:moreBtn.bounds];
+//    titlemoreLbl.text = @"Live Around";
+//    titlemoreLbl.textAlignment = NSTextAlignmentCenter;
+//    titlemoreLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize];
+//    titlemoreLbl.textColor = [UIColor whiteColor];
+// [moreBtn addSubview:titlemoreLbl];
     [moreBtn addTarget:self action:@selector(clickmore:) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:moreBtn];
     
@@ -902,7 +898,7 @@
         loveCountCellLblRect = CGRectMake(self.view.bounds.size.width/2 + (5*scx) , cellH - (25*scy), 50*scx, fontSize);
         userAvatarCellimgRect = CGRectMake(self.view.bounds.size.width - (50*scx), cellH - (50*scy) , 40*scx, 40*scy);
 
-        moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - (40*scx), mapImgRect.origin.y +mapImgRect.size.height/2, 80*scx, 30*scy);
+        moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - (60*scx), mapImgRect.origin.y +mapImgRect.size.height/2, 120*scx, 30*scy);
         
     } else {
        
@@ -978,7 +974,7 @@
         
         
         
-         moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - 40,mapImgRect.origin.y +mapImgRect.size.height/2 , 80, 30);
+         moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - 60,mapImgRect.origin.y +mapImgRect.size.height/2 , 120, 30);
         
 
     }

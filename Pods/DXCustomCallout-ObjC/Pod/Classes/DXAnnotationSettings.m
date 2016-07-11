@@ -18,12 +18,12 @@
         newSettings.shouldRoundifyCallout = YES;
         newSettings.calloutCornerRadius = 5.0f;
 
-        newSettings.shouldAddCalloutBorder = YES;
+        newSettings.shouldAddCalloutBorder = NO;
         newSettings.calloutBorderColor = [UIColor colorWithRed:0.329 green:0.565 blue:0.616 alpha:1.000];
-        newSettings.calloutBorderWidth = 2.0;
+        newSettings.calloutBorderWidth = 1.0;
 
         newSettings.animationType = DXCalloutAnimationZoomIn;
-        newSettings.animationDuration = 0.25;
+        newSettings.animationDuration = 0.50;
     }
     return newSettings;
 }

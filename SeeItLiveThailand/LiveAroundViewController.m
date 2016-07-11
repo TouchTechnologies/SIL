@@ -109,6 +109,7 @@
 }
 @property(nonatomic, strong) IBOutlet MKMapView *myMapView;
 @property (nonatomic, strong) NSArray *streamList;
+@property (nonatomic, strong) NSArray *anotationList;
 //@property (nonatomic, strong) NSArray *streamList;
 
 @end
@@ -145,7 +146,7 @@
     
    // myMapView = [[MKMapView alloc] init];
    // myMapView.delegate = self;
-    //myMapView.showsUserLocation = YES;
+   // self.myMapView.showsUserLocation = NO;
     
     // NSLog(@"Live Around %@",self.objStreaming);
     // Do any additional setup after loading the view.
@@ -179,7 +180,8 @@
     
     self.myMapView = [[MKMapView alloc] initWithFrame:mapViewRect];
     self.myMapView.backgroundColor = [UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1.0];
-    self.myMapView.showsUserLocation = YES;
+    self.myMapView.showsUserLocation = NO;
+    
     [scrollView addSubview:self.myMapView];
 
 //    imgSnapshot = [[UIImageView alloc] initWithFrame:imgSnapshotRect];
@@ -544,7 +546,7 @@
        
     }
      NSLog(@"ROWINDEX::: %ld",(long)_rowIndex);
-    [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 10000, 10000)];
+    [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 100, 100)];
     
     
 }
@@ -708,7 +710,7 @@
     [self.myMapView setDelegate:self];
 
     [self.myMapView removeAnnotations:self.myMapView.annotations];
-   // [self.myMapView setDelegate:self];
+  //  [self.myMapView setDelegate:self];
     [self.liveAroundData enumerateObjectsUsingBlock:^(Streaming *stream, NSUInteger idx, BOOL *stop) {
         
               NSLog(@"index idx %lu",(unsigned long)idx);
@@ -720,10 +722,14 @@
             annotation1.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
             annotation1.pinName = @"mappin";
             [self.myMapView addAnnotation:annotation1];
-            [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 10000, 10000)];
+            [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 100, 100)];
             NSLog(@"Long ::: %@",stream.longitude);
             NSLog(@"Lat ::: %@", stream.latitude);
+            
+//            [snapshotDetailImg hnk_setImageFromURL:[NSURL URLWithString:stream.snapshot]];
+            
         }
+       
         
         
     }];
@@ -735,7 +741,9 @@
     annoActive.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
     annoActive.pinName = @"pin";
     [self.myMapView addAnnotation:annoActive];
-    [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annoActive.coordinate, 10000, 10000)];
+    [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annoActive.coordinate,100, 100)];
+    
+
     
 }
 
@@ -750,7 +758,7 @@
 }
 
 - (void)changePoint:(NSInteger)index {
-    //change label
+//change label
     Streaming *stream = [self.liveAroundData objectAtIndex:index];
 //    lblPoint.frame = lblPointRect; //CGRectMake(35, 194, 400, 25);
 //    lblPoint.text = cctvs.cctvName;
@@ -759,7 +767,7 @@
 //    lblPoint.textAlignment = NSTextAlignmentLeft;
 //    [lblPoint sizeToFit];
     
-    //change location
+//change location
     [self changeLocation:index];
     
     //change description
@@ -777,10 +785,23 @@
     if ([annotation isKindOfClass:[DXAnnotation class]]) {
         
         DXAnnotation *annotation1 = (DXAnnotation *)annotation;
-        UIView *calloutView = [[[NSBundle mainBundle] loadNibNamed:@"liveAroundAnnotation" owner:self options:nil] firstObject];
+        UIImageView *calloutView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 120, 80)];
+      //  UIView *calloutView = [[[NSBundle mainBundle] loadNibNamed:@"liveAroundAnnotation" owner:self options:nil] firstObject];
+   
         
+    
         DXAnnotationView *annotationView = (DXAnnotationView *)[self.myMapView dequeueReusableAnnotationViewWithIdentifier:NSStringFromClass([DXAnnotationView class])];
-        /*
+       // [calloutView setBackgroundColor:[UIColor redColor]];
+  
+
+        
+        Streaming *stream = [self.liveAroundData objectAtIndex:annotation1.tag];
+        
+        [calloutView hnk_setImageFromURL:[NSURL URLWithString:stream.snapshot]];
+        calloutView.contentMode = UIViewContentModeScaleToFill;
+
+
+        
          NSString *pinName = @"";
          
          if (annotation1.tag == 1) {
@@ -788,25 +809,24 @@
          } else {
          pinName = @"mappin";
          }
-         */
+
         
         UIView *pinView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:annotation1.pinName]];
         
         
-        //if (!annotationView) {
+       // if (!annotationView) {
         
         annotationView = [[DXAnnotationView alloc] initWithAnnotation:annotation
                                                       reuseIdentifier:NSStringFromClass([DXAnnotationView class])
                                                               pinView:pinView
-                                                          calloutView:nil
+                                                          calloutView:calloutView
                                                              settings:[DXAnnotationSettings defaultSettings]];
-        /*
-         } else {
-         [pinView removeFromSuperview];
-         [annotationView addSubview:pinView];
-         }
-         */
-        
+//      
+//         } else {
+//         [pinView removeFromSuperview];
+//         [annotationView addSubview:pinView];
+//         }
+    
         /*
          annotationView = [[DXAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:NSStringFromClass([DXAnnotationView class])];
          [annotationView addSubview:pinView];
@@ -827,26 +847,41 @@
 
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
     [((DXAnnotationView *)view)hideCalloutView];
-    view.layer.zPosition = -1;
+   // view.layer.zPosition = -1;
     NSLog(@"deselect test annotation");
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
-    if ([view isKindOfClass:[DXAnnotationView class]]) {
+ if ([view isKindOfClass:[DXAnnotationView class]]) {
         [((DXAnnotationView *)view)showCalloutView];
         view.layer.zPosition = 0;
         DXAnnotationView *dxView = (DXAnnotationView *)view;
-        
+   //  MAKRCalloutView *dxView = [[MAKRCalloutView alloc] initWithFrame:CGRectMake(0.0, 0.0, 242.0, 57.0)];
+//       [dxView setFrame:CGRectMake(CGRectGetWidth(view.bounds) / 2.0, CGRectGetWidth(view.bounds) / 2.0, 100.0, 100.0)];
+//      [dxView setBackgroundColor:[UIColor redColor]];
+//       dxView.center = CGPointMake(CGRectGetWidth(view.bounds) / 2.0, 0.0);
+//      dxView.frame = CGRectMake(0.0, 0.0, 242.0, 57.0);
+//      [dxView showCalloutView];
+     // [view addSubview:dxView];
         NSInteger indexObj = dxView.tag;
-        
         NSLog(@"test annotation %ld",(long)indexObj);
         
-        //[myMapView removeAnnotations:myMapView.annotations];
-        
-        //   [self changeLocation:indexObj];
-        
+       // [self.myMapView removeAnnotations:self.myMapView.annotations];
+     // [self changeLocation:]
+   //  [self changeLocation:indexObj];
+ 
         //        [scrollView setContentOffset:CGPointMake(scrollView.frame.size.width * indexObj, 0.0f)];
+//
+     
+ 
+     
+     
+     
+
     }
+
+
+  
 }
 
 -(UIImage*)resizeImage:(UIImage *)image imageSize:(CGSize)size
