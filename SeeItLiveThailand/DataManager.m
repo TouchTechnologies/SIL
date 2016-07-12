@@ -273,7 +273,6 @@ static DataManager *staticManager = nil;
 }
 - (void)getStreamingWithCompletionBlockWithFilterCat:(StreamingCompletionBlock)block  Filter:(NSString*)filter{
     if (block) {
-        
         NSString *StreamingHistoryFilterURL ;
         if(filter != nil)
         {
@@ -283,6 +282,7 @@ static DataManager *staticManager = nil;
             StreamingHistoryFilterURL = StreamingHistoryURLByCatgory;
         }
         self.streamingBlock = block;
+        NSLog(@"URLLLLLL %@",StreamingHistoryFilterURL);
         [self downloadStreamingDetailForRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:StreamingHistoryFilterURL]]];
     }
 }
@@ -328,10 +328,33 @@ static DataManager *staticManager = nil;
     [manager.requestSerializer setValue:appDelegate.access_token forHTTPHeaderField:@"X-TIT-ACCESS-TOKEN"];
     
     NSDictionary * param = @{};
-    NSLog(@"request : %@",request.URL);
+    NSLog(@"request : %@",[NSString stringWithFormat:@"%@",request.URL]);
     [manager GET:[request.URL absoluteString] parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
         
-//        NSLog(@"downloadStreamingDetailForRequestData : %@",responseObject);
+        NSLog(@"downloadStreamingDetailForRequestData : %@ Count ",responseObject);
+        
+        [weakSelf createStreamingObjectForRecords:(NSArray *)responseObject];
+        
+    } failure:^(AFHTTPRequestOperation *  operation, NSError *  error) {
+        weakSelf.streamingBlock(NO,nil,error);
+    }];
+    
+}
+- (void)downloadStreamingCateDetailForRequest:(NSString *)request {
+    __weak DataManager *weakSelf = self;
+    
+    AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:appDelegate.access_token forHTTPHeaderField:@"X-TIT-ACCESS-TOKEN"];
+    
+    NSDictionary * param = @{};
+    NSLog(@"requestURL:::: %@",request);
+    [manager GET:request parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
+        
+        NSLog(@"downloadStreamingDetailForRequestData : %@ Count ",responseObject);
         
         [weakSelf createStreamingObjectForRecords:(NSArray *)responseObject];
         
