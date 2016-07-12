@@ -809,7 +809,7 @@
          } else {
          pinName = @"mappin";
          }
-
+        
         
         UIView *pinView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:annotation1.pinName]];
         
