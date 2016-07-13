@@ -414,7 +414,7 @@ static DataManager *staticManager = nil;
         stream.isLoved = [stmRecord[@"is_loved"] integerValue];
         stream.web_url = stmRecord[@"web_url"];
         
-//        stream.snapshot = stmRecord[@"snapshots"][@"320x240"];
+//      stream.snapshot = stmRecord[@"snapshots"][@"320x240"];
         stream.snapshot = stmRecord[@"list_snapshot"][@"320x240"];
         stream.streamUrl = stmRecord[@"urls"][@"http"];
         stream.createBy = stmRecord[@"user"][@"first_name"];

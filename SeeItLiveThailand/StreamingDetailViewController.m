@@ -229,7 +229,10 @@
     
     [self getCategoryList];
     
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(refreshList:)
+                                                  name:@"refresh"
+                                                    object:nil];
 
     
 }
@@ -740,7 +743,7 @@
     
     
     
-    NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,10,20,1];
+    NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,10,5,1];
     
     [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
         
@@ -1654,6 +1657,20 @@
 
          }
      }];
+}
+-(void) refreshList:(NSNotification *)refreshName
+{
+    // [notification name] should always be @"TestNotification"
+    // unless you use this method for observation of other notifications
+    // as well.
+    NSLog(@"ADView Notiname: %@",[refreshName name]);
+    if ([[refreshName name] isEqualToString:@"refresh"])
+    {
+
+        
+        [self.view reloadInputViews];
+    }
+    
 }
 
 

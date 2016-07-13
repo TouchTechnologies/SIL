@@ -17,7 +17,7 @@
 #import "DXAnnotation.h"
 #import <DXAnnotationView.h>
 #import <DXAnnotationSettings.h>
-
+#import "StreamingDetailViewController.h"
 
 @interface LiveAroundViewController (){
     
@@ -110,6 +110,7 @@
 @property(nonatomic, strong) IBOutlet MKMapView *myMapView;
 @property (nonatomic, strong) NSArray *streamList;
 @property (nonatomic, strong) NSArray *anotationList;
+
 //@property (nonatomic, strong) NSArray *streamList;
 
 @end
@@ -153,6 +154,24 @@
     }
 -(void)viewWillAppear:(BOOL)animated
 {
+    
+    NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,10,5,1];
+    
+    [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
+        
+        if (success) {
+            
+            
+            //            NSLog(@"filter LiveAround Data : %@",streamRecords);
+            self.streamList = streamRecords;
+            
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        
+    } Filter:filter];
+    
     
 }
 - (void)initial{
@@ -426,13 +445,14 @@
     [imgSnapshotcell addSubview:imgWaterMarkcell];
     [cell.contentView addSubview:imgSnapshotcell];
 
-//    UITapGestureRecognizer* playStream = [[UITapGestureRecognizer alloc]
-//                                          initWithTarget:self action:@selector(play:)];
-//    [playStream setNumberOfTouchesRequired:1];
-//    [playStream setDelegate:self];
-//    imgSnapshotcell.userInteractionEnabled = YES;
-//    [imgSnapshotcell addGestureRecognizer:playStream];
-//  [cell addGestureRecognizer:tapGestureRec];
+    UITapGestureRecognizer* playStream = [[UITapGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(play:)];
+    [playStream setNumberOfTouchesRequired:1];
+    [playStream setDelegate:self];
+    imgSnapshotcell.userInteractionEnabled = YES;
+
+    [imgSnapshotcell addGestureRecognizer:playStream];
+//    [cell addGestureRecognizer:tapGestureRec];
     
 //  UITapGestureRecognizer* goProfile = [[UITapGestureRecognizer alloc]
 //                                         initWithTarget:self action:@selector(goProfile:)];
@@ -489,28 +509,15 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSLog(@"Select");
-}
+//    scrollView.scrollsToTop = YES;
+    scrollView.contentOffset = CGPointZero;
+    NSInteger pageIndex = [indexPath row];
+    [self changeLocation:pageIndex];
+  }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     return cellH ;
 }
-//-(void)play:(id)sender
-//{
-//    
-//    UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)sender;
-//    NSLog (@"Tag Playyyyy %ld",[tapRecognizer.view tag]);
-//    //    UserTag = [tapRecognizer.view tag];
-//    NSInteger playTag = [tapRecognizer.view tag];
-//    
-//    Streaming *stream = [self.streamList objectAtIndex:playTag];
-//    StreamingDetailViewController *streamingDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"streamingdetail"];
-//    streamingDetail.objStreaming = stream;
-//    streamingDetail.streamingType = @"history";
-//    
-//    [self.view.window.rootViewController presentViewController:streamingDetail animated:YES completion:nil];
-//
-//}
-
 
 -(void)initMap
 {
@@ -554,22 +561,7 @@
 
 
 
-//- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
-//{
-//    NSLog(@"MKAnnotationView");
-//    if (annotation == mapView.userLocation)
-//        return nil;
-//    
-//    static NSString *s = @"identifier";
-//    MKAnnotationView *pin = [mapView dequeueReusableAnnotationViewWithIdentifier:s];
-//    if (!pin) {
-//        pin = [[MKPinAnnotationView alloc]initWithAnnotation:annotation reuseIdentifier:s];
-//        pin.canShowCallout = YES;
-//        pin.image = [UIImage imageNamed:@"maker.png"];
-//        pin.calloutOffset = CGPointMake(0, 0);
-//    }
-//    return pin;
-//}
+
 //-(MKAnnotationView *) mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
 //    NSLog(@"MKAnnotationView");
 //    MKPinAnnotationView *MyPin=[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
@@ -622,15 +614,7 @@
 //    return annotationView;
 //    
 //}
-//- (void)annotationClick:(id)sender
-//{
-//    NSLog(@"annotationClick");
-//}
-//
-//
-//
-//
-//
+
 //- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
 //    
 //    NSLog(@"mapView");
@@ -675,157 +659,114 @@
 //    }
 //    return nil;
 //}
-//
-//
-//
-//- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
-//    if ([view isKindOfClass:[DXAnnotationView class]]) {
-//        [((DXAnnotationView *)view)hideCalloutView];
-//        view.layer.zPosition = -1;
-//    }
-//}
-//
-//- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
-//    if ([view isKindOfClass:[DXAnnotationView class]]) {
-//        [((DXAnnotationView *)view)showCalloutView];
-//        view.layer.zPosition = 0;
-//        
-//        DXAnnotationView *dxView = (DXAnnotationView *)view;
-//        NSInteger indexObj = dxView.tag;
-//        NSLog(@"select anno : %ld",indexObj);
-//    }
-//}
 
-
-
-- (void)LoadMap {
-    
-    //CCTVS *cctvs = [self.roi.cctvs objectAtIndex:self.rowIndex];
-    
-    [self changeLocation:self.rowIndex];
-    
-}
-- (void)changeLocation:(NSInteger)rowIndex {
-    NSLog(@"changeLocation");
-    [self.myMapView setDelegate:self];
-
-    [self.myMapView removeAnnotations:self.myMapView.annotations];
-  //  [self.myMapView setDelegate:self];
+-(void)initPin:(NSInteger)rowIndex{
     [self.liveAroundData enumerateObjectsUsingBlock:^(Streaming *stream, NSUInteger idx, BOOL *stop) {
         
-              NSLog(@"index idx %lu",(unsigned long)idx);
+        NSLog(@"index idx %lu",(unsigned long)idx);
         if (idx != rowIndex) {
             NSLog(@"rowIndex idx %lu",(unsigned long)rowIndex);
             DXAnnotation *annotation1 = [DXAnnotation new];
             annotation1.tag = idx;
-//            annotation1.tag = [stream.ID integerValue];
+            //            annotation1.tag = [stream.ID integerValue];
             annotation1.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
             annotation1.pinName = @"mappin";
             [self.myMapView addAnnotation:annotation1];
-            [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 100, 100)];
+            [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 250, 250)];
             NSLog(@"Long ::: %@",stream.longitude);
             NSLog(@"Lat ::: %@", stream.latitude);
             
-//            [snapshotDetailImg hnk_setImageFromURL:[NSURL URLWithString:stream.snapshot]];
+            //  [snapshotDetailImg hnk_setImageFromURL:[NSURL URLWithString:stream.snapshot]];
             
         }
-       
-        
-        
+        else{
+            Streaming *stream = [self.liveAroundData objectAtIndex:rowIndex];
+            DXAnnotation *annoActive = [DXAnnotation new];
+            annoActive.tag = rowIndex;
+            annoActive.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
+            annoActive.pinName = @"pin";
+            [self.myMapView addAnnotation:annoActive];
+            [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annoActive.coordinate,250, 250)];
+            int64_t delayInSeconds = 0.1;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                 [_myMapView selectAnnotation:annoActive animated:YES];
+            });
+        }
     }];
+}
+- (void)LoadMap{
+    [self.myMapView setDelegate:self];
+    [self initPin:_rowIndex];
     
-    Streaming *stream = [self.liveAroundData objectAtIndex:rowIndex];
+}
+- (void)changeLocation:(NSInteger)rowIndex{
+    NSLog(@"changeLocation");
     
-    DXAnnotation *annoActive = [DXAnnotation new];
-    annoActive.tag = rowIndex;
-    annoActive.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
-    annoActive.pinName = @"pin";
-    [self.myMapView addAnnotation:annoActive];
-    [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annoActive.coordinate,100, 100)];
-    
-
-    
+     [self.myMapView removeAnnotations:self.myMapView.annotations];
+     [self initPin:rowIndex];
 }
 
 #pragma mark - ScrollView delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     NSInteger pageIndex = scrollView.contentOffset.x / CGRectGetWidth(scrollView.frame);
     
-    [self changePoint:pageIndex];
+   // [self changePoint:pageIndex];
     
 //    self.customPageControl.currentPage = pageIndex;
     
 }
 
-- (void)changePoint:(NSInteger)index {
-//change label
-    Streaming *stream = [self.liveAroundData objectAtIndex:index];
-//    lblPoint.frame = lblPointRect; //CGRectMake(35, 194, 400, 25);
-//    lblPoint.text = cctvs.cctvName;
-//    lblPoint.lineBreakMode = NSLineBreakByWordWrapping;
-//    lblPoint.numberOfLines = 0;
-//    lblPoint.textAlignment = NSTextAlignmentLeft;
-//    [lblPoint sizeToFit];
-    
-//change location
-    [self changeLocation:index];
-    
-    //change description
-    
-//    self.lblDesc.text = cctvs.cctvDesc;
-//    self.lblDesc.lineBreakMode = NSLineBreakByWordWrapping;
-//    self.lblDesc.numberOfLines = 0;
-//    self.lblDesc.textAlignment = NSTextAlignmentJustified;
-//    [self.lblDesc sizeToFit];
-    
-    
+- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray<MKAnnotationView *> *)views
+{
+    MKAnnotationView *annotationView = [views objectAtIndex:0];
+    id <MKAnnotation> mp = [annotationView annotation];
+   
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([mp coordinate], 250,250);
+    [_myMapView setRegion:region animated:YES];
+
+ 
 }
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
     
     if ([annotation isKindOfClass:[DXAnnotation class]]) {
         
         DXAnnotation *annotation1 = (DXAnnotation *)annotation;
-        UIImageView *calloutView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 120, 80)];
-      //  UIView *calloutView = [[[NSBundle mainBundle] loadNibNamed:@"liveAroundAnnotation" owner:self options:nil] firstObject];
-   
-        
-    
-        DXAnnotationView *annotationView = (DXAnnotationView *)[self.myMapView dequeueReusableAnnotationViewWithIdentifier:NSStringFromClass([DXAnnotationView class])];
-       // [calloutView setBackgroundColor:[UIColor redColor]];
-  
+        UIImageView *calloutView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 90, 60)];
+        UIButton *wmoncallout = [[UIButton alloc] initWithFrame:CGRectMake(calloutView.bounds.size.width/2 - 15, calloutView.bounds.size.height/2 - 15, 30, 30)];
+      
 
+        DXAnnotationView *annotationView = (DXAnnotationView *)[self.myMapView dequeueReusableAnnotationViewWithIdentifier:NSStringFromClass([DXAnnotationView class])];
         
         Streaming *stream = [self.liveAroundData objectAtIndex:annotation1.tag];
-        
-        [calloutView hnk_setImageFromURL:[NSURL URLWithString:stream.snapshot]];
+        [calloutView hnk_setImageFromURL:[NSURL URLWithString:stream.snapshot]
+                             placeholder:[UIImage imageNamed:@"sil_big.jpg"]];
         calloutView.contentMode = UIViewContentModeScaleToFill;
-
-
+        [wmoncallout setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
+        [calloutView addSubview:wmoncallout];
         
          NSString *pinName = @"";
-         
-         if (annotation1.tag == 1) {
+         if (annotation1.tag == _rowIndex) {
          pinName = @"pin";
          } else {
          pinName = @"mappin";
          }
-        
-        
-        UIView *pinView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:annotation1.pinName]];
-        
-        
-       // if (!annotationView) {
-        
+        UIImageView *pinView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:annotation1.pinName]];
+
+       if (!annotationView) {
         annotationView = [[DXAnnotationView alloc] initWithAnnotation:annotation
                                                       reuseIdentifier:NSStringFromClass([DXAnnotationView class])
                                                               pinView:pinView
                                                           calloutView:calloutView
                                                              settings:[DXAnnotationSettings defaultSettings]];
-//      
-//         } else {
-//         [pinView removeFromSuperview];
-//         [annotationView addSubview:pinView];
-//         }
+ 
+    
+       }
+       else {
+           
+           [pinView removeFromSuperview];
+           [annotationView addSubview:pinView];
+      }
     
         /*
          annotationView = [[DXAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:NSStringFromClass([DXAnnotationView class])];
@@ -836,8 +777,7 @@
         
         
         annotationView.tag = annotation1.tag;
-//        annotationView.tag = 5555;
-        
+
         return annotationView;
     }
 
@@ -853,35 +793,18 @@
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
  if ([view isKindOfClass:[DXAnnotationView class]]) {
-        [((DXAnnotationView *)view)showCalloutView];
-        view.layer.zPosition = 0;
+    
         DXAnnotationView *dxView = (DXAnnotationView *)view;
-   //  MAKRCalloutView *dxView = [[MAKRCalloutView alloc] initWithFrame:CGRectMake(0.0, 0.0, 242.0, 57.0)];
-//       [dxView setFrame:CGRectMake(CGRectGetWidth(view.bounds) / 2.0, CGRectGetWidth(view.bounds) / 2.0, 100.0, 100.0)];
-//      [dxView setBackgroundColor:[UIColor redColor]];
-//       dxView.center = CGPointMake(CGRectGetWidth(view.bounds) / 2.0, 0.0);
-//      dxView.frame = CGRectMake(0.0, 0.0, 242.0, 57.0);
-//      [dxView showCalloutView];
-     // [view addSubview:dxView];
         NSInteger indexObj = dxView.tag;
         NSLog(@"test annotation %ld",(long)indexObj);
-        
-       // [self.myMapView removeAnnotations:self.myMapView.annotations];
-     // [self changeLocation:]
-   //  [self changeLocation:indexObj];
- 
-        //        [scrollView setContentOffset:CGPointMake(scrollView.frame.size.width * indexObj, 0.0f)];
-//
+
+        //[self changeLocation:indexObj];
+        [((DXAnnotationView *)view)showCalloutView];
      
- 
-     
-     
+        view.layer.zPosition = 0;
      
 
-    }
-
-
-  
+ }
 }
 
 -(UIImage*)resizeImage:(UIImage *)image imageSize:(CGSize)size
@@ -894,6 +817,34 @@
     return newImage;
     
 }
+//-(void)play:(id)sender
+//{
+//
+//
+//          UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)sender;
+//        NSLog (@"Tag Playyyyy %ld",[tapRecognizer.view tag]);
+//        //    UserTag = [tapRecognizer.view tag];
+//        NSInteger playTag = [tapRecognizer.view tag];
+//
+//        Streaming *stream = [self.streamList objectAtIndex:playTag];
+//        StreamingDetailViewController *streamingDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"streamingdetail"];
+//
+//
+//        streamingDetail.objStreaming = stream;
+//        streamingDetail.streamingType = @"history";
+//        NSLog(@"STREAMID %@",stream.streamID);
+//
+//        [self dismissViewControllerAnimated:YES completion:^{
+//            [[NSNotificationCenter defaultCenter]
+//             postNotificationName:@"refresh"
+//             object:stream.streamID];
+//        }];
+//     //    [self presentViewController:streamingDetail animated:YES completion:nil];
+//
+//
+//
+//}
+
 
 /*
 #pragma mark - Navigation

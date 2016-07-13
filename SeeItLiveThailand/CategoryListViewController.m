@@ -930,7 +930,7 @@
     StreamingDetailViewController *streamingDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"streamingdetail"];
     streamingDetail.objStreaming = stream;
     streamingDetail.streamingType = @"history";
-    
+    NSLog(@"STREAMID %@",stream.streamID);
     [self presentViewController:streamingDetail animated:YES completion:nil];
 }
 

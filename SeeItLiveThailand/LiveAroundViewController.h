@@ -16,4 +16,5 @@
 @property (nonatomic, strong) Streaming *objStreaming;
 @property (nonatomic, strong) NSArray *liveAroundData;
 @property (nonatomic, assign) NSUInteger rowIndex;
+
 @end
