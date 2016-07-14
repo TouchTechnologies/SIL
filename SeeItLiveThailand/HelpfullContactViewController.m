@@ -14,6 +14,7 @@
 #import "Hotline.h"
 #import "AppDelegate.h"
 #import "MBProgressHUD.h"
+#import "Haneke.h"
 #import "MYTapGestureRecognizer.h"
 #define SCALING_Y (1024.0/480.0);
 #define SCALING_X (768.0/360.0);
@@ -35,6 +36,7 @@
     NSMutableArray* helpfulData;
     Helpful *Helpful;
     Hotline *Hotline;
+    HNKCacheFormat *format;
     
     
     UIView *searchBar;
@@ -64,6 +66,17 @@
 
     appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     
+    
+    format = [HNKCache sharedCache].formats[@"thumbnail"];
+    if (!format)
+    {
+        format = [[HNKCacheFormat alloc] initWithName:@"thumbnail"];
+        format.size = CGSizeMake(320, 240);
+        format.scaleMode = HNKScaleModeAspectFill;
+        format.compressionQuality = 0.5;
+        format.diskCapacity = 1 * 1024 * 1024; // 1MB
+        format.preloadPolicy = HNKPreloadPolicyLastSession;
+    }
 //    searchData = [[NSMutableArray alloc]init];
 //    for (NSDictionary* hotlineGroup in appDelegate.helpfulData) {
 //        NSLog(@"hotline_group_name %@",hotlineGroup[@"hotline_group_name"]);
@@ -87,14 +100,11 @@
 //        [helpfulData addObject:helpful];
 //        
 //    }
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Loading...";
-    [hud show:YES];
-    
+
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [[UserManager shareIntance] getAPIData:@"listhotline" Completion:^(NSError *error, NSDictionary *result, NSString *message) {
-        [hud hide:YES];
         NSLog(@"listhotline : %@",result);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         searchData = [[NSMutableArray alloc]init];
         for (NSDictionary* hotlineGroup in result) {
             NSLog(@"hotline_group_name %@",hotlineGroup[@"hotline_group_name"]);
@@ -307,6 +317,7 @@ shouldReloadTableForSearchString:(NSString *)searchString
         NSLog(@"hotlinename %@",string);
         
         NSLog(@"searchKey : %@",searchKey);
+        Cell.imgContact.hnk_cacheFormat = format;
             if ([searchRS[@"hotline_name"] rangeOfString:searchKey options:NSCaseInsensitiveSearch].location != NSNotFound)
             {
                 NSLog(@"inIf");
@@ -318,7 +329,9 @@ shouldReloadTableForSearchString:(NSString *)searchString
         [Cell.contactNamelbl setAttributedText:string];
 //        Cell.contactNamelbl.text = searchRS[@"hotline_name"];
         Cell.callNumberlbl.text = searchRS[@"hotline_call"];
-        Cell.imgContact.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:searchRS[@"hotline_image"]]]];
+        
+        [Cell.imgContact hnk_setImageFromURL:[NSURL URLWithString:searchRS[@"hotline_image"]]];
+//        Cell.imgContact.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:searchRS[@"hotline_image"]]]];
         TapCall.data = searchRS[@"hotline_call"];
     } else {
         Helpful *helpful = [helpfulData objectAtIndex:indexPath.section];
@@ -327,7 +340,8 @@ shouldReloadTableForSearchString:(NSString *)searchString
         NSLog(@"helpful.hotline %@",hotline.hotline_name);
         Cell.contactNamelbl.text = hotline.hotline_name;
         Cell.callNumberlbl.text =hotline.hotline_call;
-        Cell.imgContact.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:hotline.hotline_image]]];
+        [Cell.imgContact hnk_setImageFromURL:[NSURL URLWithString:hotline.hotline_image]];
+//        Cell.imgContact.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:hotline.hotline_image]]];
         TapCall.data = hotline.hotline_call;
     }
 //    Cell.imgContact.image = [UIImage imageNamed:[imgContactList objectAtIndex:indexPath.row]];
@@ -336,7 +350,7 @@ shouldReloadTableForSearchString:(NSString *)searchString
     Cell.imgContact.layer.cornerRadius = Cell.imgContact.bounds.size.width/2;
     Cell.imgContact.contentMode = UIViewContentModeScaleAspectFit;
     Cell.imgContact.clipsToBounds = YES ;
-    Cell.imgContact.layer.backgroundColor = [UIColor yellowColor].CGColor;
+    Cell.imgContact.layer.backgroundColor = [UIColor whiteColor].CGColor;
     
     Cell.contactNamelbl.font = [UIFont fontWithName:@"Helvetica" size:font];
     
