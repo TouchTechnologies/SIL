@@ -763,11 +763,13 @@
     
        }
        else {
-           
            [pinView removeFromSuperview];
            [annotationView addSubview:pinView];
       }
-    
+//        [wmoncallout addTarget:self action:@selector(DisclosureAction:) forControlEvents:UIControlEventTouchUpInside];
+//         wmoncallout.tag =annotation1.tag;
+//
+//        annotationView.rightCalloutAccessoryView = wmoncallout;
         /*
          annotationView = [[DXAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:NSStringFromClass([DXAnnotationView class])];
          [annotationView addSubview:pinView];
