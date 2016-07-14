@@ -295,7 +295,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
                     
                     self.titletopLbl.text = (result["title"] as! String)
                     self.setSocketLive(result["id"] as! Int)
-                    self.session.useAdaptiveBitrate = true
+                    self.session.useAdaptiveBitrate = true ///Adaptive Bit Rate Enable
                     self.session.startRtmpSessionWithURL(self.streamURL!, andStreamKey: self.streamKey!)
                     if(self.timerValue != 0)
                     {

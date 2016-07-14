@@ -188,10 +188,10 @@ static NSString *CellIdentifier = @"CellIdentifier";
 - (void)initialData {
     
     // Show progress
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Loading...";
-    [hud show:YES];
+//    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+//    hud.mode = MBProgressHUDModeIndeterminate;
+//    hud.labelText = @"Loading...";
+//    [hud show:YES];
     
     //Set the background color
     self.tblViewVideo.backgroundColor = [UIColor whiteColor]; //[UIColor colorWithRed:0.902 green:0.902 blue:0.902 alpha:1];
@@ -203,16 +203,18 @@ static NSString *CellIdentifier = @"CellIdentifier";
     self.placeSection = [[NSArray alloc] init];
     
     __weak VideoListViewController *weakSelf = self;
-
+    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [[DataManager shareManager] getCCTVwithCompletionBlockDatabase:^(BOOL success, NSArray *roiRecords, NSError *error) {
-        [hud hide:YES];
+        //        [hud hide:YES];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (success) {
             NSLog(@"before weakSelf.vdoList count  %lu",(unsigned long)weakSelf.vdoList.count);
             ModelManager *modelManager=[ModelManager getInstance];
-//            weakSelf.vdoList = [modelManager getAllDataSort];
+            //            weakSelf.vdoList = [modelManager getAllDataSort];
             NSArray *sortedArray  = [modelManager getAllData];
             NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"distance" ascending:YES];
-//            NSSortDescriptor *secondDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+            //            NSSortDescriptor *secondDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
             
             NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor, nil];
             
@@ -221,7 +223,9 @@ static NSString *CellIdentifier = @"CellIdentifier";
             [weakSelf.tblViewVideo reloadData];
         }
         
-        }];
+    }];
+
+
     
                 
 //    [[DataManager shareManager] getCCTVwithCompletionBlock:^(BOOL success, NSArray *roiRecords, NSError *error) {

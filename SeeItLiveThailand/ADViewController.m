@@ -359,8 +359,11 @@
 //      [[DataManager shareManager] getStreamingWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
  
     ///////////////////////////////////////////////// OnAir ///////////////////////////////////////////////
+    
+ [MBProgressHUD showHUDAddedTo:self.view animated:YES];
  [[DataManager shareManager] getStreamingLiveWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
 
+     [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (success)
         {
             
@@ -407,6 +410,7 @@
 
                 
             } else {
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
                 NSLog(@"NoLiveStream");
               
                 [liveStatusView setHidden:TRUE];

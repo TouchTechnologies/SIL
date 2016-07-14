@@ -22,6 +22,7 @@
 #import "Streaming.h"
 #import "SeeItLiveThailand-Swift.h"
 #import "LiveAroundViewController.h"
+#import "MBProgressHUD.h"
 
 @interface StreamingDetailViewController ()<VKVideoPlayerDelegate , UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource> {
 
@@ -243,9 +244,9 @@
     
     NSString *filter = [@"?" stringByAppendingFormat:@"filters[stream_media][category_id][operator]==&filters[stream_media][category_id][value]=%d&filtersPage=1&filterLimit=30",self.objStreaming.categoryID];
     NSLog(@"FILTER1 ::: %@",filter);
-    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [[DataManager shareManager] getStreamingWithCompletionBlockWithFilterCat:^(BOOL success, NSArray *streamRecords, NSError *error) {
-        
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (success) {
             weakSelf.streamList = streamRecords;
             NSLog(@"STREAMLIST COUNT Cate :::: %ld", (unsigned long)weakSelf.streamList.count);
@@ -721,32 +722,15 @@
 }
 
 - (void)clickmore :(id)sender{
-//    CGRect liveIncategoryTblsetRect = CGRectMake(0, liveIncategoryTblRect.origin.y, liveIncategoryTblRect.size.width , 500);
-//    
-//    if (!appDelegate.isMoreVedio) {
-//        [liveIncategoryTbl setFrame:liveIncategoryTblsetRect];
-//  
-//        [moreBtn setFrame:CGRectMake(self.view.bounds.size.width/2 - 40, liveIncategoryTblsetRect.origin.y + liveIncategoryTblsetRect.size.height + 10 , 80, 30)];
-//        [moreBtn reloadInputViews];
-//        appDelegate.isMoreVedio = true;
-//    }
-//    else{
-//        [liveIncategoryTbl setFrame: liveIncategoryTblRect];
-//        [moreBtn setFrame:moreBtnRect];
-//        [moreBtn reloadInputViews];
-//        appDelegate.isMoreVedio = false;
-//    }
     NSLog(@"GO LIVEAROUND");
     LiveAroundViewController *livearound = [self.storyboard instantiateViewControllerWithIdentifier:@"livearound"];
     livearound.objStreaming = self.objStreaming;
 
     
-    
-    
     NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,10,5,1];
-    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
-        
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (success) {
             
 

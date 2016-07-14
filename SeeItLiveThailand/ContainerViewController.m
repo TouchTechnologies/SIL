@@ -17,7 +17,7 @@
 //#import "NavButtonTabViewController.h"
 #import "defs.h"
 #import "AppDelegate.h"
-
+#import "MBProgressHUD.h"
 #import <AFNetworking.h>
 #import <Google/Analytics.h>
 #import <SystemConfiguration/CaptiveNetwork.h>
@@ -642,20 +642,30 @@
 }
 - (void) getCategory
 {
-    [[UserManager shareIntance] getAPIData:@"categoryStream" Completion:^(NSError *error, NSDictionary *result, NSString *message) {
-//        NSLog(@"categoryStream : %@",result);
-        appDelegate.categoryData = [[NSMutableArray alloc]init];
-        NSArray *sortedArray  = result;
-        NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"order" ascending:YES];
-        NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor, nil];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Do something...
+        NSLog(@"Container:getCategory");
         
-        for (NSDictionary *category in [sortedArray sortedArrayUsingDescriptors:sortDescriptors])
-        {
-            [appDelegate.categoryData addObject:category];
-        }
-//        NSLog(@"AllCat %@",appDelegate.categoryData);
-        
-    }];
+        [[UserManager shareIntance] getAPIData:@"categoryStream" Completion:^(NSError *error, NSDictionary *result, NSString *message) {
+            //        NSLog(@"categoryStream : %@",result);
+            appDelegate.categoryData = [[NSMutableArray alloc]init];
+            NSArray *sortedArray  = result;
+            NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"order" ascending:YES];
+            NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor, nil];
+            
+            for (NSDictionary *category in [sortedArray sortedArrayUsingDescriptors:sortDescriptors])
+            {
+                [appDelegate.categoryData addObject:category];
+            }
+            //        NSLog(@"AllCat %@",appDelegate.categoryData);
+            
+        }];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
+    });
+
 }
 
 @end
