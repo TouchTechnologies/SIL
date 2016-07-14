@@ -735,10 +735,10 @@
     self.navigationItem.rightBarButtonItem = shareButton;
     
     AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Loading...";
-    [hud show:YES];
+//    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+//    hud.mode = MBProgressHUDModeIndeterminate;
+//    hud.labelText = @"Loading...";
+//    [hud show:YES];
     
     
     
@@ -748,35 +748,45 @@
     //    HistoryListTableViewController *historyVC = [self.storyboard instantiateViewControllerWithIdentifier:@"historylist"];
     appDelegate.timeArr = [[NSMutableArray alloc]init];
     appDelegate.imgArr = [[NSMutableArray alloc]init];
-    [[UserManager shareIntance]getAPIData:apiLink Completion:^(NSError *error, NSDictionary *result, NSString *message) {
-        [hud hide:YES];
-        NSLog(@"Hud Off");
-        //NSLog(@"all Data %@",result[@"cctv_highlights"]);
+    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        // Do something...
         
-        int index;
-        for (index = 0; index < [result[@"cctv_highlights"] count]; index++) {
+        [[UserManager shareIntance]getAPIData:apiLink Completion:^(NSError *error, NSDictionary *result, NSString *message) {
+            NSLog(@"Hud Off");
+            //NSLog(@"all Data %@",result[@"cctv_highlights"]);
             
-            //            NSLog(@"by index  %@",result[@"cctv_highlights"][index]);
-            [appDelegate.imgArr insertObject:result[@"cctv_highlights"][index][@"highlight_url"] atIndex:index];
+            int index;
+            for (index = 0; index < [result[@"cctv_highlights"] count]; index++) {
+                
+                //            NSLog(@"by index  %@",result[@"cctv_highlights"][index]);
+                [appDelegate.imgArr insertObject:result[@"cctv_highlights"][index][@"highlight_url"] atIndex:index];
+                
+                NSMutableString *time = [NSMutableString stringWithString:result[@"cctv_highlights"][index][@"highlight_time"]];
+                [time insertString:@":" atIndex:2];
+                [appDelegate.timeArr insertObject:time atIndex:index];
+            }
+            //        NSLog(@"image URL %lu",(unsigned long)[historyVC.timeArr count]);
             
-            NSMutableString *time = [NSMutableString stringWithString:result[@"cctv_highlights"][index][@"highlight_time"]];
-            [time insertString:@":" atIndex:2];
-            [appDelegate.timeArr insertObject:time atIndex:index];
-        }
-        //        NSLog(@"image URL %lu",(unsigned long)[historyVC.timeArr count]);
-        
-        
-        appDelegate.CCTV_ID = cctvsPoint.cctvID;
-        
-        [[UserManager shareIntance] commentAPI:@"getcommentAll" cctvID:appDelegate.CCTV_ID data:nil Completion:^(NSError *error, NSDictionary *result, NSString *message) {
-            NSLog(@"commentcount %lu",(unsigned long)result.count);
-            commentCountLbl.text = [NSString stringWithFormat:@"%lu",(unsigned long)result.count];
-            [commentCountLbl reloadInputViews];
             
+            appDelegate.CCTV_ID = cctvsPoint.cctvID;
+            
+            [[UserManager shareIntance] commentAPI:@"getcommentAll" cctvID:appDelegate.CCTV_ID data:nil Completion:^(NSError *error, NSDictionary *result, NSString *message) {
+                NSLog(@"commentcount %lu",(unsigned long)result.count);
+                commentCountLbl.text = [NSString stringWithFormat:@"%lu",(unsigned long)result.count];
+                [commentCountLbl reloadInputViews];
+                
+            }];
+            //        [self.navigationController pushViewController:appDelegate animated:TRUE];
         }];
-        //        [self.navigationController pushViewController:appDelegate animated:TRUE];
-    }];
 
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
+    });
+    
+    
      
 }
 

@@ -180,7 +180,7 @@
     [super viewDidLoad];
     NSInteger * cellcount;
     //    cellcount = UITableview.cell.cellcount;
-    
+    NSLog(@"VideoPage");
     
     AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     // Do any additional setup after loading the view.
@@ -1447,6 +1447,7 @@
     AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     ModelManager *modelManager=[ModelManager getInstance];
     NSMutableArray *topPageObjects = [NSMutableArray array];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     dispatch_async(queue, ^{
         // Perform async operation
@@ -1506,7 +1507,7 @@
             }];
             apiName = @"rois";
             [[UserManager shareIntance]getAPIData:apiName Completion:^(NSError *error, NSDictionary *result, NSString *message) {
-                
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
                 NSArray * dicArray = result;
                 
                 NSLog(@"Result(Count) %lu",[result count]);

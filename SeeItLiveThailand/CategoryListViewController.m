@@ -66,7 +66,7 @@
 
     StreamingCell *cell;
     Streaming *stream;
-    MBProgressHUD *hud ;
+//    MBProgressHUD *hud ;
     
     UIButton *moreBtn;
     CGRect moreBtnRect;
@@ -459,7 +459,7 @@
             weakSelf.streamList = streamRecords;
             NSLog(@"STREAMLIST COUNT :::: %ld", (unsigned long)weakSelf.streamList.count);
             UIView *notvideoView = [[UIView alloc] initWithFrame:CGRectMake(0, scrollView.bounds.size.height/2 - 50 ,  scrollView.bounds.size.width, 100)];
-            notvideoView.backgroundColor = [UIColor yellowColor];
+//            notvideoView.backgroundColor = [UIColor yellowColor];
              [scrollView addSubview:notvideoView];
              notvideoView.hidden = true;
             if (weakSelf.streamList.count == 0) {
@@ -511,11 +511,11 @@
  //   pageModel.iPageNumber;
     NSLog(@"LOAD MORE ACTIVE");
         UIWindow *tempWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
-        hud = [[MBProgressHUD alloc] initWithWindow:tempWindow];
-        hud.mode = MBProgressHUDModeIndeterminate;
-        hud.labelText = @"Loading...more";
-        [tempWindow addSubview:hud];
-        [hud show:YES];
+//        hud = [[MBProgressHUD alloc] initWithWindow:tempWindow];
+//        hud.mode = MBProgressHUDModeIndeterminate;
+//        hud.labelText = @"Loading...more";
+//        [tempWindow addSubview:hud];
+//        [hud show:YES];
     sender.tag = sender.tag + 1;
     NSLog(@"LOAD MORE ACTIVE");
     __weak CategoryListViewController *weakSelf = self;
@@ -529,7 +529,9 @@
      NSString *filter = [@"?" stringByAppendingFormat:@"filters[stream_media][category_id][operator]==&filtersPage=%d&filterLimit=%ld&filters[stream_media][category_id][value]=%ld",1,filter_limit*filterPage,IDcat];
    
    // NSLog(@"CURREtttt :: %ld",IDcat);
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [[DataManager shareManager] getStreamingWithCompletionBlockWithFilterCat:^(BOOL success, NSArray *streamRecords, NSError *error) {
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         
         if (success) {
             weakSelf.streamList = streamRecords;
@@ -540,7 +542,7 @@
             [alert show];
         }
         [weakSelf.gridView reloadData];
-       [hud hide:YES];
+//       [hud hide:YES];
     } Filter:filter];
 
 }

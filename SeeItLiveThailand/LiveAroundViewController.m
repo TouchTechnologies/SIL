@@ -559,107 +559,6 @@
 }
 
 
-
-
-
-//-(MKAnnotationView *) mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
-//    NSLog(@"MKAnnotationView");
-//    MKPinAnnotationView *MyPin=[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
-//    MyPin.pinColor = MKPinAnnotationColorPurple;
-//
-////    UIButton *advertButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-////    [advertButton addTarget:self action:@selector(button:) forControlEvents:UIControlEventTouchUpInside];
-//    
-//    /*MyPin.rightCalloutAccessoryView = advertButton;
-//     MyPin.draggable = YES;
-//     
-//     MyPin.animatesDrop=TRUE;
-//     MyPin.canShowCallout = YES;*/
-//    MyPin.highlighted = NO;
-//    MyPin.image = [UIImage imageNamed:@"maker.png"];
-//    
-//    return MyPin;
-//}
-//
-//- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id )annotation {
-//    NSLog(@"MKAnnotationView");
-//    
-//    if (annotation == mapView.userLocation)
-//        return nil;
-//    
-//    MKAnnotationView *annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
-//    annotationView.canShowCallout = YES;
-// 
-//    imgSnapshot = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,100,70)];
-//    imgSnapshot.image = [UIImage imageNamed:@"activities02.jpg"];
-//    imgSnapshot.layer.borderWidth = 2 ;
-//    imgSnapshot.layer.borderColor = [UIColor whiteColor].CGColor;
-//    
-//    
-//    
-//
-//    [imgSnapshot setUserInteractionEnabled:YES];
-//    UITapGestureRecognizer *singleTap =  [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(annotationClick:)];
-//    [singleTap setNumberOfTapsRequired:1];
-//    [imgSnapshot addGestureRecognizer:singleTap];
-//    
-//    
-//    
-//
-//    
-//    [annotationView addSubview:imgSnapshot];
-//    MKPinAnnotationView *pinView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
-//    [annotationView addSubview:pinView];
-//    
-//    return annotationView;
-//    
-//}
-
-//- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
-//    
-//    NSLog(@"mapView");
-//    if ([annotation isKindOfClass:[DXAnnotation class]]) {
-//        
-//        UIImageView *pinView = nil;
-//        UIView *calloutView = nil;
-//        
-//         DXAnnotation *annotation1 = (DXAnnotation *)annotation;
-//        
-//          DXAnnotationView *annotationView = (DXAnnotationView *)[self->mapView dequeueReusableAnnotationViewWithIdentifier:NSStringFromClass([DXAnnotationView class])];
-//        if (!annotationView) {
-//            pinView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ic_pin_checkin"]];
-////            pinView = [[UIImageView alloc] initWithImage:[self resizeImage:[UIImage imageNamed:@"ic_pin_checkin"] imageSize:CGSizeMake(30, 60)]];
-//            pinView.contentMode = UIViewContentModeScaleAspectFit;
-//            pinView.clipsToBounds = YES;
-//            calloutView = [[[NSBundle mainBundle] loadNibNamed:@"liveAroundAnnotation" owner:self options:nil] firstObject];
-//            UIImageView *annoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"activities02.jpg"]];
-////            UIImageView *annoImage = [[UIImageView alloc] initWithImage:[self resizeImage:[UIImage imageNamed:@"activities02.jpg"] imageSize:CGSizeMake(200, 100)]];
-//
-////            UIImageView *annoImage = [[UIImageView alloc] init];
-////            UIImageView *annoImage = [[UIImageView alloc] initWithImage:[self resizeImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:pinSnapShot]]] imageSize:CGSizeMake(200, 100)]];
-////            annoImage.hnk_cacheFormat = format;
-////            [annoImage hnk_setImageFromURL:[NSURL URLWithString:pinSnapShot]];
-////            [calloutView addSubview:annoImage];
-//            
-//            annotationView = [[DXAnnotationView alloc] initWithAnnotation:annotation
-//                                                          reuseIdentifier:NSStringFromClass([DXAnnotationView class])
-//                                                                  pinView:pinView
-//                                                              calloutView:calloutView
-//                                                                 settings:[DXAnnotationSettings defaultSettings]];
-//            
-//        }else {
-//            
-//            //Changing PinView's image to test the recycle
-////            pinView = (UIImageView *)annotationView.pinView;
-////            pinView.image = [UIImage imageNamed:@"car-blue-icorn"];
-//        }
-//        
-//        annotationView.tag = annotation1.tag;
-//        return annotationView;
-//    }
-//    return nil;
-//}
-
 -(void)initPin:(NSInteger)rowIndex{
     [self.liveAroundData enumerateObjectsUsingBlock:^(Streaming *stream, NSUInteger idx, BOOL *stop) {
         
@@ -738,12 +637,30 @@
 
         DXAnnotationView *annotationView = (DXAnnotationView *)[self.myMapView dequeueReusableAnnotationViewWithIdentifier:NSStringFromClass([DXAnnotationView class])];
         
+
+
+//        annotationView.canShowCallout = YES;
+//        annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+        
+//        annotationView.canShowCallout = YES;
+//        annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+//        annotationView.leftCalloutAccessoryView  = [UIButton buttonWithType:UIButtonTypeInfoDark];
+        
+
+        
         Streaming *stream = [self.liveAroundData objectAtIndex:annotation1.tag];
         [calloutView hnk_setImageFromURL:[NSURL URLWithString:stream.snapshot]
                              placeholder:[UIImage imageNamed:@"sil_big.jpg"]];
         calloutView.contentMode = UIViewContentModeScaleToFill;
         [wmoncallout setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
+        [wmoncallout addTarget:self action:@selector(calloutTapped:) forControlEvents:UIControlEventAllTouchEvents];
         [calloutView addSubview:wmoncallout];
+        
+        
+
+        
+        
+        
         
          NSString *pinName = @"";
          if (annotation1.tag == _rowIndex) {
@@ -752,6 +669,9 @@
          pinName = @"mappin";
          }
         UIImageView *pinView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:annotation1.pinName]];
+        
+//        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(calloutTapped:)];
+//        [calloutView addGestureRecognizer:tapGesture];
 
        if (!annotationView) {
         annotationView = [[DXAnnotationView alloc] initWithAnnotation:annotation
@@ -776,7 +696,8 @@
          */
         
         //annotationView.image = [UIImage imageNamed:annotation1.pinName];
-        
+
+
         
         annotationView.tag = annotation1.tag;
 
@@ -789,7 +710,7 @@
 
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
     [((DXAnnotationView *)view)hideCalloutView];
-   // view.layer.zPosition = -1;
+    view.layer.zPosition = -1;
     NSLog(@"deselect test annotation");
 }
 
@@ -805,6 +726,8 @@
      
         view.layer.zPosition = 0;
      
+     
+     
 
  }
 }
@@ -819,6 +742,18 @@
     return newImage;
     
 }
+
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
+{
+    NSLog(@"CallOut Click");
+//    [self performSegueWithIdentifier:@"DetailsIphone" sender:view];
+}
+
+- (void)calloutTapped:(id)sender
+{
+    NSLog(@"CallOut Click");
+}
+
 //-(void)play:(id)sender
 //{
 //

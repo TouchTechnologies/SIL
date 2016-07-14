@@ -19,7 +19,7 @@
 #import "VKVideoPlayerViewController.h"
 #import "VKVideoPlayerCaptionSRT.h"
 #import <KKGridView/KKGridView.h>
-//#import "MBProgressHUD.h"
+#import "MBProgressHUD.h"
 #import "AppDelegate.h"
 #import <Google/Analytics.h>
 #import "UserProfileViewController.h"

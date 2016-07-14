@@ -10,6 +10,7 @@
 #import "DestinationCell.h"
 #import "AppDelegate.h"
 #import "Model_POIS.h"
+#import "MBProgressHUD.h"
 @interface MyDestinationViewController ()
 {
     AppDelegate *appDelegate;
@@ -278,8 +279,9 @@
         if(weakSelf.poiData != nil)
         {
             NSLog(@"poiData = nil");
+            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             [[PoiManager shareIntance]getPOIData:@"" Completion:^(NSError *error, NSMutableArray *result, NSString *message) {
-                
+                 [MBProgressHUD hideHUDForView:self.view animated:YES];
                 _searchData = [[NSMutableArray alloc]init];
                 weakSelf.poiData = result;
             }];

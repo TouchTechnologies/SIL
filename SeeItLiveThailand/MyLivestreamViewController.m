@@ -20,7 +20,7 @@
 #import "VKVideoPlayerViewController.h"
 #import "VKVideoPlayerCaptionSRT.h"
 #import <KKGridView/KKGridView.h>
-//#import "MBProgressHUD.h"
+#import "MBProgressHUD.h"
 #import "AppDelegate.h"
 #import "UserManager.h"
 #import "EditMyStreamVC.h"
@@ -301,8 +301,9 @@
     if(appDelegate.isLogin)
     {
         NSLog(@"is login ");
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         [[DataManager shareManager] getMyStreamingWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
-            
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             NSLog(@"streamRecords : %@",streamRecords);
        //     [hud hide:YES];
             self.followCountLbl.text = @"0";
