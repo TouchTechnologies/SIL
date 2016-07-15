@@ -317,8 +317,8 @@
         snapshotDetailImgRect = CGRectMake(10*scx, 10*scy , width/2 - (40*scx), detailViewRect.size.height - (20*scy));
         waterMarkDetailImgRect = CGRectMake(snapshotDetailImgRect.size.width - (35*scx) , snapshotDetailImgRect.size.height - (35*scy), 30*scx, 30*scy);
         
-        categoryDetailLblRect = CGRectMake(width/2 - (20*scx), detailViewRect.size.height/2 - (fontSize/2), width/2- (40*scx), fontSize);
-        TitleDetailLblRect = CGRectMake(width/2 - (20*scx), categoryDetailLblRect.origin.y - (fontSize + 5), width/2, fontSize+2);
+        categoryDetailLblRect = CGRectMake(width/2 - (20*scx), detailViewRect.size.height/2 - (fontSize/2), width/2- (40*scx), fontSize+4);
+        TitleDetailLblRect = CGRectMake(width/2 - (20*scx), categoryDetailLblRect.origin.y - (fontSize + 5), width/2, fontSize+4);
         AvatarDetailImgRect = CGRectMake(detailViewRect.size.width - (50*scx), detailViewRect.size.height - (50*scy), 40*scx, 40*scy);
         
         videoCountRect = CGRectMake(0*scx,detailViewRect.origin.y + detailViewRect.size.height,30*scx,30*scy);
@@ -332,9 +332,9 @@
         
         imgWaterMarkcellRect = CGRectMake(imgSnapshotcellRect.size.width - (35*scx) , imgSnapshotcellRect.size.height - (35*scy), 30*scx, 30*scy);
         
-        streamTitleCellLblRect = CGRectMake(width/2 - (20*scx), cellH/4 - (fontSize/2),width/2, fontSize);
-        categoryTitleCellLblRect =  CGRectMake(width/2 - (20*scx), cellH/2 - (fontSize/2), 60*scx, fontSize);
-        categoryTypeCellLblRect = CGRectMake(width/2 + (40*scx), cellH/2 - (fontSize/2), 100*scx, fontSize);
+        streamTitleCellLblRect = CGRectMake(width/2 - (20*scx), cellH/4 - (fontSize/2),width/2, fontSize+4);
+        categoryTitleCellLblRect =  CGRectMake(width/2 - (20*scx), cellH/2 - (fontSize/2), 65*scx, fontSize+4);
+        categoryTypeCellLblRect = CGRectMake(categoryTitleCellLblRect.origin.x +categoryTitleCellLblRect.size.width, cellH/2 - (fontSize/2), 100*scx, fontSize+4);
         imgLoveCellRect = CGRectMake(width/2 - (20*scx), cellH - (30*scy), 20*scx, 20*scy);
         loveCountCellLblRect = CGRectMake(width/2 + (5*scx) , cellH - (25*scy), 50*scx, fontSize);
         userAvatarCellimgRect = CGRectMake(width - (50*scx), cellH - (50*scy) , 40*scx, 40*scy);
@@ -571,7 +571,7 @@
             annotation1.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
             annotation1.pinName = @"mappin";
             [self.myMapView addAnnotation:annotation1];
-            [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 250, 250)];
+            [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 1000, 1000)];
             NSLog(@"Long ::: %@",stream.longitude);
             NSLog(@"Lat ::: %@", stream.latitude);
             
@@ -585,7 +585,8 @@
             annoActive.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
             annoActive.pinName = @"pin";
             [self.myMapView addAnnotation:annoActive];
-            [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annoActive.coordinate,250, 250)];
+            [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annoActive.coordinate,1000, 1000)];
+            
             int64_t delayInSeconds = 0.1;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -621,7 +622,7 @@
     MKAnnotationView *annotationView = [views objectAtIndex:0];
     id <MKAnnotation> mp = [annotationView annotation];
    
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([mp coordinate], 250,250);
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([mp coordinate], 1000,1000);
     [_myMapView setRegion:region animated:YES];
 
  

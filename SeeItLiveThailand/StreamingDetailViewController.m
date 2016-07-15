@@ -292,9 +292,9 @@
     }
     self.player.view.playerControlsAutoHideTime = @5;
     self.player.forceRotate = NO;
-    self.player.view.fullscreenButton.hidden = FALSE;
+    self.player.view.fullscreenButton.hidden = TRUE;
     self.player.view.nextButton.hidden = TRUE;
-    self.player.view.rewindButton.hidden = FALSE;
+    self.player.view.rewindButton.hidden = TRUE;
     self.player.view.isControlsEnabled = FALSE;
     self.player.view.bottomControlOverlay.hidden = FALSE;
     

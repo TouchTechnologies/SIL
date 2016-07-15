@@ -142,7 +142,7 @@
         backBtnRect = CGRectMake(5*scx, navViewRect.size.height/2 -(15*scy) , 30*scx , 30*scy);
          scrollViewRect = CGRectMake(0, navViewRect.origin.y+ navViewRect.size.height + titleHeight, width, height - (navViewRect.origin.y+ navViewRect.size.height + titleHeight + (50*scy)));
         pageControlRect = CGRectMake(0*scx, 60*scy, self.view.bounds.size.width, self.view.bounds.size.height - (100*scy));
-        moreBtnRect = CGRectMake(width/2 - (40*scx), scrollViewRect.size.height + (50*scy), 80*scx , 30*scy);
+        moreBtnRect = CGRectMake(width/2 - (40*scx), scrollViewRect.size.height + (60*scy), 80*scx , 30*scy);
         gridViewRect = CGRectMake(0,0 , scrollViewRect.size.width, scrollViewRect.size.height);
 
         
@@ -189,7 +189,9 @@
     [self.scrollView setScrollEnabled:NO];
     [self.view addSubview:scrollView];
     
-    moreBtn = [[UIButton alloc] initWithFrame:moreBtnRect];
+    moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [moreBtn setFrame:moreBtnRect];
+//initWithFrame:moreBtnRect];
     [moreBtn setTitle:@"more" forState:UIControlStateNormal];
     [moreBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     moreBtn.layer.borderWidth = 1;
@@ -197,20 +199,15 @@
     moreBtn.backgroundColor = [UIColor clearColor];
     moreBtn.layer.cornerRadius = moreBtnRect.size.height/2;
     moreBtn.clipsToBounds = YES;
-    [moreBtn addTarget:self action:@selector(loadmore:) forControlEvents:UIControlEventTouchUpInside];
-    [_pageControl.view addSubview:moreBtn];
+    [moreBtn addTarget:self action:@selector(loadmore:)forControlEvents:UIControlEventTouchUpInside];
     
    
     
     [self.gridView removeFromSuperview];
-    
     CGRect parentFrame = scrollViewRect;
-    
     //    onAirView = [[UIView alloc] initWithFrame:onAirViewRect];
     //    onAirView.backgroundColor = [UIColor redColor];
     //    [scrollView addSubview:onAirView];
-    
-    
     //   self.gridView = [[KKGridView alloc] initWithFrame:CGRectMake(parentFrame.origin.x, parentFrame.origin.y, parentFrame.size.width, (weakSelf.streamList.count*(cellH+10))+10)];
     self.gridView = [[KKGridView alloc] initWithFrame:gridViewRect];
     self.gridView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
@@ -222,7 +219,9 @@
     self.gridView.allowsMultipleSelection = NO;
     self.gridView.backgroundColor = [UIColor clearColor];
     [scrollView addSubview:self.gridView];
+    [_pageControl.view addSubview:moreBtn];
     
+
     //  __weak CategoryListViewController *weakSelf = self;
     
     
