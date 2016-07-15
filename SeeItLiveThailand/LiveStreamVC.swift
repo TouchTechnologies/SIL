@@ -426,10 +426,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         //popUpViewCen!.addGestureRecognizer(tap)
         
         //        fullView = [[UIView alloc] initWithFrame:CGRectMake(0,0,[[UIScreen mainScreen] applicationFrame].size.width,[[UIScreen mainScreen] applicationFrame].size.height+100)];
-        
-        
-        
-        
+
         self.session.previewView.frame = streamView!.frame
         streamView!.backgroundColor = UIColor.blueColor()
         self.session.delegate = self

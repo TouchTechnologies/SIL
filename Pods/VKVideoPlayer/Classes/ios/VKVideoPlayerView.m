@@ -219,8 +219,8 @@
   DDLogVerbose(@"Updating TimeLabels: %f", self.scrubber.value);
   
   [self.currentTimeLabel setFrameWidth:100.0f];
-  [self.totalTimeLabel setFrameWidth:100.0f];
-  
+  [self.totalTimeLabel setFrameWidth:40.0f];
+ 
   self.currentTimeLabel.text = [VKSharedUtility timeStringFromSecondsValue:(int)self.scrubber.value];
   [self.currentTimeLabel sizeToFit];
   [self.currentTimeLabel setFrameHeight:CGRectGetHeight(self.bottomControlOverlay.frame)];
@@ -236,7 +236,7 @@
   if (UIInterfaceOrientationIsPortrait(interfaceOrientation)) {
     [self.totalTimeLabel setFrameOriginX:CGRectGetMinX(self.fullscreenButton.frame) - self.totalTimeLabel.frame.size.width];
   } else {
-    [self.totalTimeLabel setFrameOriginX:CGRectGetMinX(self.captionButton.frame) - self.totalTimeLabel.frame.size.width - PADDING];
+    [self.totalTimeLabel setFrameOriginX:CGRectGetWidth(self.bottomControlOverlay.frame)- self.totalTimeLabel.frame.size.width];
   }
 
   [self.scrubber setFrameOriginX:self.currentTimeLabel.frame.origin.x + self.currentTimeLabel.frame.size.width + 4];

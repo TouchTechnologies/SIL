@@ -297,7 +297,10 @@
     self.player.view.rewindButton.hidden = TRUE;
     self.player.view.isControlsEnabled = FALSE;
     self.player.view.bottomControlOverlay.hidden = FALSE;
+    self.player.view.videoQualityButton.hidden = TRUE;
+    self.player.view.totalTimeLabel.frameOriginX = self.player.view.bounds.size.width - 40;
     
+     
     UIImage *replay = [[UIImage alloc] init];
     replay = [UIImage imageNamed:@"replay_grey.png"] ;
     
@@ -598,21 +601,19 @@
     [liveIncategoryTbl registerClass:UITableViewCell.self forCellReuseIdentifier:@"cell"];
     
     
-    moreBtn = [[UIButton alloc] initWithFrame: moreBtnRect];
-    moreBtn.layer.borderWidth = 1;
-    moreBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    moreBtn.backgroundColor = [UIColor redColor];
-    moreBtn.layer.cornerRadius = moreBtnRect.size.height/2;
-    moreBtn.clipsToBounds = YES;
-    [moreBtn setTitle:@"Live Around" forState:UIControlStateNormal];
-//    UILabel *titlemoreLbl = [[UILabel alloc] initWithFrame:moreBtn.bounds];
-//    titlemoreLbl.text = @"Live Around";
-//    titlemoreLbl.textAlignment = NSTextAlignmentCenter;
-//    titlemoreLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize];
-//    titlemoreLbl.textColor = [UIColor whiteColor];
-// [moreBtn addSubview:titlemoreLbl];
-    [moreBtn addTarget:self action:@selector(clickmore:) forControlEvents:UIControlEventTouchUpInside];
-    [scrollView addSubview:moreBtn];
+//    moreBtn = [[UIButton alloc] initWithFrame: moreBtnRect];
+//    moreBtn.layer.borderWidth = 1;
+//    moreBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//    moreBtn.backgroundColor = [UIColor redColor];
+//    moreBtn.layer.cornerRadius = moreBtnRect.size.height/2;
+//    moreBtn.clipsToBounds = YES;
+//    [moreBtn setTitle:@"Live Around" forState:UIControlStateNormal];
+//    [moreBtn addTarget:self action:@selector(clickmore:) forControlEvents:UIControlEventTouchUpInside];
+//    [scrollView addSubview:moreBtn];
+    
+    
+    
+    
     
     
     
@@ -989,15 +990,19 @@
 - (void)playSampleClip1 {
     //[self playStream:[NSURL URLWithString:@"http://203.151.133.7:1935/live/ch3_1/playlist.m3u8"]];
     NSLog(@"playSampleClip1");
+    
+    
     [self playStream:[NSURL URLWithString:self.objStreaming.streamUrl]];
    
 }
 
 - (void)playStream:(NSURL*)url {
     VKVideoPlayerTrack *track = [[VKVideoPlayerTrack alloc] initWithStreamURL:url];
-    track.hasNext = YES;    
+    track.hasNext = YES;
     NSLog(@"playStream");
-    [self.player loadVideoWithTrack:track];
+    
+   [self.player loadVideoWithTrack:track];
+   
 //    self.player.state = VKVideoPlayerStateContentPaused;
 
 }

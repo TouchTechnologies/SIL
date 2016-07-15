@@ -575,7 +575,7 @@
             annotation1.tag = idx;
             //            annotation1.tag = [stream.ID integerValue];
             annotation1.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
-            annotation1.pinName = @"mappin";
+             annotation1.pinName = @"mappin";
             [self.myMapView addAnnotation:annotation1];
             [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 1000, 1000)];
             NSLog(@"Long ::: %@",stream.longitude);
@@ -592,12 +592,19 @@
             annoActive.pinName = @"pin";
             [self.myMapView addAnnotation:annoActive];
             [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annoActive.coordinate,1000, 1000)];
-            
-            int64_t delayInSeconds = 0.1;
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                 [_myMapView selectAnnotation:annoActive animated:YES];
-            });
+            if(pinChange)
+            {
+                [_myMapView selectAnnotation:annoActive animated:YES];
+
+            }else
+            {
+                int64_t delayInSeconds = 0.1;
+                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                    [_myMapView selectAnnotation:annoActive animated:YES];
+                });
+            }
+
         }
         pinCount++;
     }];
