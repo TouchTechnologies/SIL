@@ -103,6 +103,9 @@
     CGRect scrollViewRect;
     NSString* pinSnapShot;
     HNKCacheFormat *format;
+    int pinCount;
+    int streamCount;
+    _Bool pinChange;
 
 
     
@@ -120,7 +123,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
-  
+    pinCount = 0;
+    streamCount = _liveAroundData.count;
+    pinChange = false;
     
     [self initialSize];
     [self initial];
@@ -512,6 +517,7 @@
 //    scrollView.scrollsToTop = YES;
     scrollView.contentOffset = CGPointZero;
     NSInteger pageIndex = [indexPath row];
+    pinChange = false;
     [self changeLocation:pageIndex];
   }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -586,12 +592,21 @@
             annoActive.pinName = @"pin";
             [self.myMapView addAnnotation:annoActive];
             [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annoActive.coordinate,250, 250)];
-            int64_t delayInSeconds = 0.1;
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                 [_myMapView selectAnnotation:annoActive animated:YES];
-            });
+            if(pinChange)
+            {
+                [_myMapView selectAnnotation:annoActive animated:YES];
+
+            }else
+            {
+                int64_t delayInSeconds = 0.1;
+                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                    [_myMapView selectAnnotation:annoActive animated:YES];
+                });
+            }
+
         }
+        pinCount++;
     }];
 }
 - (void)LoadMap{
@@ -601,7 +616,7 @@
 }
 - (void)changeLocation:(NSInteger)rowIndex{
     NSLog(@"changeLocation");
-    
+     pinCount = 0;
      [self.myMapView removeAnnotations:self.myMapView.annotations];
      [self initPin:rowIndex];
 }
@@ -713,21 +728,26 @@
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
- if ([view isKindOfClass:[DXAnnotationView class]]) {
+    if ([view isKindOfClass:[DXAnnotationView class]])
+    {
     
+        NSLog(@"Count Pin %d",pinCount);
+        NSLog(@"Count Stream %d",streamCount);
         DXAnnotationView *dxView = (DXAnnotationView *)view;
         NSInteger indexObj = dxView.tag;
         NSLog(@"test annotation %ld",(long)indexObj);
-
-        //[self changeLocation:indexObj];
+        if(pinCount == streamCount)
+        {
+            NSLog(@"Touchhhhhhhh");
+            pinChange = true;
+            [self changeLocation:indexObj];
+        }
+        
+        
         [((DXAnnotationView *)view)showCalloutView];
      
         view.layer.zPosition = 0;
-     
-     
-     
-
- }
+    }
 }
 
 -(UIImage*)resizeImage:(UIImage *)image imageSize:(CGSize)size
