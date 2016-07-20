@@ -399,6 +399,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         self.initialSize()
         self.initial()
         self.getLocationName()
+        catID = Int(appDelegate.categoryData[0]["id"] as! String)!
        
 //        var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(LiveStreamVC.update), userInfo: nil, repeats: true)
  
