@@ -906,11 +906,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/LivestreamRealtimeViewController.m"
-            timestampString = "490693911.732475"
+            timestampString = "490696209.601937"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1114"
-            endingLineNumber = "1114"
+            startingLineNumber = "1107"
+            endingLineNumber = "1107"
             landmarkName = "-videoPlayer:didChangeOrientationFrom:"
             landmarkType = "5">
          </BreakpointContent>

@@ -764,17 +764,11 @@
             
         }];
     }
-
-    
-    
-    
 //    messageData = [NSMutableArray array];
 //    Commentator *cmt = [[Commentator alloc]init];
 //    cmt.profile_picture = @"555555";
 //    [messageData addObject:cmt];
 //    NSLog(@"messageData : %@",messageData);
-    
-    
 }
 - (void)goProfile:(id)sender{
     NSLog(@"GO PROFILE");
@@ -815,7 +809,6 @@
              [self.player.view addSubviewForControl:shareButton];
              */
         }
-        
         [self dismissViewControllerAnimated:YES completion:nil];
         [[NSNotificationCenter defaultCenter]
          postNotificationName:@"refresh"
