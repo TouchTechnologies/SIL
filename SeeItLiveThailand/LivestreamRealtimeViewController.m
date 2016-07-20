@@ -689,12 +689,21 @@
     {
         [[UserManager shareIntance] loveAPI:@"loveLive" streamID:self.objStreaming.ID userID:@"" Completion:^(NSError *error, NSDictionary *result, NSString *message) {
             
+//            NSLog(@"loveSendresult : %@",result);
+//            self.objStreaming.lovesCount++;
+//            [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
+//            [heartimg setImage:[UIImage imageNamed:@"ic_love2.png"]];
+//            //[heartimg setBackgroundColor:[UIColor redColor]];
+//            self.objStreaming.isLoved = true;
+            
             NSLog(@"loveSendresult : %@",result);
-                        self.objStreaming.lovesCount++;
-            [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
-            [heartimg setImage:[UIImage imageNamed:@"ic_love2.png"]];
-            //[heartimg setBackgroundColor:[UIColor redColor]];
-            self.objStreaming.isLoved = true;
+            if ([result[@"message"] isEqualToString:@"Success"]) {
+                self.objStreaming.lovesCount = [result[@"data"][@"count"] integerValue];
+                [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
+                [btnLove setImage:[UIImage imageNamed:@"ic_love2.png"] forState:UIControlStateNormal];
+                self.objStreaming.isLoved = true;
+                
+            }
 
            // [self viewDidLoad];
             
@@ -703,14 +712,22 @@
     {
         [[UserManager shareIntance] loveAPI:@"unloveLive" streamID:self.objStreaming.ID userID:@"" Completion:^(NSError *error, NSDictionary *result, NSString *message) {
             
+//            NSLog(@"unloveloveSendresult : %@",result);
+//            self.objStreaming.lovesCount--;
+//            [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
+//             [heartimg setImage:[UIImage imageNamed:@"Heart.png"]];
+//           //  [heartimg setBackgroundColor:[UIColor clearColor]];
+//                   //[self viewDidLoad];
+//             self.objStreaming.isLoved = false;
+            
             NSLog(@"unloveloveSendresult : %@",result);
-           
-            self.objStreaming.lovesCount--;
-            [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
-             [heartimg setImage:[UIImage imageNamed:@"Heart.png"]];
-           //  [heartimg setBackgroundColor:[UIColor clearColor]];
-                   //[self viewDidLoad];
-             self.objStreaming.isLoved = false;
+            if ([result[@"message"] isEqualToString:@"Success"]) {
+                self.objStreaming.lovesCount = [result[@"data"][@"count"] integerValue];
+                [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
+                [btnLove setImage:[UIImage imageNamed:@"ic_love.png"] forState:UIControlStateNormal];
+                //[self viewDidLoad];
+                self.objStreaming.isLoved = false;
+            }
         }];
     }
     
@@ -1437,6 +1454,17 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
         [chatTbl reloadData];
         
     }];
+    [socket on:@"streaming:finish" callback:^(NSArray* data, SocketAckEmitter* ack) {
+        NSLog(@"streaming:finish : %@",data);
+        NSLog(@"This live stream has finished");
+        UILabel *msgAlert = [[UILabel alloc] initWithFrame:CGRectMake(0, self.player.view.bounds.size.height/2 - 15, self.player.view.bounds.size.width, 30)];
+        msgAlert.text = @"This live stream has finished";
+        msgAlert.textColor = [UIColor whiteColor];
+        msgAlert.textAlignment = NSTextAlignmentCenter;
+        [self.player.view addSubview:msgAlert];
+    }];
+
+    
     [socket connect];
     
 }

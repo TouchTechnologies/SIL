@@ -10,6 +10,8 @@
 #import "AppDelegate.h"
 #import "UserManager.h"
 #import "MyAccountViewController.h"
+#import "MBProgressHUD.h"
+#import "Haneke.h"
 #define SCALING_Y = (1024.0/480.0)
 #define SCALING_X = (768.0/360.0)
 
@@ -82,8 +84,10 @@
     NSLog(@"Creata by %@",self.objStreaming.createBy);
     NSLog(@"streamTotalViewEdit : %@",self.objStreaming.streamTotalView);
     NSLog(@"StreamImage : %@",self.objStreaming.snapshot);
-    self.videoImageIV.image = ([self.objStreaming.snapshot  isEqual: @""])?[UIImage imageNamed:@"sil_big.jpg"]:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.objStreaming.snapshot]]];
+    
+//    self.videoImageIV.image = ([self.objStreaming.snapshot  isEqual: @""])?[UIImage imageNamed:@"sil_big.jpg"]:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.objStreaming.snapshot]]];
 
+    [self.videoImageIV hnk_setImageFromURL:[NSURL URLWithString:self.objStreaming.snapshot]];
     self.streamingID = self.objStreaming.streamID;
     self.nameLB.text =  [appDelegate.first_name stringByAppendingString:[@" " stringByAppendingString:appDelegate.last_name]];
     self.createDateLB.text = self.objStreaming.streamCreateDate;
@@ -178,7 +182,9 @@
         //reset clicked
 
         NSLog(@"OK Alert");
+         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         [[UserManager shareIntance]deleteMyStream:@"" StreamID:self.streamingID Completion:^(NSError *error, NSDictionary *result, NSString *message) {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             NSLog(@"result : %@",result);
             
             [[NSNotificationCenter defaultCenter]
@@ -219,9 +225,9 @@
     NSLog(@"Cat ID : %d",self.objStreaming.categoryID);
     NSLog(@"Switch state %lu",(unsigned long)self.setPublicSwitch.isOn);
     NSString *categoryID = [NSString stringWithFormat:@"%d", self.objStreaming.categoryID];
-    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [[UserManager shareIntance] updateMyStream:self.objStreaming.streamID title:self.titleTF.text note:self.detailTV.text catID:categoryID public:self.setPublicSwitch.isOn Completion:^(NSError *error, NSDictionary *result, NSString *message) {
-        
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         NSLog(@"UpdateMyStream : %@",result);
         [[NSNotificationCenter defaultCenter]
          postNotificationName:@"update"
