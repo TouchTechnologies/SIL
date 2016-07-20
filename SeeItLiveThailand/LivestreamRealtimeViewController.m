@@ -620,8 +620,13 @@
 //    msgAlert.text = @"This live stream has finished";
 //    msgAlert.textColor = [UIColor whiteColor];
 //    [self.player.view addSubview:msgAlert];
-//    
-//    NSLog(@"This live stream has finished");
+    UILabel *msgAlert = [[UILabel alloc] initWithFrame:CGRectMake(0, self.player.view.bounds.size.height/2 - 15, self.player.view.bounds.size.width, 30)];
+    msgAlert.text = @"This live stream has finished";
+    msgAlert.textColor = [UIColor whiteColor];
+    msgAlert.textAlignment = NSTextAlignmentCenter;
+    [self.player.view addSubview:msgAlert];
+    
+    NSLog(@"This live stream has finished");
 }
 - (void)handleErrorCode:(VKVideoPlayerErrorCode)errorCode track:(id<VKVideoPlayerTrackProtocol>)track customMessage:(NSString*)customMessage
 {
