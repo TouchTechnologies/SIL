@@ -1429,6 +1429,12 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
         [chatTbl reloadData];
         
     }];
+    [socket on:@"streaming:finish" callback:^(NSArray* data, SocketAckEmitter* ack) {
+        NSLog(@"streaming:finish : %@",data);
+        
+    }];
+
+    
     [socket connect];
     
 }
