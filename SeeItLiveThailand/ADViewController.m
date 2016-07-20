@@ -129,14 +129,15 @@
 
 @end
 
-@implementation ADViewController{}
+@implementation ADViewController{
+
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
-   
-    [self initialrecordBar];
     [self initialSize];
     [self setupPageControl];
     [self initial];
+    
     scrollView.delegate = self;
     collectionView.delegate = self;
     collectionView.dataSource = self;
@@ -151,34 +152,13 @@
 //                                                 name:@"update"
 //                                               object:nil];
   }
-
--(void)initialrecordBar{
-   
-    NSLog(@"SET RECORDBAR");
-    
-            // Do any additional setup after loading the view.
- 
-}
-
 - (void)viewWillAppear:(BOOL)animated{
-//    [[DataManager shareManager] getStreamingLiveWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
-//        
-//        if (success)
-//        {
-//            if (streamRecords.count > 0) {
-//                
-//                [self.view setFrame:CGRectMake(0, self.view.bounds.size.height/2 , self.view.bounds.size.width, self.view.bounds.size.height/2)];
-//                
-//            }
-//            else {
-//                
-//                [self.view setFrame:CGRectMake(0, 0 , self.view.bounds.size.width, self.view.bounds.size.height )];
-//                
-//            }
-//        }
-//    }];
-    
-    
+  
+
+}
+- (void)viewDidAppear:(BOOL)animated{
+
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -226,8 +206,8 @@
         imgOnairCountRect = CGRectMake(liveStatusViewRect.size.width - (60*scx), liveStatusViewRect.size.height/2 - (10*scy), 20*scx, 20*scy);
         
         lblOnairCountRect = CGRectMake(liveStatusViewRect.size.width - (45*scx), imgOnairCountRect.origin.y - (5*scy), 40*scx, 20*scy);
-        
-        pageControlRect = CGRectMake(0*scx, (collectionViewRect.size.height), self.view.bounds.size.width, self.view.bounds.size.height - (20*scy));
+        pageControlRect = CGRectMake(0*scx,0*scy, self.view.bounds.size.width, self.view.bounds.size.height - (20*scy));
+//        pageControlRect = CGRectMake(0*scx, (collectionViewRect.size.height), self.view.bounds.size.width, self.view.bounds.size.height - (20*scy));
     } else {
         
         fontSize = 16.0;
@@ -261,7 +241,8 @@
         imgOnairCountRect = CGRectMake(liveStatusViewRect.size.width - 60, liveStatusViewRect.size.height/2 - 10, 20, 20);
         
         lblOnairCountRect = CGRectMake(liveStatusViewRect.size.width - 45, imgOnairCountRect.origin.y - 5, 40, 20);
-        pageControlRect =   CGRectMake(0,collectionViewRect.size.height, self.view.bounds.size.width, self.view.bounds.size.height - 20);
+          pageControlRect =   CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height - 20);
+     //   pageControlRect =   CGRectMake(0,collectionViewRect.size.height, self.view.bounds.size.width, self.view.bounds.size.height - 20);
         
        
 
@@ -274,6 +255,7 @@
     collectionView = [[UICollectionView alloc] initWithFrame:collectionViewRect collectionViewLayout:layout];
     collectionView.backgroundColor = [UIColor whiteColor];
     collectionView.pagingEnabled = YES;
+    //collectionView.hidden = YES;
     [collectionView setShowsHorizontalScrollIndicator:NO];
     [layout setMinimumLineSpacing :0];
     [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
@@ -282,87 +264,13 @@
     CGRect parentFrame = onAirViewRect;
    // __weak StreamLiveViewController *weakSelf = self;
     NSString *filter = [@"?" stringByAppendingFormat:@"filterLimit=%d&filtersPage=%d",3,1];
-    
-    
-    
-    
-//    [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
-//        
-//        if (success)
-//        {
-//            
-//            
-//            if (streamRecords.count > 0) {
-//                
-//                NSLog(@"Has LiveStream");
-//                
-//                self.streamList = streamRecords;
-//                liveCount = [NSString stringWithFormat:@"%ld",streamRecords.count];
-//                lblOnairCount = [[UILabel alloc] initWithFrame:lblOnairCountRect];
-//                lblOnairCount.text = liveCount;
-//                lblOnairCount.textColor = [UIColor whiteColor];
-//                lblOnairCount.font =[UIFont fontWithName:@"Helvetica-Bold" size:fontSize-2];
-//                lblOnairCount.textAlignment = NSTextAlignmentCenter;
-//                lblOnairCount.backgroundColor = [UIColor redColor];
-//                lblOnairCount.layer.borderWidth = 1;
-//                lblOnairCount.layer.borderColor = [UIColor whiteColor].CGColor;
-//                lblOnairCount.layer.cornerRadius = lblOnairCountRect.size.height/2;
-//                lblOnairCount.clipsToBounds = YES;
-//                [liveStatusView addSubview:lblOnairCount];
-//                
-//                _imgLiveStatus.hidden = YES;
-//                [_imgLiveStatus removeFromSuperview];
-//                [collectionView removeFromSuperview];
-//                [scrollView addSubview:collectionView];
-//                
-//                
-//                
-//                
-//            } else {
-//                NSLog(@"NoLiveStream");
-//                
-//                [liveStatusView setHidden:TRUE];
-//                [collectionView setHidden: TRUE];
-//                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-//                    NSLog(@"set iPad");
-//                    [scrollView setFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
-//                    
-//                    _pageControl.view.frame = CGRectMake(0, 0 , self.view.bounds.size.width, self.view.bounds.size.height - 20);
-//                }
-//                else
-//                {
-//                    [scrollView setFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
-//                    
-//                    _pageControl.view.frame = CGRectMake(0, 0 , self.view.bounds.size.width, self.view.bounds.size.height - 20);
-//                    
-//                }
-//                
-//                
-//            }
-//            
-//        } else
-//        {
-//            
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:AlertTitle message:NotConnect delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//            [alert show];
-//            
-//        }
-//        
-//        [collectionView reloadData];
-//        
-//        
-//        
-//    } Filter:filter];
 
-    
-///////////////////////////////////////////////// History Live ///////////////////////////////////////////////
-//      [[DataManager shareManager] getStreamingWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
  
     ///////////////////////////////////////////////// OnAir ///////////////////////////////////////////////
     
  [MBProgressHUD showHUDAddedTo:self.view animated:YES];
  [[DataManager shareManager] getStreamingLiveWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
-
+   
      [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (success)
         {
@@ -386,9 +294,25 @@
                 lblOnairCount.clipsToBounds = YES;
                 [liveStatusView addSubview:lblOnairCount];
                
-               _imgLiveStatus.hidden = YES;
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    NSLog(@"set iPad");
+                    
+                    
+                    _pageControl.view.frame = CGRectMake(0, collectionView.bounds.size.height , self.view.bounds.size.width, self.view.bounds.size.height - 20);
+                }
+                else
+                {
+            
+                    
+                    _pageControl.view.frame = CGRectMake(0, collectionView.bounds.size.height , self.view.bounds.size.width, self.view.bounds.size.height - 20);
+                    
+                }
+
+                
+                _imgLiveStatus.hidden = YES;
                 [_imgLiveStatus removeFromSuperview];
                 [collectionView removeFromSuperview];
+                
                 [scrollView addSubview:collectionView];
                 
                 
@@ -414,7 +338,7 @@
                 NSLog(@"NoLiveStream");
               
                 [liveStatusView setHidden:TRUE];
-                  [collectionView setHidden: TRUE];
+                [collectionView setHidden: TRUE];
                 if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
                     NSLog(@"set iPad");
                    [scrollView setFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
@@ -480,7 +404,7 @@
     scrollView = [[SBScrollView alloc] initWithFrame:scrollViewRect];
     scrollView.bounces = NO;
     [scrollView setShowsHorizontalScrollIndicator:NO];
-    scrollView.backgroundColor = [UIColor grayColor];
+    scrollView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:scrollView];
     
     //    onAirView = [[UIView alloc] initWithFrame:onAirViewRect];
