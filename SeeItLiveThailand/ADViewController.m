@@ -192,8 +192,8 @@
         imgLiveRect = CGRectMake(5*scx, 5*scy, 60*scx, 20*scy);
         // indicatorWidth = self.view.bounds.size.width;
         onAirViewRect = CGRectMake(0*scx, 0*scy, width, 240*scy);
-       
-        scrollViewRect = CGRectMake(0*scx, imgPHW01, self.view.bounds.size.width, self.view.bounds.size.height + (titleHeight + indicatorHeight));
+       scrollViewRect = CGRectMake(0*scx, 0, self.view.bounds.size.width, self.view.bounds.size.height + (titleHeight + indicatorHeight));
+     //   scrollViewRect = CGRectMake(0*scx, imgPHW01, self.view.bounds.size.width, self.view.bounds.size.height + (titleHeight + indicatorHeight));
  
         liveStatusViewRect = CGRectMake(0*scx, 0*scy,width , 40*scy);
         collectionViewRect = CGRectMake(0*scx, 0*scy , width, onAirViewRect.size.height);
@@ -228,7 +228,9 @@
         imgLiveRect = CGRectMake(5, 5, 60, 20);
        // indicatorWidth = self.view.bounds.size.width;
         onAirViewRect = CGRectMake(0, 0, self.view.bounds.size.width, 240);
-        scrollViewRect = CGRectMake(0, 40, self.view.bounds.size.width, self.view.bounds.size.height - indicatorHeight);
+        
+         scrollViewRect = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - indicatorHeight);
+//scrollViewRect = CGRectMake(0, 40, self.view.bounds.size.width, self.view.bounds.size.height - indicatorHeight);
         
         liveStatusViewRect = CGRectMake(0, 0,self.view.bounds.size.width , 40);
         collectionViewRect = CGRectMake(0, 0 , self.view.bounds.size.width, onAirViewRect.size.height);
@@ -259,15 +261,41 @@
     [collectionView setShowsHorizontalScrollIndicator:NO];
     [layout setMinimumLineSpacing :0];
     [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
-    [scrollView addSubview:collectionView];
+//    [scrollView addSubview:collectionView];
+    
+    
+    
+    liveStatusView = [[UIView alloc] initWithFrame:liveStatusViewRect];
+    liveStatusView.backgroundColor = [UIColor redColor];
+   
+    
+    imgLiveicon = [[UIImageView alloc] initWithFrame:imgLiveiconRect];
+    
+    [imgLiveicon setImage:[UIImage animatedImageNamed:@"live" duration:1.0]];
+    //imgLiveicon.image = [UIImage imageNamed:@"live1.png"];
+    // imgLiveicon.layer.cornerRadius = imgLiveiconRect.size.width/2;
+    // imgLiveicon.clipsToBounds = YES;
+    // [imgLiveicon setImage:[UIImage animatedImageNamed:@"live" duration:1.0] forState:UIControlStateNormal];
+    [liveStatusView addSubview:imgLiveicon];
+    
+    lblLiveNow = [[UILabel alloc] initWithFrame:lblLiveNowRect];
+    lblLiveNow.text = @"Live Now";
+    lblLiveNow.textAlignment = NSTextAlignmentLeft;
+    lblLiveNow.textColor = [UIColor whiteColor];
+    lblLiveNow.font = [UIFont fontWithName:@"Helvetica-Bold" size:fontSize];
+    [liveStatusView addSubview:lblLiveNow];
+    
+    imgOnairCount = [[UIImageView alloc] initWithFrame:imgOnairCountRect];
+    imgOnairCount.image = [UIImage imageNamed:@"live_wh.png"];
+    imgOnairCount.contentMode = UIViewContentModeScaleAspectFit;
+    [liveStatusView addSubview:imgOnairCount];
     
     CGRect parentFrame = onAirViewRect;
    // __weak StreamLiveViewController *weakSelf = self;
     NSString *filter = [@"?" stringByAppendingFormat:@"filterLimit=%d&filtersPage=%d",3,1];
-
  
     ///////////////////////////////////////////////// OnAir ///////////////////////////////////////////////
-    
+    liveStatusView.hidden = YES;
  [MBProgressHUD showHUDAddedTo:self.view animated:YES];
  [[DataManager shareManager] getStreamingLiveWithCompletionBlock:^(BOOL success, NSArray *streamRecords, NSError *error) {
    
@@ -293,29 +321,31 @@
                 lblOnairCount.layer.cornerRadius = lblOnairCountRect.size.height/2;
                 lblOnairCount.clipsToBounds = YES;
                 [liveStatusView addSubview:lblOnairCount];
-               
+                CGFloat scy = (1024.0/480.0);
+                CGFloat scx = (768.0/360.0);
                 if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
                     NSLog(@"set iPad");
                     
-                    
-                    _pageControl.view.frame = CGRectMake(0, collectionView.bounds.size.height , self.view.bounds.size.width, self.view.bounds.size.height - 20);
+                     [scrollView setFrame:CGRectMake(0, 40*scy, self.view.bounds.size.width, self.view.bounds.size.height)];
+                    _pageControl.view.frame = CGRectMake(0*scx, collectionView.bounds.size.height , self.view.bounds.size.width, self.view.bounds.size.height - (20*scy));
                 }
                 else
                 {
             
-                    
+                    [scrollView setFrame:CGRectMake(0, 40, self.view.bounds.size.width, self.view.bounds.size.height)];
                     _pageControl.view.frame = CGRectMake(0, collectionView.bounds.size.height , self.view.bounds.size.width, self.view.bounds.size.height - 20);
                     
                 }
 
-                
+                liveStatusView.hidden = NO;
                 _imgLiveStatus.hidden = YES;
                 [_imgLiveStatus removeFromSuperview];
                 [collectionView removeFromSuperview];
                 
+                
                 [scrollView addSubview:collectionView];
-                
-                
+                [self.view addSubview:liveStatusView];
+
 // 
 //                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 //                    NSLog(@"set iPad");
@@ -372,30 +402,6 @@
 -(void)setupPageControl
 {
 
-    liveStatusView = [[UIView alloc] initWithFrame:liveStatusViewRect];
-    liveStatusView.backgroundColor = [UIColor redColor];
-    [self.view addSubview:liveStatusView];
-
-    imgLiveicon = [[UIImageView alloc] initWithFrame:imgLiveiconRect];
-    
-    [imgLiveicon setImage:[UIImage animatedImageNamed:@"live" duration:1.0]];
-    //imgLiveicon.image = [UIImage imageNamed:@"live1.png"];
-   // imgLiveicon.layer.cornerRadius = imgLiveiconRect.size.width/2;
-   // imgLiveicon.clipsToBounds = YES;
-   // [imgLiveicon setImage:[UIImage animatedImageNamed:@"live" duration:1.0] forState:UIControlStateNormal];
-    [liveStatusView addSubview:imgLiveicon];
-    
-    lblLiveNow = [[UILabel alloc] initWithFrame:lblLiveNowRect];
-    lblLiveNow.text = @"Live Now";
-    lblLiveNow.textAlignment = NSTextAlignmentLeft;
-    lblLiveNow.textColor = [UIColor whiteColor];
-    lblLiveNow.font = [UIFont fontWithName:@"Helvetica-Bold" size:fontSize];
-    [liveStatusView addSubview:lblLiveNow];
-    
-    imgOnairCount = [[UIImageView alloc] initWithFrame:imgOnairCountRect];
-    imgOnairCount.image = [UIImage imageNamed:@"live_wh.png"];
-    imgOnairCount.contentMode = UIViewContentModeScaleAspectFit;
-    [liveStatusView addSubview:imgOnairCount];
     
    
     

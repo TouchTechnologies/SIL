@@ -790,6 +790,7 @@
             [[NSNotificationCenter defaultCenter]
              postNotificationName:@"refresh"
              object:nil];
+            [videoPlayer pauseContent:YES completionHandler:nil];
             /*
              UIButton *shareButton = [[UIButton alloc] initWithFrame:CGRectMake((self.player.view.bounds.size.width - 45), 15, 35, 35)];
              [shareButton setBackgroundImage:[UIImage imageNamed:@"share_blue.png"] forState:UIControlStateNormal];
