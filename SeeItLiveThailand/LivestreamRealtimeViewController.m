@@ -623,6 +623,10 @@
 //    
 //    NSLog(@"This live stream has finished");
 }
+- (void)handleErrorCode:(VKVideoPlayerErrorCode)errorCode track:(id<VKVideoPlayerTrackProtocol>)track customMessage:(NSString*)customMessage
+{
+    NSLog(@"Error Live Stream");
+}
 - (void)playSampleClip1 {
     //[self playStream:[NSURL URLWithString:@"http://203.151.133.7:1935/live/ch3_1/playlist.m3u8"]];
     NSLog(@"playSampleClip1");
@@ -1109,14 +1113,14 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
         if (self.player.isFullScreen) {
             NSLog(@"มาที่นี่");
             [self setLandscap];
-//             [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeLeft];
+             [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeLeft];
             self.player.isFullScreen = false;
         }
         else{
              NSLog(@"UIInterfaceOrientationIsLandscape");
              chatView.hidden = FALSE;
             [self setPortrait];
-//             [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
+             [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
             self.player.isFullScreen = true;
         }
        
@@ -1452,11 +1456,11 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
     [socket on:@"streaming:finish" callback:^(NSArray* data, SocketAckEmitter* ack) {
         NSLog(@"streaming:finish : %@",data);
         NSLog(@"This live stream has finished");
-        UILabel *msgAlert = [[UILabel alloc] initWithFrame:CGRectMake(0, self.player.view.bounds.size.height/2 - 15, self.player.view.bounds.size.width, 30)];
-        msgAlert.text = @"This live stream has finished";
-        msgAlert.textColor = [UIColor whiteColor];
-        msgAlert.textAlignment = NSTextAlignmentCenter;
-        [self.player.view addSubview:msgAlert];
+//        UILabel *msgAlert = [[UILabel alloc] initWithFrame:CGRectMake(0, self.player.view.bounds.size.height/2 - 15, self.player.view.bounds.size.width, 30)];
+//        msgAlert.text = @"This live stream has finished";
+//        msgAlert.textColor = [UIColor whiteColor];
+//        msgAlert.textAlignment = NSTextAlignmentCenter;
+//        [self.player.view addSubview:msgAlert];
     }];
 
     
