@@ -292,7 +292,7 @@
     heartimg = [[UIImageView alloc] initWithFrame:heartimgPortRect];
     heartimg.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     heartimg.contentMode = UIViewContentModeScaleAspectFit;
-    heartimg.image = [UIImage imageNamed:@"Heart.png"];
+    heartimg.image = [UIImage imageNamed:@"ic_love.png"];
     [btnLove addSubview:heartimg];
     [propViewPort addSubview:btnLove];
     
@@ -362,7 +362,7 @@
     }else
     {
         //  UIImageView *img = [[UIImageView alloc] initWithFrame:cell.btnLoveicon.bounds];
-                   [heartimg setImage:[UIImage imageNamed:@"Heart.png"]];
+                   [heartimg setImage:[UIImage imageNamed:@"ic_love.png"]];
    //    [self.player.view addSubviewForControl:imgLoveIcon];
         //        [cell.contentView addSubview:cell.btnLoveicon];
         
@@ -700,7 +700,8 @@
             if ([result[@"message"] isEqualToString:@"Success"]) {
                 self.objStreaming.lovesCount = [result[@"data"][@"count"] integerValue];
                 [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
-                [btnLove setImage:[UIImage imageNamed:@"ic_love2.png"] forState:UIControlStateNormal];
+                [heartimg setImage:[UIImage imageNamed:@"ic_love2.png"]];
+//                [btnLove setImage:[UIImage imageNamed:@"ic_love2.png"] forState:UIControlStateNormal];
                 self.objStreaming.isLoved = true;
                 
             }
@@ -724,7 +725,8 @@
             if ([result[@"message"] isEqualToString:@"Success"]) {
                 self.objStreaming.lovesCount = [result[@"data"][@"count"] integerValue];
                 [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
-                [btnLove setImage:[UIImage imageNamed:@"ic_love.png"] forState:UIControlStateNormal];
+                [heartimg setImage:[UIImage imageNamed:@"ic_love.png"]];
+//                [btnLove setImage:[UIImage imageNamed:@"ic_love.png"] forState:UIControlStateNormal];
                 //[self viewDidLoad];
                 self.objStreaming.isLoved = false;
             }
