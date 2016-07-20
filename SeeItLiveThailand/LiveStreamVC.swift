@@ -334,6 +334,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             alertTitleLbl.font = UIFont.init(name: "Helvetica", size: font)
             alertView.addSubview(alertTitleLbl)
             
+            startStreamBtn?.enabled = false
             okBtnAlert = UIButton(frame:okBtnAlertRect)
             let okLbl = UILabel(frame:okBtnAlert.bounds)
             okLbl.text = "OK"
@@ -371,6 +372,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     }
     
     func cancelStop(sender :UIButton){
+        startStreamBtn?.enabled = true
         alertView.hidden = true;
     }
     func okStop(sender :UIButton){
