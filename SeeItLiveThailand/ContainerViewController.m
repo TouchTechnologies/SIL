@@ -658,7 +658,7 @@
             {
                 [appDelegate.categoryData addObject:category];
             }
-            //        NSLog(@"AllCat %@",appDelegate.categoryData);
+            NSLog(@"AllCat %@",appDelegate.categoryData);
             
         }];
         dispatch_async(dispatch_get_main_queue(), ^{
