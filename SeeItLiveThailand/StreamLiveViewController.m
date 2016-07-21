@@ -670,7 +670,7 @@
     NSLog (@"Tag %ld",[tapRecognizer.view tag]);
     NSInteger streamTag = [tapRecognizer.view tag];
     AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
-    appDelegate.comment_type = @"stream";
+    appDelegate.comment_type = @"STREAM";
     Streaming *stream = [self.streamList objectAtIndex:streamTag];
     appDelegate.CCTV_ID = stream.streamID;
     //UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)sender;
