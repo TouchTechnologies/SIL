@@ -736,7 +736,7 @@
 }
 -(void)commentStream:(id)sender
 {
-     NSLog(@"COMMENTSTREAMING");
+     NSLog(@"COMMENT History");
 //    AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
 //    appDelegate.comment_type = @"STREAM";
 //    
