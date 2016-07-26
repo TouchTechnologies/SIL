@@ -289,7 +289,7 @@
         }];
         
         
-        self.txtCommentText.text = @"";
+         self.txtCommentText.text = @"";
         [self.txtCommentText resignFirstResponder];
     }
     else{

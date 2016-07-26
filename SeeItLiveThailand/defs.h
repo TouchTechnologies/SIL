@@ -12,7 +12,7 @@
 //#define SocketURL @"http://seeitlivethailand.com:3008"
 //#define StreamingHistoryURLByCatgory @"http://www.seeitlivethailand.com/api/liveStreamHistories"
 
-///////////////Dev///////////////////
+///////////////Dev/////////////////// 
 #define service @"http://192.168.9.117/seeitlivethailand/"
 #define PromotionURL @"http://192.168.9.117/seeitlivethailand"
 #define StreamingHistoryURL @"http://192.168.9.117/seeitlivethailand/api/stream/histories"
