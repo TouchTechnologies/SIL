@@ -11,7 +11,6 @@
 @interface commentTableViewCell : UITableViewCell
 @property (strong, nonatomic) IBOutlet UILabel *commentLbl;
 @property (strong, nonatomic) IBOutlet UILabel *usernameLbl;
-
 @property (strong, nonatomic) IBOutlet UIImageView *usercommentImg;
 
 @end

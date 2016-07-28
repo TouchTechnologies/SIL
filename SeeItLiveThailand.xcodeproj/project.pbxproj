@@ -197,6 +197,7 @@
 		F3145F0F1C4645AB00BDCACA /* icon_title.png in Resources */ = {isa = PBXBuildFile; fileRef = F3145F0A1C4645AB00BDCACA /* icon_title.png */; };
 		F3145F121C464BF600BDCACA /* ic_start.png in Resources */ = {isa = PBXBuildFile; fileRef = F3145F101C464BF600BDCACA /* ic_start.png */; };
 		F3145F131C464BF600BDCACA /* ic_stops.png in Resources */ = {isa = PBXBuildFile; fileRef = F3145F111C464BF600BDCACA /* ic_stops.png */; };
+		F31691EE1D48C59600ACB6CA /* commentviewcelliPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F31691ED1D48C59600ACB6CA /* commentviewcelliPad.xib */; };
 		F318B88B1CD3480E00FCC0BF /* anonymous.png in Resources */ = {isa = PBXBuildFile; fileRef = F318B88A1CD3480E00FCC0BF /* anonymous.png */; };
 		F318B8911CD36BA300FCC0BF /* CategoryLiveCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F318B8901CD36BA300FCC0BF /* CategoryLiveCell.m */; };
 		F318B8941CD3716500FCC0BF /* CategoryTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F318B8931CD3716500FCC0BF /* CategoryTypeViewController.m */; };
@@ -617,6 +618,7 @@
 		F3145F0A1C4645AB00BDCACA /* icon_title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_title.png; path = Image/icon_title.png; sourceTree = "<group>"; };
 		F3145F101C464BF600BDCACA /* ic_start.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_start.png; path = Image/ic_start.png; sourceTree = "<group>"; };
 		F3145F111C464BF600BDCACA /* ic_stops.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_stops.png; path = Image/ic_stops.png; sourceTree = "<group>"; };
+		F31691ED1D48C59600ACB6CA /* commentviewcelliPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = commentviewcelliPad.xib; sourceTree = "<group>"; };
 		F318B88A1CD3480E00FCC0BF /* anonymous.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = anonymous.png; path = Image/anonymous.png; sourceTree = "<group>"; };
 		F318B88F1CD36BA300FCC0BF /* CategoryLiveCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryLiveCell.h; sourceTree = "<group>"; };
 		F318B8901CD36BA300FCC0BF /* CategoryLiveCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryLiveCell.m; sourceTree = "<group>"; };
@@ -1051,6 +1053,7 @@
 				363AA5391D058B42006A99CC /* liveAroundAnnotation.xib */,
 				363AA53B1D06AD3F006A99CC /* liveAroundAnnotationCell.h */,
 				363AA53C1D06AD4C006A99CC /* liveAroundAnnotationCell.m */,
+				F31691ED1D48C59600ACB6CA /* commentviewcelliPad.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1703,6 +1706,7 @@
 				36785BC21C292E6F004E77BE /* ic_new_username_newlogin2.png in Resources */,
 				F36F70B31CE324B9009238D1 /* Left Filled-100.png in Resources */,
 				36785B7E1C29260C004E77BE /* icon_J.png in Resources */,
+				F31691EE1D48C59600ACB6CA /* commentviewcelliPad.xib in Resources */,
 				36785B6D1C29260C004E77BE /* ic_live1.png in Resources */,
 				36785B6A1C29260C004E77BE /* dotInactive@2x.png in Resources */,
 				F36AABC51C8E74CE000B7BFE /* Minus-50.png in Resources */,
