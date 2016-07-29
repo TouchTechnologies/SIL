@@ -134,6 +134,7 @@
     CGRect liveAroundBtnRect;
     
     CGRect playerRect;
+    CGRect playerLandRect;
     // object
     
     UIFont *font;
@@ -264,50 +265,42 @@
     
 
 }
+
 - (void)initial{
-    
-   ///[scrollView setBackgroundColor:[UIColor blackColor]];
-   
+
     self.player = [[VKVideoPlayer alloc] init];
     profileView.hidden = FALSE;
 
     CGFloat ss;
     ss = 100;
-    
-    if (self.player.isFullScreen) {
-        
-        self.player.view.frame = CGRectMake(0,50, self.view.bounds.size.width, self.view.bounds.size.height); //self.view.bounds;
-        NSLog(@"NOT FULLSCREEN");
-        self.player.view.doneButton.frame = doneButtonPortRect;
-        
-    }
-    else{
-        self.player.view.frame = playerRect; //self.view.bounds;
-        NSLog(@"NOT FULLSCREEN");
+     self.player.view.doneButton.hidden = FALSE;
+    if (!self.player.isFullScreen) {
+        self.player.view.frame = playerRect;
+        NSLog(@"Player Height : %f", self.player.view.frame.size.height);
+      NSLog(@"NOT FULLSCREEN");
         self.player.view.doneButton.frame = doneButtonPortRect;
         UIImage *back = [[UIImage alloc] init];
         back = [UIImage imageNamed:@"back.png"];
         [ self.player.view.doneButton setImage:back forState:UIControlStateNormal];
-
+        self.player.isFullScreen = TRUE;
+    }
+    else{
+       
     }
     self.player.view.playerControlsAutoHideTime = @5;
-    self.player.forceRotate = NO;
-    self.player.view.fullscreenButton.hidden = TRUE;
+    self.player.forceRotate = YES;
+    self.player.view.fullscreenButton.hidden = false;
     self.player.view.nextButton.hidden = TRUE;
     self.player.view.rewindButton.hidden = TRUE;
     self.player.view.isControlsEnabled = FALSE;
     self.player.view.bottomControlOverlay.hidden = FALSE;
+    self.player.view.topControlOverlay.hidden = FALSE;
     self.player.view.videoQualityButton.hidden = TRUE;
-    self.player.view.totalTimeLabel.frameOriginX = self.player.view.bounds.size.width - 40;
+ 
+     [self.player.view.totalTimeLabel setFrameOriginX:CGRectGetWidth(self.player.view.bottomControlOverlay.frame) - self.player.view.totalTimeLabel.frame.size.width - self.player.view.fullscreenButton.frame.size.width - 5];
+  
     
-     
-    UIImage *replay = [[UIImage alloc] init];
-    replay = [UIImage imageNamed:@"replay_grey.png"] ;
-    
-    [self.player.view.rewindButton setImage:replay forState:UIControlStateNormal];
-      [self.player.view.rewindButton sizeThatFits:CGSizeMake(30, 30)];
-       [self.player.view.bottomControlOverlay addSubview:self.player.view.rewindButton];
-    //[self.player.view.rewindButton setContentMode:UIViewContentModeScaleToFill];
+
     
     
     propViewPort = [[UIView alloc] initWithFrame:propViewPortRect];
@@ -359,14 +352,14 @@
         [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
         [self.player.view addSubviewForControl:lblcategoryType toView:topView];
         self.player.view.topControlOverlay.hidden = TRUE;
-        [self.player.view.rewindButton setFrame:CGRectMake(self.player.view.bottomControlOverlay.bounds.size.width/2 + (125*scx), 5*scy , 30, 30)];
+    
     }
     else{
         self.player.view.topControlOverlay.hidden = FALSE;
         [self.player.view.topControlOverlay addSubview:steamingTitle];
         [self.player.view.topControlOverlay addSubview:lblcategoryDesc];
         [self.player.view.topControlOverlay addSubview:lblcategoryType];
-        [self.player.view.rewindButton setFrame:CGRectMake(self.player.view.bottomControlOverlay.bounds.size.width/2 +35, 5 , 30, 30)];
+    
     }
 
     lblLocationDesc = [[UILabel alloc] initWithFrame:lblLocationDescRect];
@@ -793,9 +786,9 @@
         
         
         
-        topViewPortRect = CGRectMake(0*scx, 0*scy, width, 50*scy);
+       
         playerRect = CGRectMake(0*scx, 50*scy, width, 150*scy);
-        
+        topViewPortRect = CGRectMake(0*scx, 0*scy, playerRect.size.width, 50*scy);
         
         imgPinPortRect = CGRectMake(10*scx,topViewPortRect.size.height/2 - (13*scy), 25*scx, 25*scy);
         
@@ -820,6 +813,7 @@
         shareimgPortRect = CGRectMake(0*scx, 0*scy, shareBtnPortRect.size.width, shareBtnPortRect.size.height);
         
         btnLovePortRect = CGRectMake(topViewPortRect.size.width - (45*scx) ,topViewPortRect.size.height/2 - (18*scy) ,35*scx,35*scy);
+        btnLoveLandRect = CGRectMake(playerRect.size.width - (45*scx) , playerRect.size.height/2 - (18*scy) , 35*scx, 35*scy);
         
         heartimgPortRect = CGRectMake(0*scx, 0*scy, btnLovePortRect.size.width , btnLovePortRect.size.height );
         
@@ -872,9 +866,11 @@
         imgHeight = 30.0;
        
     
-        
-        topViewPortRect = CGRectMake(0, 0, width, 50);
+        topViewLandRect = CGRectMake(0, 0 , self.view.bounds.size.width, 30);
         playerRect = CGRectMake(0, 50, width, 200);
+        playerLandRect = CGRectMake(0, 100, width, height - 100);
+        topViewPortRect = CGRectMake(0, 0,playerRect.size.width, 50);
+
 
         imgPinPortRect = CGRectMake(10,topViewPortRect.size.height/2 - 13, 25, 25);
        
@@ -891,6 +887,8 @@
         shareBtnPortRect = CGRectMake(propViewPortRect.size.width - 35 ,  10 , 25 , 25);
         shareimgPortRect = CGRectMake(0, 0, shareBtnPortRect.size.width, shareBtnPortRect.size.height);
         btnLovePortRect = CGRectMake(topViewPortRect.size.width - 45 ,topViewPortRect.size.height/2 - 18 ,35,35);
+  
+        btnLoveLandRect = CGRectMake(height - 45 , 5 , 35, 35);
         
         heartimgPortRect = CGRectMake(0, 0, btnLovePortRect.size.width , btnLovePortRect.size.height );
         
@@ -950,7 +948,7 @@
     [socket disconnect];
 }
 - (void)viewDidAppear:(BOOL)animated {
-    
+    self.player.isFullScreen = FALSE;
     [self playSampleClip1];
 }
 
@@ -986,7 +984,6 @@
      */
 }
 
-
 - (void)playSampleClip1 {
     //[self playStream:[NSURL URLWithString:@"http://203.151.133.7:1935/live/ch3_1/playlist.m3u8"]];
     NSLog(@"playSampleClip1");
@@ -999,6 +996,9 @@
 - (void)playStream:(NSURL*)url {
     VKVideoPlayerTrack *track = [[VKVideoPlayerTrack alloc] initWithStreamURL:url];
     track.hasNext = YES;
+    //[self.player.view.totalTimeLabel setFrameOriginX: self.player.view.frame.size.width - 100];
+    
+    
     NSLog(@"playStream");
     
    [self.player loadVideoWithTrack:track];
@@ -1143,31 +1143,35 @@
     } else if (event == VKVideoPlayerControlEventTapFullScreen) {
         if (self.player.isFullScreen) {
             NSLog(@"11");
-            self.player.view.doneButton.frame = CGRectMake(self.player.view.bounds.size.width - 30, 0, 30, 30);
-            self.player.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+            /////////////////////// Land /////////////////////
+             topView.hidden = TRUE;
+            self.player.view.doneButton.hidden = TRUE;
+            self.player.view.topControlOverlay.hidden = FALSE;
+            [ self.player.view.topControlOverlay addSubview:btnLove];
+            [btnLove setFrame:btnLoveLandRect];
+            self.player.view.videoQualityButton.hidden = TRUE;
             self.player.isFullScreen = false;
         }
         else{
+            ///////////////////// Port ///////////////////////////
             NSLog(@"12");
-            
-            self.player.view.doneButton.frame = CGRectMake(self.player.view.bounds.size.width - 30, 0, 30, 30);
-            self.player.view.frame = playerRect;
+            [topView setFrame: topViewPortRect];
+            topView.hidden = FALSE;
+            self.player.view.doneButton.hidden = FALSE;
+            self.player.view.topControlOverlay.hidden = FALSE;
+            [self.view setFrameHeight:self.view.bounds.size.width];
+            [self.player.view setFrame: playerRect];
+            [btnLove setFrame:btnLovePortRect];
+            [topView addSubview:btnLove];
             self.player.isFullScreen = true;
-            
+          
+
         }
-        NSLog(@"VKVideoPlayerControlEventTapDone Start");
+
 
     }
     
     
-}
-- (void)videoPlayer:(VKVideoPlayer*)videoPlayer didPlayToEnd:(id<VKVideoPlayerTrackProtocol>)track{
-//    UILabel *msgAlert = [[UILabel alloc] initWithFrame:CGRectMake(0, self.player.view.bounds.size.height/2 - 15, self.player.view.bounds.size.width, 30)];
-//    msgAlert.text = @"This live stream has finished";
-//    msgAlert.textColor = [UIColor whiteColor];
-//    msgAlert.textAlignment = NSTextAlignmentCenter;
-//    [self.player.view addSubview:msgAlert];
-    NSLog(@"This live stream has finished");
 }
 -(void)shareAction:(id)sender
 {
@@ -1207,62 +1211,104 @@
 //    }
 //
 //}
-/*
+
+
 -(void)videoPlayer:(VKVideoPlayer *)videoPlayer didChangeOrientationFrom:(UIInterfaceOrientation)orientation {
-  
     if (orientation == UIInterfaceOrientationLandscapeLeft || orientation ==
         UIInterfaceOrientationLandscapeRight) {
         NSLog(@"UIInterfaceOrientationIsPortrait 1");
-        if (self.player.isFullScreen) {
-            self.player.view.frame = CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height - bottomHeight);
-            self.player.view.doneButton.frame = CGRectMake(self.player.view.bounds.size.width - 30, 0, 30, 30);
-            self.player.view.topControlOverlay.hidden = false;
-            NSLog(@"FULLSCREEN");
-            self.player.isFullScreen = false;
-        }
-        else{
-            self.player.view.frame = CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height - bottomHeight);
-            self.player.view.doneButton.frame = CGRectMake(self.player.view.bounds.size.width - 30, 0, 30, 30);
-            self.player.view.topControlOverlay.hidden = false;
-            NSLog(@"FULLSCREEN");
-
-            self.player.isFullScreen = true;
-        }
-    }
-   else if (orientation == UIInterfaceOrientationPortraitUpsideDown) {
-           NSLog(@"UIInterfaceOrientationIsPortrait 2");
+ 
+    //    [self setPortrait];
         
-        self.player.view.frame = CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height/2);
+
+        ///////////////////// Port ///////////////////////////
+        NSLog(@"กลับหลังจากเอียงซ้าย");
+        NSLog(@"กลับหลังจากเอียงขวา");
+        [topView setFrame: topViewPortRect];
+        self.player.view.doneButton.hidden = FALSE;
+        self.player.view.topControlOverlay.hidden = FALSE;
+        [self.view setFrameHeight:self.view.bounds.size.width];
+        [self.player.view setFrame: playerRect];
+        [btnLove setFrame:btnLovePortRect];
+        [topView addSubview:btnLove];
+        topView.hidden = FALSE;
+       // self.player.isFullScreen = true;
+    }
+    else if (orientation == UIInterfaceOrientationPortraitUpsideDown) {
+        NSLog(@"UIInterfaceOrientationIsPortrait 2");
+          //  [self setPortrait];
+        ///////////////////// Port ///////////////////////////
+        NSLog(@"12");
+        [topView setFrame: topViewPortRect];
+        self.player.view.doneButton.hidden = FALSE;
+        self.player.view.topControlOverlay.hidden = FALSE;
+        [self.view setFrameHeight:self.view.bounds.size.width];
+        [self.player.view setFrame: playerRect];
+        [btnLove setFrame:btnLovePortRect];
+        [topView addSubview:btnLove];
+        topView.hidden = FALSE;
+        self.player.isFullScreen = true;
+       // [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
+        //self.player.view.frame = CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height/2);
         
     }
     else if (orientation == UIInterfaceOrientationMaskPortrait){
-     NSLog(@"UIInterfaceOrientationMaskPortrait 22");
-          self.player.view.frame = CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height/2);
+        NSLog(@"UIInterfaceOrientationMaskPortrait 22");
+     //   [self setLandscap];
+        /////////////////////// Land /////////////////////
+        self.player.view.doneButton.hidden = TRUE;
+        self.player.view.topControlOverlay.hidden = FALSE;
+        [ self.player.view.topControlOverlay addSubview:btnLove];
+        [btnLove setFrame:btnLoveLandRect];
+        
+        topView.hidden = TRUE;
+        self.player.view.videoQualityButton.hidden = TRUE;
+        self.player.isFullScreen = false;
+
+    
     }
- 
+    
     else {
+        
         if (self.player.isFullScreen) {
-            self.player.view.frame = CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height);
-            self.player.view.doneButton.frame = CGRectMake(self.player.view.bounds.size.width - 30, 0, 30, 30);
+            NSLog(@"เอียงซ้าย มาที่นี่");
+            NSLog(@"เอียงขวา มาที่นี่");
+       //     [self setLandscap];
+            /////////////////////// Land /////////////////////
+            self.player.view.doneButton.hidden = TRUE;
+            self.player.view.topControlOverlay.hidden = FALSE;
+            [ self.player.view.topControlOverlay addSubview:btnLove];
+            [btnLove setFrame:btnLoveLandRect];
+            
+            topView.hidden = TRUE;
+            self.player.view.videoQualityButton.hidden = TRUE;
             self.player.isFullScreen = false;
+
+            
         }
         else{
+            NSLog(@"UIInterfaceOrientationIsLandscape");
         
-            self.player.view.frame = CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height - bottomHeight);
-            self.player.view.doneButton.frame = CGRectMake(self.player.view.bounds.size.width - 30, 0, 30, 30);
-            self.player.isFullScreen = true;
-        }
-        NSLog(@"UIInterfaceOrientationIsLandscape");
+         //   [self setPortrait];
+            ///////////////////// Port ///////////////////////////
+            NSLog(@"กด full");
+//            [topView setFrame: topViewPortRect];
+//            self.player.view.doneButton.hidden = FALSE;
+//            self.player.view.topControlOverlay.hidden = FALSE;
+//            [self.view setFrameHeight:self.view.bounds.size.width];
+//           [self.player.view setFrame: playerRect];
+//            [btnLove setFrame:btnLovePortRect];
+//            [topView addSubview:btnLove];
+//            topView.hidden = FALSE;
+//            self.player.isFullScreen = true;
+       
+                }
+        
         
     }
-    
+
     
 }
-
-
-
-
-*/
 
 
 

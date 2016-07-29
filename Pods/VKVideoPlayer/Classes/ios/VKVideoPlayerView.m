@@ -234,9 +234,9 @@
 
 - (void)layoutSliderForOrientation:(UIInterfaceOrientation)interfaceOrientation {
   if (UIInterfaceOrientationIsPortrait(interfaceOrientation)) {
-    [self.totalTimeLabel setFrameOriginX:CGRectGetMinX(self.fullscreenButton.frame) - self.totalTimeLabel.frame.size.width];
+    [self.totalTimeLabel setFrameOriginX:CGRectGetMinX(self.fullscreenButton.frame) - self.totalTimeLabel.frame.size.width - self.fullscreenButton.frame.size.width];
   } else {
-    [self.totalTimeLabel setFrameOriginX:CGRectGetWidth(self.bottomControlOverlay.frame)- self.totalTimeLabel.frame.size.width];
+    [self.totalTimeLabel setFrameOriginX:CGRectGetWidth(self.bottomControlOverlay.frame) - self.totalTimeLabel.frame.size.width - self.fullscreenButton.frame.size.width];
   }
 
   [self.scrubber setFrameOriginX:self.currentTimeLabel.frame.origin.x + self.currentTimeLabel.frame.size.width + 4];
