@@ -19,15 +19,22 @@
 #import "SeeItLiveThailand-Swift.h"
 #import "termViewVC.h"
 #import "Bolts.h"
-
+@import GoogleMaps;
 @interface AppDelegate ()<HarpyDelegate>
 
 @end
 
 @implementation AppDelegate
 
+//Map Key//
+static NSString *const kMapsAPIKey = @"AIzaSyAR3LGdzNDHN8n6ofnUlg7I8ajNwrOdF7M";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    //GG map service//
+     [GMSServices provideAPIKey:kMapsAPIKey];
+    
+    
     // Override point for customization after application launch.
 
 //    [self initSocket];

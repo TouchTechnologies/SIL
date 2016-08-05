@@ -244,6 +244,7 @@
 		F398C7C21CD9A687000C4F5B /* live_wh.png in Resources */ = {isa = PBXBuildFile; fileRef = F398C7BF1CD9A687000C4F5B /* live_wh.png */; };
 		F398C7C31CD9A687000C4F5B /* live1.png in Resources */ = {isa = PBXBuildFile; fileRef = F398C7C01CD9A687000C4F5B /* live1.png */; };
 		F398C7C41CD9A687000C4F5B /* culture1.png in Resources */ = {isa = PBXBuildFile; fileRef = F398C7C11CD9A687000C4F5B /* culture1.png */; };
+		F3991B7B1D544BB100161310 /* LivearoundGooglemapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F3991B7A1D544BB100161310 /* LivearoundGooglemapViewController.m */; };
 		F39BC39B1CB63320001F3020 /* chat.png in Resources */ = {isa = PBXBuildFile; fileRef = F39BC3921CB63320001F3020 /* chat.png */; };
 		F39BC39C1CB63320001F3020 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = F39BC3931CB63320001F3020 /* close.png */; };
 		F39BC39D1CB63320001F3020 /* Heart.png in Resources */ = {isa = PBXBuildFile; fileRef = F39BC3941CB63320001F3020 /* Heart.png */; };
@@ -677,6 +678,8 @@
 		F398C7BF1CD9A687000C4F5B /* live_wh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = live_wh.png; path = Image/live_wh.png; sourceTree = "<group>"; };
 		F398C7C01CD9A687000C4F5B /* live1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = live1.png; path = Image/live1.png; sourceTree = "<group>"; };
 		F398C7C11CD9A687000C4F5B /* culture1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = culture1.png; path = Image/culture1.png; sourceTree = "<group>"; };
+		F3991B791D544BB100161310 /* LivearoundGooglemapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LivearoundGooglemapViewController.h; sourceTree = "<group>"; };
+		F3991B7A1D544BB100161310 /* LivearoundGooglemapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LivearoundGooglemapViewController.m; sourceTree = "<group>"; };
 		F39BC3921CB63320001F3020 /* chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = chat.png; path = Image/chat.png; sourceTree = "<group>"; };
 		F39BC3931CB63320001F3020 /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = close.png; path = Image/close.png; sourceTree = "<group>"; };
 		F39BC3941CB63320001F3020 /* Heart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Heart.png; path = Image/Heart.png; sourceTree = "<group>"; };
@@ -1290,6 +1293,8 @@
 				F30E5F511CD0764A007E010C /* LiveAroundViewController.m */,
 				F318B8921CD3716500FCC0BF /* CategoryTypeViewController.h */,
 				F318B8931CD3716500FCC0BF /* CategoryTypeViewController.m */,
+				F3991B791D544BB100161310 /* LivearoundGooglemapViewController.h */,
+				F3991B7A1D544BB100161310 /* LivearoundGooglemapViewController.m */,
 			);
 			name = 4Streaming;
 			sourceTree = "<group>";
@@ -1913,6 +1918,7 @@
 				36C3F7FF1C4DDAE8005396D7 /* CameraManager.swift in Sources */,
 				36785BF01C293461004E77BE /* ADPageControl.m in Sources */,
 				F35D29B61CAD0E9B007916FD /* MYTapGestureRecognizer.m in Sources */,
+				F3991B7B1D544BB100161310 /* LivearoundGooglemapViewController.m in Sources */,
 				F3DA90DD1C84339900189209 /* UserProfileViewController.m in Sources */,
 				36785B301C29255B004E77BE /* ROI.m in Sources */,
 				36448AD51CA90B32007A4AB4 /* SocketAckEmitter.swift in Sources */,

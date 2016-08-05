@@ -34,6 +34,11 @@ target 'SeeItLiveThailand' do
     #webview
     pod 'SVWebViewController'
     pod 'SVPullToRefresh'
+    
+    #mapView
+    pod 'GoogleMaps'
+    pod 'Google-Maps-iOS-Utils'
+    
 end
 
 target 'SeeItLiveThailandTests' do

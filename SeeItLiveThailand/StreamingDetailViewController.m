@@ -23,9 +23,9 @@
 #import "SeeItLiveThailand-Swift.h"
 #import "LiveAroundViewController.h"
 #import "MBProgressHUD.h"
-
+#import "LivearoundGooglemapViewController.h"
 @interface StreamingDetailViewController ()<VKVideoPlayerDelegate , UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource> {
-
+    
     
     CGFloat fontSize;
     CGFloat bottomHeight;
@@ -139,7 +139,7 @@
     
     UIFont *font;
     UILabel *lblLocationLive;
-    UILabel *steamingTitle;
+    UILabel *streamingTitle;
     UILabel *liveStreamLocationLbl;
     UIImageView *imgPin;
     UIView *topView;
@@ -182,7 +182,7 @@
     UITextField *loveCount;
     UIImageView *heartimg ;
     UIImageView *imgLoveIcon;
-   
+    
     UITableViewCell *cell;
     
     UIButton *chatBtn;
@@ -199,8 +199,8 @@
     UIImageView *imgLoveCell;
     UILabel *loveCountCellLbl;
     UIImageView *userAvatarCellimg;
-
-    UIButton *moreBtn;
+    
+    UIButton *livearoungBtn;
     IBOutlet UIScrollView *scrollView;
     AppDelegate *appDelegate;
     SocketIOClient *socket;
@@ -230,7 +230,7 @@
     [self addLabel];
     
     self.view.backgroundColor = [UIColor whiteColor];
-    NSLog(@"IS FULLSCREEN ::: %@" , self.player.isFullScreen ? @"true":@"false");
+    NSLog(@"IS FULLSCREEN DIDLOAD ::: %@" , self.player.isFullScreen ? @"true":@"false");
     self.player.delegate = self;
     chatboxTxt.delegate = self;
     liveIncategoryTbl.delegate = self;
@@ -241,10 +241,10 @@
     [self getCategoryList];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                               selector:@selector(refreshList:)
-                                                  name:@"refresh"
-                                                    object:nil];
-
+                                             selector:@selector(refreshList:)
+                                                 name:@"refresh"
+                                               object:nil];
+    
     
 }
 - (void)orientationChanged:(NSNotification *)note
@@ -253,82 +253,271 @@
     switch(device.orientation)
     {
         case UIDeviceOrientationPortrait:
-            self.player.forceRotate = NO;
-            self.player.view.fullscreenButton.hidden = FALSE;
-//            self.player.view.doneButton.hidden = TRUE;
-//            self.player.view.topControlOverlay.hidden = FALSE;
-//            [ self.player.view.topControlOverlay addSubview:btnLove];
-//            [btnLove setFrame:btnLoveLandRect];
-//            
-//            topView.hidden = TRUE;
-//            self.player.view.videoQualityButton.hidden = TRUE;
-//            self.player.isFullScreen = FALSE;
-            
-           NSLog(@"IS FULL? ::: %@", self.player.isFullScreen ? @"true":@"false");
+            NSLog(@"IS FULL? ::: %@", self.player.isFullScreen ? @"true":@"false");
+            NSLog(@"1!");
+            if (!self.player.isFullScreen){
+                ///////////////////// Port ///////////////////////////
+                
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    self.player.view.topControlOverlay.hidden = TRUE;
+                    [self.player.view addSubviewForControl:streamingTitle toView:topView];
+                    [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
+                    [self.player.view addSubviewForControl:lblcategoryType toView:topView];
+                    
+                }
+                else {
+                    
+                    self.player.view.topControlOverlay.hidden = FALSE;
+                    [self.view setFrameHeight:self.view.bounds.size.height];
+                    topView.hidden = FALSE;
+                    
+                }
+                
+                [self.player.view setFrame: playerRect];
+                [topView setFrame: topViewPortRect];
+                self.player.view.doneButton.hidden = FALSE;
+                self.player.view.fullscreenButton.hidden = FALSE ;
+                [btnLove setFrame:btnLovePortRect];
+                [topView addSubview:btnLove];
+                topView.hidden = FALSE;
+                self.player.isFullScreen = true;
+                
+            }
+            else{
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    self.player.view.topControlOverlay.hidden = TRUE;
+                    [topView setFrameWidth:[UIScreen mainScreen].bounds.size.height];
+                    [btnLove setFrame:CGRectMake(topView.bounds.size.width - 110, 10, 100, 100)];
+                    [topView addSubview:btnLove];
+                    topView.hidden = FALSE;
+                    
+                }
+                else {
+                    self.player.view.topControlOverlay.hidden = FALSE;
+                    [btnLove setFrame:btnLoveLandRect];
+                    [ self.player.view.topControlOverlay addSubview:btnLove];
+                    topView.hidden = FALSE;
+                }
+                
+                self.player.view.doneButton.hidden = TRUE;
+                self.player.view.videoQualityButton.hidden = TRUE;
+                self.player.isFullScreen = FALSE;
+            }
+            NSLog(@"IS FULL? ::: %@", self.player.isFullScreen ? @"true":@"false");
             NSLog(@"1!");
             break;
             
         case UIDeviceOrientationFaceUp:
-            self.player.forceRotate = YES;
-            self.player.view.doneButton.hidden = TRUE;
-            self.player.view.topControlOverlay.hidden = FALSE;
-            [ self.player.view.topControlOverlay addSubview:btnLove];
-            [btnLove setFrame:btnLoveLandRect];
-            
-            topView.hidden = TRUE;
-            self.player.view.videoQualityButton.hidden = TRUE;
-            self.player.isFullScreen = FALSE;
-            
+            NSLog(@"IS FULL???? ::: %@", self.player.isFullScreen ? @"true":@"false");
+            if (!self.player.isFullScreen){
+                ///////////////////// Port ///////////////////////////
+                
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    self.player.view.topControlOverlay.hidden = TRUE;
+                    [self.player.view addSubviewForControl:streamingTitle toView:topView];
+                    [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
+                    [self.player.view addSubviewForControl:lblcategoryType toView:topView];
+                    
+                }
+                else {
+                    
+                    self.player.view.topControlOverlay.hidden = FALSE;
+                    [self.view setFrameHeight:self.view.bounds.size.height];
+                    
+                }
+                
+                [self.player.view setFrame: playerRect];
+                [topView setFrame: topViewPortRect];
+                self.player.view.doneButton.hidden = FALSE;
+                self.player.view.fullscreenButton.hidden = FALSE ;
+                [btnLove setFrame:btnLovePortRect];
+                [topView addSubview:btnLove];
+                topView.hidden = FALSE;
+                self.player.isFullScreen = true;
+                
+            }
+            else{
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    self.player.view.topControlOverlay.hidden = TRUE;
+                    [topView setFrameWidth:[UIScreen mainScreen].bounds.size.height];
+                    [btnLove setFrame:CGRectMake(topView.bounds.size.width - 110, 10, 100, 100)];
+                    [topView addSubview:btnLove];
+                    topView.hidden = FALSE;
+                    
+                }
+                else {
+                    self.player.view.topControlOverlay.hidden = FALSE;
+                    [btnLove setFrame:btnLoveLandRect];
+                    [ self.player.view.topControlOverlay addSubview:btnLove];
+                    topView.hidden = TRUE;
+                }
+                
+                self.player.view.doneButton.hidden = TRUE;
+                self.player.view.videoQualityButton.hidden = TRUE;
+                self.player.isFullScreen = FALSE;
+            }
             NSLog(@"IS FULL? ::: %@", self.player.isFullScreen ? @"true":@"false");
-              NSLog(@"2!");
+            NSLog(@"2!");
             break;
             
         case UIDeviceOrientationPortraitUpsideDown:
-            self.player.forceRotate = YES;
-            self.player.view.doneButton.hidden = TRUE;
-            self.player.view.topControlOverlay.hidden = FALSE;
-            [ self.player.view.topControlOverlay addSubview:btnLove];
-            [btnLove setFrame:btnLoveLandRect];
+            if (!self.player.isFullScreen){
+                ///////////////////// Port ///////////////////////////
+                
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    self.player.view.topControlOverlay.hidden = TRUE;
+                    [self.player.view addSubviewForControl:streamingTitle toView:topView];
+                    [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
+                    [self.player.view addSubviewForControl:lblcategoryType toView:topView];
+                    
+                }
+                else {
+                    
+                    self.player.view.topControlOverlay.hidden = FALSE;
+                    [self.view setFrameHeight:self.view.bounds.size.height];
+                    
+                }
+                
+                [self.player.view setFrame: playerRect];
+                [topView setFrame: topViewPortRect];
+                self.player.view.doneButton.hidden = FALSE;
+                self.player.view.fullscreenButton.hidden = FALSE ;
+                [btnLove setFrame:btnLovePortRect];
+                [topView addSubview:btnLove];
+                topView.hidden = FALSE;
+                self.player.isFullScreen = true;
+                
+            }
+            else{
+                ///////////////////// Port ///////////////////////////
+                
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    self.player.view.topControlOverlay.hidden = TRUE;
+                    [self.player.view addSubviewForControl:streamingTitle toView:topView];
+                    [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
+                    [self.player.view addSubviewForControl:lblcategoryType toView:topView];
+                    
+                }
+                else {
+                    
+                    self.player.view.topControlOverlay.hidden = FALSE;
+                    [self.view setFrameHeight:self.view.bounds.size.height];
+                    
+                }
+                
+                [self.player.view setFrame: playerRect];
+                [topView setFrame: topViewPortRect];
+                self.player.view.doneButton.hidden = FALSE;
+                self.player.view.fullscreenButton.hidden = FALSE ;
+                [btnLove setFrame:btnLovePortRect];
+                [topView addSubview:btnLove];
+                topView.hidden = FALSE;
+                self.player.isFullScreen = true;
+            }
             
-            topView.hidden = TRUE;
-            self.player.view.videoQualityButton.hidden = TRUE;
-            self.player.isFullScreen = FALSE;
-            
-          NSLog(@"IS FULL? ::: %@", self.player.isFullScreen ? @"true":@"false");
-              NSLog(@"3!");
-             break;
+            NSLog(@"IS FULL? ::: %@", self.player.isFullScreen ? @"true":@"false");
+            NSLog(@"3!");
+            break;
         case UIDeviceOrientationLandscapeRight:
-             self.player.forceRotate = YES;
-            self.player.view.doneButton.hidden = TRUE;
-            self.player.view.topControlOverlay.hidden = FALSE;
-            [ self.player.view.topControlOverlay addSubview:btnLove];
-            [btnLove setFrame:btnLoveLandRect];
+            // Land
             
-            topView.hidden = TRUE;
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                self.player.view.topControlOverlay.hidden = TRUE;
+                [topView setFrameWidth:[UIScreen mainScreen].bounds.size.height];
+                [btnLove setFrame:CGRectMake(topView.bounds.size.width - 110, 10, 100, 100)];
+                [topView addSubview:btnLove];
+                topView.hidden = FALSE;
+                
+            }
+            else {
+                self.player.view.topControlOverlay.hidden = FALSE;
+                [btnLove setFrame:btnLoveLandRect];
+                [ self.player.view.topControlOverlay addSubview:btnLove];
+                topView.hidden = TRUE;
+            }
+            
+            self.player.view.doneButton.hidden = TRUE;
             self.player.view.videoQualityButton.hidden = TRUE;
             self.player.isFullScreen = FALSE;
-
-           //  self.player.view.fullscreenButton.hidden = false;
-         NSLog(@"IS FULL? ::: %@", self.player.isFullScreen ? @"true":@"false");
-              NSLog(@"4!");
+            NSLog(@"IS FULL? ::: %@", self.player.isFullScreen ? @"true":@"false");
+            NSLog(@"4!");
             break;
         case UIDeviceOrientationLandscapeLeft:
-            self.player.forceRotate = YES;
-            self.player.view.doneButton.hidden = TRUE;
-            self.player.view.topControlOverlay.hidden = FALSE;
-            [ self.player.view.topControlOverlay addSubview:btnLove];
-            [btnLove setFrame:btnLoveLandRect];
+            // Land
             
-            topView.hidden = TRUE;
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                self.player.view.topControlOverlay.hidden = TRUE;
+                [topView setFrameWidth:[UIScreen mainScreen].bounds.size.height];
+                [btnLove setFrame:CGRectMake(topView.bounds.size.width - 110, 10, 100, 100)];
+                [topView addSubview:btnLove];
+                topView.hidden = FALSE;
+                
+            }
+            else {
+                self.player.view.topControlOverlay.hidden = FALSE;
+                [btnLove setFrame:btnLoveLandRect];
+                [ self.player.view.topControlOverlay addSubview:btnLove];
+                topView.hidden = TRUE;
+            }
+            
+            self.player.view.doneButton.hidden = TRUE;
             self.player.view.videoQualityButton.hidden = TRUE;
             self.player.isFullScreen = FALSE;
-          //   self.player.view.fullscreenButton.hidden = false;
-        NSLog(@"IS FULL? ::: %@", self.player.isFullScreen ? @"true":@"false");
-              NSLog(@"5!");
+            
+            //   self.player.view.fullscreenButton.hidden = false;
+            NSLog(@"IS FULL? ::: %@", self.player.isFullScreen ? @"true":@"false");
+            NSLog(@"5!");
             break;
         default:
-         //   self.player.forceRotate = FALSE;
-             self.player.view.fullscreenButton.hidden = false;
+            if (!self.player.isFullScreen){
+                ///////////////////// Port ///////////////////////////
+                
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    self.player.view.topControlOverlay.hidden = TRUE;
+                    [self.player.view addSubviewForControl:streamingTitle toView:topView];
+                    [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
+                    [self.player.view addSubviewForControl:lblcategoryType toView:topView];
+                    
+                }
+                else {
+                    
+                    self.player.view.topControlOverlay.hidden = FALSE;
+                    [self.view setFrameHeight:self.view.bounds.size.height];
+                    
+                }
+                
+                [self.player.view setFrame: playerRect];
+                [topView setFrame: topViewPortRect];
+                self.player.view.doneButton.hidden = FALSE;
+                self.player.view.fullscreenButton.hidden = FALSE ;
+                [btnLove setFrame:btnLovePortRect];
+                [topView addSubview:btnLove];
+                topView.hidden = FALSE;
+                self.player.isFullScreen = true;
+                
+            }
+            else{
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    self.player.view.topControlOverlay.hidden = TRUE;
+                    [topView setFrameWidth:[UIScreen mainScreen].bounds.size.height];
+                    [btnLove setFrame:CGRectMake(topView.bounds.size.width - 110, 10, 100, 100)];
+                    [topView addSubview:btnLove];
+                    topView.hidden = FALSE;
+                    
+                }
+                else {
+                    self.player.view.topControlOverlay.hidden = FALSE;
+                    [btnLove setFrame:btnLoveLandRect];
+                    [ self.player.view.topControlOverlay addSubview:btnLove];
+                    topView.hidden = TRUE;
+                }
+                
+                self.player.view.doneButton.hidden = TRUE;
+                self.player.view.videoQualityButton.hidden = TRUE;
+                self.player.isFullScreen = FALSE;
+            }
+            
+            
             NSLog(@"IS FULL? ::: %@", self.player.isFullScreen ? @"true":@"false");
             NSLog(@"6!");
             break;
@@ -359,50 +548,50 @@
         
     } Filter:filter];
     
-
+    
 }
 
 - (void)initial{
-
+    
     self.player = [[VKVideoPlayer alloc] init];
     profileView.hidden = FALSE;
-
+    
     CGFloat ss;
     ss = 100;
-     self.player.view.doneButton.hidden = FALSE;
-    if (!self.player.isFullScreen) {
-        self.player.view.frame = playerRect;
-        NSLog(@"Player Height : %f", self.player.view.frame.size.height);
-      NSLog(@"NOT FULLSCREEN");
-        self.player.view.doneButton.frame = doneButtonPortRect;
-        UIImage *back = [[UIImage alloc] init];
-        back = [UIImage imageNamed:@"back.png"];
-        [ self.player.view.doneButton setImage:back forState:UIControlStateNormal];
-        self.player.isFullScreen = TRUE;
-    }
-    else{
-       
-    }
+    self.player.view.doneButton.hidden = FALSE;
+    // if (!self.player.isFullScreen) {
+    self.player.view.frame = playerRect;
+    NSLog(@"Player Height : %f", self.player.view.frame.size.height);
+    NSLog(@"NOT FULLSCREEN");
+    self.player.view.doneButton.frame = doneButtonPortRect;
+    UIImage *back = [[UIImage alloc] init];
+    back = [UIImage imageNamed:@"back.png"];
+    [ self.player.view.doneButton setImage:back forState:UIControlStateNormal];
+    //self.player.isFullScreen = TRUE;
+    //    }
+    //    else{
+    //
+    //    }
     self.player.view.playerControlsAutoHideTime = @5;
     self.player.forceRotate = YES;
-    self.player.view.fullscreenButton.hidden = false;
+    self.player.view.fullscreenButton.hidden = FALSE;
     self.player.view.nextButton.hidden = TRUE;
     self.player.view.rewindButton.hidden = TRUE;
     self.player.view.isControlsEnabled = FALSE;
     self.player.view.bottomControlOverlay.hidden = FALSE;
     self.player.view.topControlOverlay.hidden = FALSE;
     self.player.view.videoQualityButton.hidden = TRUE;
- 
-     [self.player.view.totalTimeLabel setFrameOriginX:CGRectGetWidth(self.player.view.bottomControlOverlay.frame) - self.player.view.totalTimeLabel.frame.size.width - self.player.view.fullscreenButton.frame.size.width - 5];
-  
-
-
-
+    
+    [self.player.view.totalTimeLabel setFrameOriginX:CGRectGetWidth(self.player.view.bottomControlOverlay.frame) - self.player.view.totalTimeLabel.frame.size.width - self.player.view.fullscreenButton.frame.size.width - 5];
+    
+    
+    
+    
     
     propViewPort = [[UIView alloc] initWithFrame:propViewPortRect];
     propViewPort.backgroundColor = [UIColor blackColor];
     
-  //[self.player.view addSubviewForControl:propViewPort toView:self.view];
+    //[self.player.view addSubviewForControl:propViewPort toView:self.view];
     [self.view addSubview:propViewPort];
     [self.view addSubview:self.player.view];
     
@@ -410,19 +599,19 @@
     topView = [[UIView alloc] initWithFrame:topViewPortRect];
     topView.backgroundColor = [UIColor blackColor];
     [topView addSubview:self.player.view.doneButton];
-   // [self.player.view addSubviewForControl:topView toView:self.view];
+    // [self.player.view addSubviewForControl:topView toView:self.view];
     [self.view addSubview:topView];
     
     font = [UIFont fontWithName:@"Helvetica" size:fontSize];
-    steamingTitle = [[UILabel alloc] initWithFrame:vdoLabelPortRect];
-    steamingTitle.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    streamingTitle = [[UILabel alloc] initWithFrame:vdoLabelPortRect];
+    streamingTitle.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     //steamingTitle.text = self.objStreaming.streamTitle;
     
-    steamingTitle.textColor = [UIColor whiteColor];
-    steamingTitle.backgroundColor = [UIColor clearColor];
-    steamingTitle.textAlignment = NSTextAlignmentLeft;
-    steamingTitle.font =  [UIFont fontWithName:@"Helvetica" size: fontSize];
+    streamingTitle.textColor = [UIColor whiteColor];
+    streamingTitle.backgroundColor = [UIColor clearColor];
+    streamingTitle.textAlignment = NSTextAlignmentLeft;
+    streamingTitle.font =  [UIFont fontWithName:@"Helvetica" size: fontSize];
     
     lblcategoryDesc = [[UILabel alloc] initWithFrame:lblcategoryDescRect];
     lblcategoryDesc.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -431,38 +620,38 @@
     lblcategoryDesc.backgroundColor = [UIColor clearColor];
     lblcategoryDesc.textAlignment = NSTextAlignmentLeft;
     lblcategoryDesc.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 2];
-
+    
     lblcategoryType = [[UILabel alloc] initWithFrame:lblcategoryTypeRect];
     lblcategoryType.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-//  lblcategoryType.text = self.objStreaming.categoryName;
+    //  lblcategoryType.text = self.objStreaming.categoryName;
     lblcategoryType.textColor = [UIColor redColor];
     lblcategoryType.backgroundColor = [UIColor clearColor];
     lblcategoryType.textAlignment = NSTextAlignmentLeft;
     lblcategoryType.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 2];
-
-   //
+    
+    //
     CGFloat scy = (1024.0/480.0);
     CGFloat scx = (768.0/360.0);
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
-        [self.player.view addSubviewForControl:steamingTitle toView:topView];
+        [self.player.view addSubviewForControl:streamingTitle toView:topView];
         [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
         [self.player.view addSubviewForControl:lblcategoryType toView:topView];
         self.player.view.topControlOverlay.hidden = TRUE;
-    
+        
     }
     else{
         self.player.view.topControlOverlay.hidden = FALSE;
-        [self.player.view.topControlOverlay addSubview:steamingTitle];
+        [self.player.view.topControlOverlay addSubview:streamingTitle];
         [self.player.view.topControlOverlay addSubview:lblcategoryDesc];
         [self.player.view.topControlOverlay addSubview:lblcategoryType];
-    
+        
     }
-
+    
     lblLocationDesc = [[UILabel alloc] initWithFrame:lblLocationDescRect];
     lblLocationDesc.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     lblLocationDesc.text = @"Location : " ;
     lblLocationDesc.textColor = [UIColor grayColor];
-                                 //colorWithRed:0.241 green:0.241 blue:0.241 alpha:1];
+    //colorWithRed:0.241 green:0.241 blue:0.241 alpha:1];
     lblLocationDesc.backgroundColor = [UIColor clearColor];
     lblLocationDesc.textAlignment = NSTextAlignmentLeft;
     lblLocationDesc.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 2];
@@ -487,7 +676,7 @@
     btnLove = [[UIButton alloc] initWithFrame:btnLovePortRect];
     btnLove.userInteractionEnabled = YES;
     [btnLove setImage:[UIImage imageNamed:@"ic_love.png"] forState:UIControlStateNormal];
-
+    
     [topView addSubview:btnLove];
     
     
@@ -519,7 +708,7 @@
     
     lblViewCount = [[UILabel alloc] initWithFrame:lblViewCountPortRect];
     lblViewCount.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-//    lblViewCount.text = self.objStreaming.streamTotalView;
+    //    lblViewCount.text = self.objStreaming.streamTotalView;
     lblViewCount.textColor = [UIColor whiteColor];
     lblViewCount.backgroundColor = [UIColor clearColor];
     lblViewCount.textAlignment = NSTextAlignmentLeft;
@@ -540,7 +729,7 @@
     //[propViewPort addSubview:btnLove];
     
     loveCount = [[UITextField alloc] initWithFrame:lblLoveCountPortRect];
-//    [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
+    //    [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
     loveCount.textColor = [UIColor whiteColor];
     //  loveCount.backgroundColor = [UIColor whiteColor];
     loveCount.textAlignment = NSTextAlignmentLeft;
@@ -550,15 +739,15 @@
     
     
     
-//    NSLog(@"isLove : %d",self.objStreaming.isLoved);
-//    if (self.objStreaming.isLoved)
-//    {
-//        [btnLove setImage:[UIImage imageNamed:@"ic_love2.png"] forState:UIControlStateNormal];
-//    }
-//    else
-//    {
-//       [btnLove setImage:[UIImage imageNamed:@"ic_love.png"] forState:UIControlStateNormal];
-//    }
+    //    NSLog(@"isLove : %d",self.objStreaming.isLoved);
+    //    if (self.objStreaming.isLoved)
+    //    {
+    //        [btnLove setImage:[UIImage imageNamed:@"ic_love2.png"] forState:UIControlStateNormal];
+    //    }
+    //    else
+    //    {
+    //       [btnLove setImage:[UIImage imageNamed:@"ic_love.png"] forState:UIControlStateNormal];
+    //    }
     
     
     
@@ -566,7 +755,7 @@
                                        initWithTarget:self action:@selector(loveSend:)];
     [TapLove setNumberOfTouchesRequired:1];
     [TapLove setDelegate:self];
-
+    
     
     UITapGestureRecognizer* TapLogin = [[UITapGestureRecognizer alloc]
                                         initWithTarget:self action:@selector(login:)];
@@ -578,14 +767,14 @@
         TapLove.enabled = NO;
         TapLogin.enabled = YES;
         [btnLove addGestureRecognizer:TapLogin];
-
+        
     }
     else{
         NSLog(@"login");
         [btnLove addGestureRecognizer:TapLove];
         TapLove.enabled = YES;
         TapLogin.enabled = NO;
-          }
+    }
     
     UITapGestureRecognizer* TapShare = [[UITapGestureRecognizer alloc]
                                         initWithTarget:self action:@selector(shareStream:)];//Here should be actionViewTap:
@@ -612,21 +801,21 @@
     
     lblCommentCount = [[UILabel alloc] initWithFrame:lblCommentCountPortRect];
     lblCommentCount.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-//    lblCommentCount.text = (self.objStreaming.count_comment != nil)?[NSString stringWithFormat:@"%@" ,self.objStreaming.count_comment]:@"0";
+    //    lblCommentCount.text = (self.objStreaming.count_comment != nil)?[NSString stringWithFormat:@"%@" ,self.objStreaming.count_comment]:@"0";
     lblCommentCount.textColor = [UIColor whiteColor];
     lblCommentCount.backgroundColor = [UIColor clearColor];
     lblCommentCount.textAlignment = NSTextAlignmentLeft;
     lblCommentCount.font = font;
     [propViewPort addSubview:lblCommentCount];
     
-//    NSLog(@"Lat %@ Long %@",self.objStreaming.latitude,self.objStreaming.longitude);
-//    NSString *mapURL = [@"https://maps.googleapis.com/maps/api/staticmap?center=" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:[@"&zoom=15&size=800x150&markers=color:red%7C" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:@"&key=AIzaSyAimot0aIsIsItn1F_BYXy6YVG-2Jc8MYs"]]]]]]]];
+    //    NSLog(@"Lat %@ Long %@",self.objStreaming.latitude,self.objStreaming.longitude);
+    //    NSString *mapURL = [@"https://maps.googleapis.com/maps/api/staticmap?center=" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:[@"&zoom=15&size=800x150&markers=color:red%7C" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:@"&key=AIzaSyAimot0aIsIsItn1F_BYXy6YVG-2Jc8MYs"]]]]]]]];
     
-//    NSLog(@"Map URL : %@",mapURL);
+    //    NSLog(@"Map URL : %@",mapURL);
     mapImg = [[UIImageView alloc] initWithFrame:mapImgRect];
-//    mapImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:mapURL]]];
+    //    mapImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:mapURL]]];
     mapImg.backgroundColor = [UIColor greenColor];
-//    [scrollView addSubview:mapImg];
+    //    [scrollView addSubview:mapImg];
     
     
     profileView = [[UIView alloc] initWithFrame:profileViewRect];
@@ -639,7 +828,7 @@
     [profileView addSubview:avatarImg];
     
     usernameLbl = [[UILabel alloc]initWithFrame:usernameLblRect];
-   // usernameLbl.text = self.objStreaming.streamUserName;
+    // usernameLbl.text = self.objStreaming.streamUserName;
     usernameLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize];
     usernameLbl.textColor = [UIColor whiteColor];
     [profileView addSubview:usernameLbl];
@@ -649,13 +838,13 @@
     followerLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 2];
     followerLbl.textColor = [UIColor grayColor];
     [profileView addSubview:followerLbl];
-
+    
     followerCountLbl = [[UILabel alloc]initWithFrame:followerCountLblRect];
-//    followerCountLbl.text = self.objStreaming.streamUserFollowerCount;
+    //    followerCountLbl.text = self.objStreaming.streamUserFollowerCount;
     followerCountLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 2];
     followerCountLbl.textColor = [UIColor redColor];
     [profileView addSubview:followerCountLbl];
-
+    
     [scrollView addSubview:profileView];
     
     tableHeaderView = [[UIView alloc] initWithFrame:tableHeaderViewRect];
@@ -680,7 +869,7 @@
     categoryDescLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize - 2];
     categoryDescLbl.textColor = [UIColor grayColor];
     [tableHeaderView addSubview:categoryDescLbl];
-
+    
     [scrollView addSubview:tableHeaderView];
     
     
@@ -690,15 +879,15 @@
     [liveIncategoryTbl registerClass:UITableViewCell.self forCellReuseIdentifier:@"cell"];
     
     
-//    moreBtn = [[UIButton alloc] initWithFrame: moreBtnRect];
-//    moreBtn.layer.borderWidth = 1;
-//    moreBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
-//    moreBtn.backgroundColor = [UIColor redColor];
-//    moreBtn.layer.cornerRadius = moreBtnRect.size.height/2;
-//    moreBtn.clipsToBounds = YES;
-//    [moreBtn setTitle:@"Live Around" forState:UIControlStateNormal];
-//    [moreBtn addTarget:self action:@selector(clickmore:) forControlEvents:UIControlEventTouchUpInside];
-//    [scrollView addSubview:moreBtn];
+    livearoungBtn = [[UIButton alloc] initWithFrame: moreBtnRect];
+    livearoungBtn.layer.borderWidth = 1;
+    livearoungBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    livearoungBtn.backgroundColor = [UIColor redColor];
+    livearoungBtn.layer.cornerRadius = moreBtnRect.size.height/2;
+    livearoungBtn.clipsToBounds = YES;
+    [livearoungBtn setTitle:@"Live Around" forState:UIControlStateNormal];
+    [livearoungBtn addTarget:self action:@selector(clickmore:) forControlEvents:UIControlEventTouchUpInside];
+    [scrollView addSubview:livearoungBtn];
     
     
     
@@ -707,27 +896,27 @@
     
     
     //    chatboxTxt = [[UITextField alloc] initWithFrame:chatboxTxtPortRect];
-//    chatboxTxt.borderStyle = UITextBorderStyleNone;
-//    chatboxTxt.textColor = [UIColor whiteColor];
-//    chatboxTxt.layer.cornerRadius = 5;
-//    chatboxTxt.clipsToBounds = TRUE;
-//    chatboxTxt.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent: 0.7];
-//    chatboxTxt.placeholder = @"Say Something";
-//    // chatboxTxt.placeholder = [UIColor whiteColor];
-//    chatboxTxt.enabled = TRUE;
-//    [chatView addSubview:chatboxTxt];
-//    
-//    sendchatBtn = [[UIButton alloc] initWithFrame:sendchatBtnPortRect];
-//    sendchatBtn.titleLabel.text = @"send";
-//    sendchatBtn.backgroundColor = [UIColor greenColor];
-//    sendchatBtn.layer.cornerRadius = 5;
-//    sendchatBtn.clipsToBounds = TRUE;
-//    [chatView addSubview:sendchatBtn];
-//    
-//    //obj for tableview chat
-//    [chatTbl registerClass:UITableViewCell.self forCellReuseIdentifier:@"cell"];
-//    //  chatplaceView = [[UIView alloc] initWithFrame:CGRectMake(42, 2 ,chatTblRect.size.width - 44, cellH - 4)];
-
+    //    chatboxTxt.borderStyle = UITextBorderStyleNone;
+    //    chatboxTxt.textColor = [UIColor whiteColor];
+    //    chatboxTxt.layer.cornerRadius = 5;
+    //    chatboxTxt.clipsToBounds = TRUE;
+    //    chatboxTxt.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent: 0.7];
+    //    chatboxTxt.placeholder = @"Say Something";
+    //    // chatboxTxt.placeholder = [UIColor whiteColor];
+    //    chatboxTxt.enabled = TRUE;
+    //    [chatView addSubview:chatboxTxt];
+    //
+    //    sendchatBtn = [[UIButton alloc] initWithFrame:sendchatBtnPortRect];
+    //    sendchatBtn.titleLabel.text = @"send";
+    //    sendchatBtn.backgroundColor = [UIColor greenColor];
+    //    sendchatBtn.layer.cornerRadius = 5;
+    //    sendchatBtn.clipsToBounds = TRUE;
+    //    [chatView addSubview:sendchatBtn];
+    //
+    //    //obj for tableview chat
+    //    [chatTbl registerClass:UITableViewCell.self forCellReuseIdentifier:@"cell"];
+    //    //  chatplaceView = [[UIView alloc] initWithFrame:CGRectMake(42, 2 ,chatTblRect.size.width - 44, cellH - 4)];
+    
 }
 
 - (void)setVideoData
@@ -740,7 +929,7 @@
     
     [self setSocket:[self.objStreaming.ID intValue]];
     
-    steamingTitle.text = self.objStreaming.streamTitle;
+    streamingTitle.text = self.objStreaming.streamTitle;
     lblcategoryType.text = self.objStreaming.categoryName;
     lblViewCount.text = self.objStreaming.streamTotalView;
     [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
@@ -756,17 +945,17 @@
     
     NSString *mapURL = [@"https://maps.googleapis.com/maps/api/staticmap?center=" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:[@"&zoom=15&size=800x150&markers=color:red%7C" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:@"&key=AIzaSyAimot0aIsIsItn1F_BYXy6YVG-2Jc8MYs"]]]]]]]];
     mapImg.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:mapURL]]];
-//    [scrollView removeFromSuperview];
+    //    [scrollView removeFromSuperview];
     if(([self.objStreaming.latitude doubleValue] != 0.0 ) && ([self.objStreaming.longitude doubleValue] != 0.0))
     {
         [scrollView reloadInputViews];
         NSLog(@"set map lat : %f long : %f",[self.objStreaming.latitude doubleValue],[self.objStreaming.longitude doubleValue]);
         [scrollView addSubview:mapImg];
-        [scrollView addSubview:moreBtn];
+        [scrollView addSubview:livearoungBtn];
         
     }
     else{
-
+        
         [scrollView reloadInputViews];
         [scrollView setFrame:CGRectMake(0, -mapImgRect.size.height, self.view.bounds.size.height,  self.view.bounds.size.height-(-mapImgRect.size.height))];
     }
@@ -813,55 +1002,61 @@
 
 - (void)clickmore :(id)sender{
     NSLog(@"GO LIVEAROUND");
-    LiveAroundViewController *livearound = [self.storyboard instantiateViewControllerWithIdentifier:@"livearound"];
-    livearound.objStreaming = self.objStreaming;
-
+ LivearoundGooglemapViewController *livearound = [self.storyboard instantiateViewControllerWithIdentifier:@"livearoundGGmap"];
     
-    NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,10,5,1];
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        if (success) {
-            
-
-//            NSLog(@"filter LiveAround Data : %@",streamRecords);
-            livearound.rowIndex = 0;
-            livearound.liveAroundData = streamRecords;
-            [self presentViewController: livearound animated: YES completion:nil];
-
-            
-        } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
-        }
-        
-    } Filter:filter];
+    //    livearound.objStreaming = self.objStreaming;
+    //
+    //
+    //    NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,10,5,1];
+    //    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    //    [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
+    //        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    //        if (success) {
+    //
+    //
+    ////            NSLog(@"filter LiveAround Data : %@",streamRecords);
+    //            livearound.rowIndex = 0;
+    //     livearound.liveAroundData = streamRecords;
+[self presentViewController: livearound animated: YES completion:nil];
     
     
+    ////        } else {
+    //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    //            [alert show];
+    //        }
+    //
+    //    } Filter:filter];
+    //
     
-//
-//    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-//        //Background Thread
-//        [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
-//            
-//            if (success) {
-//                
-//            } else {
-//                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//                [alert show];
-//            }
-//            
-//        } Filter:filter];
-//        
-//        dispatch_async(dispatch_get_main_queue(), ^(void){
-//            //Run UI Updates
-//            
-//            
-//        });
-//        
-//    });
     
-
+    
+    
+    
+    
+    
+    //
+    //    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+    //        //Background Thread
+    //        [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
+    //
+    //            if (success) {
+    //
+    //            } else {
+    //                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    //                [alert show];
+    //            }
+    //
+    //        } Filter:filter];
+    //
+    //        dispatch_async(dispatch_get_main_queue(), ^(void){
+    //            //Run UI Updates
+    //
+    //
+    //        });
+    //
+    //    });
+    
+    
 }
 
 - (void)initialSize {
@@ -872,9 +1067,9 @@
     CGFloat imgHeight;
     CGFloat width = [[UIScreen mainScreen] bounds].size.width ;
     CGFloat height = [[UIScreen mainScreen] bounds].size.height;
-
+    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-         bottomHeight = 100.0 * scy;
+        bottomHeight = 100.0 * scy;
         NSLog(@"TOPVIEW ::: %.2f",topviewCtr);
         fontSize = 14.0*scy;
         cellH = 100*scy;
@@ -882,7 +1077,7 @@
         
         
         
-       
+        
         playerRect = CGRectMake(0*scx, 50*scy, width, 150*scy);
         topViewPortRect = CGRectMake(0*scx, 0*scy, playerRect.size.width, 50*scy);
         
@@ -916,13 +1111,13 @@
         imgViewIconPortRect = CGRectMake(10*scx, 10 *scy, 20*scx, 20*scy);
         
         lblViewCountPortRect = CGRectMake(imgViewIconPortRect.origin.x + (25*scx), 13*scy , 40*scx, 15*scy);
-      
+        
         imgCommentPortRect =  CGRectMake(lblViewCountPortRect.origin.x + (45*scx) , 10*scy,20*scx,20*scy);
         lblCommentCountPortRect = CGRectMake(imgCommentPortRect.origin.x + (25*scx), 13*scy , 40*scx, 15*scy);
         
         imgLoveIconPortRect = CGRectMake(lblCommentCountPortRect.origin.x + (45*scx),10*scy ,20*scx,20*scy);
         lblLoveCountPortRect = CGRectMake(imgLoveIconPortRect.origin.x + (25*scx) , 13*scy, 40*scx, 15*scy);
-
+        
         mapImgRect = CGRectMake(0*scx,propViewPortRect.origin.y + propViewPortRect.size.height, self.view.bounds.size.width, 70*scy);
         liveAroundBtnRect = CGRectMake(mapImgRect.size.width/2 - (40*scx), mapImgRect.size.height/2 - (15*scy), 80*scx, 30*scy);
         
@@ -932,11 +1127,11 @@
         iconCategoryImgRect = CGRectMake(tableHeaderViewRect.size.width/2 - (20*scx), tableHeaderViewRect.size.height/2 - (40*scy), 40*scx, 40*scy);
         categoryTypeLblRect = CGRectMake(0*scx, tableHeaderViewRect.size.height/2 + fontSize/2, self.view.bounds.size.width, fontSize);
         categoryDescLblRect = CGRectMake(0*scx, categoryTypeLblRect.origin.y + categoryTypeLblRect.size.height + fontSize/2, self.view.bounds.size.width, fontSize - 2);
-
+        
         
         liveIncategoryTblRect = CGRectMake(0*scx, tableHeaderViewRect.origin.y + tableHeaderViewRect.size.height , self.view.bounds.size.width ,cellH*3);
         AvatarRect = CGRectMake(10*scx, profileViewRect.size.height/2 - (20*scy) , 40*scx , 40*scy);
-
+        
         usernameLblRect = CGRectMake(60*scx, profileViewRect.size.height/2 - fontSize, 200*scx, fontSize+(1*scy));
         followerLblRect = CGRectMake(60*scx, profileViewRect.size.height/2 + (5*scy) , 60*scx , fontSize - 2);
         followerCountLblRect = CGRectMake(120*scx , profileViewRect.size.height/2 + (5*scy) , 50*scx , fontSize - 2);
@@ -944,32 +1139,32 @@
         liveSnapshortImgRect = CGRectMake(10 *scx, 10*scy , self.view.bounds.size.width/2 - (40*scx) , cellH - (20*scy));
         
         waterMarkRect = CGRectMake((liveSnapshortImgRect.size.width) - (imgHeight+(5*scx)), (liveSnapshortImgRect.size.height)-(imgHeight+(5*scy)), imgHeight, imgHeight);
-
+        
         streamTitleCellLblRect = CGRectMake(self.view.bounds.size.width/2 - (20*scx), cellH/4 - (fontSize), self.view.bounds.size.width/2, fontSize+(2*scy));
         categoryTitleCellLblRect =  CGRectMake(self.view.bounds.size.width/2 - (20*scx), cellH/2 - (fontSize), 60*scy, fontSize);
         categoryTypeCellLblRect = CGRectMake(self.view.bounds.size.width/2 + (40*scx), cellH/2 - (fontSize), 100*scx, fontSize);
         imgLoveCellRect = CGRectMake(self.view.bounds.size.width/2 - (20*scx), cellH - (30*scy), 20*scx, 20*scy);
         loveCountCellLblRect = CGRectMake(self.view.bounds.size.width/2 + (5*scx) , cellH - (25*scy), 50*scx, fontSize);
         userAvatarCellimgRect = CGRectMake(self.view.bounds.size.width - (50*scx), cellH - (50*scy) , 40*scx, 40*scy);
-
+        
         moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - (60*scx), mapImgRect.origin.y +mapImgRect.size.height/2, 120*scx, 30*scy);
         
     } else {
-       
+        
         NSLog(@"TOPVIEW ::: %.2f",topviewCtr);
         fontSize = 14.0;
         cellH = 100;
         imgHeight = 30.0;
-       
-    
+        
+        
         topViewLandRect = CGRectMake(0, 0 , self.view.bounds.size.width, 30);
         playerRect = CGRectMake(0, 50, width, 200);
         playerLandRect = CGRectMake(0, 100, width, height - 100);
         topViewPortRect = CGRectMake(0, 0,playerRect.size.width, 50);
-
-
+        
+        
         imgPinPortRect = CGRectMake(10,topViewPortRect.size.height/2 - 13, 25, 25);
-       
+        
         doneButtonPortRect = CGRectMake(10, topViewPortRect.size.height/2 - 10 , 30, 30);
         vdoLabelPortRect = CGRectMake(10 ,5 , 200, 20);
         lblcategoryDescRect = CGRectMake(10 , 25, 60, 15);
@@ -983,7 +1178,7 @@
         shareBtnPortRect = CGRectMake(propViewPortRect.size.width - 35 ,  10 , 25 , 25);
         shareimgPortRect = CGRectMake(0, 0, shareBtnPortRect.size.width, shareBtnPortRect.size.height);
         btnLovePortRect = CGRectMake(topViewPortRect.size.width - 45 ,topViewPortRect.size.height/2 - 18 ,35,35);
-  
+        
         btnLoveLandRect = CGRectMake(height - 45 , 5 , 35, 35);
         
         heartimgPortRect = CGRectMake(0, 0, btnLovePortRect.size.width , btnLovePortRect.size.height );
@@ -991,11 +1186,11 @@
         imgViewIconPortRect = CGRectMake(10, 10 , 20, 20);
         
         lblViewCountPortRect = CGRectMake(imgViewIconPortRect.origin.x + 25, 13 , 40, 15);
-
+        
         
         imgCommentPortRect =  CGRectMake(lblViewCountPortRect.origin.x + 45 , 10 ,20,20);
         lblCommentCountPortRect = CGRectMake(imgCommentPortRect.origin.x + 25, 13 , 40, 15);
-
+        
         imgLoveIconPortRect = CGRectMake(lblCommentCountPortRect.origin.x + 45,10 ,20,20);
         lblLoveCountPortRect = CGRectMake(imgLoveIconPortRect.origin.x + 25 , 13, 40, 15);
         
@@ -1010,7 +1205,7 @@
         iconCategoryImgRect = CGRectMake(tableHeaderViewRect.size.width/2 - 20, tableHeaderViewRect.size.height/2 - 40, 40, 40);
         categoryTypeLblRect = CGRectMake(0, tableHeaderViewRect.size.height/2 + fontSize/2, self.view.bounds.size.width, fontSize);
         categoryDescLblRect = CGRectMake(0, categoryTypeLblRect.origin.y + categoryTypeLblRect.size.height + fontSize/2, self.view.bounds.size.width, fontSize - 2);
-
+        
         
         liveIncategoryTblRect = CGRectMake(0, tableHeaderViewRect.origin.y + tableHeaderViewRect.size.height , self.view.bounds.size.width ,cellH*3);
         AvatarRect = CGRectMake(10, profileViewRect.size.height/2 - 20 , 40 , 40);
@@ -1020,21 +1215,21 @@
         followerCountLblRect = CGRectMake(110 , profileViewRect.size.height/2 + 5 , 50 , fontSize - 2);
         
         liveSnapshortImgRect = CGRectMake(10 , 10 , self.view.bounds.size.width/2 - 40 , cellH - 20);
-      
+        
         waterMarkRect = CGRectMake((liveSnapshortImgRect.size.width) - (imgHeight+5), (liveSnapshortImgRect.size.height)-(imgHeight+5), imgHeight, imgHeight);
         
-         streamTitleCellLblRect = CGRectMake(self.view.bounds.size.width/2 - 20, cellH/4 - (fontSize/2), self.view.bounds.size.width/2, fontSize+2);
-         categoryTitleCellLblRect =  CGRectMake(self.view.bounds.size.width/2 - 20, cellH/2 - (fontSize), 60, fontSize);
-         categoryTypeCellLblRect = CGRectMake(self.view.bounds.size.width/2 + 40, cellH/2 - (fontSize), 100, fontSize);
-         imgLoveCellRect = CGRectMake(self.view.bounds.size.width/2 - 20, cellH - 30, 20, 20);
-         loveCountCellLblRect = CGRectMake(self.view.bounds.size.width/2 + 5 , cellH - 25, 50, fontSize);
-         userAvatarCellimgRect = CGRectMake(self.view.bounds.size.width - 50, cellH - 50 , 40, 40);
+        streamTitleCellLblRect = CGRectMake(self.view.bounds.size.width/2 - 20, cellH/4 - (fontSize/2), self.view.bounds.size.width/2, fontSize+2);
+        categoryTitleCellLblRect =  CGRectMake(self.view.bounds.size.width/2 - 20, cellH/2 - (fontSize), 60, fontSize);
+        categoryTypeCellLblRect = CGRectMake(self.view.bounds.size.width/2 + 40, cellH/2 - (fontSize), 100, fontSize);
+        imgLoveCellRect = CGRectMake(self.view.bounds.size.width/2 - 20, cellH - 30, 20, 20);
+        loveCountCellLblRect = CGRectMake(self.view.bounds.size.width/2 + 5 , cellH - 25, 50, fontSize);
+        userAvatarCellimgRect = CGRectMake(self.view.bounds.size.width - 50, cellH - 50 , 40, 40);
         
         
         
-         moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - 60,mapImgRect.origin.y +mapImgRect.size.height/2 , 120, 30);
+        moreBtnRect = CGRectMake(self.view.bounds.size.width/2 - 60,mapImgRect.origin.y +mapImgRect.size.height/2 , 120, 30);
         
-
+        
     }
 }
 
@@ -1070,13 +1265,13 @@
     //[self.navigationController setNavigationBarHidden:TRUE];
     //self.navigationController.navigationBar.barTintColor = [UIColor blueColor];
     /*
-    if (self.interfaceOrientation == UIInterfaceOrientationPortrait || self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
-        NSLog(@"UIInterfaceOrientationIsPortrait");
-        //self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"portraitBG.png"]];
-    } else {
-        //self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"landscapeBG.png"]];
-        NSLog(@"UIInterfaceOrientationIsLandscape");
-    }
+     if (self.interfaceOrientation == UIInterfaceOrientationPortrait || self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+     NSLog(@"UIInterfaceOrientationIsPortrait");
+     //self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"portraitBG.png"]];
+     } else {
+     //self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"landscapeBG.png"]];
+     NSLog(@"UIInterfaceOrientationIsLandscape");
+     }
      */
 }
 
@@ -1086,7 +1281,7 @@
     
     
     [self playStream:[NSURL URLWithString:self.objStreaming.streamUrl]];
-   
+    
 }
 
 - (void)playStream:(NSURL*)url {
@@ -1097,27 +1292,27 @@
     
     NSLog(@"playStream");
     
-   [self.player loadVideoWithTrack:track];
-   
-//    self.player.state = VKVideoPlayerStateContentPaused;
-
+    [self.player loadVideoWithTrack:track];
+    
+    //    self.player.state = VKVideoPlayerStateContentPaused;
+    
 }
 
 - (void)addLabel {
-
     
-   }
+    
+}
 - (void)login:(id)sender
 {
     UIAlertView *Alert = [[UIAlertView alloc] initWithTitle:@"Please Login" message:@"" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [Alert show];
     
-//     UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)sender;
-//    NSLog(@"is not login ");
-//    UIViewController *stream = [[UIViewController alloc] init];
-//    stream = [self.storyboard instantiateViewControllerWithIdentifier:@"loginnav"];
-//    stream.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-//    [self presentViewController:stream animated:YES completion:Nil];
+    //     UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)sender;
+    //    NSLog(@"is not login ");
+    //    UIViewController *stream = [[UIViewController alloc] init];
+    //    stream = [self.storyboard instantiateViewControllerWithIdentifier:@"loginnav"];
+    //    stream.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    //    [self presentViewController:stream animated:YES completion:Nil];
 }
 - (void)startChat:(UIButton *)sender
 {
@@ -1153,11 +1348,11 @@
             
             NSLog(@"loveSendresult : %@",result);
             if ([result[@"message"] isEqualToString:@"Success"]) {
-            self.objStreaming.lovesCount = [result[@"data"][@"count"] integerValue];
-            [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
-            [btnLove setImage:[UIImage imageNamed:@"ic_love2.png"] forState:UIControlStateNormal];
-            self.objStreaming.isLoved = true;
-            
+                self.objStreaming.lovesCount = [result[@"data"][@"count"] integerValue];
+                [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
+                [btnLove setImage:[UIImage imageNamed:@"ic_love2.png"] forState:UIControlStateNormal];
+                self.objStreaming.isLoved = true;
+                
             }
             // [self viewDidLoad];
             
@@ -1168,11 +1363,11 @@
             
             NSLog(@"unloveloveSendresult : %@",result);
             if ([result[@"message"] isEqualToString:@"Success"]) {
-            self.objStreaming.lovesCount = [result[@"data"][@"count"] integerValue];
-            [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
-           [btnLove setImage:[UIImage imageNamed:@"ic_love.png"] forState:UIControlStateNormal];
-            //[self viewDidLoad];
-            self.objStreaming.isLoved = false;
+                self.objStreaming.lovesCount = [result[@"data"][@"count"] integerValue];
+                [loveCount setText:[NSString stringWithFormat:@"%ld",(long)self.objStreaming.lovesCount]];
+                [btnLove setImage:[UIImage imageNamed:@"ic_love.png"] forState:UIControlStateNormal];
+                //[self viewDidLoad];
+                self.objStreaming.isLoved = false;
             }
         }];
     }
@@ -1182,10 +1377,10 @@
 
 - (void)goComment:(id)sender{
     NSLog(@"GO COMMENT");
-//    UIViewController *commentVC = [[UIViewController alloc] init];
-//      CommentViewController *comment = [self.storyboard instantiateViewControllerWithIdentifier:@"commentNav"];
-//    [self presentViewController:comment animated:YES completion:nil];
-
+    //    UIViewController *commentVC = [[UIViewController alloc] init];
+    //      CommentViewController *comment = [self.storyboard instantiateViewControllerWithIdentifier:@"commentNav"];
+    //    [self presentViewController:comment animated:YES completion:nil];
+    
 }
 - (void)goProfile:(id)sender{
     NSLog(@"GO PROFILE");
@@ -1228,61 +1423,81 @@
              */
         }
         else {
-//            [self dismissViewControllerAnimated:YES completion:nil];
+            //            [self dismissViewControllerAnimated:YES completion:nil];
             [[NSNotificationCenter defaultCenter]
              postNotificationName:@"refresh"
              object:nil];
             [videoPlayer pauseContent:YES completionHandler:nil];
         }
         [self dismissViewControllerAnimated:YES completion:nil];
-    
+        
     } else if (event == VKVideoPlayerControlEventTapFullScreen) {
-            if (self.player.isFullScreen) {
+        if (self.player.isFullScreen) {
             NSLog(@"11");
             // Land
-            self.player.view.doneButton.hidden = TRUE;
-            self.player.view.topControlOverlay.hidden = FALSE;
-            [ self.player.view.topControlOverlay addSubview:btnLove];
-            [btnLove setFrame:btnLoveLandRect];
             
-            topView.hidden = TRUE;
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                self.player.view.topControlOverlay.hidden = TRUE;
+                [topView setFrameWidth:[UIScreen mainScreen].bounds.size.height];
+                [btnLove setFrame:CGRectMake(topView.bounds.size.width - 110, 10, 100, 100)];
+                [topView addSubview:btnLove];
+                topView.hidden = FALSE;
+                
+            }
+            else {
+                self.player.view.topControlOverlay.hidden = FALSE;
+                [btnLove setFrame:btnLoveLandRect];
+                [ self.player.view.topControlOverlay addSubview:btnLove];
+                topView.hidden = TRUE;
+            }
+            
+            self.player.view.doneButton.hidden = TRUE;
             self.player.view.videoQualityButton.hidden = TRUE;
             self.player.isFullScreen = false;
         }
         else{
             ///////////////////// Port ///////////////////////////
             NSLog(@"12");
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                self.player.view.topControlOverlay.hidden = TRUE;
+                [self.player.view addSubviewForControl:streamingTitle toView:topView];
+                [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
+                [self.player.view addSubviewForControl:lblcategoryType toView:topView];
+                
+            }
+            else {
+                
+                self.player.view.topControlOverlay.hidden = FALSE;
+                [self.view setFrameHeight:self.view.bounds.size.height];
+                
+            }
+            
+            [self.player.view setFrame: playerRect];
             [topView setFrame: topViewPortRect];
             self.player.view.doneButton.hidden = FALSE;
             self.player.view.fullscreenButton.hidden = FALSE ;
-            self.player.view.topControlOverlay.hidden = FALSE;
-            [self.view setFrameHeight:self.view.bounds.size.height];
-            
-            [self.player.view setFrame: playerRect];
             [btnLove setFrame:btnLovePortRect];
             [topView addSubview:btnLove];
             topView.hidden = FALSE;
             self.player.isFullScreen = true;
-          
-
         }
-
-
+        
+        
     }
     
     
 }
 
-    
-- (void)videoPlayer:(VKVideoPlayer*)videoPlayer didPlayToEnd:(id<VKVideoPlayerTrackProtocol>)track{
 
+- (void)videoPlayer:(VKVideoPlayer*)videoPlayer didPlayToEnd:(id<VKVideoPlayerTrackProtocol>)track{
+    
     NSLog(@"This live stream has finished");
 }
 
 -(void)shareAction:(id)sender
 {
     
-
+    
     
     NSString * shareUrl = self.objStreaming.streamUrl;
     
@@ -1295,7 +1510,7 @@
     
     UIActivityViewController * avc = [[UIActivityViewController alloc] initWithActivityItems:shareItems applicationActivities:nil];
     [self presentViewController:avc animated:YES completion:nil];
-     
+    
     
     //self.objStreaming.streamUrl
 }
@@ -1309,10 +1524,10 @@
 //    if (orientation == UIInterfaceOrientationLandscapeLeft || orientation ==
 //        UIInterfaceOrientationLandscapeRight) {
 //        NSLog(@"UIInterfaceOrientationIsPortrait 1");
-//        
+//
 //        //    [self setPortrait];
-//        
-//        
+//
+//
 //        ///////////////////// Port ///////////////////////////
 //        NSLog(@"กลับหลังจากเอียงซ้าย");
 //        NSLog(@"กลับหลังจากเอียงขวา");
@@ -1342,7 +1557,7 @@
 //        self.player.isFullScreen = true;
 //        // [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
 //        //self.player.view.frame = CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height/2);
-//        
+//
 //    }
 //    else if (orientation == UIInterfaceOrientationMaskPortrait){
 //        NSLog(@"UIInterfaceOrientationMaskPortrait 22");
@@ -1352,16 +1567,16 @@
 //        self.player.view.topControlOverlay.hidden = FALSE;
 //        [ self.player.view.topControlOverlay addSubview:btnLove];
 //        [btnLove setFrame:btnLoveLandRect];
-//        
+//
 //        topView.hidden = TRUE;
 //        self.player.view.videoQualityButton.hidden = TRUE;
 //        self.player.isFullScreen = false;
-//        
-//        
+//
+//
 //    }
-//    
+//
 //    else {
-//        
+//
 //        if (self.player.isFullScreen) {
 //            NSLog(@"เอียงซ้าย มาที่นี่");
 //            NSLog(@"เอียงขวา มาที่นี่");
@@ -1371,20 +1586,20 @@
 //            self.player.view.topControlOverlay.hidden = FALSE;
 //            [ self.player.view.topControlOverlay addSubview:btnLove];
 //            [btnLove setFrame:btnLoveLandRect];
-//            
+//
 //            topView.hidden = TRUE;
 //            self.player.view.videoQualityButton.hidden = TRUE;
 //            self.player.isFullScreen = false;
-//            
-//            
+//
+//
 //        }
 //        else{
 //            NSLog(@"UIInterfaceOrientationIsLandscape");
-//            
+//
 //            //   [self setPortrait];
 //            ///////////////////// Port ///////////////////////////
 //            NSLog(@"Port didload");
-////            
+////
 ////                        [topView setFrame: topViewPortRect];
 ////                        self.player.view.doneButton.hidden = FALSE;
 ////                        self.player.view.topControlOverlay.hidden = FALSE;
@@ -1394,107 +1609,107 @@
 ////                        [topView addSubview:btnLove];
 ////                        topView.hidden = FALSE;
 ////                        self.player.isFullScreen = true;
-//            
+//
 //        }
-//        
-//        
+//
+//
 //    }
-//    
-//    
+//
+//
 //}
 //
 //
 /*
-- (UIImage*)circularScaleNCrop:(UIImage*)image andRect:(CGRect)rect{
-    // This function returns a newImage, based on image, that has been:
-    // - scaled to fit in (CGRect) rect
-    // - and cropped within a circle of radius: rectWidth/2
-    
-    //Create the bitmap graphics context
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(rect.size.width, rect.size.height), NO, 0.0);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    //Get the width and heights
-    CGFloat imageWidth = image.size.width;
-    CGFloat imageHeight = image.size.height;
-    CGFloat rectWidth = rect.size.width;
-    CGFloat rectHeight = rect.size.height;
-    
-    //Calculate the scale factor
-    CGFloat scaleFactorX = rectWidth/imageWidth;
-    CGFloat scaleFactorY = rectHeight/imageHeight;
-    
-    //Calculate the centre of the circle
-    CGFloat imageCentreX = rectWidth/2;
-    CGFloat imageCentreY = rectHeight/2;
-    
-    // Create and CLIP to a CIRCULAR Path
-    // (This could be replaced with any closed path if you want a different shaped clip)
-    CGFloat radius = rectWidth/2;
-    CGContextBeginPath (context);
-    CGContextAddArc (context, imageCentreX, imageCentreY, radius, 0, 2*M_PI, 0);
-    CGContextClosePath (context);
-    CGContextClip (context);
-    
-    //Set the SCALE factor for the graphics context
-    //All future draw calls will be scaled by this factor
-    CGContextScaleCTM (context, scaleFactorX, scaleFactorY);
-    
-    // Draw the IMAGE
-    CGRect myRect = CGRectMake(0, 0, imageWidth, imageHeight);
-    [image drawInRect:myRect];
-    
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return newImage;
-}
-*/
+ - (UIImage*)circularScaleNCrop:(UIImage*)image andRect:(CGRect)rect{
+ // This function returns a newImage, based on image, that has been:
+ // - scaled to fit in (CGRect) rect
+ // - and cropped within a circle of radius: rectWidth/2
+ 
+ //Create the bitmap graphics context
+ UIGraphicsBeginImageContextWithOptions(CGSizeMake(rect.size.width, rect.size.height), NO, 0.0);
+ CGContextRef context = UIGraphicsGetCurrentContext();
+ 
+ //Get the width and heights
+ CGFloat imageWidth = image.size.width;
+ CGFloat imageHeight = image.size.height;
+ CGFloat rectWidth = rect.size.width;
+ CGFloat rectHeight = rect.size.height;
+ 
+ //Calculate the scale factor
+ CGFloat scaleFactorX = rectWidth/imageWidth;
+ CGFloat scaleFactorY = rectHeight/imageHeight;
+ 
+ //Calculate the centre of the circle
+ CGFloat imageCentreX = rectWidth/2;
+ CGFloat imageCentreY = rectHeight/2;
+ 
+ // Create and CLIP to a CIRCULAR Path
+ // (This could be replaced with any closed path if you want a different shaped clip)
+ CGFloat radius = rectWidth/2;
+ CGContextBeginPath (context);
+ CGContextAddArc (context, imageCentreX, imageCentreY, radius, 0, 2*M_PI, 0);
+ CGContextClosePath (context);
+ CGContextClip (context);
+ 
+ //Set the SCALE factor for the graphics context
+ //All future draw calls will be scaled by this factor
+ CGContextScaleCTM (context, scaleFactorX, scaleFactorY);
+ 
+ // Draw the IMAGE
+ CGRect myRect = CGRectMake(0, 0, imageWidth, imageHeight);
+ [image drawInRect:myRect];
+ 
+ UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+ UIGraphicsEndImageContext();
+ 
+ return newImage;
+ }
+ */
 /*
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    if(UIInterfaceOrientationIsPortrait(toInterfaceOrientation)){
-        //self.view = portraitView;
-        //[self changeTheViewToPortrait:YES andDuration:duration];
-        
-        NSLog(@"UIInterfaceOrientationIsPortrait");
-        
-    }
-    else if(UIInterfaceOrientationIsLandscape(toInterfaceOrientation)){
-        //self.view = landscapeView;
-        //[self changeTheViewToPortrait:NO andDuration:duration];
-        NSLog(@"UIInterfaceOrientationIsLandscape");
-    }
-}
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) interfaceOrientation duration:(NSTimeInterval)duration {
-    if (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation ==
-        UIInterfaceOrientationPortraitUpsideDown) {
-        //[brownBackground setImage:[UIImage imageNamed:@"Portrait_Background.png"]];
-        NSLog(@"UIInterfaceOrientationIsPortrait");
-    } else {
-        //[brownBackground setImage:[UIImage imageNamed:@"Landscape_Background.png"]];
-        NSLog(@"UIInterfaceOrientationIsLandscape");
-    }
-}
-
--(void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
-    if (size.width > size.height) {
-        NSLog(@"UIInterfaceOrientationIsLandscape");
-    } else {
-            NSLog(@"UIInterfaceOrientationIsPortrait");
-    }
-}
-*/
+ - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+ [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+ if(UIInterfaceOrientationIsPortrait(toInterfaceOrientation)){
+ //self.view = portraitView;
+ //[self changeTheViewToPortrait:YES andDuration:duration];
+ 
+ NSLog(@"UIInterfaceOrientationIsPortrait");
+ 
+ }
+ else if(UIInterfaceOrientationIsLandscape(toInterfaceOrientation)){
+ //self.view = landscapeView;
+ //[self changeTheViewToPortrait:NO andDuration:duration];
+ NSLog(@"UIInterfaceOrientationIsLandscape");
+ }
+ }
+ 
+ - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) interfaceOrientation duration:(NSTimeInterval)duration {
+ if (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation ==
+ UIInterfaceOrientationPortraitUpsideDown) {
+ //[brownBackground setImage:[UIImage imageNamed:@"Portrait_Background.png"]];
+ NSLog(@"UIInterfaceOrientationIsPortrait");
+ } else {
+ //[brownBackground setImage:[UIImage imageNamed:@"Landscape_Background.png"]];
+ NSLog(@"UIInterfaceOrientationIsLandscape");
+ }
+ }
+ 
+ -(void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+ if (size.width > size.height) {
+ NSLog(@"UIInterfaceOrientationIsLandscape");
+ } else {
+ NSLog(@"UIInterfaceOrientationIsPortrait");
+ }
+ }
+ */
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 //#init tableview
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
@@ -1524,27 +1739,27 @@
     
     
     
-
+    
     
     
     
     cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     liveSnapshortImg = [[UIImageView alloc] initWithFrame:liveSnapshortImgRect];
-//    liveSnapshortImg.backgroundColor = [UIColor greenColor];
+    //    liveSnapshortImg.backgroundColor = [UIColor greenColor];
     
     
     liveSnapshortImg.image = [UIImage imageNamed:@"sil_big.jpg"];
     
-//    NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:stream.snapshot]];
-//    UIImage *image=[UIImage imageWithData:data];
-//    if (image==nil) {
-//        //yourImageURL is not valid
-//        NSLog(@"liveSnapshortImg Invalid");
-//        liveSnapshortImg.image = [UIImage imageNamed:@"sil_big.jpg"];
-//    }
-//    else{
-//        NSLog(@"liveSnapshortImg valid");//        liveSnapshortImg.image = image;
-//    }
+    //    NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:stream.snapshot]];
+    //    UIImage *image=[UIImage imageWithData:data];
+    //    if (image==nil) {
+    //        //yourImageURL is not valid
+    //        NSLog(@"liveSnapshortImg Invalid");
+    //        liveSnapshortImg.image = [UIImage imageNamed:@"sil_big.jpg"];
+    //    }
+    //    else{
+    //        NSLog(@"liveSnapshortImg valid");//        liveSnapshortImg.image = image;
+    //    }
     HNKCacheFormat *format = [HNKCache sharedCache].formats[@"thumbnail"];
     if (!format)
     {
@@ -1587,16 +1802,16 @@
     imgLoveCell = [[UIImageView alloc] initWithFrame:imgLoveCellRect];
     imgLoveCell.image = [UIImage imageNamed:@"ic_love2.png"];
     imgLoveCell.contentMode = UIViewContentModeScaleAspectFit;
-      [cell.contentView addSubview:imgLoveCell];
+    [cell.contentView addSubview:imgLoveCell];
     
     loveCountCellLbl = [[UILabel alloc] initWithFrame:loveCountCellLblRect];
     loveCountCellLbl.textColor = [UIColor redColor];
     loveCountCellLbl.text = [NSString stringWithFormat:@"%ld",(long)stream.lovesCount];
     loveCountCellLbl.font = [UIFont fontWithName:@"Helvetica" size:fontSize-2];
     [cell.contentView addSubview:loveCountCellLbl];
-
     
-
+    
+    
     
     userAvatarCellimg = [[UIImageView alloc] initWithFrame:userAvatarCellimgRect];
     userAvatarCellimg.image = [UIImage imageNamed:@"anonymous.png"];
@@ -1613,25 +1828,47 @@
 - (void)scrollViewDidScroll:(UIScrollView *)sender {
     
     if (scrollView.contentOffset.y == 0) {
-        self.player.view.topControlOverlay.hidden = FALSE;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            
+            self.player.view.topControlOverlay.hidden = TRUE;
+            streamingTitle.hidden = FALSE;
+            lblcategoryDesc.hidden = FALSE;
+            lblcategoryType.hidden = FALSE;
+        }
+        else{
+            self.player.view.topControlOverlay.hidden = FALSE;
+            
+        }
         self.player.view.bottomControlOverlay.hidden = FALSE;
     }
     else{
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            streamingTitle.hidden = TRUE;
+            lblcategoryDesc.hidden = TRUE;
+            lblcategoryType.hidden = TRUE;
+        }
+        else{
+            
+            streamingTitle.hidden = FALSE;
+            lblcategoryDesc.hidden = FALSE;
+            lblcategoryType.hidden = FALSE;
+        }
         self.player.view.topControlOverlay.hidden = TRUE;
         self.player.view.bottomControlOverlay.hidden = TRUE;
+        
     }
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-
-//   UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)indexPath;
-//    NSLog (@"Tag Playyyyy %ld",[tapRecognizer.view tag]);
+    
+    //   UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)indexPath;
+    //    NSLog (@"Tag Playyyyy %ld",[tapRecognizer.view tag]);
     //    UserTag = [tapRecognizer.view tag];
     NSInteger playTag = [indexPath row];
-
-
+    
+    
     self.objStreaming = [self.streamList objectAtIndex:playTag];
-       [self.view reloadInputViews];
-
+    [self.view reloadInputViews];
+    
     
     NSLog(@"Select");
     [socket on:@"ack-connected" callback:^(NSArray* data, SocketAckEmitter* ack) {
@@ -1641,8 +1878,8 @@
     }];
     self.objStreaming = [_streamList objectAtIndex:indexPath.row];
     
-//    self.player.state = VKVideoPlayerStateContentPaused;
-//    [socket disconnect];
+    //    self.player.state = VKVideoPlayerStateContentPaused;
+    //    [socket disconnect];
     [socket on:@"ack-connected" callback:^(NSArray* data, SocketAckEmitter* ack) {
         NSLog(@"socket connected %@",data);
         NSString* roomName = [@"streaming/" stringByAppendingString:[NSString stringWithFormat:@"%d",[self.objStreaming.ID intValue]]];
@@ -1651,7 +1888,7 @@
     
     [self playSampleClip1];
     [self setVideoData];
-//    [self initial];
+    //    [self initial];
     
     
 }
@@ -1667,8 +1904,8 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-        return cellH ;
- }
+    return cellH ;
+}
 
 -(BOOL) textFieldShouldReturn: (UITextField *) textField
 {
@@ -1732,9 +1969,9 @@
 {
     NSLog(@"setSocket RoomID : %d",roomID);
     NSURL* url = [[NSURL alloc] initWithString:SocketURL];
-//    socket
+    //    socket
     socket = [[SocketIOClient alloc] initWithSocketURL:url options:nil];
-
+    
     [socket joinNamespace:@"/websocket"];
     
     [socket on:@"ack-connected" callback:^(NSArray* data, SocketAckEmitter* ack) {
@@ -1757,7 +1994,7 @@
     
     [socket on:@"message:new" callback:^(NSArray* data, SocketAckEmitter* ack) {
         NSLog(@"HandlingEvent : %@",data);
-
+        
     }];
     [socket connect];
     //    NSArray *room = @[self.roomNameTxt.text];
@@ -1780,13 +2017,13 @@
              
              // you have the address.
              // do something with it.
-//             NSLog(@"Address : %@ placemark : %@",address,placemark);
+             //             NSLog(@"Address : %@ placemark : %@",address,placemark);
              if(([placemark administrativeArea] != nil)&&([placemark locality] != nil))
              {
-//                 NSLog(@"[placemark administrativeArea] : %@",[placemark administrativeArea]);
-                lblLocationLive.text = address;
+                 //                 NSLog(@"[placemark administrativeArea] : %@",[placemark administrativeArea]);
+                 lblLocationLive.text = address;
              }
-
+             
          }
      }];
 }
@@ -1798,7 +2035,7 @@
     NSLog(@"ADView Notiname: %@",[refreshName name]);
     if ([[refreshName name] isEqualToString:@"refresh"])
     {
-
+        
         
         [self.view reloadInputViews];
     }
