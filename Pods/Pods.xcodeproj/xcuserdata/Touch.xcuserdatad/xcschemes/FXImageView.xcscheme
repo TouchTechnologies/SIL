@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5FF458FB55E7C0BA390CB4F4"
+               BlueprintIdentifier = "012F6AE124932FD0D960D708"
                BuildableName = "libFXImageView.a"
                BlueprintName = "FXImageView"
                ReferencedContainer = "container:Pods.xcodeproj">

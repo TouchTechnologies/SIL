@@ -38,6 +38,7 @@ target 'SeeItLiveThailand' do
     #mapView
     pod 'GoogleMaps'
     pod 'Google-Maps-iOS-Utils'
+    pod 'GooglePlaces'
     
 end
 

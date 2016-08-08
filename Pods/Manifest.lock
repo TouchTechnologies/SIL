@@ -99,6 +99,8 @@ PODS:
     - GoogleMaps/Base (= 2.0.1)
   - GoogleNetworkingUtilities (1.2.0):
     - GoogleSymbolUtilities (~> 1.0)
+  - GooglePlaces (2.0.1):
+    - GoogleMaps/Base (= 2.0.1)
   - GoogleSymbolUtilities (1.1.0)
   - GoogleUtilities (1.2.0):
     - GoogleSymbolUtilities (~> 1.0)
@@ -142,6 +144,7 @@ DEPENDENCIES:
   - Google-Maps-iOS-Utils
   - Google/Analytics
   - GoogleMaps
+  - GooglePlaces
   - Haneke
   - Harpy
   - KKGridView
@@ -178,6 +181,7 @@ SPEC CHECKSUMS:
   GoogleInterchangeUtilities: 427382e42d8a340038bec37c6fdfd316e14b5fa2
   GoogleMaps: f09da64fc987c1aa29394567c3cab5a3df83c402
   GoogleNetworkingUtilities: ec1e9911aca811eb18b7144394fee6168b607785
+  GooglePlaces: 72fab1d1651c6df0322f2aad245ffb15b80d3c56
   GoogleSymbolUtilities: eb3965ea12710569c7b80db198a39e39b18613f7
   GoogleUtilities: 85f8ad6b251544286a97163133d042ec95f889c5
   Haneke: d60be8b96b228633b24708dd153169d6849d6f78

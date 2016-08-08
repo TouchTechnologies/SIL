@@ -54,7 +54,7 @@ GMSMarker *marker;
     _mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
     _mapView.myLocationEnabled = NO;
     //_myMapView = _mapView;
-    myGGmapView = _mapView;
+    self.view = _mapView;
     
 }
 

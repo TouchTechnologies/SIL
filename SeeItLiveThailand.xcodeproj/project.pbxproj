@@ -198,6 +198,8 @@
 		F3145F121C464BF600BDCACA /* ic_start.png in Resources */ = {isa = PBXBuildFile; fileRef = F3145F101C464BF600BDCACA /* ic_start.png */; };
 		F3145F131C464BF600BDCACA /* ic_stops.png in Resources */ = {isa = PBXBuildFile; fileRef = F3145F111C464BF600BDCACA /* ic_stops.png */; };
 		F31691EE1D48C59600ACB6CA /* commentviewcelliPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F31691ED1D48C59600ACB6CA /* commentviewcelliPad.xib */; };
+		F31712901D583CA300252124 /* GoogleMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F317128F1D583CA300252124 /* GoogleMapView.xib */; };
+		F31712961D58410400252124 /* googleMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = F31712951D58410400252124 /* googleMapView.m */; };
 		F318B88B1CD3480E00FCC0BF /* anonymous.png in Resources */ = {isa = PBXBuildFile; fileRef = F318B88A1CD3480E00FCC0BF /* anonymous.png */; };
 		F318B8911CD36BA300FCC0BF /* CategoryLiveCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F318B8901CD36BA300FCC0BF /* CategoryLiveCell.m */; };
 		F318B8941CD3716500FCC0BF /* CategoryTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F318B8931CD3716500FCC0BF /* CategoryTypeViewController.m */; };
@@ -620,6 +622,9 @@
 		F3145F101C464BF600BDCACA /* ic_start.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_start.png; path = Image/ic_start.png; sourceTree = "<group>"; };
 		F3145F111C464BF600BDCACA /* ic_stops.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_stops.png; path = Image/ic_stops.png; sourceTree = "<group>"; };
 		F31691ED1D48C59600ACB6CA /* commentviewcelliPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = commentviewcelliPad.xib; sourceTree = "<group>"; };
+		F317128F1D583CA300252124 /* GoogleMapView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GoogleMapView.xib; sourceTree = "<group>"; };
+		F31712941D58410400252124 /* googleMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = googleMapView.h; sourceTree = "<group>"; };
+		F31712951D58410400252124 /* googleMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = googleMapView.m; sourceTree = "<group>"; };
 		F318B88A1CD3480E00FCC0BF /* anonymous.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = anonymous.png; path = Image/anonymous.png; sourceTree = "<group>"; };
 		F318B88F1CD36BA300FCC0BF /* CategoryLiveCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryLiveCell.h; sourceTree = "<group>"; };
 		F318B8901CD36BA300FCC0BF /* CategoryLiveCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryLiveCell.m; sourceTree = "<group>"; };
@@ -1057,6 +1062,9 @@
 				363AA53B1D06AD3F006A99CC /* liveAroundAnnotationCell.h */,
 				363AA53C1D06AD4C006A99CC /* liveAroundAnnotationCell.m */,
 				F31691ED1D48C59600ACB6CA /* commentviewcelliPad.xib */,
+				F317128F1D583CA300252124 /* GoogleMapView.xib */,
+				F31712941D58410400252124 /* googleMapView.h */,
+				F31712951D58410400252124 /* googleMapView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1777,6 +1785,7 @@
 				F3AC52511C98107900E8D06E /* fa_default_background_default.png in Resources */,
 				36785BBA1C292E6F004E77BE /* ic_new_goto_newmore.png in Resources */,
 				F36AABC61C8E74CE000B7BFE /* Plus-50.png in Resources */,
+				F31712901D583CA300252124 /* GoogleMapView.xib in Resources */,
 				369EADD81C2A89D500CC811E /* ButtonCell.xib in Resources */,
 				36785B881C29260C004E77BE /* mappin.png in Resources */,
 				F3B0DAF21C3FBADD00B8E797 /* icon_H.png in Resources */,
@@ -1881,6 +1890,7 @@
 				36785BE21C293398004E77BE /* ContactViewController.m in Sources */,
 				36CD93321C8031E000E5A414 /* ModelManager.m in Sources */,
 				36448ADE1CA90B32007A4AB4 /* SocketEngineWebsocket.swift in Sources */,
+				F31712961D58410400252124 /* googleMapView.m in Sources */,
 				36CD933A1C8032A600E5A414 /* Util.m in Sources */,
 				36448ADC1CA90B32007A4AB4 /* SocketEnginePollable.swift in Sources */,
 				36448ADD1CA90B32007A4AB4 /* SocketEngineSpec.swift in Sources */,

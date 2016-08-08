@@ -1485,18 +1485,8 @@
                     <view key="view" contentMode="scaleToFill" id="VMn-f9-0ek">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" id="Lcf-0H-Phe">
-                                <rect key="frame" x="0.0" y="45" width="320" height="269"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.1450980392" green="0.38823529410000002" blue="0.64313725489999995" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <connections>
-                        <outlet property="myGGmapView" destination="Lcf-0H-Phe" id="CI0-5L-KRk"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gyo-6e-pRs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2491,7 +2481,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6CD-Fp-Zgp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2181" y="3101"/>
+            <point key="canvasLocation" x="2130" y="3089"/>
         </scene>
     </scenes>
     <resources>
