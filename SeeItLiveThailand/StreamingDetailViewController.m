@@ -1002,31 +1002,33 @@
 
 - (void)clickmore :(id)sender{
     NSLog(@"GO LIVEAROUND");
- LivearoundGooglemapViewController *livearound = [self.storyboard instantiateViewControllerWithIdentifier:@"livearoundGGmap"];
+ LiveAroundViewController *livearound = [self.storyboard instantiateViewControllerWithIdentifier:@"livearound"];
     
-    //    livearound.objStreaming = self.objStreaming;
-    //
-    //
-    //    NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,10,5,1];
-    //    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    //    [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
-    //        [MBProgressHUD hideHUDForView:self.view animated:YES];
-    //        if (success) {
-    //
-    //
-    ////            NSLog(@"filter LiveAround Data : %@",streamRecords);
-    //            livearound.rowIndex = 0;
-    //     livearound.liveAroundData = streamRecords;
-[self presentViewController: livearound animated: YES completion:nil];
+        livearound.objStreaming = self.objStreaming;
     
     
-    ////        } else {
-    //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-    //            [alert show];
-    //        }
-    //
-    //    } Filter:filter];
-    //
+        NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,10,5,1];
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            if (success) {
+    
+    
+         NSLog(@"filter LiveAround Data : %@",streamRecords);
+                livearound.rowIndex = 0;
+         livearound.liveAroundData = streamRecords;
+        
+                
+         [self presentViewController: livearound animated: YES completion:nil];
+    
+    
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+            }
+    
+        } Filter:filter];
+    
     
     
     

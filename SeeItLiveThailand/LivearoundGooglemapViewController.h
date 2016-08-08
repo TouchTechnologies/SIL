@@ -11,8 +11,7 @@
 @interface LivearoundGooglemapViewController : UIViewController
 {
 
-    __weak IBOutlet UIView *myGGmapView;
-
+    __weak IBOutlet UIView *myview;
 }
 
 @end

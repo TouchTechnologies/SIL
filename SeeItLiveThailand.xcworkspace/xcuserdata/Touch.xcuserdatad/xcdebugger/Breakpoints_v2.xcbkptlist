@@ -970,7 +970,7 @@
                   moduleName = "SeeItLiveThailand"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Touch/Documents/TouchGit/SIL/SeeItLiveThailand/LiveStreamVC.swift"
-                  timestampString = "492321293.923999"
+                  timestampString = "492336215.666469"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "312"
@@ -985,7 +985,7 @@
                   moduleName = "SeeItLiveThailand"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Touch/Documents/TouchGit/SIL/SeeItLiveThailand/LiveStreamVC.swift"
-                  timestampString = "492321293.924212"
+                  timestampString = "492336215.666678"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "312"
@@ -1000,7 +1000,7 @@
                   moduleName = "SeeItLiveThailand"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Touch/Documents/TouchGit/SIL/SeeItLiveThailand/LiveStreamVC.swift"
-                  timestampString = "492321293.924422"
+                  timestampString = "492336215.666826"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "312"
@@ -1511,7 +1511,7 @@
                   moduleName = "SeeItLiveThailand"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Touch/Documents/TouchGit/SIL/SeeItLiveThailand/StreamHistoryViewController.m"
-                  timestampString = "492321293.961136"
+                  timestampString = "492336215.682784"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "76"
@@ -1526,7 +1526,7 @@
                   moduleName = "SeeItLiveThailand"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Touch/Documents/TouchGit/SIL/SeeItLiveThailand/StreamHistoryViewController.m"
-                  timestampString = "492321293.961266"
+                  timestampString = "492336215.682907"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "76"
@@ -1543,27 +1543,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/LiveAroundViewController.m"
-            timestampString = "490260397.608327"
+            timestampString = "492335595.411302"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "704"
-            endingLineNumber = "704"
-            landmarkName = "-mapView:viewForAnnotation:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SeeItLiveThailand/LiveAroundViewController.m"
-            timestampString = "490004954.8959"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "199"
-            endingLineNumber = "199"
+            startingLineNumber = "234"
+            endingLineNumber = "234"
             landmarkName = "-initial"
             landmarkType = "5">
          </BreakpointContent>
@@ -1575,27 +1559,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/LiveAroundViewController.m"
-            timestampString = "489992820.845966"
+            timestampString = "492335595.411302"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "120"
-            endingLineNumber = "120"
-            landmarkName = "@implementation LiveAroundViewController"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SeeItLiveThailand/LiveAroundViewController.m"
-            timestampString = "489992820.845966"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "155"
-            endingLineNumber = "155"
+            startingLineNumber = "190"
+            endingLineNumber = "190"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -1607,27 +1575,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/LiveAroundViewController.m"
-            timestampString = "490260397.608327"
+            timestampString = "492346408.155201"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "731"
-            endingLineNumber = "731"
-            landmarkName = "-mapView:didSelectAnnotationView:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SeeItLiveThailand/LiveAroundViewController.m"
-            timestampString = "490260397.608327"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "808"
-            endingLineNumber = "808"
+            startingLineNumber = "867"
+            endingLineNumber = "867"
             landmarkName = "@implementation LiveAroundViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -1639,11 +1591,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/LiveAroundViewController.m"
-            timestampString = "490260397.608327"
+            timestampString = "492346408.155201"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "812"
-            endingLineNumber = "812"
+            startingLineNumber = "871"
+            endingLineNumber = "871"
             landmarkName = "@implementation LiveAroundViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -1655,27 +1607,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/LiveAroundViewController.m"
-            timestampString = "490260397.608327"
+            timestampString = "492346408.155201"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "727"
-            endingLineNumber = "727"
-            landmarkName = "-mapView:didDeselectAnnotationView:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SeeItLiveThailand/LiveAroundViewController.m"
-            timestampString = "490260397.608327"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "776"
-            endingLineNumber = "776"
+            startingLineNumber = "835"
+            endingLineNumber = "835"
             landmarkName = "@implementation LiveAroundViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -1687,11 +1623,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/LiveAroundViewController.m"
-            timestampString = "490260397.608327"
+            timestampString = "492346408.155201"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "790"
-            endingLineNumber = "790"
+            startingLineNumber = "849"
+            endingLineNumber = "849"
             landmarkName = "@implementation LiveAroundViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -1703,11 +1639,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/LiveAroundViewController.m"
-            timestampString = "490004954.8959"
+            timestampString = "492337701.296163"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "448"
-            endingLineNumber = "448"
+            startingLineNumber = "492"
+            endingLineNumber = "492"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1719,11 +1655,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/StreamingDetailViewController.m"
-            timestampString = "492063523.79863"
+            timestampString = "492333403.712627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2053"
-            endingLineNumber = "2053">
+            startingLineNumber = "2055"
+            endingLineNumber = "2055">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1733,11 +1669,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/StreamingDetailViewController.m"
-            timestampString = "492063523.79863"
+            timestampString = "492333403.712627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2059"
-            endingLineNumber = "2059">
+            startingLineNumber = "2061"
+            endingLineNumber = "2061">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1747,92 +1683,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/LiveAroundViewController.m"
-            timestampString = "490075345.060514"
+            timestampString = "492337701.296163"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "515"
-            endingLineNumber = "515"
+            startingLineNumber = "559"
+            endingLineNumber = "559"
             landmarkName = "-tableView:didSelectRowAtIndexPath:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SeeItLiveThailand/LiveAroundViewController.m"
-            timestampString = "490260397.608327"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "721"
-            endingLineNumber = "721"
-            landmarkName = "-mapView:viewForAnnotation:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SeeItLiveThailand/LiveAroundViewController.m"
-            timestampString = "490260397.608327"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "757"
-            endingLineNumber = "757"
-            landmarkName = "-resizeImage:imageSize:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SeeItLiveThailand/LiveAroundViewController.m"
-            timestampString = "490260397.608327"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "765"
-            endingLineNumber = "765"
-            landmarkName = "-mapView:annotationView:calloutAccessoryControlTapped:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SeeItLiveThailand/LiveAroundViewController.m"
-            timestampString = "490260397.608327"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "766"
-            endingLineNumber = "766"
-            landmarkName = "-mapView:annotationView:calloutAccessoryControlTapped:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SeeItLiveThailand/LiveAroundViewController.m"
-            timestampString = "490260397.608327"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "750"
-            endingLineNumber = "750"
-            landmarkName = "-mapView:didSelectAnnotationView:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1866,54 +1722,6 @@
             endingLineNumber = "193"
             landmarkName = "-initial"
             landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SeeItLiveThailand/LiveAroundViewController.m"
-            timestampString = "490259929.269854"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "583"
-            endingLineNumber = "583"
-            landmarkName = "-initPin:"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__36-[LiveAroundViewController initPin:]_block_invoke"
-                  moduleName = "SeeItLiveThailand"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Touch/Documents/TouchGit/SIL/SeeItLiveThailand/LiveAroundViewController.m"
-                  timestampString = "492321293.96331"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "586"
-                  endingLineNumber = "586"
-                  offsetFromSymbolStart = "907">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__36-[LiveAroundViewController initPin:]_block_invoke"
-                  moduleName = "SeeItLiveThailand"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Touch/Documents/TouchGit/SIL/SeeItLiveThailand/LiveAroundViewController.m"
-                  timestampString = "492321293.963457"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "586"
-                  endingLineNumber = "586"
-                  offsetFromSymbolStart = "915">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2356,28 +2164,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SeeItLiveThailand/LivearoundGooglemapViewController.m"
-            timestampString = "492323863.308638"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
-            landmarkName = "-loadView"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/LivearoundGooglemapViewController.h"
-            timestampString = "492321331.771864"
+            timestampString = "492324925.992602"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "15"
-            endingLineNumber = "15"
+            startingLineNumber = "13"
+            endingLineNumber = "13"
             landmarkName = "@interface LivearoundGooglemapViewController"
             landmarkType = "2">
          </BreakpointContent>
@@ -2388,13 +2180,45 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SeeItLiveThailand/LivearoundGooglemapViewController.m"
-            timestampString = "492323863.308638"
+            filePath = "SeeItLiveThailand/LiveAroundViewController.m"
+            timestampString = "492332533.720883"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
-            landmarkName = "-loadView"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "@interface POIItem"
+            landmarkType = "2">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SeeItLiveThailand/LiveAroundViewController.m"
+            timestampString = "492346408.155201"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "932"
+            endingLineNumber = "932"
+            landmarkName = "-mapView:didTapMarker:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SeeItLiveThailand/LiveAroundViewController.m"
+            timestampString = "492346408.155201"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "931"
+            endingLineNumber = "931"
+            landmarkName = "-mapView:didTapMarker:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
