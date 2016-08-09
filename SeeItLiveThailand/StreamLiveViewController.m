@@ -538,7 +538,7 @@
     //    userprofile.userID = stream.userID;
     //    [self.view.window.rootViewController presentViewController:userprofile animated:YES completion:nil];
     
-    [[UserManager shareIntance]followAPI:@"getfollow" userID:stream.userID Completion:^(NSError *error, NSDictionary *result, NSString *message) {
+        [[UserManager shareIntance]followAPI:@"getfollow" userID:stream.userID followingUserID:@"" Completion:^(NSError *error, NSDictionary *result, NSString *message) {
         NSLog(@"followAPIData %@ ",result);
         UserData *userData = [[UserData alloc] init];
         userData.userId = result[@"id"];

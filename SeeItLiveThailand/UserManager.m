@@ -725,7 +725,7 @@ static UserManager * shareObject;
 }
 //api/user/following/{id_user}
 
--(void)followAPI:(NSString*)apiName userID:(NSString*)userID Completion:(void (^)( NSError *error,NSDictionary * result, NSString * message))completion{
+-(void)followAPI:(NSString*)apiName userID:(NSString*)userID followingUserID:(NSString*)followingUserID Completion:(void (^)( NSError *error,NSDictionary * result, NSString * message))completion{
     AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
@@ -734,9 +734,9 @@ static UserManager * shareObject;
     [manager.requestSerializer setValue:appDelegate.access_token forHTTPHeaderField:@"X-TIT-ACCESS-TOKEN"];
     
     NSDictionary * param = @{};
-    
+    ///api/user/{id_user}/following/{id_following_user}
     if ([apiName isEqualToString:@"follow"]) {
-        NSString *apiLink = [@"api/user/following/" stringByAppendingString:userID];
+        NSString *apiLink = [@"api/user/" stringByAppendingString:[userID stringByAppendingString:[@"/following/" stringByAppendingString:followingUserID]]];
         NSLog(@"Full follow API : %@",apiLink);
         [manager POST:[service stringByAppendingString:apiLink] parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
             
@@ -748,7 +748,7 @@ static UserManager * shareObject;
         }];
     }else if ([apiName isEqualToString:@"unfollow"])
     {
-        NSString *apiLink = [@"api/user/following/" stringByAppendingString:userID];
+        NSString *apiLink = [@"api/user/" stringByAppendingString:[userID stringByAppendingString:[@"/following/" stringByAppendingString:followingUserID]]];
         NSLog(@"Full unfollow API : %@",apiLink);
         [manager DELETE:[service stringByAppendingString:apiLink] parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
             

@@ -46,7 +46,7 @@
 -(void)getMyStream:(NSString *)access_token Completion:(void (^)(NSError *, NSDictionary *, NSString *))completion;
 -(void)loveAPI:(NSString*)apiName streamID:(NSString*)streamID userID:(NSString*)userID Completion:(void (^)( NSError *error,NSDictionary * result, NSString * message))completion;
 -(void)commentAPI:(NSString*)apiName cctvID:(NSString*)cctvID data:(Comment *)data Completion:(void (^)( NSError *error,NSDictionary * result, NSString * message))completion;
--(void)followAPI:(NSString*)apiName userID:(NSString*)userID Completion:(void (^)( NSError *error,NSDictionary * result, NSString * message))completion;
+-(void)followAPI:(NSString*)apiName userID:(NSString*)userID followingUserID:(NSString*)followingUserID Completion:(void (^)( NSError *error,NSDictionary * result, NSString * message))completion;
 -(void)getStreamDataByID:(NSString*)apiName userID:(NSString*)userID Completion:(void (^)( NSError *error,NSArray * result, BOOL success))completion;
 @end
 #endif /* UserManager_h */

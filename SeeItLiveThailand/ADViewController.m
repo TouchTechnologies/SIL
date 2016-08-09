@@ -896,9 +896,8 @@
     NSInteger profileTag = [tapRecognizer.view tag];
     
     Streaming *stream = [self.streamList objectAtIndex:profileTag];
-    NSLog(@"userID : %@",stream.userID);
-    
-    [[UserManager shareIntance]followAPI:@"getfollow" userID:stream.userID Completion:^(NSError *error, NSDictionary *result, NSString *message) {
+//    NSLog(@"userID : %@",stream.userID);
+    [[UserManager shareIntance]followAPI:@"getfollow" userID:stream.userID followingUserID:@"" Completion:^(NSError *error, NSDictionary *result, NSString *message) {
         NSLog(@"followAPIData %@ ",result);
         UserData *userData = [[UserData alloc] init];
         userData.userId = result[@"id"];

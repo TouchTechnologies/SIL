@@ -424,7 +424,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         
         
         
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(LiveStreamVC.dismissKeyboard))
         self.view!.addGestureRecognizer(tap)
         //popUpViewCen!.addGestureRecognizer(tap)
         
