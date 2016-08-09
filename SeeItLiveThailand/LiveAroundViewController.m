@@ -246,11 +246,10 @@ GMSMarker *marker;
     //Google map///
     
     GMSCameraPosition *camera =
-    [GMSCameraPosition cameraWithLatitude:[self.objStreaming.latitude floatValue] longitude:[self.objStreaming.longitude floatValue] zoom:100];
+    [GMSCameraPosition cameraWithLatitude:[self.objStreaming.latitude floatValue] longitude:[self.objStreaming.longitude floatValue] zoom:10];
     
     _mapView = [GMSMapView mapWithFrame: self.myMapView.bounds camera:camera];
     _mapView.myLocationEnabled = NO;
-    //_myMapView = _mapView;
     [self.myMapView addSubview:_mapView];
     _mapView.delegate = self;
     
@@ -466,19 +465,6 @@ GMSMarker *marker;
 
     }
     
-//    NSLog(@"tabelView Data : %@",stream.streamTitle);
-    
-//    HNKCacheFormat *format = [HNKCache sharedCache].formats[@"thumbnail"];
-//    if (!format)
-//    {
-//        format = [[HNKCacheFormat alloc] initWithName:@"thumbnail"];
-//        format.size = CGSizeMake(320, 240);
-//        format.scaleMode = HNKScaleModeAspectFill;
-//        format.compressionQuality = 0.5;
-//        format.diskCapacity = 1 * 1024 * 1024; // 1MB
-//        format.preloadPolicy = HNKPreloadPolicyLastSession;
-//    }
-
     
     cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     imgSnapshotcell = [[UIImageView alloc] initWithFrame:imgSnapshotcellRect];
@@ -557,12 +543,13 @@ GMSMarker *marker;
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (cell == nil) {}
+    else{
+// scrollView.scrollsToTop = YES;
+//        pinChange = false;
+        [self changeLocation:[indexPath row]];    }
     NSLog(@"Select");
-//    scrollView.scrollsToTop = YES;
-    scrollView.contentOffset = CGPointZero;
-    NSInteger pageIndex = [indexPath row];
-    pinChange = false;
-    [self changeLocation:pageIndex];
+
   }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -606,9 +593,7 @@ GMSMarker *marker;
 //    }
 //     NSLog(@"ROWINDEX::: %ld",(long)_rowIndex);
   //  [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 100, 100)];
-    
-    
-}
+    }
 
 
 -(void)initPin:(NSInteger)rowIndex{
@@ -617,13 +602,21 @@ GMSMarker *marker;
         marker.position = CLLocationCoordinate2DMake([stream.latitude doubleValue], [stream.longitude doubleValue]);
         marker.title = stream.streamTitle;
         marker.map = _mapView;
+        marker.icon = [UIImage imageNamed:@"mappin.png"];
+        marker.tappable = YES;
+        NSLog(@"Long ::: %@",stream.longitude);
+        NSLog(@"Lat ::: %@", stream.latitude);
         
         
             NSLog(@"index idx %lu",(unsigned long)idx);
-        if (idx != rowIndex) {
-            NSLog(@"rowIndex idx %lu",(unsigned long)rowIndex);
+        if (idx == rowIndex) {
             
-//            DXAnnotation *annotation1 = [DXAnnotation new];
+            NSLog(@"rowIndex idx %lu",(unsigned long)rowIndex);
+              NSLog(@"USER ID DATA MARKER : %@",marker.userData);
+            marker.icon = [UIImage imageNamed:@"pin.png"];
+            _mapView.selectedMarker = marker;
+            marker.tappable = NO;
+            //            DXAnnotation *annotation1 = [DXAnnotation new];
 //            annotation1.tag = idx;
 //            //            annotation1.tag = [stream.ID integerValue];
 //            annotation1.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
@@ -631,43 +624,28 @@ GMSMarker *marker;
 //            [self.myMapView addAnnotation:annotation1];
 //            [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 1000, 1000)];
             
-            marker.icon = [UIImage imageNamed:@"mappin.png"];
-            NSLog(@"Long ::: %@",stream.longitude);
-            NSLog(@"Lat ::: %@", stream.latitude);
-            
             //  [snapshotDetailImg hnk_setImageFromURL:[NSURL URLWithString:stream.snapshot]];
             
         }
-        else{
+//        else{
 //            Streaming *stream = [self.liveAroundData objectAtIndex:rowIndex];
 //            
 //            marker = [[GMSMarker alloc]init];
 //            marker.position = CLLocationCoordinate2DMake([stream.latitude doubleValue], [stream.longitude doubleValue]);
 //            marker.title = stream.streamTitle;
-            marker.icon = [UIImage imageNamed:@"pin.png"];
-              _mapView.selectedMarker = marker;
+        
 //            marker.snippet =@"new york ,USA";
 //            marker.map = _mapView;
 //
         //            [self.myMapView addAnnotation:annoActive];
 //            [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annoActive.coordinate,1000, 1000)];
-            if(pinChange)
-            {
-  //              [_myMapView selectAnnotation:annoActive animated:YES];
-
-            }else
-            {
-//                int64_t delayInSeconds = 0.1;
-//                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-//                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-//                    [_myMapView selectAnnotation:annoActive animated:YES];
-//                });
-            }
-
-        }
+          
+ //       }
         pinCount++;
     }];
+    NSLog(@"PIN COUNT ::: %d",pinCount);
 }
+
 - (void)LoadMap{
    // [self.myMapView setDelegate:self];
     [self initPin:_rowIndex];
@@ -675,9 +653,9 @@ GMSMarker *marker;
 }
 - (void)changeLocation:(NSInteger)rowIndex{
     NSLog(@"changeLocation");
-    // pinCount = 0;
-    // [self.myMapView removeAnnotations:self.myMapView.annotations];
-     [self initPin:rowIndex];
+    pinCount = 0;
+    [_mapView clear];
+    [self initPin:rowIndex];
 }
 
 #pragma mark - ScrollView delegate
@@ -873,12 +851,15 @@ GMSMarker *marker;
 */
 /////////////////Google map///////////////
 - (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(GMSMarker *)marker{
+    Streaming* stream1 = [[Streaming alloc]init];
+    stream1 = [self.streamList objectAtIndex:_rowIndex];
+   
     NSLog(@"custom callout view");
     int popupWidth = 100;
     int contentWidth = 80;
     int contentHeight = 140;
     int contentPad = 10;
-    int popupHeight = 100;
+    int popupHeight = 70;
     int popupBottomPadding = 16;
     int popupContentHeight = contentHeight - popupBottomPadding;
     int buttonHeight = 30;
@@ -890,6 +871,13 @@ GMSMarker *marker;
     
     UIView *outerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, popupWidth, popupHeight)];
     [outerView setBackgroundColor:[UIColor redColor]];
+    
+    UIImageView *snap = [[UIImageView alloc] initWithFrame:outerView.bounds];
+    //snap.image = [UIImage imageNamed: @"sil_big.jpg"];
+    [snap hnk_setImageFromURL:[NSURL URLWithString:stream1.snapshot]];
+    [outerView addSubview:snap];
+    
+    
 //    float offSet = anchorSize * M_SQRT2;
 //    CGAffineTransform rotateBy45Degrees = CGAffineTransformMakeRotation(M_PI_4); //rotate by 45 degrees
 //    UIView *callOut = [[UIView alloc] initWithFrame:CGRectMake((popupWidth - offSet)/2.0, popupHeight - offSet, anchorSize, anchorSize)];
@@ -929,16 +917,26 @@ GMSMarker *marker;
 }
 
 - (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker {
-    //  POIItem *poiItem = marker.userData;
-//      if (_liveAroundData != nil) {
     
-    NSLog(@"Did tap marker for cluster item ");
-    marker.icon = [UIImage imageNamed:@"pin.png"];
-    [self mapView:mapView markerInfoWindow:marker];
-    mapView.selectedMarker = marker;
-//    } else {
-//        NSLog(@"Did tap a normal marker");
-//   }
+    NSLog(@"MARKER IS TAP %@",marker.isTappable? @"true":@"false");
+    NSLog(@"MARKER ID %@" , marker.userData);
+    
+    if ( marker.isTappable ) {
+        NSLog(@"Did tap marker for cluster item ");
+        marker.icon = [UIImage imageNamed:@"pin.png"];
+        [self mapView:mapView markerInfoWindow:marker];
+        mapView.selectedMarker = marker;
+        pinChange = YES;
+        marker.tappable = NO;
+
+    }
+    else{
+        marker.icon = [UIImage imageNamed:@"mappin.png"];
+        pinChange = NO;
+        marker.tappable = YES;
+    }
+    
+  
     return YES;
 }
 - (void)didReceiveMemoryWarning {
