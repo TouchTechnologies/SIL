@@ -18,7 +18,6 @@
 #import <DXAnnotationView.h>
 #import <DXAnnotationSettings.h>
 #import "StreamingDetailViewController.h"
-
 #import <Google-Maps-iOS-Utils/GMUMarkerClustering.h>
 #import <GoogleMaps/GoogleMaps.h>
 
@@ -182,6 +181,30 @@ GMSMarker *marker;
     scrollView.delegate = self;
     tableView.delegate = self;
     tableView.dataSource = self;
+    
+    
+    
+    
+    id<GMUClusterAlgorithm> algorithm = [[GMUNonHierarchicalDistanceBasedAlgorithm alloc] init];
+    id<GMUClusterIconGenerator> iconGenerator = [[GMUDefaultClusterIconGenerator alloc] init];
+    id<GMUClusterRenderer> renderer =
+    [[GMUDefaultClusterRenderer alloc] initWithMapView:_mapView
+                                  clusterIconGenerator:iconGenerator];
+    _clusterManager =
+    [[GMUClusterManager alloc] initWithMap:_mapView algorithm:algorithm renderer:renderer];
+    
+    // Generate and add random items to the cluster manager.
+ //   [self generateClusterItems];
+    
+    // Call cluster() after items have been added to perform the clustering and rendering on map.
+    [_clusterManager cluster];
+    
+    // Register self to listen to both GMUClusterManagerDelegate and GMSMapViewDelegate events.
+    [_clusterManager setDelegate:self mapDelegate:self];
+
+    
+    
+    
  // self.myMapView.delegate = self;
     
     
@@ -240,7 +263,7 @@ GMSMarker *marker;
     self.myMapView = [[UIView alloc] initWithFrame:mapViewRect];
     self.myMapView.backgroundColor = [UIColor greenColor];
     [scrollView addSubview:self.myMapView];
-    
+  
     
     
     //Google map///
@@ -485,8 +508,8 @@ GMSMarker *marker;
     [playStream setNumberOfTouchesRequired:1];
     [playStream setDelegate:self];
     imgSnapshotcell.userInteractionEnabled = YES;
-
     [imgSnapshotcell addGestureRecognizer:playStream];
+    
 //    [cell addGestureRecognizer:tapGestureRec];
     
 //  UITapGestureRecognizer* goProfile = [[UITapGestureRecognizer alloc]
@@ -547,7 +570,8 @@ GMSMarker *marker;
     else{
 // scrollView.scrollsToTop = YES;
 //        pinChange = false;
-        [self changeLocation:[indexPath row]];    }
+        [self changeLocation:[indexPath row]];
+    }
     NSLog(@"Select");
 
   }
@@ -597,8 +621,11 @@ GMSMarker *marker;
 
 
 -(void)initPin:(NSInteger)rowIndex{
+    
     [self.liveAroundData enumerateObjectsUsingBlock:^(Streaming *stream, NSUInteger idx, BOOL *stop) {
+        
         marker = [[GMSMarker alloc] init];
+        marker.zIndex = 0;
         marker.position = CLLocationCoordinate2DMake([stream.latitude doubleValue], [stream.longitude doubleValue]);
         marker.title = stream.streamTitle;
         marker.map = _mapView;
@@ -610,6 +637,7 @@ GMSMarker *marker;
         
             NSLog(@"index idx %lu",(unsigned long)idx);
         if (idx == rowIndex) {
+            _rowIndex = rowIndex;
             
             NSLog(@"rowIndex idx %lu",(unsigned long)rowIndex);
               NSLog(@"USER ID DATA MARKER : %@",marker.userData);
@@ -642,7 +670,11 @@ GMSMarker *marker;
           
  //       }
         pinCount++;
+        marker.zIndex++;
+        NSLog(@"MARKER INDEX ::: %d",marker.zIndex);
+
     }];
+    
     NSLog(@"PIN COUNT ::: %d",pinCount);
 }
 
@@ -915,28 +947,24 @@ GMSMarker *marker;
     return outerView;
     
 }
+#pragma mark GMUClusterManagerDelegate
+
+- (void)clusterManager:(GMUClusterManager *)clusterManager didTapCluster:(id<GMUCluster>)cluster {
+    GMSCameraPosition *newCamera =
+    [GMSCameraPosition cameraWithTarget:marker.position zoom:_mapView.camera.zoom + 1];
+    GMSCameraUpdate *update = [GMSCameraUpdate setCamera:newCamera];
+    [_mapView moveCamera:update];
+}
 
 - (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker {
+    //NSInteger rowIndex = marker.zIndex;
+   // marker.in
+  //  NSLog(@"MARKER IS TAP %@",marker.isTappable? @"true":@"false");
+    NSLog(@"MARKER ID %d" ,marker.zIndex);
+    pinCount = 0;
+    [_mapView clear];
+    [self initPin:marker.zIndex];
     
-    NSLog(@"MARKER IS TAP %@",marker.isTappable? @"true":@"false");
-    NSLog(@"MARKER ID %@" , marker.userData);
-    
-    if ( marker.isTappable ) {
-        NSLog(@"Did tap marker for cluster item ");
-        marker.icon = [UIImage imageNamed:@"pin.png"];
-        [self mapView:mapView markerInfoWindow:marker];
-        mapView.selectedMarker = marker;
-        pinChange = YES;
-        marker.tappable = NO;
-
-    }
-    else{
-        marker.icon = [UIImage imageNamed:@"mappin.png"];
-        pinChange = NO;
-        marker.tappable = YES;
-    }
-    
-  
     return YES;
 }
 - (void)didReceiveMemoryWarning {
