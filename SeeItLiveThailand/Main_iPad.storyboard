@@ -441,7 +441,7 @@
                                 <rect key="frame" x="15" y="697" width="476" height="51"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                <state key="normal" title="New here? Create an account &gt;">
+                                <state key="normal" title="Create an account &gt;">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -2090,7 +2090,7 @@
                                 </searchBar>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="dWf-La-Rew">
-                                        <rect key="frame" x="0.0" y="72" width="507" height="44"/>
+                                        <rect key="frame" x="0.0" y="136" width="507" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dWf-La-Rew" id="LEh-D0-ZGN">
                                             <rect key="frame" x="0.0" y="0.0" width="507" height="43"/>
@@ -2505,7 +2505,7 @@
         <image name="sil_big.jpg" width="740" height="360"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="DVf-oB-BbK"/>
+        <segue reference="4py-Hl-Fef"/>
         <segue reference="eSy-Zv-Amm"/>
     </inferredMetricsTieBreakers>
 </document>
