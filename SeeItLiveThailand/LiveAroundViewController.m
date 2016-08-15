@@ -136,6 +136,9 @@ GMSMarker *marker;
     int streamCount;
     _Bool pinChange;
     
+    NSUInteger *indexPin;
+    CGRect watermarkMapRect;
+    
 }
 @property(nonatomic, strong) IBOutlet UIView *myMapView;
 @property (nonatomic, strong) NSArray *streamList;
@@ -427,10 +430,12 @@ GMSMarker *marker;
     imgSnapshotRect = CGRectMake(mapViewRect.size.width/2 - 50, mapViewRect.size.height/2 - 70, 100, 70);
     imgWaterMarkRect = CGRectMake(imgSnapshotRect.size.width/2 - 15 , imgSnapshotRect.size.height/2 - 15, 30, 30);
     imgPinRect = CGRectMake(mapViewRect.size.width/2 - 25, mapViewRect.size.height/2 + 5, 50, 50);
+  
 
     detailViewRect = CGRectMake(0 , mapViewRect.origin.y + mapViewRect.size.height, width, 100);
     snapshotDetailImgRect = CGRectMake(10, 10 , width/2 - 40, detailViewRect.size.height - 20);
     waterMarkDetailImgRect = CGRectMake(snapshotDetailImgRect.size.width - 35 , snapshotDetailImgRect.size.height - 35, 30, 30);
+        
     categoryDetailLblRect = CGRectMake(width/2 - 20, detailViewRect.size.height/2 - (fontSize/2), width/2-40, fontSize);
     TitleDetailLblRect = CGRectMake(width/2 - 20, categoryDetailLblRect.origin.y - (fontSize + 5), width/2, fontSize+2);
     AvatarDetailImgRect = CGRectMake(detailViewRect.size.width - 50, detailViewRect.size.height - 50, 40, 40);
@@ -568,8 +573,7 @@ GMSMarker *marker;
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (cell == nil) {}
     else{
-// scrollView.scrollsToTop = YES;
-//        pinChange = false;
+        [scrollView setContentOffset:CGPointMake(0,0) animated:YES];
         [self changeLocation:[indexPath row]];
     }
     NSLog(@"Select");
@@ -624,7 +628,6 @@ GMSMarker *marker;
     //marker.zIndex = 0;
 
     [self.liveAroundData enumerateObjectsUsingBlock:^(Streaming *stream, NSUInteger idx, BOOL *stop) {
-        
         marker = [[GMSMarker alloc] init];
         marker.position = CLLocationCoordinate2DMake([stream.latitude doubleValue], [stream.longitude doubleValue]);
         marker.title = stream.streamTitle;
@@ -636,46 +639,24 @@ GMSMarker *marker;
         
         
             NSLog(@"index idx %lu",(unsigned long)idx);
-        if (idx == rowIndex) {
-          //  _rowIndex = rowIndex;
-            
             NSLog(@"rowIndex idx %lu",(unsigned long)rowIndex);
-              NSLog(@"USER ID DATA MARKER : %@",marker.userData);
+        indexPin = idx;
+        if (idx == rowIndex) {
             marker.icon = [UIImage imageNamed:@"pin.png"];
             _mapView.selectedMarker = marker;
             marker.tappable = NO;
-            //            DXAnnotation *annotation1 = [DXAnnotation new];
-//            annotation1.tag = idx;
-//            //            annotation1.tag = [stream.ID integerValue];
-//            annotation1.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
-//             annotation1.pinName = @"mappin";
-//            [self.myMapView addAnnotation:annotation1];
-//            [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 1000, 1000)];
-            
-            //  [snapshotDetailImg hnk_setImageFromURL:[NSURL URLWithString:stream.snapshot]];
-            
         }
-//        else{
-//            Streaming *stream = [self.liveAroundData objectAtIndex:rowIndex];
-//            
-//            marker = [[GMSMarker alloc]init];
-//            marker.position = CLLocationCoordinate2DMake([stream.latitude doubleValue], [stream.longitude doubleValue]);
-//            marker.title = stream.streamTitle;
-        
-//            marker.snippet =@"new york ,USA";
-//            marker.map = _mapView;
-//
-        //            [self.myMapView addAnnotation:annoActive];
-//            [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annoActive.coordinate,1000, 1000)];
-          
- //       }
+
         pinCount++;
         marker.zIndex++;
         NSLog(@"MARKER INDEX ::: %d",marker.zIndex);
+        NSLog(@"PIN INDEX ::: %lu",(unsigned long)indexPin);
+        marker.zIndex = (int)indexPin;
 
     }];
     
     NSLog(@"PIN COUNT ::: %d",pinCount);
+    
 }
 
 - (void)LoadMap{
@@ -884,8 +865,9 @@ GMSMarker *marker;
 /////////////////Google map///////////////
 - (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(GMSMarker *)marker{
     Streaming* stream1 = [[Streaming alloc]init];
-    stream1 = [self.streamList objectAtIndex:_rowIndex];
-   
+    stream1 = [self.streamList objectAtIndex: (int)indexPin];
+    NSLog(@"MARKER IDD %d" ,(int)indexPin);
+
     NSLog(@"custom callout view");
     int popupWidth = 100;
     int contentWidth = 80;
@@ -905,48 +887,81 @@ GMSMarker *marker;
     [outerView setBackgroundColor:[UIColor redColor]];
     
     UIImageView *snap = [[UIImageView alloc] initWithFrame:outerView.bounds];
-    //snap.image = [UIImage imageNamed: @"sil_big.jpg"];
+    snap.image = [UIImage imageNamed: @"sil_big.jpg"];
     [snap hnk_setImageFromURL:[NSURL URLWithString:stream1.snapshot]];
     [outerView addSubview:snap];
     
+    UIButton *WaterMarkicon = [[UIButton alloc] initWithFrame:imgWaterMarkRect];
+    [WaterMarkicon setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
+    [snap addSubview:WaterMarkicon];
     
-//    float offSet = anchorSize * M_SQRT2;
-//    CGAffineTransform rotateBy45Degrees = CGAffineTransformMakeRotation(M_PI_4); //rotate by 45 degrees
-//    UIView *callOut = [[UIView alloc] initWithFrame:CGRectMake((popupWidth - offSet)/2.0, popupHeight - offSet, anchorSize, anchorSize)];
-//    callOut.transform = rotateBy45Degrees;
-//    callOut.backgroundColor = [UIColor blackColor];
-//    [outerView addSubview:callOut];
-//    
-//    
-//    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, popupWidth, popupHeight)];
-//    [view setBackgroundColor:[UIColor greenColor]];
-//    
-//    view.layer.cornerRadius = 5;
-//    view.layer.masksToBounds = YES;
-//    
-//    view.layer.borderColor = [UIColor blackColor].CGColor;
-//    view.layer.borderWidth = 2.0f;
-//    
-//    
-//    
-////    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(contentPad, 0, contentWidth, 22)];
-////    [titleLabel setFont:[UIFont systemFontOfSize:17.0]];
-////    titleLabel.text = [marker title];
-////    
-////    UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(contentPad, 24, contentWidth, 80)];
-////    [descriptionLabel setFont:[UIFont systemFontOfSize:12.0]];
-////    descriptionLabel.numberOfLines = 5;
-////    descriptionLabel.text = [marker snippet];
-////    
-////    [view addSubview:titleLabel];
-////    [view addSubview:descriptionLabel];
-//    [view setBackgroundColor:[UIColor greenColor]];
-//    
-//    [outerView addSubview:view];
+    UITapGestureRecognizer* playStream = [[UITapGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(play:)];
+    [playStream setNumberOfTouchesRequired:1];
+    [playStream setDelegate:self];
+    snap.userInteractionEnabled = YES;
+    snap.tag = (int)indexPin;
+    [snap addGestureRecognizer:playStream];
+
     
     return outerView;
     
 }
+- (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker {
+ //    [self presentViewController:streamingDetail animated:YES completion:nil];
+//   //
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+             [[NSNotificationCenter defaultCenter] addObserver:self
+                                                    selector:@selector(refreshList:)
+                                                          name:@"refresh"
+                                                   object:^{
+                                                       
+                                                        NSLog(@"MARKER IDDD %d" ,(int)indexPin);
+//                                                       NSInteger playTag = (int)indexPin;
+//                                                       NSLog (@"Tag Playyyyy %ld",playTag);
+//                                                       Streaming *stream = [self.streamList objectAtIndex:playTag];
+//                                                       StreamingDetailViewController *streamingDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"streamingdetail"];
+//                                                       streamingDetail.objStreaming = stream;
+//                                                       streamingDetail.streamingType = @"history";
+                                                   }];
+
+        //[self presentViewController:streamingDetail animated:YES completion:nil];
+    }];
+
+
+//
+//    NSLog(@"TEST");
+    
+    
+
+}
+-(void)play:(id)sender
+{
+//    UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)sender;
+//   
+//    //    UserTag = [tapRecognizer.view tag];
+//    NSInteger playTag = [tapRecognizer.view tag];
+//     NSLog (@"Tag Playyyyy %ld",playTag);
+//    Streaming *stream = [self.streamList objectAtIndex:playTag];
+//    StreamingDetailViewController *streamingDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"streamingdetail"];
+//    streamingDetail.objStreaming = stream;
+//    streamingDetail.streamingType = @"history";
+    
+    NSLog(@"PLAY !!!");
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(refreshList:)
+                                                     name:@"refresh"
+                                                   object:nil];
+        
+        NSLog(@"TEST");
+    }];
+   
+}
+
 - (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker {
     //NSInteger rowIndex = marker.zIndex;
         NSLog(@"MARKER ID %d" ,marker.zIndex);
@@ -966,4 +981,19 @@ GMSMarker *marker;
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+-(void) refreshList:(NSNotification *)refreshName
+{
+    // [notification name] should always be @"TestNotification"
+    // unless you use this method for observation of other notifications
+    // as well.
+    NSLog(@"ADView Notiname: %@",[refreshName name]);
+    if ([[refreshName name] isEqualToString:@"refresh"])
+    {
+        
+        
+        [self.view reloadInputViews];
+    }
+    
+}
+
 @end
