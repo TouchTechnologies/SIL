@@ -1478,29 +1478,19 @@
             </objects>
             <point key="canvasLocation" x="1785" y="3101"/>
         </scene>
-        <!--Livearound Googlemap View Controller-->
+        <!--Play Stream View Controller-->
         <scene sceneID="2Lv-FI-ENK">
             <objects>
-                <viewController storyboardIdentifier="livearoundGGmap" id="z9v-Mb-5k3" customClass="LivearoundGooglemapViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="playstream" id="z9v-Mb-5k3" customClass="playStreamViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="VMn-f9-0ek">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" id="YqU-P3-3w0">
-                                <rect key="frame" x="0.0" y="35" width="320" height="177"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <connections>
-                        <outlet property="myview" destination="YqU-P3-3w0" id="DGm-hn-TxF"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gyo-6e-pRs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2235" y="3058"/>
+            <point key="canvasLocation" x="2042" y="2990"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="pCW-Zr-V8g">

@@ -221,7 +221,7 @@ GMSMarker *marker;
 -(void)viewWillAppear:(BOOL)animated
 {
     
-    NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,10,5,1];
+    NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,10,20,1];
     
     [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
         
@@ -508,12 +508,12 @@ GMSMarker *marker;
     [imgSnapshotcell addSubview:imgWaterMarkcell];
     [cell.contentView addSubview:imgSnapshotcell];
 
-    UITapGestureRecognizer* playStream = [[UITapGestureRecognizer alloc]
-                                          initWithTarget:self action:@selector(play:)];
-    [playStream setNumberOfTouchesRequired:1];
-    [playStream setDelegate:self];
-    imgSnapshotcell.userInteractionEnabled = YES;
-    [imgSnapshotcell addGestureRecognizer:playStream];
+//    UITapGestureRecognizer* playStream = [[UITapGestureRecognizer alloc]
+//                                          initWithTarget:self action:@selector(play:)];
+//    [playStream setNumberOfTouchesRequired:1];
+//    [playStream setDelegate:self];
+//    imgSnapshotcell.userInteractionEnabled = YES;
+//    [imgSnapshotcell addGestureRecognizer:playStream];
     
 //    [cell addGestureRecognizer:tapGestureRec];
     
@@ -638,13 +638,21 @@ GMSMarker *marker;
         NSLog(@"Lat ::: %@", stream.latitude);
         
         
+        
+        
             NSLog(@"index idx %lu",(unsigned long)idx);
             NSLog(@"rowIndex idx %lu",(unsigned long)rowIndex);
         indexPin = idx;
         if (idx == rowIndex) {
+            
+            GMSCameraPosition *newCamera =
+            [GMSCameraPosition cameraWithTarget:marker.position zoom:_mapView.camera.zoom];
+            GMSCameraUpdate *update = [GMSCameraUpdate setCamera:newCamera];
+            
             marker.icon = [UIImage imageNamed:@"pin.png"];
             _mapView.selectedMarker = marker;
             marker.tappable = NO;
+            [_mapView moveCamera:update];
         }
 
         pinCount++;
@@ -674,10 +682,7 @@ GMSMarker *marker;
 #pragma mark - ScrollView delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     NSInteger pageIndex = scrollView.contentOffset.x / CGRectGetWidth(scrollView.frame);
-    
-// [self changePoint:pageIndex];
-    
-//    self.customPageControl.currentPage = pageIndex;
+
     
 }
 
@@ -908,60 +913,22 @@ GMSMarker *marker;
     
 }
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker {
- //    [self presentViewController:streamingDetail animated:YES completion:nil];
-//   //
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-             [[NSNotificationCenter defaultCenter] addObserver:self
-                                                    selector:@selector(refreshList:)
-                                                          name:@"refresh"
-                                                   object:^{
-                                                       
-                                                        NSLog(@"MARKER IDDD %d" ,(int)indexPin);
-//                                                       NSInteger playTag = (int)indexPin;
-//                                                       NSLog (@"Tag Playyyyy %ld",playTag);
-//                                                       Streaming *stream = [self.streamList objectAtIndex:playTag];
-//                                                       StreamingDetailViewController *streamingDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"streamingdetail"];
-//                                                       streamingDetail.objStreaming = stream;
-//                                                       streamingDetail.streamingType = @"history";
-                                                   }];
-
-        //[self presentViewController:streamingDetail animated:YES completion:nil];
-    }];
-
-
-//
-//    NSLog(@"TEST");
-    
-    
-
-}
--(void)play:(id)sender
-{
-//    UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)sender;
-//   
-//    //    UserTag = [tapRecognizer.view tag];
-//    NSInteger playTag = [tapRecognizer.view tag];
-//     NSLog (@"Tag Playyyyy %ld",playTag);
-//    Streaming *stream = [self.streamList objectAtIndex:playTag];
-//    StreamingDetailViewController *streamingDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"streamingdetail"];
-//    streamingDetail.objStreaming = stream;
-//    streamingDetail.streamingType = @"history";
     
     NSLog(@"PLAY !!!");
-    
-    [self dismissViewControllerAnimated:YES completion:^{
 
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(refreshList:)
-                                                     name:@"refresh"
-                                                   object:nil];
-        
-        NSLog(@"TEST");
-    }];
-   
+    
+    Streaming *stream = [self.streamList objectAtIndex:(int)indexPin];
+    StreamingDetailViewController *streamingDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"streamingdetail"];
+    streamingDetail.objStreaming = stream;
+    streamingDetail.streamingType = @"history";
+    
+    [self presentViewController:streamingDetail animated:YES completion:nil];
+
 }
 
+#pragma mark GMUClusterManagerDelegate
+- (void)clusterManager:(GMUClusterManager *)clusterManager didTapCluster:(id<GMUCluster>)cluster {
+   }
 - (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker {
     //NSInteger rowIndex = marker.zIndex;
         NSLog(@"MARKER ID %d" ,marker.zIndex);
@@ -969,7 +936,6 @@ GMSMarker *marker;
   //  NSLog(@"MARKER IS TAP %@",marker.isTappable? @"true":@"false");
    // marker.zIndex = 0;
     [self changeLocation:marker.zIndex];
-
 //    pinCount = 0;
 //    [_mapView clear];
     

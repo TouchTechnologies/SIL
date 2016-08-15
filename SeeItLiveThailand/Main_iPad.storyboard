@@ -2481,6 +2481,21 @@
             </objects>
             <point key="canvasLocation" x="2810" y="4591"/>
         </scene>
+        <!--Play Stream View Controller-->
+        <scene sceneID="6Fo-sf-vga">
+            <objects>
+                <viewController storyboardIdentifier="playstream" id="bxF-4M-mOw" customClass="playStreamViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="LcL-rA-dzv">
+                        <rect key="frame" x="0.0" y="0.0" width="507" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad-1/2"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jG3-Zy-ZBC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1900.5" y="2802"/>
+        </scene>
     </scenes>
     <resources>
         <image name="bg_livestream_back.png" width="32" height="32"/>
