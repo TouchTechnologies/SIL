@@ -32,6 +32,7 @@
     
     UILabel *followersCount;
     UILabel *followingCount;
+    UILabel *btnLbl;
     
     IBOutlet UIView *containerView;
     
@@ -207,7 +208,7 @@
     [headerView addSubview:followingCount];
 
     FollowBtn = [[UIButton alloc] initWithFrame:FollowBtnRect];
-    UILabel *btnLbl = [[UILabel alloc] initWithFrame:FollowBtn.bounds];
+    btnLbl = [[UILabel alloc] initWithFrame:FollowBtn.bounds];
     btnLbl.text = @"Follow";
     btnLbl.font =[UIFont fontWithName:@"Helvetica" size:font];
     btnLbl.textColor =  (__bridge UIColor * _Nullable)((__bridge CGColorRef _Nullable)([UIColor colorWithRed:0.071 green:0.459 blue:0.714 alpha:1]));
@@ -424,24 +425,25 @@
             NSLog(@"setFollow tag %ld",(long)FollowBtn.tag);
     if(!userData.is_followed && ![appDelegate.user_ID isEqualToString:userData.userId])
     {
-        [[UserManager shareIntance] followAPI:@"follow" userID:userData.userId Completion:^(NSError *error, NSDictionary *result, NSString *message) {
+        [[UserManager shareIntance]followAPI:@"follow" userID:appDelegate.user_ID followingUserID:userData.userId Completion:^(NSError *error, NSDictionary *result, NSString *message) {
             NSLog(@"setFollow %@",result);
             
+            int  followersPlus = [userData.count_follower intValue]+1;
+            userData.count_follower = [NSString stringWithFormat:@"%d",followersPlus];
+            NSLog(@"followersPlus %d",followersPlus);
+            followersCount.text = [NSString stringWithFormat:@"%d",followersPlus];
+            userData.is_followed = true;
             
-//            UILabel *btnLbl = [[UILabel alloc] initWithFrame:FollowBtn.bounds];
-//            btnLbl.text = @"Follow";
-//            btnLbl.font =[UIFont fontWithName:@"Helvetica" size:font];
-//            btnLbl.textColor =  (__bridge UIColor * _Nullable)((__bridge CGColorRef _Nullable)([UIColor whiteColor]));
-//            btnLbl.textAlignment = NSTextAlignmentCenter;
-//            FollowBtn.backgroundColor = [UIColor colorWithRed:0.071 green:0.459 blue:0.714 alpha:1];
-//            [FollowBtn reloadInputViews];
-//            [headerView reloadInputViews];
 
-//            [self viewDidLoad];
+            btnLbl.textColor = [UIColor whiteColor];
+            [btnLbl setText:@"Following"];
+            FollowBtn.backgroundColor = [UIColor redColor];
+
+
+
             
-              userData.is_followed = true;
-             [self initial];
-             [headerView reloadInputViews];
+            [FollowBtn reloadInputViews];
+            [headerView reloadInputViews];
             
         }];
       
@@ -449,23 +451,20 @@
        
     }else
     {
-        [[UserManager shareIntance] followAPI:@"unfollow" userID:userData.userId Completion:^(NSError *error, NSDictionary *result, NSString *message) {
+        [[UserManager shareIntance]followAPI:@"unfollow" userID:appDelegate.user_ID followingUserID:userData.userId Completion:^(NSError *error, NSDictionary *result, NSString *message){
             NSLog(@"setFollow %@",result);
             
-//            UILabel *btnLbl = [[UILabel alloc] initWithFrame:FollowBtn.bounds];
-//            btnLbl.text = @"Follow";
-//            btnLbl.font =[UIFont fontWithName:@"Helvetica" size:font];
-//            btnLbl.textColor =  (__bridge UIColor * _Nullable)((__bridge CGColorRef _Nullable)([UIColor redColor]));
-//            btnLbl.textAlignment = NSTextAlignmentCenter;
-//            FollowBtn.backgroundColor = [UIColor whiteColor];
-//            [FollowBtn reloadInputViews];
-//            [headerView reloadInputViews];
+            int followersSub = [userData.count_follower intValue]-1;
 
-//            [self viewDidLoad];
-              userData.is_followed = false;
+            userData.count_follower = [NSString stringWithFormat:@"%d",followersSub];
+            followersCount.text = [NSString stringWithFormat:@"%d",followersSub];
+            userData.is_followed = false;
             
-            [self initial];
-
+            btnLbl.textColor = [UIColor blackColor];
+            [btnLbl setText:@"Follow"];
+            FollowBtn.backgroundColor = [UIColor whiteColor];
+            
+            [FollowBtn reloadInputViews];
             [headerView reloadInputViews];
         }];
       

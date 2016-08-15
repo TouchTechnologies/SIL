@@ -720,8 +720,8 @@
     CLLocation *newLocation = locations.lastObject;
     
     
-    NSLog(@"currentLocation.coordinate.latitude  %@",[NSString stringWithFormat:@"%.8f", newLocation.coordinate.latitude]);
-    NSLog(@"currentLocation.coordinate.longitude %@",[NSString stringWithFormat:@"%.8f", newLocation.coordinate.longitude]);
+//    NSLog(@"currentLocation.coordinate.latitude  %@",[NSString stringWithFormat:@"%.8f", newLocation.coordinate.latitude]);
+//    NSLog(@"currentLocation.coordinate.longitude %@",[NSString stringWithFormat:@"%.8f", newLocation.coordinate.longitude]);
     appDelegate.latitude = newLocation.coordinate.latitude;
     appDelegate.longitude = newLocation.coordinate.longitude;
 }
