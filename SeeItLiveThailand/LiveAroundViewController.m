@@ -159,7 +159,7 @@ GMSMarker *marker;
     pinCount = 0;
     streamCount = _liveAroundData.count;
     pinChange = false;
-    
+    marker.zIndex= 0;
     [self initialSize];
     [self initial];
     [self LoadMap];
@@ -621,11 +621,11 @@ GMSMarker *marker;
 
 
 -(void)initPin:(NSInteger)rowIndex{
-    
+    //marker.zIndex = 0;
+
     [self.liveAroundData enumerateObjectsUsingBlock:^(Streaming *stream, NSUInteger idx, BOOL *stop) {
         
         marker = [[GMSMarker alloc] init];
-        marker.zIndex = 0;
         marker.position = CLLocationCoordinate2DMake([stream.latitude doubleValue], [stream.longitude doubleValue]);
         marker.title = stream.streamTitle;
         marker.map = _mapView;
@@ -637,7 +637,7 @@ GMSMarker *marker;
         
             NSLog(@"index idx %lu",(unsigned long)idx);
         if (idx == rowIndex) {
-            _rowIndex = rowIndex;
+          //  _rowIndex = rowIndex;
             
             NSLog(@"rowIndex idx %lu",(unsigned long)rowIndex);
               NSLog(@"USER ID DATA MARKER : %@",marker.userData);
@@ -947,23 +947,18 @@ GMSMarker *marker;
     return outerView;
     
 }
-#pragma mark GMUClusterManagerDelegate
-
-- (void)clusterManager:(GMUClusterManager *)clusterManager didTapCluster:(id<GMUCluster>)cluster {
-    GMSCameraPosition *newCamera =
-    [GMSCameraPosition cameraWithTarget:marker.position zoom:_mapView.camera.zoom + 1];
-    GMSCameraUpdate *update = [GMSCameraUpdate setCamera:newCamera];
-    [_mapView moveCamera:update];
-}
-
 - (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker {
     //NSInteger rowIndex = marker.zIndex;
+        NSLog(@"MARKER ID %d" ,marker.zIndex);
    // marker.in
   //  NSLog(@"MARKER IS TAP %@",marker.isTappable? @"true":@"false");
-    NSLog(@"MARKER ID %d" ,marker.zIndex);
-    pinCount = 0;
-    [_mapView clear];
-    [self initPin:marker.zIndex];
+   // marker.zIndex = 0;
+    [self changeLocation:marker.zIndex];
+
+//    pinCount = 0;
+//    [_mapView clear];
+    
+   
     
     return YES;
 }
