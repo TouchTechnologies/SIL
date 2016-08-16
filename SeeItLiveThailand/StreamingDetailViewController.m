@@ -17,13 +17,12 @@
 #import "UserProfileViewController.h"
 #import "UserManager.h"
 #import "AppDelegate.h"
-#import "Streaming.h"
+
 #import "DataManager.h"
-#import "Streaming.h"
 #import "SeeItLiveThailand-Swift.h"
 #import "LiveAroundViewController.h"
 #import "MBProgressHUD.h"
-#import "LivearoundGooglemapViewController.h"
+
 @interface StreamingDetailViewController ()<VKVideoPlayerDelegate , UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource> {
     
     
@@ -227,7 +226,7 @@
     [self initialSize];
     [self initial];
     [self setVideoData];
-    [self addLabel];
+    
     
     self.view.backgroundColor = [UIColor whiteColor];
     NSLog(@"IS FULLSCREEN DIDLOAD ::: %@" , self.player.isFullScreen ? @"true":@"false");
@@ -784,12 +783,7 @@
     [shareBtn addGestureRecognizer:TapShare];
     TapShare.enabled = YES;
     
-    //   [self.player.view addSubviewForControl:lblLove];
-    
-    
-    
-    // UIButton *btnComment = [[UIButton alloc] initWithFrame:btnCommentRect];
-    // [btnComment addTarget:self action:@selector(goComment:) forControlEvents:UIControlEventTouchUpInside];
+ 
     
     imgCommentIcon = [[UIImageView alloc] initWithFrame:imgCommentPortRect];
     imgCommentIcon.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
@@ -808,8 +802,7 @@
     lblCommentCount.font = font;
     [propViewPort addSubview:lblCommentCount];
     
-    //    NSLog(@"Lat %@ Long %@",self.objStreaming.latitude,self.objStreaming.longitude);
-    //    NSString *mapURL = [@"https://maps.googleapis.com/maps/api/staticmap?center=" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:[@"&zoom=15&size=800x150&markers=color:red%7C" stringByAppendingString:[self.objStreaming.latitude stringByAppendingString:[@"," stringByAppendingString:[self.objStreaming.longitude stringByAppendingString:@"&key=AIzaSyAimot0aIsIsItn1F_BYXy6YVG-2Jc8MYs"]]]]]]]];
+   
     
     //    NSLog(@"Map URL : %@",mapURL);
     mapImg = [[UIImageView alloc] initWithFrame:mapImgRect];
@@ -889,33 +882,6 @@
     [livearoungBtn addTarget:self action:@selector(clickmore:) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:livearoungBtn];
     
-    
-    
-    
-    
-    
-    
-    //    chatboxTxt = [[UITextField alloc] initWithFrame:chatboxTxtPortRect];
-    //    chatboxTxt.borderStyle = UITextBorderStyleNone;
-    //    chatboxTxt.textColor = [UIColor whiteColor];
-    //    chatboxTxt.layer.cornerRadius = 5;
-    //    chatboxTxt.clipsToBounds = TRUE;
-    //    chatboxTxt.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent: 0.7];
-    //    chatboxTxt.placeholder = @"Say Something";
-    //    // chatboxTxt.placeholder = [UIColor whiteColor];
-    //    chatboxTxt.enabled = TRUE;
-    //    [chatView addSubview:chatboxTxt];
-    //
-    //    sendchatBtn = [[UIButton alloc] initWithFrame:sendchatBtnPortRect];
-    //    sendchatBtn.titleLabel.text = @"send";
-    //    sendchatBtn.backgroundColor = [UIColor greenColor];
-    //    sendchatBtn.layer.cornerRadius = 5;
-    //    sendchatBtn.clipsToBounds = TRUE;
-    //    [chatView addSubview:sendchatBtn];
-    //
-    //    //obj for tableview chat
-    //    [chatTbl registerClass:UITableViewCell.self forCellReuseIdentifier:@"cell"];
-    //    //  chatplaceView = [[UIView alloc] initWithFrame:CGRectMake(42, 2 ,chatTblRect.size.width - 44, cellH - 4)];
     
 }
 
@@ -1007,18 +973,18 @@
         livearound.objStreaming = self.objStreaming;
     
     
-        NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,10,5,1];
+        NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,20,20,1];
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             if (success) {
     
     
-         NSLog(@"filter LiveAround Data : %@",streamRecords);
-                livearound.rowIndex = 0;
+                       livearound.rowIndex = 0;
          livearound.liveAroundData = streamRecords;
-        
-                
+                Streaming *a = [streamRecords objectAtIndex:1];
+                NSLog(@"filter LiveAround Data : %@",a.streamUrl);
+  NSLog(@"filter LiveAround Data Title: %@",a.streamTitle);
          [self presentViewController: livearound animated: YES completion:nil];
     
     
@@ -1028,35 +994,6 @@
             }
     
         } Filter:filter];
-    
-    
-    
-    
-    
-    
-    
-    
-    //
-    //    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-    //        //Background Thread
-    //        [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
-    //
-    //            if (success) {
-    //
-    //            } else {
-    //                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-    //                [alert show];
-    //            }
-    //
-    //        } Filter:filter];
-    //
-    //        dispatch_async(dispatch_get_main_queue(), ^(void){
-    //            //Run UI Updates
-    //
-    //
-    //        });
-    //
-    //    });
     
     
 }
@@ -1241,7 +1178,7 @@
     [socket disconnect];
 }
 - (void)viewDidAppear:(BOOL)animated {
-    
+      NSLog(@"URL111:::: %@",self.objStreaming);
     [self playSampleClip1];
 }
 
@@ -1281,7 +1218,7 @@
     //[self playStream:[NSURL URLWithString:@"http://203.151.133.7:1935/live/ch3_1/playlist.m3u8"]];
     NSLog(@"playSampleClip1");
     
-    
+     NSLog(@"URL :::: %@",self.objStreaming.streamUrl);
     [self playStream:[NSURL URLWithString:self.objStreaming.streamUrl]];
     
 }
@@ -1300,10 +1237,6 @@
     
 }
 
-- (void)addLabel {
-    
-    
-}
 - (void)login:(id)sender
 {
     UIAlertView *Alert = [[UIAlertView alloc] initWithTitle:@"Please Login" message:@"" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -1498,6 +1431,7 @@
 
 -(void)shareAction:(id)sender
 {
+    
     
     
     

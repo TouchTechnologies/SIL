@@ -20,6 +20,8 @@
 #import "StreamingDetailViewController.h"
 #import <Google-Maps-iOS-Utils/GMUMarkerClustering.h>
 #import <GoogleMaps/GoogleMaps.h>
+#import "playStreamViewController.h"
+
 
 @interface POIItem : NSObject<GMUClusterItem>
 
@@ -138,7 +140,8 @@ GMSMarker *marker;
     
     NSUInteger *indexPin;
     CGRect watermarkMapRect;
-    
+    UIImageView *snap;
+    UIView *outerView;
 }
 @property(nonatomic, strong) IBOutlet UIView *myMapView;
 @property (nonatomic, strong) NSArray *streamList;
@@ -155,12 +158,12 @@ GMSMarker *marker;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
- 
-
+    Streaming *sss = [self.liveAroundData objectAtIndex:1];
+    NSLog(@"LIVE DATA %@",sss.createBy);
     
     appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     pinCount = 0;
-    streamCount = _liveAroundData.count;
+    streamCount = [_liveAroundData count];
     pinChange = false;
     marker.zIndex= 0;
     [self initialSize];
@@ -204,39 +207,28 @@ GMSMarker *marker;
     
     // Register self to listen to both GMUClusterManagerDelegate and GMSMapViewDelegate events.
     [_clusterManager setDelegate:self mapDelegate:self];
+}
 
-    
-    
-    
- // self.myMapView.delegate = self;
-    
-    
-   // myMapView = [[MKMapView alloc] init];
-   // myMapView.delegate = self;
-   // self.myMapView.showsUserLocation = NO;
-    
-    // NSLog(@"Live Around %@",self.objStreaming);
-    // Do any additional setup after loading the view.
-    }
 -(void)viewWillAppear:(BOOL)animated
 {
     
-    NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,10,20,1];
-    
-    [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
-        
-        if (success) {
-            
-            
-            //            NSLog(@"filter LiveAround Data : %@",streamRecords);
-            self.streamList = streamRecords;
-            
-        } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
-        }
-        
-    } Filter:filter];
+//    NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,20,20,1];
+//    
+//    [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
+//        
+//        if (success) {
+//            
+//            
+//            NSLog(@"filter LiveAround Data : %@",streamRecords);
+//            self.liveAroundData = streamRecords;
+//             NSLog(@"filter LiveAround Count : %lu", (unsigned long)self.liveAroundData.count );
+//            
+//        } else {
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//            [alert show];
+//        }
+//        
+//    } Filter:filter];
     
     
 }
@@ -584,45 +576,6 @@ GMSMarker *marker;
     return cellH ;
 }
 
--(void)initMap
-{
-
-    
-    // myMapView.delegate = self;
-//    MKPointAnnotation *mapPin = [[MKPointAnnotation alloc] init];
-//    MKCoordinateRegion region;
-//    region.center.latitude = [self.objStreaming.latitude floatValue];
-//    region.center.longitude = [self.objStreaming.longitude floatValue];
-//    region.span.latitudeDelta = 1;
-//    region.span.longitudeDelta = 1;
-//    
-//    [self.myMapView setRegion:region animated:YES];
-    
-    
-//    DXAnnotation *annotation1 = [DXAnnotation new];
-//    annotation1.coordinate = CLLocationCoordinate2DMake([self.objStreaming.latitude floatValue],[self.objStreaming.longitude floatValue]);
-//    
-//    [self.myMapView addAnnotation:annotation1];
-//    _rowIndex = 0;
-//    for(Streaming *stream in _liveAroundData)
-//    {
-////        NSLog(@"stream NAME %lu %@ lat : %@ long : %@",_rowIndex,stream.streamTitle,stream.latitude,stream.longitude);
-//        pinSnapShot = stream.snapshot;
-//        NSLog(@"pinSnapShot %@",pinSnapShot);
-//        DXAnnotation *ann = [DXAnnotation new];
-//        ann.coordinate = CLLocationCoordinate2DMake([stream.latitude doubleValue],[stream.longitude doubleValue]);
-//    //   [self.myMapView addAnnotation:ann];
-//        
-//        
-//     Streaming *data = [_liveAroundData objectAtIndex:_rowIndex];
-//    NSLog(@"_liveAroundData %@",data.snapshot);
-//        _rowIndex++;
-//       
-//    }
-//     NSLog(@"ROWINDEX::: %ld",(long)_rowIndex);
-  //  [self.myMapView setRegion:MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 100, 100)];
-    }
-
 
 -(void)initPin:(NSInteger)rowIndex{
     //marker.zIndex = 0;
@@ -659,6 +612,8 @@ GMSMarker *marker;
         marker.zIndex++;
         NSLog(@"MARKER INDEX ::: %d",marker.zIndex);
         NSLog(@"PIN INDEX ::: %lu",(unsigned long)indexPin);
+        
+        
         marker.zIndex = (int)indexPin;
 
     }];
@@ -686,176 +641,7 @@ GMSMarker *marker;
     
 }
 
-//- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray<MKAnnotationView *> *)views
-//{
-//    MKAnnotationView *annotationView = [views objectAtIndex:0];
-//    id <MKAnnotation> mp = [annotationView annotation];
-//   
-//    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([mp coordinate], 1000,1000);
-//  //  [_myMapView setRegion:region animated:YES];
-//
-// 
-//}
-//- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
-//    
-//    if ([annotation isKindOfClass:[DXAnnotation class]]) {
-//        
-//        DXAnnotation *annotation1 = (DXAnnotation *)annotation;
-//        UIImageView *calloutView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 90, 60)];
-//        UIButton *wmoncallout = [[UIButton alloc] initWithFrame:CGRectMake(calloutView.bounds.size.width/2 - 15, calloutView.bounds.size.height/2 - 15, 30, 30)];
-//      
-//
-//        DXAnnotationView *annotationView = (DXAnnotationView *)[self.myMapView dequeueReusableAnnotationViewWithIdentifier:NSStringFromClass([DXAnnotationView class])];
-//        
-//
-//
-////        annotationView.canShowCallout = YES;
-////        annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-//        
-////        annotationView.canShowCallout = YES;
-////        annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-////        annotationView.leftCalloutAccessoryView  = [UIButton buttonWithType:UIButtonTypeInfoDark];
-//        
-//
-//        
-//        Streaming *stream = [self.liveAroundData objectAtIndex:annotation1.tag];
-//        [calloutView hnk_setImageFromURL:[NSURL URLWithString:stream.snapshot]
-//                             placeholder:[UIImage imageNamed:@"sil_big.jpg"]];
-//        calloutView.contentMode = UIViewContentModeScaleToFill;
-//        [wmoncallout setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
-//        [wmoncallout addTarget:self action:@selector(calloutTapped:) forControlEvents:UIControlEventAllTouchEvents];
-//        [calloutView addSubview:wmoncallout];
-//        
-//        
-//
-//        
-//        
-//        
-//        
-//         NSString *pinName = @"";
-//         if (annotation1.tag == _rowIndex) {
-//         pinName = @"pin";
-//         } else {
-//         pinName = @"mappin";
-//         }
-//        UIImageView *pinView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:annotation1.pinName]];
-//        
-////        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(calloutTapped:)];
-////        [calloutView addGestureRecognizer:tapGesture];
-//
-//       if (!annotationView) {
-//        annotationView = [[DXAnnotationView alloc] initWithAnnotation:annotation
-//                                                      reuseIdentifier:NSStringFromClass([DXAnnotationView class])
-//                                                              pinView:pinView
-//                                                          calloutView:calloutView
-//                                                             settings:[DXAnnotationSettings defaultSettings]];
-// 
-//    
-//       }
-//       else {
-//           [pinView removeFromSuperview];
-//           [annotationView addSubview:pinView];
-//      }
-////        [wmoncallout addTarget:self action:@selector(DisclosureAction:) forControlEvents:UIControlEventTouchUpInside];
-////         wmoncallout.tag =annotation1.tag;
-////
-////        annotationView.rightCalloutAccessoryView = wmoncallout;
-//        /*
-//         annotationView = [[DXAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:NSStringFromClass([DXAnnotationView class])];
-//         [annotationView addSubview:pinView];
-//         */
-//        
-//        //annotationView.image = [UIImage imageNamed:annotation1.pinName];
-//
-//
-//        
-//        annotationView.tag = annotation1.tag;
-//
-//        return annotationView;
-//    }
-//
-//    return nil;
-//}
-//
-//
-//- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
-//    [((DXAnnotationView *)view)hideCalloutView];
-//    view.layer.zPosition = -1;
-//    NSLog(@"deselect test annotation");
-//}
-//
-//- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
-//    if ([view isKindOfClass:[DXAnnotationView class]])
-//    {
-//    
-//        NSLog(@"Count Pin %d",pinCount);
-//        NSLog(@"Count Stream %d",streamCount);
-//        DXAnnotationView *dxView = (DXAnnotationView *)view;
-//        NSInteger indexObj = dxView.tag;
-//        NSLog(@"test annotation %ld",(long)indexObj);
-//        if(pinCount == streamCount)
-//        {
-//            NSLog(@"Touchhhhhhhh");
-//            pinChange = true;
-//            [self changeLocation:indexObj];
-//        }
-//        
-//        
-//        [((DXAnnotationView *)view)showCalloutView];
-//     
-//        view.layer.zPosition = 0;
-//    }
-//}
-//
-//-(UIImage*)resizeImage:(UIImage *)image imageSize:(CGSize)size
-//{
-//    UIGraphicsBeginImageContext(size);
-//    [image drawInRect:CGRectMake(0,0,size.width,size.height)];
-//    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
-//    //here is the scaled image which has been changed to the size specified
-//    UIGraphicsEndImageContext();
-//    return newImage;
-//    
-//}
-//
-//- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
-//{
-//    NSLog(@"CallOut Click");
-////    [self performSegueWithIdentifier:@"DetailsIphone" sender:view];
-//}
 
-//- (void)calloutTapped:(id)sender
-//{
-//    NSLog(@"CallOut Click");
-//}
-
-//-(void)play:(id)sender
-//{
-//
-//
-//          UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)sender;
-//        NSLog (@"Tag Playyyyy %ld",[tapRecognizer.view tag]);
-//        //    UserTag = [tapRecognizer.view tag];
-//        NSInteger playTag = [tapRecognizer.view tag];
-//
-//        Streaming *stream = [self.streamList objectAtIndex:playTag];
-//        StreamingDetailViewController *streamingDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"streamingdetail"];
-//
-//
-//        streamingDetail.objStreaming = stream;
-//        streamingDetail.streamingType = @"history";
-//        NSLog(@"STREAMID %@",stream.streamID);
-//
-//        [self dismissViewControllerAnimated:YES completion:^{
-//            [[NSNotificationCenter defaultCenter]
-//             postNotificationName:@"refresh"
-//             object:stream.streamID];
-//        }];
-//     //    [self presentViewController:streamingDetail animated:YES completion:nil];
-//
-//
-//
-//}
 
 
 /*
@@ -888,10 +674,10 @@ GMSMarker *marker;
     CGPoint point = [_mapView.projection pointForCoordinate:anchor];
     
     
-    UIView *outerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, popupWidth, popupHeight)];
+    outerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, popupWidth, popupHeight)];
     [outerView setBackgroundColor:[UIColor redColor]];
     
-    UIImageView *snap = [[UIImageView alloc] initWithFrame:outerView.bounds];
+    snap = [[UIImageView alloc] initWithFrame:outerView.bounds];
     snap.image = [UIImage imageNamed: @"sil_big.jpg"];
     [snap hnk_setImageFromURL:[NSURL URLWithString:stream1.snapshot]];
     [outerView addSubview:snap];
@@ -899,28 +685,28 @@ GMSMarker *marker;
     UIButton *WaterMarkicon = [[UIButton alloc] initWithFrame:imgWaterMarkRect];
     [WaterMarkicon setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
     [snap addSubview:WaterMarkicon];
-    
-    UITapGestureRecognizer* playStream = [[UITapGestureRecognizer alloc]
-                                          initWithTarget:self action:@selector(play:)];
-    [playStream setNumberOfTouchesRequired:1];
-    [playStream setDelegate:self];
-    snap.userInteractionEnabled = YES;
-    snap.tag = (int)indexPin;
-    [snap addGestureRecognizer:playStream];
-
+  
+    outerView.tag =(int)indexPin;
     
     return outerView;
     
 }
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker {
     
-    NSLog(@"PLAY !!!");
-
     
-    Streaming *stream = [self.streamList objectAtIndex:(int)indexPin];
-    StreamingDetailViewController *streamingDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"streamingdetail"];
+    NSLog(@"didTapInfoWindowOfMarker index!!!");
+    NSLog(@"PIN INDEXXXX %d",(int)indexPin);
+    NSInteger PlayTag  = [outerView tag];
+    NSLog (@"Tag Playyyyy %ld",(long)PlayTag);
+    Streaming *stream = [self.liveAroundData objectAtIndex:PlayTag];
+    
+    playStreamViewController *streamingDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"playstream"];
     streamingDetail.objStreaming = stream;
     streamingDetail.streamingType = @"history";
+   
+    
+    
+    NSLog(@"OBJ STREAM :::%@",stream);
     
     [self presentViewController:streamingDetail animated:YES completion:nil];
 
@@ -930,16 +716,9 @@ GMSMarker *marker;
 - (void)clusterManager:(GMUClusterManager *)clusterManager didTapCluster:(id<GMUCluster>)cluster {
    }
 - (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker {
-    //NSInteger rowIndex = marker.zIndex;
-        NSLog(@"MARKER ID %d" ,marker.zIndex);
-   // marker.in
-  //  NSLog(@"MARKER IS TAP %@",marker.isTappable? @"true":@"false");
-   // marker.zIndex = 0;
-    [self changeLocation:marker.zIndex];
-//    pinCount = 0;
-//    [_mapView clear];
-    
    
+    NSLog(@"MARKER ID %d" ,marker.zIndex);
+    [self changeLocation:marker.zIndex];
     
     return YES;
 }
@@ -949,9 +728,6 @@ GMSMarker *marker;
 }
 -(void) refreshList:(NSNotification *)refreshName
 {
-    // [notification name] should always be @"TestNotification"
-    // unless you use this method for observation of other notifications
-    // as well.
     NSLog(@"ADView Notiname: %@",[refreshName name]);
     if ([[refreshName name] isEqualToString:@"refresh"])
     {

@@ -298,7 +298,8 @@ static DataManager *staticManager = nil;
             StreamingHistoryFilterURL = StreamingHistoryURL;
         }
         self.streamingBlock = block;
-        [self downloadStreamingDetailForRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:StreamingHistoryFilterURL]]];
+        NSLog(@"00000000000000000000000000000000");
+        [self downloadStreamingDetailForRequestfilter:[NSURLRequest requestWithURL:[NSURL URLWithString:StreamingHistoryFilterURL]]];
     }
 }
 - (void)getMyStreamingWithCompletionBlock:(StreamingCompletionBlock)block {
@@ -332,7 +333,7 @@ static DataManager *staticManager = nil;
     [manager GET:[request.URL absoluteString] parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
         
         NSLog(@"downloadStreamingDetailForRequestData : %@ Count ",responseObject);
-        
+//createStreamingObjectForRecordsfilter
         [weakSelf createStreamingObjectForRecords:(NSArray *)responseObject];
         
     } failure:^(AFHTTPRequestOperation *  operation, NSError *  error) {
@@ -354,7 +355,7 @@ static DataManager *staticManager = nil;
     NSLog(@"requestURL:::: %@",request);
     [manager GET:request parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
         
-        NSLog(@"downloadStreamingDetailForRequestData : %@ Count ",responseObject);
+        NSLog(@"downloadStreamingCateDetailForRequest: %@ Count ",responseObject);
         
         [weakSelf createStreamingObjectForRecords:(NSArray *)responseObject];
         
@@ -489,6 +490,78 @@ static DataManager *staticManager = nil;
         
 //        NSLog(@"stream title :%@",stmRecord[@"title"]);
 //        NSLog(@"stmRecord URL :%@",stmRecord[@"list_url"][@"http"]);
+        
+        [recordObjects addObject:stream];
+    }
+    
+    if (self.streamingBlock) {
+        self.streamingBlock(YES,[NSArray arrayWithArray:recordObjects],nil);
+    }
+}
+
+
+- (void)downloadStreamingDetailForRequestfilter:(NSURLRequest *)request {
+    __weak DataManager *weakSelf = self;
+    
+    AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:appDelegate.access_token forHTTPHeaderField:@"X-TIT-ACCESS-TOKEN"];
+    
+    NSDictionary * param = @{};
+    NSLog(@"request : %@",[NSString stringWithFormat:@"%@",request.URL]);
+    [manager GET:[request.URL absoluteString] parameters:param success:^(AFHTTPRequestOperation *  operation, id responseObject) {
+        
+        NSLog(@"downloadStreamingDetailForRequestData : %@ Count ",responseObject);
+        //createStreamingObjectForRecordsfilter
+        [weakSelf createStreamingObjectForRecordsfilter:(NSArray *)responseObject];
+        
+    } failure:^(AFHTTPRequestOperation *  operation, NSError *  error) {
+        weakSelf.streamingBlock(NO,nil,error);
+    }];
+    
+}
+- (void)createStreamingObjectForRecordsfilter:(NSArray *)record {
+    
+    NSMutableArray *recordObjects = [NSMutableArray array];
+    
+    //    NSLog(@"All recordObjects %@",record);
+    for (NSDictionary *stmRecord in record) {
+        Streaming *stream = [[Streaming alloc] init];
+        stream.ID = stmRecord[@"id_stream"];
+        stream.userID = stmRecord[@"user_id"];
+        stream.streamUserName = stmRecord[@"user"][@"email"];
+        stream.streamUserImage = stmRecord[@"user"][@"profile_picture"];
+        stream.streamUserFollowerCount = stmRecord[@"user"][@"count_follower"];
+        stream.streamID = stmRecord[@"id_stream"];
+        stream.streamTitle = stmRecord[@"title"];
+        
+        stream.streamDetail = stmRecord[@"note"];
+        stream.streamUpdateDate = stmRecord[@"updatedate"];
+        stream.streamTotalView = stmRecord[@"watchedCount"];
+        stream.streamCreateDate = stmRecord[@"createdate"];
+        stream.lovesCount = [stmRecord[@"loves_count"] integerValue];
+        stream.isLoved = [stmRecord[@"is_loved"] integerValue];
+        stream.web_url = stmRecord[@"web_url"];
+        
+        //      stream.snapshot = stmRecord[@"snapshots"][@"320x240"];
+        stream.snapshot = stmRecord[@"list_snapshot"][@"320x240"];
+        stream.streamUrl = stmRecord[@"list_url"][@"http"];
+        stream.createBy = stmRecord[@"user"][@"first_name"];
+        stream.timeCreate = stmRecord[@"createdate"];
+        stream.latitude = stmRecord[@"latitude"];
+        stream.longitude = stmRecord[@"longitude"];
+        stream.avatarUrl = stmRecord[@"user"][@"profile_picture"];
+        stream.category = stmRecord[@"category_stream"][@"category_name_en"];
+        stream.categoryID = [stmRecord[@"category_id"] integerValue];
+        stream.categoryName = stmRecord[@"category_stream"][@"category_name_en"];
+        stream.categoryImage = stmRecord[@"category_stream"][@"icon_category"];
+        stream.categoryCountStream = stmRecord[@"category_stream"][@"count_stream"];
+        stream.count_comment = stmRecord[@"count_comment"];
+        
+        //NSLog(@"%@",stream.avatarUrl);
         
         [recordObjects addObject:stream];
     }

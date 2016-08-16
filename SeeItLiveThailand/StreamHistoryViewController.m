@@ -860,33 +860,13 @@
     NSInteger playTag = [tapRecognizer.view tag];
     
     Streaming *stream = [self.streamList objectAtIndex:playTag];
+    NSLog(@"STREAM :::%@",self.streamList);
     StreamingDetailViewController *streamingDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"streamingdetail"];
        streamingDetail.objStreaming = stream;
         streamingDetail.streamingType = @"history";
-   
+    NSLog(@"OBJ STREAM :::%@",stream);
      [self.view.window.rootViewController presentViewController:streamingDetail animated:YES completion:nil];
-//
-//    
-//    NSInteger watermarkTag = [tapGR.view tag];
-//    //   // imgWatermark = (UIImageView *)tapGR.view;
-//    //
-//    LivestreamRealtimeViewController *streamingRealtime = [self.storyboard instantiateViewControllerWithIdentifier:@"livestreaming"];
-//    
-//    // item.selectedBackgroundView.backgroundColor = [UIColor colorWithWhite:40 alpha:0.6f];
-//    NSInteger watermarkTag = [tapRecognizer.view tag];
-//    //   // imgWatermark = (UIImageView *)tapGR.view;
-//    //
-//    LivestreamRealtimeViewController *streamingRealtime = [self.storyboard instantiateViewControllerWithIdentifier:@"livestreaming"];
-//    
-//    // item.selectedBackgroundView.backgroundColor = [UIColor colorWithWhite:40 alpha:0.6f];
-//    
-//    Streaming *stream = [self.streamList objectAtIndex:watermarkTag];
-//    
-//    streamingRealtime.objStreaming = stream;
-//    
-//    streamingRealtime.streamingType = @"live";
-//    
-//    [self.view.window.rootViewController presentViewController:streamingRealtime animated:YES completion:nil];
+
 }
 
 

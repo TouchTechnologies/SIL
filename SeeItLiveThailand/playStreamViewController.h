@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+@class Streaming;
 
 @interface playStreamViewController : UIViewController
-
+@property (nonatomic, strong) NSString *streamingID;
+@property (nonatomic, strong) Streaming *objStreaming;
+@property (nonatomic, strong) NSString *streamingType;
 @end
