@@ -212,23 +212,23 @@ GMSMarker *marker;
 -(void)viewWillAppear:(BOOL)animated
 {
     
-//    NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,20,20,1];
-//    
-//    [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
-//        
-//        if (success) {
-//            
-//            
-//            NSLog(@"filter LiveAround Data : %@",streamRecords);
-//            self.liveAroundData = streamRecords;
-//             NSLog(@"filter LiveAround Count : %lu", (unsigned long)self.liveAroundData.count );
-//            
-//        } else {
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//            [alert show];
-//        }
-//        
-//    } Filter:filter];
+    NSString *filter = [@"/" stringByAppendingFormat:@"nearby?at=%@,%@&distance=%d&filterLimit=%d&filtersPage=%d",self.objStreaming.latitude,self.objStreaming.longitude,20,20,1];
+    
+    [[DataManager shareManager] getStreamingWithCompletionBlockWithFilter:^(BOOL success, NSArray *streamRecords, NSError *error) {
+        
+        if (success) {
+            
+            
+            NSLog(@"filter LiveAround Data : %@",streamRecords);
+            self.liveAroundData = streamRecords;
+             NSLog(@"filter LiveAround Count : %lu", (unsigned long)self.liveAroundData.count );
+            
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NotConnect message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        
+    } Filter:filter];
     
     
 }

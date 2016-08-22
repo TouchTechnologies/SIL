@@ -147,7 +147,7 @@
     [hud show:YES];
 //
     [self.comment removeAllObjects];
-  AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
+    AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     comment_type = appDelegate.comment_type;
     [self.navigationController.navigationBar
      setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];

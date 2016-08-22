@@ -746,6 +746,7 @@ static UserManager * shareObject;
         } failure:^(AFHTTPRequestOperation *  operation, NSError *  error) {
             completion(error,nil,@"Failed");
         }];
+        
     }else if ([apiName isEqualToString:@"unfollow"])
     {
         NSString *apiLink = [@"api/user/" stringByAppendingString:[userID stringByAppendingString:[@"/following/" stringByAppendingString:followingUserID]]];
