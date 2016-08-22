@@ -1971,8 +1971,6 @@
     NSLog(@"ADView Notiname: %@",[refreshName name]);
     if ([[refreshName name] isEqualToString:@"refresh"])
     {
-        
-        
         [self.view reloadInputViews];
     }
     

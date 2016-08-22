@@ -619,7 +619,6 @@
     
     NSArray *shareItems = @[shareUrl];
     
-    
     //UIImage * image = [UIImage imageNamed:@"boyOnBeach"];
     //NSMutableArray * shareItems = [NSMutableArray new];
     //[shareItems addObject:imgShare];

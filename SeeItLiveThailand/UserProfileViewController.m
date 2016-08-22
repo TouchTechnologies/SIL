@@ -421,56 +421,65 @@
 }
 - (void)setFollow:(id)sender
 {
+  
     AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
-            NSLog(@"setFollow tag %ld",(long)FollowBtn.tag);
-    if(!userData.is_followed && ![appDelegate.user_ID isEqualToString:userData.userId])
-    {
-        [[UserManager shareIntance]followAPI:@"follow" userID:appDelegate.user_ID followingUserID:userData.userId Completion:^(NSError *error, NSDictionary *result, NSString *message) {
-            NSLog(@"setFollow %@",result);
+    if (appDelegate.isLogin) {
+        NSLog(@"setFollow tag %ld",(long)FollowBtn.tag);
+        if(!userData.is_followed && ![appDelegate.user_ID isEqualToString:userData.userId])
+        {
+            [[UserManager shareIntance]followAPI:@"follow" userID:appDelegate.user_ID followingUserID:userData.userId Completion:^(NSError *error, NSDictionary *result, NSString *message) {
+                NSLog(@"setFollow %@",result);
+                
+                int  followersPlus = [userData.count_follower intValue]+1;
+                userData.count_follower = [NSString stringWithFormat:@"%d",followersPlus];
+                NSLog(@"followersPlus %d",followersPlus);
+                followersCount.text = [NSString stringWithFormat:@"%d",followersPlus];
+                userData.is_followed = true;
+                
+                
+                btnLbl.textColor = [UIColor whiteColor];
+                [btnLbl setText:@"Following"];
+                FollowBtn.backgroundColor = [UIColor redColor];
+                
+                
+                
+                
+                [FollowBtn reloadInputViews];
+                [headerView reloadInputViews];
+                
+            }];
             
-            int  followersPlus = [userData.count_follower intValue]+1;
-            userData.count_follower = [NSString stringWithFormat:@"%d",followersPlus];
-            NSLog(@"followersPlus %d",followersPlus);
-            followersCount.text = [NSString stringWithFormat:@"%d",followersPlus];
-            userData.is_followed = true;
             
+            
+        }else
+        {
+            [[UserManager shareIntance]followAPI:@"unfollow" userID:appDelegate.user_ID followingUserID:userData.userId Completion:^(NSError *error, NSDictionary *result, NSString *message){
+                NSLog(@"setFollow %@",result);
+                
+                int followersSub = [userData.count_follower intValue]-1;
+                
+                userData.count_follower = [NSString stringWithFormat:@"%d",followersSub];
+                followersCount.text = [NSString stringWithFormat:@"%d",followersSub];
+                userData.is_followed = false;
+                
+                btnLbl.textColor = [UIColor blackColor];
+                [btnLbl setText:@"Follow"];
+                FollowBtn.backgroundColor = [UIColor whiteColor];
+                
+                [FollowBtn reloadInputViews];
+                [headerView reloadInputViews];
+            }];
+            
+            
+        }
 
-            btnLbl.textColor = [UIColor whiteColor];
-            [btnLbl setText:@"Following"];
-            FollowBtn.backgroundColor = [UIColor redColor];
-
-
-
-            
-            [FollowBtn reloadInputViews];
-            [headerView reloadInputViews];
-            
-        }];
-      
-       
-       
-    }else
-    {
-        [[UserManager shareIntance]followAPI:@"unfollow" userID:appDelegate.user_ID followingUserID:userData.userId Completion:^(NSError *error, NSDictionary *result, NSString *message){
-            NSLog(@"setFollow %@",result);
-            
-            int followersSub = [userData.count_follower intValue]-1;
-
-            userData.count_follower = [NSString stringWithFormat:@"%d",followersSub];
-            followersCount.text = [NSString stringWithFormat:@"%d",followersSub];
-            userData.is_followed = false;
-            
-            btnLbl.textColor = [UIColor blackColor];
-            [btnLbl setText:@"Follow"];
-            FollowBtn.backgroundColor = [UIColor whiteColor];
-            
-            [FollowBtn reloadInputViews];
-            [headerView reloadInputViews];
-        }];
-      
-        
     }
-
+    else{
+        NSLog(@"Plaese Login");
+        UIAlertView *Alert = [[UIAlertView alloc] initWithTitle:@"Please Login" message:@"" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [Alert show];
+    }
+    
 }
 - (void) refreshList:(NSNotification *)refreshName
 {
