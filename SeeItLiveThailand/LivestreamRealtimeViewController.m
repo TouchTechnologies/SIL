@@ -199,14 +199,17 @@
 
         self.player.view.frame = CGRectMake(0,0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height); //self.view.bounds;
         NSLog(@"NOT FULLSCREEN Live Realtime");
-        self.player.view.doneButton.frame = doneButtonPortRect;
+      //  self.player.view.doneButton.frame = doneButtonPortRect;
+
 
     }
     else{
         self.player.view.frame = CGRectMake(0,0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height/2); //self.view.bounds;
         NSLog(@"NOT FULLSCREEN Live Realtime");
         self.player.view.doneButton.frame = doneButtonPortRect;
+
    }
+   
     self.player.view.playerControlsAutoHideTime = @1000;
     self.player.forceRotate = YES;
     self.player.view.fullscreenButton.hidden = TRUE;
@@ -225,7 +228,13 @@
     
     topView = [[UIView alloc] initWithFrame:topViewPortRect];
     topView.backgroundColor = [UIColor blackColor];
+    UIButton *close = [[UIButton alloc] initWithFrame:doneButtonPortRect];
+    [close setImage:[UIImage imageNamed:@"close.png"] forState:UIControlStateNormal];
+    [close addTarget:self action:@selector(close:) forControlEvents:UIControlEventTouchUpInside];
+    self.player.view.doneButton = close;
+    self.player.view.doneButton.hidden = FALSE;
     [topView addSubview:self.player.view.doneButton];
+    
     [self.player.view addSubview:topView];
     
     font = [UIFont fontWithName:@"Helvetica" size:fontSize];
@@ -470,6 +479,15 @@
   //  chatplaceView = [[UIView alloc] initWithFrame:CGRectMake(42, 2 ,chatTblRect.size.width - 44, cellH - 4)];
     
 }
+- (void)close:(id)sender{
+
+    NSLog(@"mylivestreamEnd");
+    [self dismissViewControllerAnimated:YES completion:nil];
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"refresh"
+     object:nil];
+    [self.player pauseContent:YES completionHandler:nil];
+}
 - (void)initialSize {
     
     CGFloat scy = (1024.0/480.0);
@@ -485,7 +503,7 @@
         imgPinPortRect = CGRectMake(10*scx,topViewPortRect.size.height/2 - (13*scy), 25*scx, 25*scy);
        // lblLocationLivePortRect = CGRectMake(40*scx,topViewPortRect.size.height/2 - (13*scy),60*scx,20*scy);
         lblLocationLivePortRect = CGRectMake(imgPinPortRect.origin.x + (30*scx), topViewPortRect.size.height/2 - (10*scy), self.view.bounds.size.width - (imgPinPortRect.origin.x + (30*scx)), 20*scy);
-        doneButtonPortRect = CGRectMake(topViewPortRect.size.width - (45*scx), topViewPortRect.size.height/2 - (20*scy) , 40*scx, 40*scy);
+        doneButtonPortRect = CGRectMake(topViewPortRect.size.width - (35*scx), topViewPortRect.size.height/2 - (10*scy) , 25*scx, 25*scy);
  
         propViewPortRect = CGRectMake(0*scx, self.view.bounds.size.height / 2 , self.view.bounds.size.width, 70*scy);
         imgLivePortRect = CGRectMake(20*scx, 2*scy, 35*scx, 35*scy);
@@ -535,7 +553,7 @@
         topViewPortRect = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, 50);
         imgPinPortRect = CGRectMake(10,topViewPortRect.size.height/2 - 13, 25, 25);
         lblLocationLivePortRect = CGRectMake(imgPinPortRect.origin.x + 30, topViewPortRect.size.height/2 - 10, self.view.bounds.size.width - (imgPinPortRect.origin.x + 30), 20);
-        doneButtonPortRect = CGRectMake(topViewPortRect.size.width - 45, topViewPortRect.size.height/2 - 20 , 40, 40);
+        doneButtonPortRect = CGRectMake(topViewPortRect.size.width - 35, topViewPortRect.size.height/2 - 10 , 25, 25);
         
         
         propViewPortRect = CGRectMake(0, self.view.bounds.size.height / 2 , self.view.bounds.size.width, 70);
@@ -891,6 +909,7 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
    // self.player.view.doneButton.hidden = TRUE;
     self.player.view.frame = CGRectMake(0,0, self.view.bounds.size.width, self.view.bounds.size.height/2);
     [self.player.view.doneButton setFrame:doneButtonPortRect];
+    self.player.view.doneButton.hidden = FALSE;
     self.player.view.topControlOverlay.hidden = false;
     self.player.view.bottomControlOverlay.hidden = true;
     [topView setFrame:topViewPortRect];
@@ -1048,6 +1067,7 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
     [imgPin setFrame:imgPinLandRect];
     [topView addSubview:imgPin];
     
+    self.player.view.doneButton.hidden = TRUE;
     [self.player.view.doneButton setFrame:doneButtonLandRect];
     [topView addSubview:self.player.view.doneButton];
     
@@ -1462,15 +1482,13 @@ NSLog(@"VKVideoPlayerControlEventTapDone Start");
         
         
         NSLog(@"streaming:finish : %@",data);
-        NSLog(@"This live stream has finished");
-        UILabel *msgAlert = [[UILabel alloc] initWithFrame:CGRectMake(0, self.player.view.bounds.size.height/2 - 15, self.player.view.bounds.size.width, 30)];
-        msgAlert.text = @"This live stream has finished";
-        msgAlert.textColor = [UIColor whiteColor];
-        msgAlert.textAlignment = NSTextAlignmentCenter;
-        [self.player.view addSubview:msgAlert];
+//        NSLog(@"This live stream has finished");
+//        UILabel *msgAlert = [[UILabel alloc] initWithFrame:CGRectMake(0, self.player.view.bounds.size.height/2 - 15, self.player.view.bounds.size.width, 30)];
+//        msgAlert.text = @"This live stream has finished";
+//        msgAlert.textColor = [UIColor whiteColor];
+//        msgAlert.textAlignment = NSTextAlignmentCenter;
+//        [self.player.view addSubview:msgAlert];
     }];
-
-    
     [socket connect];
     
 }
