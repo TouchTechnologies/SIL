@@ -10,5 +10,6 @@
 #import "AppDelegate.h"
 #import "defs.h"
 #import "Commentator.h"
+#import <FBSDKShareKit/FBSDKShareKit.h>
 //#import "SocketIOClient-swift.h"
 #endif /* SeeItLiveThailand_Bridging_Header_h */

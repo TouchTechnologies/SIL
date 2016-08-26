@@ -16,6 +16,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var socket:SocketIOClient? = nil;
+    let content : FBSDKShareLinkContent = FBSDKShareLinkContent()
     var countDown:NSInteger = 0;
     var countDownTimer = NSTimer()
     var timerValue = 20
@@ -276,6 +277,10 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             
                 print("result stream \(result)")
                 print("message stream \(message)")
+                self.content.contentURL = NSURL(string: "http://www.codingexplorer.com")
+                self.content.contentTitle = "<INSERT STRING HERE>"
+                self.content.contentDescription = "<INSERT STRING HERE>"
+                
                 if(error != nil)
                 {
                     print("Error : \(error)")
@@ -297,7 +302,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
                     self.setSocketLive(result["id"] as! Int)
                     self.session.useAdaptiveBitrate = true ///Adaptive Bit Rate Enable
                     self.session.startRtmpSessionWithURL(self.streamURL!, andStreamKey: self.streamKey!)
-                    if(self.timerValue != 0)
+                    if(self.timerValue != 0 && self.session.rtmpSessionState == .Started)
                     {
                         self.countDownTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(LiveStreamVC.countdown(_:)), userInfo: nil, repeats: true)
                     }else
@@ -566,7 +571,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         shareListView.addSubview(copyLinkBtn!)
         
         
-        //******      popUpViewBot?.addSubview(tableView!)
+//        popUpViewBot?.addSubview(tableView!)
         
         popUpViewChat = UIView(frame : popUpViewChatRect)
         popUpViewChat!.backgroundColor = UIColor.clearColor()
@@ -698,7 +703,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         shareBtn!.backgroundColor = UIColor.clearColor()
         shareBtn!.tag = 5
         shareBtn!.addTarget(self, action: #selector(LiveStreamVC.shareMyLive(_:)), forControlEvents: .TouchUpInside)
-        //    popUpViewBot!.addSubview(shareBtn!)
+        popUpViewBot!.addSubview(shareBtn!)
         
         
         selectQualityBtn = UIButton(frame:selectQualityBtnRect)
@@ -1485,38 +1490,49 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         NSLog("Tag %ld", sender.tag)
         
         
+        content.contentURL = NSURL(string: "http://www.codingexplorer.com")
+        content.contentTitle = "<INSERT STRING HERE>"
+        content.contentDescription = "<INSERT STRING HERE>"
+//        content.imageURL = NSURL(string: "<INSERT STRING HERE>")
         
-        let firstActivityItem = "Text you want"
-        let secondActivityItem : NSURL = NSURL(string: "http//:www.google.com")!
-        // If you want to put an image
-        let image : UIImage = UIImage(named: "ic_flash2.png")!
-        
-        let activityViewController : UIActivityViewController = UIActivityViewController(
-            activityItems: [firstActivityItem, secondActivityItem, image], applicationActivities: nil)
+        let button : FBSDKShareButton = FBSDKShareButton()
+        button.shareContent = content
+        button.frame = CGRectMake((UIScreen.mainScreen().bounds.width - 100) * 0.5, 50, 100, 25)
+        self.view.addSubview(button)
         
         
-        //        activityViewController.rotatingHeaderView()
-        // This lines is for the popover you need to show in iPad
-        activityViewController.popoverPresentationController?.sourceView = (sender as! UIButton)
         
-        // This line remove the arrow of the popover to show in iPad
-        activityViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection()
-        
-        activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
-        
-        // Anything you want to exclude
-        activityViewController.excludedActivityTypes = [
-            UIActivityTypePostToWeibo,
-            UIActivityTypePrint,
-            UIActivityTypeAssignToContact,
-            UIActivityTypeSaveToCameraRoll,
-            UIActivityTypeAddToReadingList,
-            UIActivityTypePostToFlickr,
-            UIActivityTypePostToVimeo,
-            UIActivityTypePostToTencentWeibo
-        ]
-        
-        self.presentViewController(activityViewController, animated: true, completion: nil)
+//        let firstActivityItem = "Text you want"
+//        let secondActivityItem : NSURL = NSURL(string: "http//:www.google.com")!
+//        // If you want to put an image
+//        let image : UIImage = UIImage(named: "ic_flash2.png")!
+//        
+//        let activityViewController : UIActivityViewController = UIActivityViewController(
+//            activityItems: [firstActivityItem, secondActivityItem, image], applicationActivities: nil)
+//        
+//        
+//        //        activityViewController.rotatingHeaderView()
+//        // This lines is for the popover you need to show in iPad
+//        activityViewController.popoverPresentationController?.sourceView = (sender as! UIButton)
+//        
+//        // This line remove the arrow of the popover to show in iPad
+//        activityViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection()
+//        
+//        activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
+//        
+//        // Anything you want to exclude
+//        activityViewController.excludedActivityTypes = [
+//            UIActivityTypePostToWeibo,
+//            UIActivityTypePrint,
+//            UIActivityTypeAssignToContact,
+//            UIActivityTypeSaveToCameraRoll,
+//            UIActivityTypeAddToReadingList,
+//            UIActivityTypePostToFlickr,
+//            UIActivityTypePostToVimeo,
+//            UIActivityTypePostToTencentWeibo
+//        ]
+//        
+//        self.presentViewController(activityViewController, animated: true, completion: nil)
         
         
         
