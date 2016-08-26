@@ -359,7 +359,6 @@
     return nil;
 }
 
-
 //CURRENT PAGE INDEX
 
 -(void)adPageControlCurrentVisiblePageIndex:(int) iCurrentVisiblePage
@@ -469,8 +468,7 @@
                 [FollowBtn reloadInputViews];
                 [headerView reloadInputViews];
             }];
-            
-            
+
         }
 
     }

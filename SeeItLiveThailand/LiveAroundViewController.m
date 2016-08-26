@@ -182,13 +182,9 @@ GMSMarker *marker;
         format.preloadPolicy = HNKPreloadPolicyLastSession;
     }
     
-    
-
     scrollView.delegate = self;
     tableView.delegate = self;
     tableView.dataSource = self;
-    
-    
     
     
     id<GMUClusterAlgorithm> algorithm = [[GMUNonHierarchicalDistanceBasedAlgorithm alloc] init];
