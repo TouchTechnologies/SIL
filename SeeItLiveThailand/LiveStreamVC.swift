@@ -16,6 +16,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var socket:SocketIOClient? = nil;
+    let content : FBSDKShareLinkContent = FBSDKShareLinkContent()
     var countDown:NSInteger = 0;
     var countDownTimer = NSTimer()
     var timerValue = 20
@@ -67,6 +68,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     var qualityTxt:UITextField?
     var selectQualityBtn:UIButton?
     var shareBtn:UIButton?
+    var shareFBBtn : FBSDKShareButton = FBSDKShareButton()
     var qualityPickerView:UIPickerView?
     var qualityArray : [String] = ["High","Medium","Low"]
     var countDownLbl:UILabel?
@@ -144,6 +146,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
     var detailLiveLblRect = CGRect()
     var timeDetailRect = CGRect()
     var shareBtnRect = CGRect()
+    var shareFBBtnRect = CGRect()
     var font = CGFloat()
     var categoryPickerViewRect = CGRect()
     var qualityPickerViewRect = CGRect()
@@ -247,16 +250,15 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         self.popUpViewTop!.hidden = false
         self.popUpViewBot!.hidden = false
         countdownLbl.hidden = false;
-       // self.popUpViewTop?.hidden = false
         self.chatBtn?.hidden = false
-        //        self.shareLiveBtn?.hidden = false
+        //self.shareLiveBtn?.hidden = false
         
         print("getQualityStream \(getQualityStream(qualityTxt!.text!))")
         print("qualityLbl!.text! \(qualityTxt!.text!)")
         print("GO Streaming")
 
 
-        //        popUpViewTop!.hidden = true
+        //popUpViewTop!.hidden = true
         popUpViewCen!.hidden  = true
         let formatter: NSDateFormatter = NSDateFormatter()
         formatter.dateFormat = "YYYY-MM-dd HH:mm:ss"
@@ -276,6 +278,14 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             
                 print("result stream \(result)")
                 print("message stream \(message)")
+                print("SnapShot : \(result["snapshots"]!["800x600"]! as! String)")
+                self.content.contentURL = NSURL(string: result["web_url"] as! String)
+                self.content.contentTitle = result["title"] as! String
+//                self.content.contentDescription = "<INSERT STRING HERE>"
+//                self.content.imageURL = NSURL(string: result["snapshots"]!["800x600"]! as! String)
+                self.shareFBBtn.shareContent = self.content
+                self.popUpViewBot!.addSubview(self.shareFBBtn)
+                
                 if(error != nil)
                 {
                     print("Error : \(error)")
@@ -297,14 +307,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
                     self.setSocketLive(result["id"] as! Int)
                     self.session.useAdaptiveBitrate = true ///Adaptive Bit Rate Enable
                     self.session.startRtmpSessionWithURL(self.streamURL!, andStreamKey: self.streamKey!)
-                    if(self.timerValue != 0)
-                    {
-                        self.countDownTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(LiveStreamVC.countdown(_:)), userInfo: nil, repeats: true)
-                    }else
-                    {
-                        self.countDownTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(LiveStreamVC.countup(_:)), userInfo: nil, repeats: true)
-                        self.countdownLbl.hidden = true
-                    }
+
                     
                     
                 }
@@ -566,7 +569,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         shareListView.addSubview(copyLinkBtn!)
         
         
-        //******      popUpViewBot?.addSubview(tableView!)
+//        popUpViewBot?.addSubview(tableView!)
         
         popUpViewChat = UIView(frame : popUpViewChatRect)
         popUpViewChat!.backgroundColor = UIColor.clearColor()
@@ -698,7 +701,20 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         shareBtn!.backgroundColor = UIColor.clearColor()
         shareBtn!.tag = 5
         shareBtn!.addTarget(self, action: #selector(LiveStreamVC.shareMyLive(_:)), forControlEvents: .TouchUpInside)
-        //    popUpViewBot!.addSubview(shareBtn!)
+//        popUpViewBot!.addSubview(shareBtn!)
+        
+        
+        
+//        content.contentURL = NSURL(string: "http://www.codingexplorer.com")
+//        content.contentTitle = "<INSERT STRING HERE>"
+//        content.contentDescription = "<INSERT STRING HERE>"
+//        content.imageURL = NSURL(string: "<INSERT STRING HERE>")
+//        shareFBBtn.shareContent = content
+        shareFBBtn.frame = shareFBBtnRect
+//        popUpViewBot!.addSubview(shareFBBtn)
+        
+        
+        
         
         
         selectQualityBtn = UIButton(frame:selectQualityBtnRect)
@@ -911,6 +927,7 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             categoryPickerViewRect = CGRectMake(topCenViewRect.size.width/2+(10*scx),80*scy,topCenViewRect.size.width/2,100*scy)
             qualityPickerViewRect = CGRectMake(topCenViewRect.size.width/2 + (10*scx),120*scy,topCenViewRect.size.width/2,100*scy)
             shareBtnRect = CGRectMake(UIScreen.mainScreen().bounds.size.height/2-popUpViewCenX/2,0*scy,50*scx,50*scy)
+            shareFBBtnRect = CGRectMake(UIScreen.mainScreen().bounds.size.height/2-popUpViewCenX/2,20*scy,80*scx,30*scy)
             
             popUpViewChatRect = CGRectMake(45*scx, 60*scy , streamViewRect.size.width/2 , streamViewRect.size.height - (150*scy));
             imgUserChatRect = CGRectMake(2*scx, 2*scy, 35*scx , 35*scy)
@@ -989,6 +1006,8 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             categoryPickerViewRect = CGRectMake(topCenViewRect.size.width/2+10,80,topCenViewRect.size.width/2,100)
             qualityPickerViewRect = CGRectMake(topCenViewRect.size.width/2+10,120,topCenViewRect.size.width/2,100)
             shareBtnRect = CGRectMake(UIScreen.mainScreen().bounds.size.height/2-popUpViewCenX/2,0,50,50)
+            shareFBBtnRect = CGRectMake(UIScreen.mainScreen().bounds.size.height/2-popUpViewCenX/2,20,80,30)
+            
             popUpViewChatRect = CGRectMake(45, 60 , streamViewRect.size.width/2 , streamViewRect.size.height - 150);
             imgUserChatRect = CGRectMake(2, 2, 35 , 35)
             lblUserNameRect = CGRectMake((imgUserChatRect.size.width + imgUserChatRect.origin.x)+10, 2, 70 , 30)
@@ -1339,11 +1358,31 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
             //                    self.textButton.text = "Starting"
             startStreamBtn!.setTitle("Starting", forState: UIControlState.Normal)
             //connectBtn.setTitle("Connecting", forState: .Normal)
+            if(self.timerValue != 0 && self.session.rtmpSessionState == .Started)
+            {
+                print("countDown")
+                self.countDownTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(LiveStreamVC.countdown(_:)), userInfo: nil, repeats: true)
+            }else if(self.timerValue == 0 && self.session.rtmpSessionState == .Started)
+            {
+                print("countUp")
+                self.countDownTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(LiveStreamVC.countup(_:)), userInfo: nil, repeats: true)
+                self.countdownLbl.hidden = true
+            }
             
             break
         case .Started:
             //                    self.textButton.text = "STOP"
             startStreamBtn!.setTitle("STOP", forState: UIControlState.Normal)
+            if(self.timerValue != 0)
+            {
+                print("countDown")
+                self.countDownTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(LiveStreamVC.countdown(_:)), userInfo: nil, repeats: true)
+            }else
+            {
+                print("countUp")
+                self.countDownTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(LiveStreamVC.countup(_:)), userInfo: nil, repeats: true)
+                self.countdownLbl.hidden = true
+            }
 //            startStreamBtn!.addTarget(self, action: #selector(LiveStreamVC.stopStream(_:)), forControlEvents: .TouchUpInside)
             break
         default:
@@ -1485,38 +1524,49 @@ class LiveStreamVC: UIViewController,VCSessionDelegate,CustomIOS7AlertViewDelega
         NSLog("Tag %ld", sender.tag)
         
         
+        content.contentURL = NSURL(string: "http://www.codingexplorer.com")
+        content.contentTitle = "<INSERT STRING HERE>"
+        content.contentDescription = "<INSERT STRING HERE>"
+//        content.imageURL = NSURL(string: "<INSERT STRING HERE>")
         
-        let firstActivityItem = "Text you want"
-        let secondActivityItem : NSURL = NSURL(string: "http//:www.google.com")!
-        // If you want to put an image
-        let image : UIImage = UIImage(named: "ic_flash2.png")!
-        
-        let activityViewController : UIActivityViewController = UIActivityViewController(
-            activityItems: [firstActivityItem, secondActivityItem, image], applicationActivities: nil)
+        let button : FBSDKShareButton = FBSDKShareButton()
+        button.shareContent = content
+        button.frame = CGRectMake((UIScreen.mainScreen().bounds.width - 100) * 0.5, 50, 100, 25)
+        self.view.addSubview(button)
         
         
-        //        activityViewController.rotatingHeaderView()
-        // This lines is for the popover you need to show in iPad
-        activityViewController.popoverPresentationController?.sourceView = (sender as! UIButton)
         
-        // This line remove the arrow of the popover to show in iPad
-        activityViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection()
-        
-        activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
-        
-        // Anything you want to exclude
-        activityViewController.excludedActivityTypes = [
-            UIActivityTypePostToWeibo,
-            UIActivityTypePrint,
-            UIActivityTypeAssignToContact,
-            UIActivityTypeSaveToCameraRoll,
-            UIActivityTypeAddToReadingList,
-            UIActivityTypePostToFlickr,
-            UIActivityTypePostToVimeo,
-            UIActivityTypePostToTencentWeibo
-        ]
-        
-        self.presentViewController(activityViewController, animated: true, completion: nil)
+//        let firstActivityItem = "Text you want"
+//        let secondActivityItem : NSURL = NSURL(string: "http//:www.google.com")!
+//        // If you want to put an image
+//        let image : UIImage = UIImage(named: "ic_flash2.png")!
+//        
+//        let activityViewController : UIActivityViewController = UIActivityViewController(
+//            activityItems: [firstActivityItem, secondActivityItem, image], applicationActivities: nil)
+//        
+//        
+//        //        activityViewController.rotatingHeaderView()
+//        // This lines is for the popover you need to show in iPad
+//        activityViewController.popoverPresentationController?.sourceView = (sender as! UIButton)
+//        
+//        // This line remove the arrow of the popover to show in iPad
+//        activityViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection()
+//        
+//        activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
+//        
+//        // Anything you want to exclude
+//        activityViewController.excludedActivityTypes = [
+//            UIActivityTypePostToWeibo,
+//            UIActivityTypePrint,
+//            UIActivityTypeAssignToContact,
+//            UIActivityTypeSaveToCameraRoll,
+//            UIActivityTypeAddToReadingList,
+//            UIActivityTypePostToFlickr,
+//            UIActivityTypePostToVimeo,
+//            UIActivityTypePostToTencentWeibo
+//        ]
+//        
+//        self.presentViewController(activityViewController, animated: true, completion: nil)
         
         
         
