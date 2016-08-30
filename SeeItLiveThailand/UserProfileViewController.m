@@ -14,6 +14,7 @@
 #import "ADPageControl.h"
 #import "DetailProfileViewController.h"
 #import "UserLiveViewController.h"
+#import "MBProgressHUD.h"
 
 @interface UserProfileViewController ()<ADPageControlDelegate>
 
@@ -421,6 +422,10 @@
 - (void)setFollow:(id)sender
 {
   
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+//    hud.labelText = @"Loading...";
+    [hud show:YES];
     AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     if (appDelegate.isLogin) {
         NSLog(@"setFollow tag %ld",(long)FollowBtn.tag);
@@ -428,7 +433,7 @@
         {
             [[UserManager shareIntance]followAPI:@"follow" userID:appDelegate.user_ID followingUserID:userData.userId Completion:^(NSError *error, NSDictionary *result, NSString *message) {
                 NSLog(@"setFollow %@",result);
-                
+                [hud hide:YES];
                 int  followersPlus = [userData.count_follower intValue]+1;
                 userData.count_follower = [NSString stringWithFormat:@"%d",followersPlus];
                 NSLog(@"followersPlus %d",followersPlus);
@@ -454,7 +459,7 @@
         {
             [[UserManager shareIntance]followAPI:@"unfollow" userID:appDelegate.user_ID followingUserID:userData.userId Completion:^(NSError *error, NSDictionary *result, NSString *message){
                 NSLog(@"setFollow %@",result);
-                
+                [hud hide:YES];
                 int followersSub = [userData.count_follower intValue]-1;
                 
                 userData.count_follower = [NSString stringWithFormat:@"%d",followersSub];
