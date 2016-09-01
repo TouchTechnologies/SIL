@@ -222,11 +222,11 @@
     
     FollowBtn.layer.cornerRadius = 5;
     FollowBtn.clipsToBounds = YES;
-    if(userData.is_followed && ![appDelegate.user_ID isEqualToString:userData.userId])
+    if(appDelegate.isLogin && userData.is_followed && ![appDelegate.user_ID isEqualToString:userData.userId])
     {
         btnLbl.textColor = [UIColor whiteColor];
         [btnLbl setText:@"Following"];
-        FollowBtn.backgroundColor = [UIColor redColor];
+        FollowBtn.backgroundColor = [UIColor colorWithRed:0.22 green:0.47 blue:0.15 alpha:1];
         //[UIColor colorWithRed:0.071 green:0.459 blue:0.714 alpha:1];
     }else
     {
@@ -477,10 +477,15 @@
         }
 
     }
-    else{
-        NSLog(@"Plaese Login");
-        UIAlertView *Alert = [[UIAlertView alloc] initWithTitle:@"Please Login" message:@"" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [Alert show];
+    else
+    {
+        [hud hide:YES];
+
+        NSLog(@"is not login ");
+        UIViewController *stream = [[UIViewController alloc] init];
+        stream = [self.storyboard instantiateViewControllerWithIdentifier:@"loginnav"];
+        stream.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self presentViewController:stream animated:YES completion:Nil];
     }
     
 }

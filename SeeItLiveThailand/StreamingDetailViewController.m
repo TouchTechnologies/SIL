@@ -248,6 +248,7 @@
 }
 - (void)orientationChanged:(NSNotification *)note
 {
+    
     UIDevice * device = note.object;
     switch(device.orientation)
     {
@@ -257,247 +258,210 @@
             if (!self.player.isFullScreen){
                 ///////////////////// Port ///////////////////////////
                 
-                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                    self.player.view.topControlOverlay.hidden = TRUE;
-                    [self.player.view addSubviewForControl:streamingTitle toView:topView];
-                    [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
-                    [self.player.view addSubviewForControl:lblcategoryType toView:topView];
-                    
-                }
-                else {
-                    
+//                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//                    self.player.view.topControlOverlay.hidden = TRUE;
+//                    [self.player.view addSubviewForControl:streamingTitle toView:topView];
+//                    [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
+//                    [self.player.view addSubviewForControl:lblcategoryType toView:topView];
+//                    
+//                }
+//                else {
+//                    
                     self.player.view.topControlOverlay.hidden = FALSE;
                     [self.view setFrameHeight:self.view.bounds.size.height];
                     topView.hidden = FALSE;
-                    
-                }
+                    [self.player.view setFrame: playerRect];
+                    [topView setFrame: topViewPortRect];
+                    self.player.view.doneButton.hidden = FALSE;
+                    self.player.view.fullscreenButton.hidden = FALSE ;
+                    [btnLove setFrame:btnLovePortRect];
+                    [topView addSubview:btnLove];
+                    topView.hidden = FALSE;
+                    self.player.isFullScreen = FALSE;
+
+//}
                 
+                
+            }
+            else{
+//                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//                    self.player.view.topControlOverlay.hidden = TRUE;
+//                    [topView setFrameWidth:[UIScreen mainScreen].bounds.size.height];
+//                    [btnLove setFrame:CGRectMake(topView.bounds.size.width - 110, 10, 100, 100)];
+//                    [topView addSubview:btnLove];
+//                    topView.hidden = FALSE;
+//                    
+//                }
+//                else {
+                self.player.view.topControlOverlay.hidden = FALSE;
+                [self.view setFrameHeight:self.view.bounds.size.height];
+                topView.hidden = FALSE;
                 [self.player.view setFrame: playerRect];
                 [topView setFrame: topViewPortRect];
                 self.player.view.doneButton.hidden = FALSE;
                 self.player.view.fullscreenButton.hidden = FALSE ;
                 [btnLove setFrame:btnLovePortRect];
                 [topView addSubview:btnLove];
-                topView.hidden = FALSE;
-                self.player.isFullScreen = true;
-                
-            }
-            else{
-                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                    self.player.view.topControlOverlay.hidden = TRUE;
-                    [topView setFrameWidth:[UIScreen mainScreen].bounds.size.height];
-                    [btnLove setFrame:CGRectMake(topView.bounds.size.width - 110, 10, 100, 100)];
-                    [topView addSubview:btnLove];
-                    topView.hidden = FALSE;
-                    
-                }
-                else {
-                    self.player.view.topControlOverlay.hidden = FALSE;
-                    [btnLove setFrame:btnLoveLandRect];
-                    [ self.player.view.topControlOverlay addSubview:btnLove];
-                    topView.hidden = FALSE;
-                }
-                
-                self.player.view.doneButton.hidden = TRUE;
-                self.player.view.videoQualityButton.hidden = TRUE;
                 self.player.isFullScreen = FALSE;
+
+
+                
+//                self.player.view.doneButton.hidden = TRUE;
+//                self.player.view.videoQualityButton.hidden = TRUE;
+//                self.player.isFullScreen = FALSE;
             }
-            NSLog(@"IS FULL? ::: %@", self.player.isFullScreen ? @"true":@"false");
-            NSLog(@"1!");
+//            NSLog(@"IS FULL? ::: %@", self.player.isFullScreen ? @"true":@"false");
+//            NSLog(@"1!");
             break;
             
         case UIDeviceOrientationFaceUp:
-            NSLog(@"IS FULL???? ::: %@", self.player.isFullScreen ? @"true":@"false");
+            NSLog(@"IS FULL???? 2 ::: %@", self.player.isFullScreen ? @"true":@"false");
             if (!self.player.isFullScreen){
                 ///////////////////// Port ///////////////////////////
                 
-                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                    self.player.view.topControlOverlay.hidden = TRUE;
-                    [self.player.view addSubviewForControl:streamingTitle toView:topView];
-                    [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
-                    [self.player.view addSubviewForControl:lblcategoryType toView:topView];
-                    
-                }
-                else {
-                    
-                    self.player.view.topControlOverlay.hidden = FALSE;
-                    [self.view setFrameHeight:self.view.bounds.size.height];
-                    
-                }
-                
+                //                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                //                    self.player.view.topControlOverlay.hidden = TRUE;
+                //                    [self.player.view addSubviewForControl:streamingTitle toView:topView];
+                //                    [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
+                //                    [self.player.view addSubviewForControl:lblcategoryType toView:topView];
+                //
+                //                }
+                //                else {
+                //
+                self.player.view.topControlOverlay.hidden = FALSE;
+                [self.view setFrameHeight:self.view.bounds.size.height];
+                topView.hidden = FALSE;
                 [self.player.view setFrame: playerRect];
                 [topView setFrame: topViewPortRect];
                 self.player.view.doneButton.hidden = FALSE;
                 self.player.view.fullscreenButton.hidden = FALSE ;
                 [btnLove setFrame:btnLovePortRect];
                 [topView addSubview:btnLove];
-                topView.hidden = FALSE;
-                self.player.isFullScreen = true;
+                self.player.isFullScreen = TRUE;
+                
+                //}
+                
                 
             }
             else{
-                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                    self.player.view.topControlOverlay.hidden = TRUE;
-                    [topView setFrameWidth:[UIScreen mainScreen].bounds.size.height];
-                    [btnLove setFrame:CGRectMake(topView.bounds.size.width - 110, 10, 100, 100)];
-                    [topView addSubview:btnLove];
-                    topView.hidden = FALSE;
-                    
-                }
-                else {
-                    self.player.view.topControlOverlay.hidden = FALSE;
-                    [btnLove setFrame:btnLoveLandRect];
-                    [ self.player.view.topControlOverlay addSubview:btnLove];
-                    topView.hidden = TRUE;
-                }
+                
+                
+                self.player.view.topControlOverlay.hidden = FALSE;
+                self.player.view.videoQualityButton.hidden = TRUE;
+                [btnLove setFrame:btnLoveLandRect];
+                [ self.player.view.topControlOverlay addSubview:btnLove];
+                topView.hidden = TRUE;
+                //  }
                 
                 self.player.view.doneButton.hidden = TRUE;
                 self.player.view.videoQualityButton.hidden = TRUE;
                 self.player.isFullScreen = FALSE;
+
             }
+//            if (self.player.isFullScreen == FALSE){
+//                               
+//            }
+//            else{
+//                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//                    self.player.view.topControlOverlay.hidden = TRUE;
+//                    [topView setFrameWidth:[UIScreen mainScreen].bounds.size.height];
+//                    [btnLove setFrame:CGRectMake(topView.bounds.size.width - 110, 10, 100, 100)];
+//                    [topView addSubview:btnLove];
+//                    topView.hidden = FALSE;
+//                    
+//                }
+//                else {
+//                    self.player.view.topControlOverlay.hidden = FALSE;
+//                    [self.view setFrameHeight:self.view.bounds.size.height];
+//                    topView.hidden = FALSE;
+//                    [ self.player.view.topControlOverlay addSubview:btnLove];
+//                }
+//                [self.player.view setFrame: playerRect];
+//                [topView setFrame: topViewPortRect];
+//                self.player.view.doneButton.hidden = FALSE;
+//                self.player.view.fullscreenButton.hidden = FALSE ;
+//                [btnLove setFrame:btnLovePortRect];
+//                [topView addSubview:btnLove];
+//                topView.hidden = FALSE;
+//                self.player.isFullScreen = TRUE;
+//            }
             NSLog(@"IS FULL? ::: %@", self.player.isFullScreen ? @"true":@"false");
             NSLog(@"2!");
             break;
             
         case UIDeviceOrientationPortraitUpsideDown:
-            if (!self.player.isFullScreen){
-                ///////////////////// Port ///////////////////////////
-                
-                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                    self.player.view.topControlOverlay.hidden = TRUE;
-                    [self.player.view addSubviewForControl:streamingTitle toView:topView];
-                    [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
-                    [self.player.view addSubviewForControl:lblcategoryType toView:topView];
-                    
-                }
-                else {
-                    
-                    self.player.view.topControlOverlay.hidden = FALSE;
-                    [self.view setFrameHeight:self.view.bounds.size.height];
-                    
-                }
-                
-                [self.player.view setFrame: playerRect];
-                [topView setFrame: topViewPortRect];
-                self.player.view.doneButton.hidden = FALSE;
-                self.player.view.fullscreenButton.hidden = FALSE ;
-                [btnLove setFrame:btnLovePortRect];
-                [topView addSubview:btnLove];
-                topView.hidden = FALSE;
-                self.player.isFullScreen = true;
-                
-            }
-            else{
-                ///////////////////// Port ///////////////////////////
-                
-                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                    self.player.view.topControlOverlay.hidden = TRUE;
-                    [self.player.view addSubviewForControl:streamingTitle toView:topView];
-                    [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
-                    [self.player.view addSubviewForControl:lblcategoryType toView:topView];
-                    
-                }
-                else {
-                    
-                    self.player.view.topControlOverlay.hidden = FALSE;
-                    [self.view setFrameHeight:self.view.bounds.size.height];
-                    
-                }
-                
-                [self.player.view setFrame: playerRect];
-                [topView setFrame: topViewPortRect];
-                self.player.view.doneButton.hidden = FALSE;
-                self.player.view.fullscreenButton.hidden = FALSE ;
-                [btnLove setFrame:btnLovePortRect];
-                [topView addSubview:btnLove];
-                topView.hidden = FALSE;
-                self.player.isFullScreen = true;
-            }
-            
             NSLog(@"IS FULL? ::: %@", self.player.isFullScreen ? @"true":@"false");
             NSLog(@"3!");
+            if (!self.player.isFullScreen){
+                ///////////////////// Port ///////////////////////////
+                self.player.view.topControlOverlay.hidden = FALSE;
+                self.player.view.videoQualityButton.hidden = TRUE;
+                [btnLove setFrame:btnLoveLandRect];
+                [ self.player.view.topControlOverlay addSubview:btnLove];
+                topView.hidden = TRUE;
+                //  }
+                
+                self.player.view.doneButton.hidden = TRUE;
+                self.player.view.videoQualityButton.hidden = TRUE;
+                self.player.isFullScreen = TRUE;
+//                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//                    self.player.view.topControlOverlay.hidden = TRUE;
+//                    [self.player.view addSubviewForControl:streamingTitle toView:topView];
+//                    [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
+//                    [self.player.view addSubviewForControl:lblcategoryType toView:topView];
+//                    
+//                }
+//                else {
+                
+//                    self.player.view.topControlOverlay.hidden = FALSE;
+//                    [self.view setFrameHeight:self.view.bounds.size.height];
+//                    
+//                //}
+//                
+//                [self.player.view setFrame: playerRect];
+//                [topView setFrame: topViewPortRect];
+//                self.player.view.doneButton.hidden = FALSE;
+//                self.player.view.fullscreenButton.hidden = FALSE ;
+//                [btnLove setFrame:btnLovePortRect];
+//                [topView addSubview:btnLove];
+//                topView.hidden = FALSE;
+//                self.player.isFullScreen = TRUE;
+                
+//            }
+//            else{
+//                ///////////////////// Port ///////////////////////////
+//                
+//                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//                    self.player.view.topControlOverlay.hidden = TRUE;
+//                    [self.player.view addSubviewForControl:streamingTitle toView:topView];
+//                    [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
+//                    [self.player.view addSubviewForControl:lblcategoryType toView:topView];
+//                    
+              }
+              else {
+                
+                  self.player.view.topControlOverlay.hidden = FALSE;
+                  self.player.view.videoQualityButton.hidden = TRUE;
+                  [btnLove setFrame:btnLoveLandRect];
+                  [ self.player.view.topControlOverlay addSubview:btnLove];
+                  topView.hidden = TRUE;
+            //  }
+            
+            self.player.view.doneButton.hidden = TRUE;
+            self.player.view.videoQualityButton.hidden = TRUE;
+            self.player.isFullScreen = FALSE;
+            }
+    
+    
             break;
         case UIDeviceOrientationLandscapeRight:
             // Land
-            
-            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                self.player.view.topControlOverlay.hidden = TRUE;
-                [topView setFrameWidth:[UIScreen mainScreen].bounds.size.height];
-                [btnLove setFrame:CGRectMake(topView.bounds.size.width - 110, 10, 100, 100)];
-                [topView addSubview:btnLove];
-                topView.hidden = FALSE;
-                
-            }
-            else {
-                self.player.view.topControlOverlay.hidden = FALSE;
-                [btnLove setFrame:btnLoveLandRect];
-                [ self.player.view.topControlOverlay addSubview:btnLove];
-                topView.hidden = TRUE;
-            }
-            
-            self.player.view.doneButton.hidden = TRUE;
-            self.player.view.videoQualityButton.hidden = TRUE;
-            self.player.isFullScreen = FALSE;
             NSLog(@"IS FULL? ::: %@", self.player.isFullScreen ? @"true":@"false");
             NSLog(@"4!");
-            break;
-        case UIDeviceOrientationLandscapeLeft:
-            // Land
-            
-            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                self.player.view.topControlOverlay.hidden = TRUE;
-                [topView setFrameWidth:[UIScreen mainScreen].bounds.size.height];
-                [btnLove setFrame:CGRectMake(topView.bounds.size.width - 110, 10, 100, 100)];
-                [topView addSubview:btnLove];
-                topView.hidden = FALSE;
-                
-            }
-            else {
-                self.player.view.topControlOverlay.hidden = FALSE;
-                [btnLove setFrame:btnLoveLandRect];
-                [ self.player.view.topControlOverlay addSubview:btnLove];
-                topView.hidden = TRUE;
-            }
-            
-            self.player.view.doneButton.hidden = TRUE;
-            self.player.view.videoQualityButton.hidden = TRUE;
-            self.player.isFullScreen = FALSE;
-            
-            //   self.player.view.fullscreenButton.hidden = false;
-            NSLog(@"IS FULL? ::: %@", self.player.isFullScreen ? @"true":@"false");
-            NSLog(@"5!");
-            break;
-        default:
-            if (!self.player.isFullScreen){
-                ///////////////////// Port ///////////////////////////
-                
+            if (!self.player.isFullScreen) {
                 if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
                     self.player.view.topControlOverlay.hidden = TRUE;
-                    [self.player.view addSubviewForControl:streamingTitle toView:topView];
-                    [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
-                    [self.player.view addSubviewForControl:lblcategoryType toView:topView];
-                    
-                }
-                else {
-                    
-                    self.player.view.topControlOverlay.hidden = FALSE;
-                    [self.view setFrameHeight:self.view.bounds.size.height];
-                    
-                }
-                
-                [self.player.view setFrame: playerRect];
-                [topView setFrame: topViewPortRect];
-                self.player.view.doneButton.hidden = FALSE;
-                self.player.view.fullscreenButton.hidden = FALSE ;
-                [btnLove setFrame:btnLovePortRect];
-                [topView addSubview:btnLove];
-                topView.hidden = FALSE;
-                self.player.isFullScreen = true;
-                
-            }
-            else{
-                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                    self.player.view.topControlOverlay.hidden = TRUE;
+                    self.player.view.videoQualityButton.hidden = TRUE;
                     [topView setFrameWidth:[UIScreen mainScreen].bounds.size.height];
                     [btnLove setFrame:CGRectMake(topView.bounds.size.width - 110, 10, 100, 100)];
                     [topView addSubview:btnLove];
@@ -506,6 +470,7 @@
                 }
                 else {
                     self.player.view.topControlOverlay.hidden = FALSE;
+                    self.player.view.videoQualityButton.hidden = TRUE;
                     [btnLove setFrame:btnLoveLandRect];
                     [ self.player.view.topControlOverlay addSubview:btnLove];
                     topView.hidden = TRUE;
@@ -513,13 +478,148 @@
                 
                 self.player.view.doneButton.hidden = TRUE;
                 self.player.view.videoQualityButton.hidden = TRUE;
+                self.player.isFullScreen = TRUE;
+            }
+            else{
+                self.player.view.topControlOverlay.hidden = FALSE;
+                self.player.view.videoQualityButton.hidden = TRUE;
+                [btnLove setFrame:btnLoveLandRect];
+                [ self.player.view.topControlOverlay addSubview:btnLove];
+                topView.hidden = TRUE;
+                //  }
+                
+                self.player.view.doneButton.hidden = TRUE;
+                self.player.view.videoQualityButton.hidden = TRUE;
                 self.player.isFullScreen = FALSE;
+                
+                
+                
+                
+//                self.player.view.topControlOverlay.hidden = FALSE;
+//                [self.view setFrameHeight:self.view.bounds.size.height];
+//                
+//                // }
+//                
+//                [self.player.view setFrame: playerRect];
+//                [topView setFrame: topViewPortRect];
+//                self.player.view.doneButton.hidden = FALSE;
+//                self.player.view.fullscreenButton.hidden = FALSE ;
+//                [btnLove setFrame:btnLovePortRect];
+//                [topView addSubview:btnLove];
+//                topView.hidden = FALSE;
+//                self.player.isFullScreen = FALSE;
+
             }
             
+        
             
+            break;
+        case UIDeviceOrientationLandscapeLeft:
+            // Land
+            NSLog(@"IS FULL? ::: %@", self.player.isFullScreen ? @"true":@"false");
+            NSLog(@"5!");
+            if (!self.player.isFullScreen) {
+             //   if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//                    self.player.view.topControlOverlay.hidden = TRUE;
+//                    self.player.view.videoQualityButton.hidden = TRUE;
+//                    [topView setFrameWidth:[UIScreen mainScreen].bounds.size.height];
+//                    [btnLove setFrame:CGRectMake(topView.bounds.size.width - 110, 10, 100, 100)];
+//                    [topView addSubview:btnLove];
+//                    topView.hidden = FALSE;
+                
+//                }
+//                else {
+                    self.player.view.topControlOverlay.hidden = FALSE;
+                    self.player.view.videoQualityButton.hidden = TRUE;
+                    [btnLove setFrame:btnLoveLandRect];
+                    [ self.player.view.topControlOverlay addSubview:btnLove];
+                    topView.hidden = TRUE;
+              //  }
+                
+                self.player.view.doneButton.hidden = TRUE;
+                self.player.view.videoQualityButton.hidden = TRUE;
+                self.player.isFullScreen = TRUE;
+            }
+            else{
+                
+                
+                self.player.view.topControlOverlay.hidden = FALSE;
+                self.player.view.videoQualityButton.hidden = TRUE;
+                [btnLove setFrame:btnLoveLandRect];
+                [ self.player.view.topControlOverlay addSubview:btnLove];
+                topView.hidden = TRUE;
+                //  }
+                
+                self.player.view.doneButton.hidden = TRUE;
+                self.player.view.videoQualityButton.hidden = TRUE;
+                self.player.isFullScreen = FALSE;
+                
+            }
+            //   self.player.view.fullscreenButton.hidden = false;
+           
+            break;
+        default:
             NSLog(@"IS FULL? ::: %@", self.player.isFullScreen ? @"true":@"false");
             NSLog(@"6!");
-            break;
+
+            if (!self.player.isFullScreen){
+                ///////////////////// Port ///////////////////////////
+                
+                //                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                //                    self.player.view.topControlOverlay.hidden = TRUE;
+                //                    [self.player.view addSubviewForControl:streamingTitle toView:topView];
+                //                    [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
+                //                    [self.player.view addSubviewForControl:lblcategoryType toView:topView];
+                //
+                //                }
+                //                else {
+                //
+                self.player.view.topControlOverlay.hidden = FALSE;
+                [self.view setFrameHeight:self.view.bounds.size.height];
+                topView.hidden = FALSE;
+                [self.player.view setFrame: playerRect];
+                [topView setFrame: topViewPortRect];
+                self.player.view.doneButton.hidden = FALSE;
+                self.player.view.fullscreenButton.hidden = FALSE ;
+                [btnLove setFrame:btnLovePortRect];
+                [topView addSubview:btnLove];
+                topView.hidden = FALSE;
+                self.player.isFullScreen = TRUE;
+                
+                //}
+                
+                
+            }
+            else{
+                //                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                //                    self.player.view.topControlOverlay.hidden = TRUE;
+                //                    [topView setFrameWidth:[UIScreen mainScreen].bounds.size.height];
+                //                    [btnLove setFrame:CGRectMake(topView.bounds.size.width - 110, 10, 100, 100)];
+                //                    [topView addSubview:btnLove];
+                //                    topView.hidden = FALSE;
+                //
+                //                }
+                //                else {
+                self.player.view.topControlOverlay.hidden = FALSE;
+                [self.view setFrameHeight:self.view.bounds.size.height];
+                topView.hidden = FALSE;
+                [ self.player.view.topControlOverlay addSubview:btnLove];
+                //                    }
+                [self.player.view setFrame: playerRect];
+                [topView setFrame: topViewPortRect];
+                self.player.view.doneButton.hidden = FALSE;
+                self.player.view.fullscreenButton.hidden = FALSE ;
+                [btnLove setFrame:btnLovePortRect];
+                [topView addSubview:btnLove];
+                topView.hidden = FALSE;
+                self.player.isFullScreen = FALSE;
+                
+                //                self.player.view.doneButton.hidden = TRUE;
+                //                self.player.view.videoQualityButton.hidden = TRUE;
+                //                self.player.isFullScreen = FALSE;
+            }
+            
+                      break;
     };
 }
 - (void)getCategoryList
@@ -565,14 +665,14 @@
     self.player.view.doneButton.frame = doneButtonPortRect;
     UIImage *back = [[UIImage alloc] init];
     back = [UIImage imageNamed:@"back.png"];
-    [ self.player.view.doneButton setImage:back forState:UIControlStateNormal];
+    [self.player.view.doneButton setImage:back forState:UIControlStateNormal];
     //self.player.isFullScreen = TRUE;
     //    }
     //    else{
     //
     //    }
     self.player.view.playerControlsAutoHideTime = @5;
-    self.player.forceRotate = YES;
+
     self.player.view.fullscreenButton.hidden = FALSE;
     self.player.view.nextButton.hidden = TRUE;
     self.player.view.rewindButton.hidden = TRUE;
@@ -636,6 +736,8 @@
         [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
         [self.player.view addSubviewForControl:lblcategoryType toView:topView];
         self.player.view.topControlOverlay.hidden = TRUE;
+            self.player.forceRotate = NO;
+        self.player.view.fullscreenButton.hidden = TRUE;
         
     }
     else{
@@ -643,6 +745,7 @@
         [self.player.view.topControlOverlay addSubview:streamingTitle];
         [self.player.view.topControlOverlay addSubview:lblcategoryDesc];
         [self.player.view.topControlOverlay addSubview:lblcategoryType];
+            self.player.forceRotate = YES;
         
     }
     
@@ -1388,24 +1491,24 @@
             
             self.player.view.doneButton.hidden = TRUE;
             self.player.view.videoQualityButton.hidden = TRUE;
-            self.player.isFullScreen = false;
+            self.player.isFullScreen = TRUE;
         }
         else{
             ///////////////////// Port ///////////////////////////
             NSLog(@"12");
-            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                self.player.view.topControlOverlay.hidden = TRUE;
-                [self.player.view addSubviewForControl:streamingTitle toView:topView];
-                [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
-                [self.player.view addSubviewForControl:lblcategoryType toView:topView];
-                
-            }
-            else {
-                
+//            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//                self.player.view.topControlOverlay.hidden = TRUE;
+//                [self.player.view addSubviewForControl:streamingTitle toView:topView];
+//                [self.player.view addSubviewForControl:lblcategoryDesc toView:topView];
+//                [self.player.view addSubviewForControl:lblcategoryType toView:topView];
+//                
+//            }
+//            else {
+            
                 self.player.view.topControlOverlay.hidden = FALSE;
                 [self.view setFrameHeight:self.view.bounds.size.height];
                 
-            }
+           // }
             
             [self.player.view setFrame: playerRect];
             [topView setFrame: topViewPortRect];
@@ -1414,7 +1517,7 @@
             [btnLove setFrame:btnLovePortRect];
             [topView addSubview:btnLove];
             topView.hidden = FALSE;
-            self.player.isFullScreen = true;
+            self.player.isFullScreen = FALSE;
         }
         
         

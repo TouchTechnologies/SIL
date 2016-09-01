@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -31,7 +31,6 @@
                 <outlet property="topPortraitCloseButton" destination="lRL-G6-RP6" id="eY8-PJ-tB8"/>
                 <outlet property="topPortraitControlOverlay" destination="xtv-gf-Qvy" id="fYr-au-b2L"/>
                 <outlet property="totalTimeLabel" destination="19" id="82"/>
-                <outlet property="videoQualityButton" destination="43" id="44"/>
                 <outlet property="view" destination="1" id="22"/>
             </connections>
         </placeholder>
@@ -105,7 +104,7 @@
                                     <rect key="frame" x="0.0" y="33" width="30" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                    <state key="normal" image="377337C3-DB7B-460C-85EC-409D03229E00">
+                                    <state key="normal" image="49D30794-B23B-434A-9AE3-30F90D131317">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
@@ -122,7 +121,7 @@
                                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="lRL-G6-RP6">
                                     <rect key="frame" x="6" y="6" width="40" height="40"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" image="F372D9FB-0D8E-4107-B9A4-54EFB177ECF3">
+                                    <state key="normal" image="43041E5F-2E0F-4FCE-8F4B-1351C6CA493F">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
@@ -228,24 +227,6 @@
                                         <action selector="captionButtonTapped:" destination="-1" eventType="touchUpInside" id="96"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="43" customClass="VKPickerButton">
-                                    <rect key="frame" x="242" y="2" width="40" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="11"/>
-                                    <state key="normal" title="AUTO">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <state key="disabled" title="AUTO">
-                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <state key="highlighted">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="videoQualityButtonTapped:" destination="-1" eventType="touchUpInside" id="101"/>
-                                    </connections>
-                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="5Qd-b3-byZ">
                                     <rect key="frame" x="284" y="3" width="32" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
@@ -313,7 +294,7 @@
         </swipeGestureRecognizer>
     </objects>
     <resources>
-        <image name="377337C3-DB7B-460C-85EC-409D03229E00" width="17" height="17">
+        <image name="43041E5F-2E0F-4FCE-8F4B-1351C6CA493F" width="17" height="17">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISgrLjQ3VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
@@ -402,7 +383,7 @@ dxKKEo4SmRKiEqcSrxKyErcSxhLKEtES2RLmEusS7RLvEvQS/BL/EwQTDBMPEyETJBMpAAAAAAAAAgEA
 AAAAAAAAPgAAAAAAAAAAAAAAAAAAEys
 </mutableData>
         </image>
-        <image name="F372D9FB-0D8E-4107-B9A4-54EFB177ECF3" width="17" height="17">
+        <image name="49D30794-B23B-434A-9AE3-30F90D131317" width="17" height="17">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISgrLjQ3VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
