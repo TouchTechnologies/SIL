@@ -460,7 +460,7 @@
     _pageControl.iTitleViewWidth = titleWidth;
     _pageControl.iTitleViewHeight = titleHeight;
     _pageControl.iPageIndicatorHeight = indicatorHeight;
-    _pageControl.fontTitleTabText =  [UIFont fontWithName:@"Helvetica" size:fontSize];
+    _pageControl.fontTitleTabText = [UIFont fontWithName:@"Helvetica" size:fontSize];
     
     _pageControl.bEnablePagesEndBounceEffect = NO;
     _pageControl.bEnableTitlesEndBounceEffect = NO;
@@ -472,9 +472,7 @@
     _pageControl.colorPageOverscrollBackground = [UIColor lightGrayColor];
     
     _pageControl.bShowMoreTabAvailableIndicator = NO;
-    
 
-    
     /**** 3. Add as subview ****/
 
     CGFloat scy = (1024.0/480.0);

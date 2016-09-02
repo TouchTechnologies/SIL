@@ -29,6 +29,7 @@
 
 @property(readwrite) int                iPageNumber;
 @property(readwrite) NSString           *strPageTitle;
+@property(readwrite) UIImageView        *icon;
 @property(readwrite) UIViewController   *viewController;
 @property(readwrite) BOOL               bShouldLazyLoad;
 
