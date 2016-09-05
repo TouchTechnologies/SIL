@@ -19,16 +19,6 @@
     IBOutlet UIView *searchView;
     IBOutlet UIView *destinationHeaderView;
     
-    IBOutlet UIView *HotelListHeaderView;
-    IBOutlet UILabel *hotelListLbl;
-    IBOutlet UIButton *editHotelBtn;
-    
-    CGRect HotelListHeaderViewRect;
-    CGRect hotelListLblRect;
-    CGRect editHotelBtnRect;
-    
-    
-    
     UIView *claerAllView;
     UIButton *closeBtn;
     
@@ -54,7 +44,6 @@
     UIButton *barRight;
     
     DestinationCell *Cell;
-    CGFloat DestinationcellH;
     CGRect iconDestinationRect;
     CGRect descripLblRect;
     CGRect searchViewRect;
@@ -145,7 +134,10 @@
         NSLog(@"saveLocationData == nil");
         tableView.hidden = true;
         editBtn.hidden = true ;
-      }
+        //        destinationHeaderView.hidden = NO;
+        //        claerAllView.hidden = YES;
+        //        tableView.hidden =true;
+    }
     else{
         NSLog(@"saveLocationData != nil");
         tableView.hidden = false;
@@ -156,10 +148,10 @@
     
     self.navigationController.navigationBar.titleTextAttributes =
     @{NSForegroundColorAttributeName: [UIColor whiteColor]};
-   // [iconDestination setFrame:iconDestinationRect];
-   // [descripLbl setFrame:descripLblRect];
-   // descripLbl.font = [UIFont fontWithName:@"Helvetica" size:font];
-   // descripLbl.text = @"Find nearby and your destination";
+    [iconDestination setFrame:iconDestinationRect];
+    [descripLbl setFrame:descripLblRect];
+    descripLbl.font = [UIFont fontWithName:@"Helvetica" size:font];
+    descripLbl.text = @"Find nearby and your destination";
     [searchView setFrame:searchViewRect];
     searchView.layer.cornerRadius = 5 ;
     searchView.clipsToBounds = YES;
@@ -183,7 +175,6 @@
     
     
     [destinationHeaderView setFrame:destinationHeaderViewRect];
-    [destinationHeaderView setBackgroundColor:[UIColor colorWithRed:0.79 green:0.79 blue:0.81 alpha:1]];
     destinationHeaderView.layer.cornerRadius = 5 ;
     destinationHeaderView.clipsToBounds = YES;
     
@@ -191,19 +182,17 @@
     DestLbl.text = @"Destination List";
     DestLbl.font = [UIFont fontWithName:@"Helvetica" size:font];
     
-    [HotelListHeaderView setFrame:HotelListHeaderViewRect];
-    [HotelListHeaderView setBackgroundColor:[UIColor colorWithRed:0.79 green:0.79 blue:0.81 alpha:1]];
-    HotelListHeaderView.layer.cornerRadius = 5 ;
-    HotelListHeaderView.clipsToBounds = YES;
+    [notDestinationView setFrame:notDestinationViewRect];
+    notDestinationView.layer.cornerRadius = 5 ;
+    notDestinationView.clipsToBounds = YES;
     
-    [hotelListLbl setFrame:hotelListLblRect];
-    hotelListLbl.text = @"Hotel List";
-    hotelListLbl.font = [UIFont fontWithName:@"Helvetica" size:font];
+    [notLocationIcon setFrame:notLocationIconRect];
+    notLocationIcon.image = [UIImage imageNamed:@"ic_more_checkin.png"];
     
-    [editHotelBtn setFrame:editHotelBtnRect];
-    [editHotelBtn addTarget:self action:@selector(edit:) forControlEvents:UIControlEventTouchUpInside];
-    editHotelBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:font];
-
+    [notLocationLbl setFrame:notLocationLblRect];
+    notLocationLbl.text = @"No List Location";
+    notLocationLbl.font = [UIFont fontWithName:@"Helvetica" size:font];
+    notLocationLbl.textColor = [UIColor grayColor];
     
     [editBtn setFrame:editBtnRect];
     [editBtn addTarget:self action:@selector(edit:) forControlEvents:UIControlEventTouchUpInside];
@@ -225,15 +214,16 @@
         font = 14*scy;
         cellH = 130*scy;
         searchCellH = 50*scy;
-//        iconDestinationRect = CGRectMake(10*scx, [UIApplication sharedApplication].statusBarFrame.size.height, width - (20*scx), 180*scy);
-//        descripLblRect = CGRectMake(0*scx, iconDestinationRect.origin.y + iconDestinationRect.size.height, width, 30*scy);
+        iconDestinationRect = CGRectMake(10*scx, [UIApplication sharedApplication].statusBarFrame.size.height, width - (20*scx), 180*scy);
+        descripLblRect = CGRectMake(0*scx, iconDestinationRect.origin.y + iconDestinationRect.size.height, width, 30*scy);
         searchViewRect = CGRectMake(10*scx, descripLblRect.origin.y + descripLblRect.size.height + (5*scy), width - (20*scx), 60*scy);
         searchtableViewRect = CGRectMake(10*scx, searchViewRect.origin.y + searchViewRect.size.height , width - (20*scx), 150*scy);
         
         scrollViewRect = CGRectMake(0, navBarWithStatusH, width, height - navBarWithStatusH);
         saveLoctaionBtnRect = CGRectMake(60*scx, searchViewRect.origin.y + searchViewRect.size.height + (10*scy), width - (120*scx), 50*scy);
-        destinationHeaderViewRect = CGRectMake(10*scx, saveLoctaionBtnRect.origin.y + saveLoctaionBtnRect.size.height + (10*scy), width - (20*scx), 40*scy);
-        DestLblRect = CGRectMake(5*scx, 10*scy, destinationHeaderViewRect.size.width - (50*scx), 30*scy);
+        destinationHeaderViewRect = CGRectMake(10*scx, saveLoctaionBtnRect.origin.y + saveLoctaionBtnRect.size.height + (10*scy), width - (20*scx), 60*scy);
+        
+        DestLblRect = CGRectMake(5*scx, 15*scy, destinationHeaderViewRect.size.width - (50*scx), 30*scy);
         editBtnRect = CGRectMake(destinationHeaderViewRect.size.width - (45*scx), 10*scy , 45*scx, 45*scy);
         
         notDestinationViewRect = CGRectMake(10*scx, destinationHeaderViewRect.origin.y + destinationHeaderViewRect.size.height + (5*scy), width - (20*scx), 160*scy);
@@ -250,23 +240,24 @@
         font = 14 ;
         cellH =130;
         searchCellH = 50;
-        DestinationcellH = Cell.bounds.size.height;
+        iconDestinationRect = CGRectMake(10, [UIApplication sharedApplication].statusBarFrame.size.height , width - 20, 180);
+        descripLblRect = CGRectMake(0, iconDestinationRect.origin.y + iconDestinationRect.size.height, width, 30);
+        searchViewRect = CGRectMake(10, descripLblRect.origin.y + descripLblRect.size.height + 5, width - 20, 60);
         
-        searchViewRect = CGRectMake(10,self.navigationController.navigationBar.bounds.size.height + 30, width - 20, 60);
         searchtableViewRect = CGRectMake(10, searchViewRect.origin.y + searchViewRect.size.height, width - 20, 150);
-
-        HotelListHeaderViewRect = CGRectMake(10, searchViewRect.origin.y + searchViewRect.size.height + 10, width - 20, 40);
-        hotelListLblRect= CGRectMake(5, 0, searchViewRect.size.width - 50, 40);
-        editHotelBtnRect= CGRectMake(HotelListHeaderViewRect.size.width - 45, 0 , 40, 40);
         
-        tableViewRect = CGRectMake(10, HotelListHeaderViewRect.origin.y + HotelListHeaderViewRect.size.height + 5, width - 20, DestinationcellH * (saveLocationData.count));
+        scrollViewRect = CGRectMake(0, 0, width, height - navBarWithStatusH);
         
-        destinationHeaderViewRect = CGRectMake(10, tableViewRect.origin.y + tableViewRect.size.height + 10, width - 20, 40);
-        DestLblRect = CGRectMake(5, 0, searchViewRect.size.width - 50, 40);
-        editBtnRect = CGRectMake(destinationHeaderViewRect.size.width - 45, 0 , 40, 40);
-   
-        saveLoctaionBtnRect = CGRectMake(60, self.view.bounds.size.height - 60, width - 120, 50);
-
+        saveLoctaionBtnRect = CGRectMake(60, searchViewRect.origin.y + searchViewRect.size.height + 10, width - 120, 50);
+        
+        destinationHeaderViewRect = CGRectMake(10, saveLoctaionBtnRect.origin.y + saveLoctaionBtnRect.size.height + 10, width - 20, 60);
+        
+        DestLblRect = CGRectMake(5, 15, destinationHeaderViewRect.size.width - 50, 30);
+        editBtnRect = CGRectMake(destinationHeaderViewRect.size.width - 45, 10 , 45, 45);
+        notDestinationViewRect = CGRectMake(10, destinationHeaderViewRect.origin.y + destinationHeaderViewRect.size.height + 5, width - 20, 160);
+        notLocationIconRect = CGRectMake(notDestinationViewRect.size.width/2 - 40, notDestinationViewRect.size.height/2 - 60, 80, 80);
+        notLocationLblRect = CGRectMake(0, notLocationIconRect.origin.y + notLocationIconRect.size.height + 5, notDestinationViewRect.size.width, 30);
+        tableViewRect = CGRectMake(10, destinationHeaderViewRect.origin.y + destinationHeaderViewRect.size.height + 5, width - 20, 160);
         closeBtnRect = CGRectMake(destinationHeaderView.bounds.size.width - 55 ,5, 50, 50);
         barRightRect = CGRectMake(width - 60, navBarWithStatusH/2 - 25, 50, 50);
         clrBtnRect = CGRectMake(closeBtnRect.origin.x - 110, closeBtnRect.origin.y, 100, closeBtnRect.size.height);
@@ -555,7 +546,36 @@
                                         searchText];
         NSLog(@"PoiDataSearch : %@",[_poiData filteredArrayUsingPredicate:resultPredicate]);
         [resultSearch addObjectsFromArray:[_poiData filteredArrayUsingPredicate:resultPredicate]];
-    
+        
+        //        BOOL success = results.count > 0;
+        //        if(resultSearch.count > 0)
+        //        {
+        //            NSLog(@"success success success success : %lu",(unsigned long)resultSearch.count);
+        //        }
+        
+        
+        
+        //        resultSearch = [[NSMutableArray alloc] init];
+        //
+        //        NSString *search;
+        //        for (search in searchDisplayList)
+        //        {
+        //
+        //            NSRange nameRange = [search rangeOfString:searchText options:NSCaseInsensitiveSearch];
+        ////            NSRange descriptionRange = [food.description rangeOfString:text options:NSCaseInsensitiveSearch];
+        //
+        //
+        //            if(nameRange.location != NSNotFound)
+        //            {
+        //
+        //                [resultSearch addObject:search];
+        //            }
+        //
+        //        }
+        //        if (resultSearch ==nil) {
+        //            searchActive = false ;
+        //            [searchDisplayTbl reloadData];
+        //        }
         
     }
     

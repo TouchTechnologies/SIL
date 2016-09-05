@@ -522,30 +522,30 @@
 
 - (IBAction)addViewForth:(id)sender {
     
-//    NSLog(@"Forth");
-//    NSLog(@"analytics BlogTravel");
-//    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-//    NSString *name = [NSString stringWithFormat:@"BlogTravel"];
-//    NSString *dimensionValue = @"iOS";
-//    NSString *metricValue = @"iOS_METRIC_VALUE";
-//    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"BlogTravel_Action"     // Event category (required)
-//                                                          action:@"button_press"  // Event action (required)
-//                                                           label:@"WebView"          // Event label
-//                                                           value:nil] build]];    // Event value
-//    [tracker set:[GAIFields customDimensionForIndex:1] value:dimensionValue];
-//    [tracker set:[GAIFields customMetricForIndex:1] value:metricValue];
-//    [tracker set:kGAIScreenName value:name];
-//    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-//    
-//    
-//    [self activeMenu:4];
-//    ContactViewController *contactView = [self.storyboard instantiateViewControllerWithIdentifier:@"contact"];
-//    contactView.urlName = BlogURL;
-//    [self swapCurrentControllerWith:contactView];
+    NSLog(@"Forth");
+    NSLog(@"analytics BlogTravel");
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    NSString *name = [NSString stringWithFormat:@"BlogTravel"];
+    NSString *dimensionValue = @"iOS";
+    NSString *metricValue = @"iOS_METRIC_VALUE";
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"BlogTravel_Action"     // Event category (required)
+                                                          action:@"button_press"  // Event action (required)
+                                                           label:@"WebView"          // Event label
+                                                           value:nil] build]];    // Event value
+    [tracker set:[GAIFields customDimensionForIndex:1] value:dimensionValue];
+    [tracker set:[GAIFields customMetricForIndex:1] value:metricValue];
+    [tracker set:kGAIScreenName value:name];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    
     
     [self activeMenu:4];
-    NearByProviderViewController *nearby = [self.storyboard instantiateViewControllerWithIdentifier:@"nearbyview"];
-    [self swapCurrentControllerWith:nearby];
+    ContactViewController *contactView = [self.storyboard instantiateViewControllerWithIdentifier:@"contact"];
+    contactView.urlName = BlogURL;
+    [self swapCurrentControllerWith:contactView];
+    
+//    [self activeMenu:4];
+//    NearByProviderViewController *nearby = [self.storyboard instantiateViewControllerWithIdentifier:@"nearbyview"];
+//    [self swapCurrentControllerWith:nearby];
     
 
 }
