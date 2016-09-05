@@ -2486,11 +2486,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SeeItLiveThailand/UserProfileViewController.m"
-            timestampString = "494236774.213155"
+            timestampString = "494745707.281284"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "480"
-            endingLineNumber = "480"
+            startingLineNumber = "477"
+            endingLineNumber = "477"
             landmarkName = "-setFollow:"
             landmarkType = "5">
          </BreakpointContent>

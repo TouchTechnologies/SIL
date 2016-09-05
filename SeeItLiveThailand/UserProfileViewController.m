@@ -443,11 +443,8 @@
                 
                 btnLbl.textColor = [UIColor whiteColor];
                 [btnLbl setText:@"Following"];
-                FollowBtn.backgroundColor = [UIColor redColor];
-                
-                
-                
-                
+                FollowBtn.backgroundColor = [UIColor colorWithRed:0.22 green:0.47 blue:0.15 alpha:1];
+
                 [FollowBtn reloadInputViews];
                 [headerView reloadInputViews];
                 
