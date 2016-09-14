@@ -11,13 +11,41 @@
 #import "AppDelegate.h"
 #import "Model_POIS.h"
 #import "MBProgressHUD.h"
+
 @interface MyDestinationViewController ()
 {
     AppDelegate *appDelegate;
-    IBOutlet UIImageView *iconDestination;
-    IBOutlet UILabel *descripLbl;
+
     IBOutlet UIView *searchView;
+    
+    IBOutlet UIView *previewView;
+    CGRect previewViewRect;
+    IBOutlet UIImageView *pinTypepreviewImg;
+    CGRect pinTypepreviewImgRect;
+    IBOutlet UILabel *locationNamepreViewLbl;
+    CGRect locationNamepreViewLblRect;
+    IBOutlet UILabel *addressPreviewLbl;
+    CGRect addressPreviewLblRect;
+    IBOutlet UILabel *distancePreviewLbl;
+    CGRect distancePreviewLblRect;
+    IBOutlet UIButton *closePreviewBtn;
+    CGRect closePreviewBtnRect;
+    
+    
+    
+    
     IBOutlet UIView *destinationHeaderView;
+    
+    IBOutlet UIView *hotelHeaderView;
+    IBOutlet UILabel *hotelListLbl;
+    IBOutlet UIButton *editHotel;
+    CGRect hotelHeaderViewRect;
+    CGRect hotelListLblRect;
+    CGRect editHotelRect;
+    
+    
+    
+    
     
     UIView *claerAllView;
     UIButton *closeBtn;
@@ -31,14 +59,14 @@
     IBOutlet UISearchController *searchDisplayController;
     
     IBOutlet UIScrollView *scrollView;
-    IBOutlet UIButton *saveLoctaionBtn;
+    IBOutlet UIButton *addLoctaionBtn;
+
     
-    IBOutlet UIView *notDestinationView;
     
-    IBOutlet UIImageView *notLocationIcon;
-    IBOutlet UILabel *notLocationLbl;
     
-    IBOutlet UITableView *tableView;
+    IBOutlet UITableView *destinationListTbl;
+    CGRect destinationListTblRect;
+    
     IBOutlet UITableView *searchDisplayTbl;
     
     UIButton *barRight;
@@ -74,7 +102,12 @@
     NSMutableArray *resultSearch;
     
     NSMutableArray *saveLocationData;
+    NSMutableArray *saveHotelData;
+    
     NSDictionary *saveLocation;
+    
+    
+    NSArray *groupName;
     
     
 }
@@ -83,9 +116,14 @@
 @end
 
 @implementation MyDestinationViewController
+- (void)viewWillAppear:(BOOL)animated{
 
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    groupName = [NSArray arrayWithObjects:@"Hotel List",@"Destination List", nil];
+    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
                                    action:@selector(dismissKeyboard)];
@@ -111,7 +149,14 @@
     //    NSLog(@"POI::: %@",weakSelf.poiData[0][@"name_en"]);
     resultSearch = [[NSMutableArray alloc] init];
     saveLocationData = [[NSMutableArray alloc] init];
-    searchDisplayTbl.hidden = true;
+    saveHotelData = [[NSMutableArray alloc] init];
+    searchDisplayTbl.hidden = TRUE;
+    destinationListTbl.hidden = FALSE;
+    
+//hotelListTbl.separatorStyle = UITableViewStyleGrouped;
+    
+  
+    
     [self getPOIDataAPI];
     [self getMyDestinationData];
     [self initialSize];
@@ -122,41 +167,62 @@
 }
 
 
+
 -(void)initial{
     
     UINib *nib = [UINib nibWithNibName:@"Destinationcell" bundle:nil];
-    [tableView registerNib:nib forCellReuseIdentifier:@"cell"];
-    //    destinationList = @[@"oneTTTTTTTTTTTTTTTTSSFSGSDSSSSSFSFSFSFSFFFFFFFFFFFFSGSGSGSGSGSGSGS",@"two",@"three",@"four"];
-    //destinationList = nil;
-    
+    [destinationListTbl registerNib:nib forCellReuseIdentifier:@"cell"];
     
     if (saveLocationData.count == 0) {
         NSLog(@"saveLocationData == nil");
-        tableView.hidden = true;
         editBtn.hidden = true ;
-        //        destinationHeaderView.hidden = NO;
-        //        claerAllView.hidden = YES;
-        //        tableView.hidden =true;
+    }
+    else if (saveHotelData.count == 0)
+    {
+        NSLog(@"saveHotelData == nil");
+        editHotel.hidden = true;
     }
     else{
         NSLog(@"saveLocationData != nil");
-        tableView.hidden = false;
         editBtn.hidden = false;
+        editHotel.hidden = FALSE;
     }
-    
+ 
     //Check Search Result
     
     self.navigationController.navigationBar.titleTextAttributes =
     @{NSForegroundColorAttributeName: [UIColor whiteColor]};
-    [iconDestination setFrame:iconDestinationRect];
-    [descripLbl setFrame:descripLblRect];
-    descripLbl.font = [UIFont fontWithName:@"Helvetica" size:font];
-    descripLbl.text = @"Find nearby and your destination";
     [searchView setFrame:searchViewRect];
     searchView.layer.cornerRadius = 5 ;
     searchView.clipsToBounds = YES;
+    searchView.backgroundColor = [UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1];
+    [searchBar setTintColor: [UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1]];
     [searchBar setFrame:searchView.bounds];
     
+    
+    
+    
+   // [containnerView setFrame:containnerViewRect];
+   
+ 
+    [hotelHeaderView setFrame:hotelHeaderViewRect];
+    hotelHeaderView.layer.cornerRadius = 5;
+    hotelHeaderView.clipsToBounds = YES;
+    [hotelListLbl setFrame:hotelListLblRect];
+    hotelListLbl.text = @"Hotel List";
+    hotelListLbl.font = [UIFont fontWithName:@"Helvetica" size:font];
+    [editHotel setFrame:editHotelRect];
+    [editHotel addTarget:self action:@selector(edithotel:) forControlEvents:UIControlEventTouchUpInside];
+    editHotel.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:font];
+    
+    [destinationListTbl setFrame:destinationListTblRect];
+    [destinationListTbl setSeparatorStyle:UITableViewStyleGrouped];
+    
+    
+    [destinationHeaderView setFrame:destinationHeaderViewRect];
+    destinationHeaderView.layer.cornerRadius = 5;
+    destinationHeaderView.clipsToBounds = YES;
+   
     // searchDisplayTbl = [[UITableView alloc] initWithFrame:searchtableViewRect ];
     [searchDisplayTbl setFrame:searchtableViewRect];
     [searchDisplayTbl setBackgroundColor:[UIColor clearColor]];
@@ -164,36 +230,15 @@
     searchDisplayTbl.clipsToBounds = YES;
     searchDisplayTbl.separatorStyle = UITableViewCellSeparatorStyleNone;
     
+  
     // [scrollView addSubview:searchDisplayTbl];
     
-    [saveLoctaionBtn setFrame:saveLoctaionBtnRect];
-    [saveLoctaionBtn addTarget:self action:@selector(saveLocation:) forControlEvents:UIControlEventTouchUpInside];
-    saveLoctaionBtn.enabled = false;
-    saveLoctaionBtn.layer.cornerRadius = 5;
-    saveLoctaionBtn.clipsToBounds = YES;
-    saveLoctaionBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:font];
-    
-    
-    [destinationHeaderView setFrame:destinationHeaderViewRect];
-    destinationHeaderView.layer.cornerRadius = 5 ;
-    destinationHeaderView.clipsToBounds = YES;
     
     [DestLbl setFrame:DestLblRect];
     DestLbl.text = @"Destination List";
     DestLbl.font = [UIFont fontWithName:@"Helvetica" size:font];
     
-    [notDestinationView setFrame:notDestinationViewRect];
-    notDestinationView.layer.cornerRadius = 5 ;
-    notDestinationView.clipsToBounds = YES;
-    
-    [notLocationIcon setFrame:notLocationIconRect];
-    notLocationIcon.image = [UIImage imageNamed:@"ic_more_checkin.png"];
-    
-    [notLocationLbl setFrame:notLocationLblRect];
-    notLocationLbl.text = @"No List Location";
-    notLocationLbl.font = [UIFont fontWithName:@"Helvetica" size:font];
-    notLocationLbl.textColor = [UIColor grayColor];
-    
+  //  [notDestinationView setFrame:notDestinationViewRect];
     [editBtn setFrame:editBtnRect];
     [editBtn addTarget:self action:@selector(edit:) forControlEvents:UIControlEventTouchUpInside];
     editBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:font];
@@ -202,6 +247,12 @@
     barRight.backgroundColor = [UIColor redColor];
     [self.navigationController.navigationBar addSubview:barRight];
     
+}
+- (void)closePreView:(id)sender{
+     [previewView setFrame:CGRectMake(10, searchView.bounds.origin.y + searchView.bounds.size.height + 5, self.view.bounds.size.width-20, 0)];
+    [destinationListTbl setFrame:destinationListTblRect];
+   // [scrollView reloadInputViews];
+
 }
 -(void)initialSize{
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
@@ -240,27 +291,28 @@
         font = 14 ;
         cellH =130;
         searchCellH = 50;
-        iconDestinationRect = CGRectMake(10, [UIApplication sharedApplication].statusBarFrame.size.height , width - 20, 180);
-        descripLblRect = CGRectMake(0, iconDestinationRect.origin.y + iconDestinationRect.size.height, width, 30);
-        searchViewRect = CGRectMake(10, descripLblRect.origin.y + descripLblRect.size.height + 5, width - 20, 60);
-        
-        searchtableViewRect = CGRectMake(10, searchViewRect.origin.y + searchViewRect.size.height, width - 20, 150);
+        searchViewRect = CGRectMake(10,10, width - 20, 40);
+        searchtableViewRect = CGRectMake(10, searchViewRect.origin.y + searchViewRect.size.height, width - 20, 50 );
         
         scrollViewRect = CGRectMake(0, 0, width, height - navBarWithStatusH);
+     //   containnerViewRect = CGRectMake(10 , searchViewRect.origin.y + searchViewRect.size.height +10 , width-20, height - 100);
         
-        saveLoctaionBtnRect = CGRectMake(60, searchViewRect.origin.y + searchViewRect.size.height + 10, width - 120, 50);
+        previewViewRect = CGRectMake(10, searchViewRect.origin.y + searchViewRect.size.height + 5, width-20, 200);
         
-        destinationHeaderViewRect = CGRectMake(10, saveLoctaionBtnRect.origin.y + saveLoctaionBtnRect.size.height + 10, width - 20, 60);
+       
+         hotelListLblRect = CGRectMake(5,hotelHeaderViewRect.size.height/2 - 15, hotelHeaderViewRect.size.width - 50, 30);
+         editHotelRect = CGRectMake(hotelHeaderViewRect.size.width - 30, 10 , 30, 30) ;
         
-        DestLblRect = CGRectMake(5, 15, destinationHeaderViewRect.size.width - 50, 30);
-        editBtnRect = CGRectMake(destinationHeaderViewRect.size.width - 45, 10 , 45, 45);
-        notDestinationViewRect = CGRectMake(10, destinationHeaderViewRect.origin.y + destinationHeaderViewRect.size.height + 5, width - 20, 160);
-        notLocationIconRect = CGRectMake(notDestinationViewRect.size.width/2 - 40, notDestinationViewRect.size.height/2 - 60, 80, 80);
-        notLocationLblRect = CGRectMake(0, notLocationIconRect.origin.y + notLocationIconRect.size.height + 5, notDestinationViewRect.size.width, 30);
+        
+        DestLblRect = CGRectMake(5,destinationHeaderViewRect.size.height/2 - 15, destinationHeaderViewRect.size.width - 50, 30);
+        editBtnRect = CGRectMake(destinationHeaderViewRect.size.width - 30, 10 , 30, 30) ;
+        destinationListTblRect =CGRectMake(10, searchViewRect.origin.y + searchViewRect.size.height + 10 ,previewViewRect.size.width , height - (destinationListTblRect.origin.y + 150));
+        
+        
         tableViewRect = CGRectMake(10, destinationHeaderViewRect.origin.y + destinationHeaderViewRect.size.height + 5, width - 20, 160);
-        closeBtnRect = CGRectMake(destinationHeaderView.bounds.size.width - 55 ,5, 50, 50);
+        closeBtnRect = CGRectMake(destinationHeaderView.bounds.size.width - 45 ,5, 40, 40);
         barRightRect = CGRectMake(width - 60, navBarWithStatusH/2 - 25, 50, 50);
-        clrBtnRect = CGRectMake(closeBtnRect.origin.x - 110, closeBtnRect.origin.y, 100, closeBtnRect.size.height);
+        clrBtnRect = CGRectMake(closeBtnRect.origin.x - 100 , closeBtnRect.origin.y, 100, closeBtnRect.size.height);
         imgclearRect = CGRectMake(5, clrBtnRect.size.height/4,clrBtnRect.size.height/2, clrBtnRect.size.height/2);
         lblClearRect = CGRectMake(imgclearRect.size.width + 5, clrBtnRect.size.height/2 - 15, clrBtnRect.size.width - (imgclearRect.origin.x + imgclearRect.size.width + 5), 30);
     }
@@ -271,7 +323,7 @@
     __weak MyDestinationViewController *weakSelf = self;
     ModelManager *modelManager = [ModelManager getInstance];
     
-//    weakSelf.poiData  = [modelManager getPOIData];
+  //  weakSelf.poiData  = [modelManager getPOIData];
     if(!weakSelf.poiData.count)
     {
         weakSelf.poiData = [modelManager getPOIDataDB];
@@ -294,8 +346,26 @@
 - (void)getMyDestinationData
 {
     ModelManager *modelManager = [ModelManager getInstance];
+
     saveLocationData = [[NSMutableArray alloc]initWithArray:[modelManager getMyDestData]];
-    [tableView reloadData];
+//    saveHotelData = [[NSMutableArray alloc]initWithArray:[modelManager getMyDestData]];
+//        [modelManager deleteAllData];
+//    if (saveLocation.count == 0) {
+//        editBtn.hidden = TRUE;
+//        
+//    }
+//    else if (saveHotelData.count == 0){
+//    
+//        
+//        editHotel.hidden =true;
+//
+//    }
+//    else{
+//    
+//        editBtn.hidden = FALSE;
+//        editHotel.hidden = FALSE;
+//    }
+    [destinationListTbl reloadData];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -307,8 +377,40 @@
     NSPredicate *resultPredicate = [NSPredicate
                                     predicateWithFormat:@"name_en contains[c]%@",
                                     saveLocation[@"name_en"]];
+//    if ( [[saveLocation objectForKey:@"provider_type_keyname"] isEqual:@"hotel"]) {
+//        NSLog(@"filteredArrayUsingPredicate : %lu",(unsigned long)[saveHotelData filteredArrayUsingPredicate:resultPredicate].count);
+//        if([saveHotelData filteredArrayUsingPredicate:resultPredicate].count == 0 )
+//        {
+//            [saveHotelData addObject:saveLocation];
+//            Model_POIS* poi = [[Model_POIS alloc]init];
+//            poi.provider_type_id = saveLocation[@"provider_type_id"];
+//            poi.provider_type_keyname = saveLocation[@"provider_type_keyname"];
+//            poi.name_en = saveLocation[@"name_en"];
+//            poi.name_th = saveLocation[@"name_th"];
+//            poi.province_name_en = saveLocation[@"province_name_en"];
+//            poi.longitude = saveLocation[@"longitude"];
+//            poi.latitude = saveLocation[@"latitude"];
+//            poi.address_th = saveLocation[@"address_th"];
+//            poi.address_en = saveLocation[@"address_en"];
+//            
+//            NSLog(@"saveHotelData %@",poi);
+//            [modelManager insertMyDestData:poi];
+//            
+//        
+//            editBtn.hidden = false;
+//            editHotel.hidden = FALSE;
+//            previewView.hidden = TRUE;
+//            [previewView setFrame:previewViewRect];
+//            [destinationListTbl setFrame:destinationListTblRect];
+//            [destinationListTbl reloadData];
+//            
+//            NSLog(@"saveHotelData : %@",saveHotelData);
+//            //[saveLocation objectForKey:@"provider_type_keyname"]
+//        }
+//
+//    }
+//    else{
     NSLog(@"filteredArrayUsingPredicate : %lu",(unsigned long)[saveLocationData filteredArrayUsingPredicate:resultPredicate].count);
-    
     if([saveLocationData filteredArrayUsingPredicate:resultPredicate].count == 0 )
     {
         [saveLocationData addObject:saveLocation];
@@ -326,22 +428,26 @@
         NSLog(@"saveLocationData %@",poi);
         [modelManager insertMyDestData:poi];
         
-        tableView.hidden = false;
+        destinationListTbl.hidden = false;
         editBtn.hidden = false;
-        [tableView reloadData];
+        editHotel.hidden = FALSE;
+        previewView.hidden = TRUE;
+        [previewView setFrame:previewViewRect];
+        [destinationListTbl setFrame:destinationListTblRect];
+        [destinationListTbl reloadData];
         NSLog(@"saveLocationData : %@",saveLocationData);
-    }
-    
+//[saveLocation objectForKey:@"provider_type_keyname"]
+   // }
+  }
 }
 -(void)edit:(id)sender{
     isEdit = true;
-    [tableView reloadData];
-    destinationHeaderView.hidden = YES;
-    claerAllView = [[UIView alloc] initWithFrame:destinationHeaderViewRect];
+    
+    claerAllView = [[UIView alloc] initWithFrame:hotelHeaderViewRect];
     claerAllView.backgroundColor = destinationHeaderView.backgroundColor;
     claerAllView.layer.cornerRadius = 5;
     claerAllView.clipsToBounds = YES;
-    [scrollView addSubview:claerAllView];
+   
     
     closeBtn = [[UIButton alloc] initWithFrame:closeBtnRect];
     closeBtn.backgroundColor = [UIColor grayColor];
@@ -378,8 +484,7 @@
 }
 -(void)close:(id)sender{
     isEdit = false;
-    [tableView reloadData];
-    destinationHeaderView.hidden = NO;
+      hotelHeaderView.hidden = NO;
     claerAllView.hidden = YES;
 }
 -(void)deleteSaveLocationByID:(id)sender{
@@ -399,6 +504,7 @@
     //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"You sure delete all?" message:@"" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"OK", nil];
     MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"Are you sure clear all?" message:@"" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
     alert.tag = 0;
+   
     [alert show];
     
 }
@@ -409,9 +515,9 @@
             ModelManager *modelManager = [ModelManager getInstance];
             [modelManager deleteMyDestData];
             [saveLocationData removeAllObjects];
-            destinationHeaderView.hidden = NO;
+            hotelHeaderView.hidden = NO;
             claerAllView.hidden = YES;
-            tableView.hidden =true;
+       
         }
     }else if(alertView.tag == 1)
     {
@@ -423,9 +529,10 @@
             [self getMyDestinationData];
             if(saveLocationData.count == 0)
             {
+              
                 destinationHeaderView.hidden = NO;
+                hotelHeaderView.hidden = NO;
                 claerAllView.hidden = YES;
-                tableView.hidden =true;
             }
             //            else
             //            {
@@ -451,27 +558,13 @@
 -(void)dismissKeyboard{
     [searchBar resignFirstResponder];
 }
-//- (void)viewDidAppear:(BOOL)animated
-//{
-//    [UIView beginAnimations:nil context:nil];
-//    [UIView setAnimationDuration:0.5f];
-//    [UIView setAnimationDelegate:self];
-//    CGFloat scy = (1024.0/480.0);
-//    CGFloat scx = (768.0/360.0);
-//    claerAllView.frame =CGRectMake(10, saveLoctaionBtnRect.origin.y + saveLoctaionBtnRect.size.height + (50*scy), [UIScreen mainScreen].bounds.size.width - (60*scx), 60*scy);
-//    [scrollView addSubview:claerAllView];
-//
-//    [UIView commitAnimations];
-//}
-/*
+
+
  #pragma mark - Navigation
  
  // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+
+
 ///////////// SETTING SEARCH BAR//////////////
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
@@ -502,6 +595,9 @@
     NSLog(@"searchBarTextDidEndEditing");
 //    searchDisplayTbl.hidden = true;
     searchActive = false;
+     [previewView setFrame:CGRectMake(10, searchView.bounds.origin.y + searchView.bounds.size.height + 5, self.view.bounds.size.width-20, 0)];
+    [destinationListTbl setFrame:destinationListTblRect];
+
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)SearchBar
@@ -514,6 +610,10 @@
     [searchBar resignFirstResponder];
     searchActive = false;
     [searchDisplayTbl reloadData];
+    
+     [previewView setFrame:CGRectMake(10, searchView.bounds.origin.y + searchView.bounds.size.height + 5, self.view.bounds.size.width-20, 0)];
+    [destinationListTbl setFrame:destinationListTblRect];
+
 }
 - (void)didPresentSearchController:(UISearchController *)searchController
 {
@@ -527,7 +627,6 @@
     if(isEdit)
     {
         isEdit = false;
-        [tableView reloadData];
         destinationHeaderView.hidden = NO;
         claerAllView.hidden = YES;
     }
@@ -587,12 +686,24 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 1;
+//#warning Incomplete implementation, return the number of sections
+    if(tableView == searchDisplayTbl){
+        return 1;
+    }
+    else{
+        return 2;
+    }
 }
-
+- (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    if(tableView == searchDisplayTbl){
+        return UITableViewStylePlain;
+    }
+    else{
+    return [groupName objectAtIndex:section];
+    }
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
+//#warning Incomplete implementation, return the number of rows
     
     if(tableView == searchDisplayTbl){
         if (searchActive) {
@@ -605,13 +716,18 @@
         
     }
     else{
+//        if (saveLocationData.count == 0) {
+//            return 1 ;
+//        }
+//        else{
         return saveLocationData.count;
+ //       }
     }
-    
-    //    return _searchResults.count;
+
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+     //NSLog(@"TABLE HEIGHT %.2f",destinationListTbl.sectionHeaderHeight);
     if(isEdit)
     {
         Cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
@@ -623,9 +739,9 @@
         Cell.placeLbl.text = [saveLocationData objectAtIndex:indexPath.row][@"name_en"];
         
         Cell.placeLbl.lineBreakMode = NSLineBreakByWordWrapping;
-        //    Cell.placeLbl.numberOfLines = 3;
+        //  Cell.placeLbl.numberOfLines = 3;
         Cell.placeLbl.textAlignment = NSTextAlignmentJustified;
-        //    [ Cell.placeLbl sizeToFit];
+        // [ Cell.placeLbl sizeToFit];
         
         Cell.addressLbl.text = [saveLocationData objectAtIndex:indexPath.row][@"address_en"];
         Cell.addressLbl.lineBreakMode = NSLineBreakByWordWrapping;
@@ -672,16 +788,18 @@
         [cell setBackgroundColor: [UIColor colorWithRed:0.78 green:0.78 blue:0.80 alpha:1.0]];
         
         return cell;
-        
-        //[UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0]];
+
         
     }
+   
     else{
+        
         Cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
         
         if (Cell == nil) {
-            Cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+            Cell = [[DestinationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
         }
+        
         Cell.placeLbl.text = [saveLocationData objectAtIndex:indexPath.row][@"name_en"];
         
         Cell.placeLbl.lineBreakMode = NSLineBreakByWordWrapping;
@@ -708,18 +826,19 @@
         
         [Cell.routeBtn setFrame:CGRectMake(Cell.contentView.bounds.size.width - (Cell.routeBtn.bounds.size.width + 5), Cell.contentView.bounds.size.height - (Cell.routeBtn.bounds.size.height + 5) , Cell.routeBtn.bounds.size.width, Cell.routeBtn.bounds.size.height)];
         MYTapGestureRecognizer* TapCall = [[MYTapGestureRecognizer alloc]
-                                           initWithTarget:self action:@selector(routeDirection:)];//Here should be actionViewTap:
+                                           initWithTarget:self action:@selector(routeDirection:)];
+        //Here should be actionViewTap:
         [TapCall setNumberOfTouchesRequired:1];
         [TapCall setDelegate:self];
         Cell.routeBtn .userInteractionEnabled = YES;
         [Cell.routeBtn  addGestureRecognizer:TapCall];
         TapCall.enabled = YES;
         TapCall.dataArr = [[NSMutableArray alloc]initWithObjects:[saveLocationData objectAtIndex:indexPath.row], nil];
+            
+       
         
         return Cell;
     }
-    
-    
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -727,15 +846,16 @@
         
         return searchCellH;
     }
-    
+    else{
     return cellH;
+    }
 }
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
     if (tableView == searchDisplayTbl) {
-        saveLoctaionBtn.enabled = true;
+        addLoctaionBtn.enabled = true;
         NSLog(@"index : %ld",(long)indexPath.row);
         NSLog(@"Result : %@",[resultSearch objectAtIndex:indexPath.row][@"name_en"]);
         saveLocation = [[NSDictionary alloc]initWithDictionary:[resultSearch objectAtIndex:indexPath.row]];
@@ -744,8 +864,73 @@
         NSLog(@"saveLocation : %@",saveLocation);
         searchDisplayTbl.hidden = true;
         [searchBar resignFirstResponder];
+        [previewView setHidden:false];
+        [previewView setFrame:previewViewRect ];
+        previewView.layer.cornerRadius = 5;
+        previewView.clipsToBounds = YES;
+        [destinationListTbl setFrame:CGRectMake(destinationListTblRect.origin.x, previewViewRect.origin.y + previewViewRect.size.height +10 , destinationListTblRect.size.width, destinationListTblRect.size.height)];
         
-    }else
+        
+        
+        [pinTypepreviewImg setFrame:CGRectMake(10, 10, 45, 45)];
+        
+        [locationNamepreViewLbl setFrame:CGRectMake(pinTypepreviewImg.bounds.origin.x + pinTypepreviewImg.bounds.size.width + 20 , 10 , previewView.bounds.size.width - 100 , 30)];
+        locationNamepreViewLbl.text = [resultSearch objectAtIndex:indexPath.row][@"name_en"];
+        locationNamepreViewLbl.lineBreakMode = NSLineBreakByWordWrapping;
+        locationNamepreViewLbl.numberOfLines = 2;
+        locationNamepreViewLbl.textAlignment = NSTextAlignmentJustified;
+        [locationNamepreViewLbl sizeToFit];
+        
+        NSLog(@"Provider Type ::: %@",[resultSearch objectAtIndex:indexPath.row][@"provider_type_keyname"]);
+        
+        [addressPreviewLbl setFrame:CGRectMake(pinTypepreviewImg.bounds.origin.x + pinTypepreviewImg.bounds.size.width + 20, locationNamepreViewLbl.bounds.origin.y + locationNamepreViewLbl.bounds.size.height + 20 , previewView.bounds.size.width - 100 , 60)];
+        addressPreviewLbl.text = [resultSearch objectAtIndex:indexPath.row][@"address_en"];
+        addressPreviewLbl.lineBreakMode = NSLineBreakByWordWrapping;
+        addressPreviewLbl.numberOfLines = 3;
+        addressPreviewLbl.textAlignment = NSTextAlignmentJustified;
+        [addressPreviewLbl sizeToFit];
+
+        
+        [distancePreviewLbl setFrame:CGRectMake(pinTypepreviewImg.bounds.origin.x + pinTypepreviewImg.bounds.size.width + 20, previewView.bounds.size.height/2 +20 , 170 , 20)];
+        [closePreviewBtn setFrame:CGRectMake(previewView.bounds.size.width - 35, 10, 25, 25)];
+        [closePreviewBtn addTarget:self action:@selector(closePreView:) forControlEvents:UIControlEventTouchUpInside];
+        
+        if ([[resultSearch objectAtIndex:indexPath.row][@"provider_type_keyname"] isEqualToString:@"hotel"]) {
+            [addLoctaionBtn setTitle:@"Add Hotel" forState:UIControlStateNormal];
+            [pinTypepreviewImg setImage:[UIImage imageNamed:@"pin_hotel_2.png"]];
+
+        }
+        else{
+            if ([[resultSearch objectAtIndex:indexPath.row][@"provider_type_keyname"] isEqualToString:@"restaurant"])  {
+                 [pinTypepreviewImg setImage:[UIImage imageNamed:@"pin_res_2.png"]];
+            }
+            else{
+             [pinTypepreviewImg setImage:[UIImage imageNamed:@"pin_att_2.png"]];
+            }
+            [addLoctaionBtn setTitle:@"Add Destination" forState:UIControlStateNormal];
+        }
+        
+        [addLoctaionBtn setFrame:CGRectMake(60, previewView.bounds.size.height - 50 , previewView.bounds.size.width - 120, 40)];
+        [addLoctaionBtn addTarget:self action:@selector(saveLocation:) forControlEvents:UIControlEventTouchUpInside];
+        addLoctaionBtn.enabled = TRUE;
+        addLoctaionBtn.layer.cornerRadius = 5;
+        addLoctaionBtn.clipsToBounds = YES;
+      
+       
+        
+             //getDistance
+        CLLocation *currentLoc = [[CLLocation alloc] initWithLatitude:appDelegate.latitude longitude:appDelegate.longitude];
+        CLLocation *poiLocation = [[CLLocation alloc] initWithLatitude:[[resultSearch objectAtIndex:indexPath.row][@"latitude"] floatValue]
+                                    longitude:[[resultSearch objectAtIndex:indexPath.row][@"longitude"] floatValue]];
+        CLLocationDistance meters = [poiLocation distanceFromLocation:currentLoc];
+        NSString *strdistance = [NSString stringWithFormat:@"%.02f Km",meters/1000];
+        NSLog(@"DISTANCE ::: %@",strdistance);
+        distancePreviewLbl.text = strdistance ;
+        
+        
+        
+    }
+    else
     {
         NSLog(@"not Search Table");
         
@@ -762,7 +947,7 @@
                 
                 NSLog(@"Have Result");
                 NSLog(@"ResultCOUNT:::: %d",resultSearch.count);
-                [searchDisplayTbl setFrame:CGRectMake(searchtableViewRect.origin.x,searchtableViewRect.origin.y, searchtableViewRect.size.width,(searchCellH*(resultSearch.count)))];
+                [searchDisplayTbl setFrame:CGRectMake(searchtableViewRect.origin.x,searchtableViewRect.origin.y, searchtableViewRect.size.width,(searchCellH*(3)))];
             }
             else{
                 
@@ -777,12 +962,15 @@
         NSLog(@"NO Result");
         
     }
-    else{
+    else {
         if([indexPath row] == ((NSIndexPath*)[[tableView indexPathsForVisibleRows] lastObject]).row){
             
-            [tableView setFrame:CGRectMake(tableViewRect.origin.x,tableViewRect.origin.y, tableViewRect.size.width,(cellH*(saveLocationData.count)))];
-            tableView.layer.cornerRadius = 5;
-            tableView.clipsToBounds = YES;
+            [destinationListTbl setFrame:CGRectMake(destinationListTblRect.origin.x,destinationListTblRect.origin.y, destinationListTblRect.size.width,(cellH*(saveLocationData.count*2)+180))];
+            NSLog(@"LOCATION COUNT %lu:::",(unsigned long)saveLocationData.count);
+            
+            
+            destinationListTbl.layer.cornerRadius = 5;
+            destinationListTbl.clipsToBounds = YES;
         }
     }
 }
@@ -813,36 +1001,36 @@
 - (void)keyboardWillShow:(NSNotification *)notification {
     CGRect keyboardBounds;
     
-    NSLog(@"keyboard Show");
-    [[notification.userInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] getValue:&keyboardBounds];
-    //    scrollView.contentOffset = CGPointMake(0,keyboardBounds.origin.y);
-    //    [scrollView setContentOffset:CGPointMake(0,searchBar.center.y+200) animated:YES];
-    
-    //    UIScrollView* v = (UIScrollView*) self.view ;
-    //    CGRect rc = [searchBar bounds];
-    //    rc = [searchBar convertRect:rc toView:v];
-    //    rc.origin.x = 0 ;
-    //    rc.origin.y -= 60 ;
-    //
-    //    rc.size.height = 300;
-    //    [self->scrollView scrollRectToVisible:rc animated:YES];
-    NSDictionary* info = [notification userInfo];
-    CGRect kbRawRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    CGRect scrollViewFrame = [scrollView.window convertRect:scrollView.frame fromView:scrollView.superview];
-    
-    // Calculate the area that is covered by the keyboard
-    CGRect coveredFrame = CGRectIntersection(scrollViewFrame, kbRawRect);
-    // Convert again to window coordinates to take rotations into account
-    coveredFrame = [scrollView.window convertRect:scrollView.frame fromView:scrollView.superview];
-    
-    //    NSLog(@"coveredFrame %f",coveredFrame.size.height);
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, 300, 0.0);
-    scrollView.contentInset = contentInsets;
-    scrollView.scrollIndicatorInsets = contentInsets;
-    
-    // If active text field is hidden by keyboard, scroll it so it's visible
-    CGRect activeFieldRect = [searchBar convertRect:searchBar.bounds toView:scrollView];
-    [scrollView scrollRectToVisible:activeFieldRect animated:YES];
+//    NSLog(@"keyboard Show");
+//    [[notification.userInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] getValue:&keyboardBounds];
+//    //    scrollView.contentOffset = CGPointMake(0,keyboardBounds.origin.y);
+//    //    [scrollView setContentOffset:CGPointMake(0,searchBar.center.y+200) animated:YES];
+//    
+//    //    UIScrollView* v = (UIScrollView*) self.view ;
+//    //    CGRect rc = [searchBar bounds];
+//    //    rc = [searchBar convertRect:rc toView:v];
+//    //    rc.origin.x = 0 ;
+//    //    rc.origin.y -= 60 ;
+//    //
+//    //    rc.size.height = 300;
+//    //    [self->scrollView scrollRectToVisible:rc animated:YES];
+//    NSDictionary* info = [notification userInfo];
+//    CGRect kbRawRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+//    CGRect scrollViewFrame = [scrollView.window convertRect:scrollView.frame fromView:scrollView.superview];
+//    
+//    // Calculate the area that is covered by the keyboard
+//    CGRect coveredFrame = CGRectIntersection(scrollViewFrame, kbRawRect);
+//    // Convert again to window coordinates to take rotations into account
+//    coveredFrame = [scrollView.window convertRect:scrollView.frame fromView:scrollView.superview];
+//    
+//    //    NSLog(@"coveredFrame %f",coveredFrame.size.height);
+//    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, 300, 0.0);
+//    scrollView.contentInset = contentInsets;
+//    scrollView.scrollIndicatorInsets = contentInsets;
+//    
+//    // If active text field is hidden by keyboard, scroll it so it's visible
+//    CGRect activeFieldRect = [searchBar convertRect:searchBar.bounds toView:scrollView];
+//    [scrollView scrollRectToVisible:activeFieldRect animated:YES];
     
     // Do something with keyboard height
 }

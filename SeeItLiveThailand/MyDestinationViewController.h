@@ -14,8 +14,15 @@
 #import "ModelManager.h"
 
 @interface MyDestinationViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+{
+	NSDictionary *tableContents;
+    NSArray *sortedKeys;
 
+}
+@property (nonatomic, strong) NSDictionary *tableContents;
 @property (nonatomic, strong) NSMutableArray *searchResults;
 @property (nonatomic, strong) NSMutableArray *searchData;
 @property (nonatomic, strong) NSMutableArray *poiData;
+@property (nonatomic, strong) NSArray *sortedKeys;
+
 @end

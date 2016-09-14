@@ -24,7 +24,7 @@
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <CoreTelephony/CTCarrier.h>
 #import "SeeItLiveThailand-Swift.h"
-#import "NearByProviderViewController.h"
+//#import "NearByProviderViewController.h"
 #import "Hotline.h"
 #import "Helpful.h"
 //#import "Sock"

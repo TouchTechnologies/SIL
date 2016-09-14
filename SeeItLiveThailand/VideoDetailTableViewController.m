@@ -24,7 +24,7 @@ static CGFloat kLoadingCellHeight = 111.0f;
 
 @implementation VideoDetailTableViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad{
     [super viewDidLoad];
     
     self.tableView.tableFooterView = [UIView new];

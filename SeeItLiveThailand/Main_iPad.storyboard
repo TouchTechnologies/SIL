@@ -898,7 +898,7 @@
                         <color key="separatorColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" rowHeight="100" id="GpR-Qq-wcO">
-                                <rect key="frame" x="0.0" y="92" width="507" height="100"/>
+                                <rect key="frame" x="0.0" y="28" width="507" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GpR-Qq-wcO" id="nJL-AP-ZYk">
                                     <rect key="frame" x="0.0" y="0.0" width="507" height="100"/>
@@ -2090,7 +2090,7 @@
                                 </searchBar>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="dWf-La-Rew">
-                                        <rect key="frame" x="0.0" y="136" width="507" height="44"/>
+                                        <rect key="frame" x="0.0" y="72" width="507" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dWf-La-Rew" id="LEh-D0-ZGN">
                                             <rect key="frame" x="0.0" y="0.0" width="507" height="43"/>
@@ -2309,6 +2309,7 @@
                         <outlet property="DestLbl" destination="Sb4-se-2CZ" id="lOQ-RE-EAa"/>
                         <outlet property="descripLbl" destination="wKB-BE-4lK" id="Mzi-hC-VBS"/>
                         <outlet property="destinationHeaderView" destination="5Ac-Cy-BAN" id="btB-5y-ldV"/>
+                        <outlet property="displaytableView" destination="F4U-Oe-w3W" id="MdS-3M-EkR"/>
                         <outlet property="editBtn" destination="zN2-30-aYL" id="hAy-lL-pyA"/>
                         <outlet property="iconDestination" destination="dtm-eg-jLv" id="SUG-u9-XLF"/>
                         <outlet property="notDestinationView" destination="HMm-2X-NVD" id="Rp0-Np-fso"/>
@@ -2319,7 +2320,6 @@
                         <outlet property="searchBar" destination="2le-mu-QWC" id="pxd-QO-dVV"/>
                         <outlet property="searchDisplayTbl" destination="BUw-Vi-ISS" id="Zm9-Qf-mBZ"/>
                         <outlet property="searchView" destination="jqb-qy-1Dt" id="k53-2P-yqk"/>
-                        <outlet property="tableView" destination="F4U-Oe-w3W" id="FLX-4X-UGr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7G8-lb-RsD" userLabel="First Responder" sceneMemberID="firstResponder"/>

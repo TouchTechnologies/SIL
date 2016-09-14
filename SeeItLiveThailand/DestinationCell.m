@@ -63,8 +63,8 @@
                                   8*scy,
                                   (contentW*scx)/2, 30*scy);
         distanceRect = CGRectMake(contentW- (85*scx), 10*scy, 45*scx, 30*scy);
-    kmRect = CGRectMake(contentW - (35*scx), 10*scy, 30*scx, 30*scy);
-       addressLblRect = CGRectMake(8*scx, pinIconRect.origin.y + pinIconRect.size.height + (25*scy),  (contentW*scx) -  (contentW*scx)/3, 30*scy);
+        kmRect = CGRectMake(contentW - (35*scx), 10*scy, 30*scx, 30*scy);
+        addressLblRect = CGRectMake(8*scx, pinIconRect.origin.y + pinIconRect.size.height + (25*scy),  (contentW*scx) -  (contentW*scx)/3, 30*scy);
           routeBtnRect = CGRectMake(addressLblRect.size.width + (10*scx), (contentH*scy)/2, 75*scx, 45*scy);
     }
     else{
@@ -72,7 +72,7 @@
          fontAdd = 14;
         pinIconRect = CGRectMake(8, 8 , 33, 41);
         placeLblRect = CGRectMake(pinIconRect.origin.x + pinIconRect.size.width + 5, 8,  self.contentView.bounds.size.width/2, 30);
-        distanceRect = CGRectMake(self.contentView.bounds.size.width - 85, 10, 45, 30);
+        distanceRect = CGRectMake(self.contentView.bounds.size.width - 85, 10, 60, 30);
         kmRect = CGRectMake(self.bounds.size.width -35, 10, 30, 30);
         
         addressLblRect = CGRectMake(8, pinIconRect.origin.y + pinIconRect.size.height + 25,  self.contentView.bounds.size.width -  self.contentView.bounds.size.width/3, 30);

@@ -29,10 +29,8 @@
 @interface VideoDetailViewController () {
     
     IBOutlet UIView *historyView;
-    
     IBOutlet UIView *detailView;
-     IBOutlet UIButton *viewHistory;
-    
+    IBOutlet UIButton *viewHistory;
     IBOutlet UILabel *commentCountLbl;
     IBOutlet UIButton *getDirectionBtn;
     
