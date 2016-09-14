@@ -105,7 +105,7 @@
     NSMutableArray *saveHotelData;
     
     NSDictionary *saveLocation;
-    
+    NSDictionary *groupLocation;
     
     NSArray *groupName;
     
@@ -377,42 +377,46 @@
     NSPredicate *resultPredicate = [NSPredicate
                                     predicateWithFormat:@"name_en contains[c]%@",
                                     saveLocation[@"name_en"]];
-//    if ( [[saveLocation objectForKey:@"provider_type_keyname"] isEqual:@"hotel"]) {
-//        NSLog(@"filteredArrayUsingPredicate : %lu",(unsigned long)[saveHotelData filteredArrayUsingPredicate:resultPredicate].count);
-//        if([saveHotelData filteredArrayUsingPredicate:resultPredicate].count == 0 )
-//        {
-//            [saveHotelData addObject:saveLocation];
-//            Model_POIS* poi = [[Model_POIS alloc]init];
-//            poi.provider_type_id = saveLocation[@"provider_type_id"];
-//            poi.provider_type_keyname = saveLocation[@"provider_type_keyname"];
-//            poi.name_en = saveLocation[@"name_en"];
-//            poi.name_th = saveLocation[@"name_th"];
-//            poi.province_name_en = saveLocation[@"province_name_en"];
-//            poi.longitude = saveLocation[@"longitude"];
-//            poi.latitude = saveLocation[@"latitude"];
-//            poi.address_th = saveLocation[@"address_th"];
-//            poi.address_en = saveLocation[@"address_en"];
-//            
-//            NSLog(@"saveHotelData %@",poi);
-//            [modelManager insertMyDestData:poi];
-//            
-//        
-//            editBtn.hidden = false;
-//            editHotel.hidden = FALSE;
-//            previewView.hidden = TRUE;
-//            [previewView setFrame:previewViewRect];
-//            [destinationListTbl setFrame:destinationListTblRect];
-//            [destinationListTbl reloadData];
-//            
-//            NSLog(@"saveHotelData : %@",saveHotelData);
-//            //[saveLocation objectForKey:@"provider_type_keyname"]
-//        }
-//
-//    }
-//    else{
+    if ( [[saveLocation objectForKey:@"provider_type_keyname"] isEqual:@"hotel"]) {
+        NSLog(@"filteredArrayUsingPredicate : %lu",(unsigned long)[saveHotelData filteredArrayUsingPredicate:resultPredicate].count);
+        if([saveHotelData filteredArrayUsingPredicate:resultPredicate].count == 0 )
+        {
+            
+            
+            [saveHotelData addObject:saveLocation];
+            Model_POIS* poi = [[Model_POIS alloc]init];
+            poi.provider_type_id = saveLocation[@"provider_type_id"];
+            poi.provider_type_keyname = saveLocation[@"provider_type_keyname"];
+            poi.name_en = saveLocation[@"name_en"];
+            poi.name_th = saveLocation[@"name_th"];
+            poi.province_name_en = saveLocation[@"province_name_en"];
+            poi.longitude = saveLocation[@"longitude"];
+            poi.latitude = saveLocation[@"latitude"];
+            poi.address_th = saveLocation[@"address_th"];
+            poi.address_en = saveLocation[@"address_en"];
+            
+            NSLog(@"saveHotelData  %@",poi);
+            [modelManager insertMyDestData:poi];
+            
+        
+            editBtn.hidden = false;
+            editHotel.hidden = FALSE;
+            previewView.hidden = TRUE;
+            [previewView setFrame:previewViewRect];
+            [destinationListTbl setFrame:destinationListTblRect];
+            [destinationListTbl reloadData];
+            
+//            NSLog(@"saveHotelData hotel : %@",saveHotelData);
+//            groupLocation =[[NSDictionary alloc]initWithObjectsAndKeys:saveHotelData,@"Hotel",nil];
+            //[saveLocation objectForKey:@"provider_type_keyname"]
+        }
+
+    }
+    else{
     NSLog(@"filteredArrayUsingPredicate : %lu",(unsigned long)[saveLocationData filteredArrayUsingPredicate:resultPredicate].count);
     if([saveLocationData filteredArrayUsingPredicate:resultPredicate].count == 0 )
     {
+        
         [saveLocationData addObject:saveLocation];
         Model_POIS* poi = [[Model_POIS alloc]init];
         poi.provider_type_id = saveLocation[@"provider_type_id"];
@@ -435,10 +439,16 @@
         [previewView setFrame:previewViewRect];
         [destinationListTbl setFrame:destinationListTblRect];
         [destinationListTbl reloadData];
-        NSLog(@"saveLocationData : %@",saveLocationData);
+//        NSLog(@"saveLocationData Destination : %@",saveLocationData);
+        
+//        groupLocation =[[NSDictionary alloc]initWithObjectsAndKeys:saveLocationData,@"Destination", nil];
 //[saveLocation objectForKey:@"provider_type_keyname"]
-   // }
+    }
   }
+//    NSLog(@"saveHotelData hotel : %@",saveHotelData);
+//    NSLog(@"saveLocationData Destination : %@",saveLocationData);
+    groupLocation =[[NSDictionary alloc]initWithObjectsAndKeys:saveHotelData,@"Hotel",saveLocationData,@"Destination",nil];
+    NSLog(@"groupLocation %@",groupLocation);
 }
 -(void)edit:(id)sender{
     isEdit = true;
