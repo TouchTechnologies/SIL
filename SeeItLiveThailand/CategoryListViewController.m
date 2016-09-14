@@ -452,7 +452,9 @@
       NSLog(@"FILTER1 ::: %@",filter);
     NSLog(@"CURRENT ::: %ld",[appDelegate.categoryData[iCurrentVisiblePage][@"id"] integerValue]);
 
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [[DataManager shareManager] getStreamingWithCompletionBlockWithFilterCat:^(BOOL success, NSArray *streamRecords, NSError *error) {
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         
         if (success) {
             weakSelf.streamList = streamRecords;
