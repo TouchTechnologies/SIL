@@ -592,7 +592,7 @@ GMSMarker *marker;
             [GMSCameraPosition cameraWithTarget:marker.position zoom:_mapView.camera.zoom];
             GMSCameraUpdate *update = [GMSCameraUpdate setCamera:newCamera];
             
-            marker.icon = [UIImage imageNamed:@"pin.png"];
+            marker.icon = [UIImage imageNamed:@"pin1.png"];
             _mapView.selectedMarker = marker;
             marker.tappable = NO;
             [_mapView moveCamera:update];
