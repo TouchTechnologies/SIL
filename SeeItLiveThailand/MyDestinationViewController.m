@@ -107,6 +107,7 @@
     NSDictionary *saveLocation;
     NSDictionary *groupLocation;
     
+    NSArray *groupKey;
     NSArray *groupName;
     
     
@@ -447,8 +448,11 @@
   }
 //    NSLog(@"saveHotelData hotel : %@",saveHotelData);
 //    NSLog(@"saveLocationData Destination : %@",saveLocationData);
+    
     groupLocation =[[NSDictionary alloc]initWithObjectsAndKeys:saveHotelData,@"Hotel",saveLocationData,@"Destination",nil];
+    groupKey = [groupLocation allKeys];
     NSLog(@"groupLocation %@",groupLocation);
+    NSLog(@"groupKey %@",groupKey);
 }
 -(void)edit:(id)sender{
     isEdit = true;
@@ -709,8 +713,10 @@
         return UITableViewStylePlain;
     }
     else{
+        NSLog(@"Group name %@",[groupLocation objectForKey:@"Hotel"]);
     return [groupName objectAtIndex:section];
     }
+    
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 //#warning Incomplete implementation, return the number of rows
@@ -803,6 +809,12 @@
     }
    
     else{
+        
+        NSArray *listData =[groupLocation objectForKey:[groupKey objectAtIndex:[indexPath section]]];
+        NSLog(@"Listttttttttt %@",listData);
+        
+        
+        
         
         Cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
         
