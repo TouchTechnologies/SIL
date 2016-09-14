@@ -162,6 +162,7 @@
 		369F71BB1C295AF3001B6F36 /* MyAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 369F71BA1C295AF3001B6F36 /* MyAccountViewController.m */; };
 		36AE272F1C6831C80037D700 /* ic_edit_livestream.png in Resources */ = {isa = PBXBuildFile; fileRef = 36AE272E1C6831C80037D700 /* ic_edit_livestream.png */; };
 		36AE27321C6835040037D700 /* EditMyStreamVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 36AE27311C6835040037D700 /* EditMyStreamVC.m */; };
+		36B45D321D894A75000D2459 /* pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 36B45D311D894A75000D2459 /* pin.png */; };
 		36C0DEBC1C64883300034861 /* MyStreamingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 36C0DEBB1C64883300034861 /* MyStreamingCell.m */; };
 		36C3F7FF1C4DDAE8005396D7 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C3F7FE1C4DDAE8005396D7 /* CameraManager.swift */; };
 		36C6BEEC1C4F306B001647C5 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36C6BEEB1C4F306B001647C5 /* SystemConfiguration.framework */; };
@@ -316,7 +317,6 @@
 		F3F4DD391D7E788F0098885C /* pin_hotel_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F3F4DD331D7E788F0098885C /* pin_hotel_1.png */; };
 		F3F4DD3A1D7E788F0098885C /* pin_res_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F3F4DD341D7E788F0098885C /* pin_res_1.png */; };
 		F3F4DD3B1D7E788F0098885C /* pin_res_2.png in Resources */ = {isa = PBXBuildFile; fileRef = F3F4DD351D7E788F0098885C /* pin_res_2.png */; };
-		F3F4DD3D1D7E7AAA0098885C /* pin.png in Resources */ = {isa = PBXBuildFile; fileRef = F3F4DD3C1D7E7AAA0098885C /* pin.png */; };
 		F3F713651CD21D4E00856DC6 /* OnAirCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F3F713641CD21D4E00856DC6 /* OnAirCell.m */; };
 /* End PBXBuildFile section */
 
@@ -581,6 +581,7 @@
 		36AE272E1C6831C80037D700 /* ic_edit_livestream.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_edit_livestream.png; path = Image/ic_edit_livestream.png; sourceTree = "<group>"; };
 		36AE27301C6835040037D700 /* EditMyStreamVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditMyStreamVC.h; sourceTree = "<group>"; };
 		36AE27311C6835040037D700 /* EditMyStreamVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditMyStreamVC.m; sourceTree = "<group>"; };
+		36B45D311D894A75000D2459 /* pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pin.png; path = Image/pin.png; sourceTree = "<group>"; };
 		36C0DEBA1C64883300034861 /* MyStreamingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyStreamingCell.h; sourceTree = "<group>"; };
 		36C0DEBB1C64883300034861 /* MyStreamingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyStreamingCell.m; sourceTree = "<group>"; };
 		36C3F7FE1C4DDAE8005396D7 /* CameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
@@ -776,7 +777,6 @@
 		F3F4DD331D7E788F0098885C /* pin_hotel_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pin_hotel_1.png; path = Image/pin_hotel_1.png; sourceTree = "<group>"; };
 		F3F4DD341D7E788F0098885C /* pin_res_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pin_res_1.png; path = Image/pin_res_1.png; sourceTree = "<group>"; };
 		F3F4DD351D7E788F0098885C /* pin_res_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pin_res_2.png; path = Image/pin_res_2.png; sourceTree = "<group>"; };
-		F3F4DD3C1D7E7AAA0098885C /* pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pin.png; path = "../../SIL 2/SeeItLiveThailand/Image/pin.png"; sourceTree = "<group>"; };
 		F3F713631CD21D4E00856DC6 /* OnAirCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnAirCell.h; sourceTree = "<group>"; };
 		F3F713641CD21D4E00856DC6 /* OnAirCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnAirCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1529,7 +1529,7 @@
 		F3F4DD2F1D7E78620098885C /* NearBy */ = {
 			isa = PBXGroup;
 			children = (
-				F3F4DD3C1D7E7AAA0098885C /* pin.png */,
+				36B45D311D894A75000D2459 /* pin.png */,
 				F3F4DD301D7E788F0098885C /* pin_att_1.png */,
 				F3F4DD311D7E788F0098885C /* pin_att_2.png */,
 				F3F4DD321D7E788F0098885C /* pin_hotel_2.png */,
@@ -1691,6 +1691,7 @@
 				363AA53A1D058B42006A99CC /* liveAroundAnnotation.xib in Resources */,
 				36785B6F1C29260C004E77BE /* icon_A.png in Resources */,
 				F3D3E3641C7EB2B200574DE3 /* ic_love2.png in Resources */,
+				36B45D321D894A75000D2459 /* pin.png in Resources */,
 				F39BC39D1CB63320001F3020 /* Heart.png in Resources */,
 				F3C37D051C6D974F00BB6BF0 /* ic_facebook_newlogin.png in Resources */,
 				F39BC39F1CB63320001F3020 /* love_noti.png in Resources */,
@@ -1792,7 +1793,6 @@
 				F3C7F9371C9FAC5100F32866 /* HelpfullCell.xib in Resources */,
 				36785B8A1C29260C004E77BE /* share_blue.png in Resources */,
 				F3F4DD3B1D7E788F0098885C /* pin_res_2.png in Resources */,
-				F3F4DD3D1D7E7AAA0098885C /* pin.png in Resources */,
 				F39C33541C4E172500FDE9FA /* ic_headline.png in Resources */,
 				36785ADC1C2911A3004E77BE /* Assets.xcassets in Resources */,
 				F3F1AB2B1CCA09D700BB1437 /* live.png in Resources */,
