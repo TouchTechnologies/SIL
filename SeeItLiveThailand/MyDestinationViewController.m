@@ -346,20 +346,34 @@
 {
     ModelManager *modelManager = [ModelManager getInstance];
 
-    saveLocationData = [[NSMutableArray alloc]initWithArray:[modelManager getMyDestData]];
-//    saveHotelData = [[NSMutableArray alloc]initWithArray:[modelManager getMyDestData]];
-//        [modelManager deleteAllData];
-//    if (saveLocation.count == 0) {
-//        editBtn.hidden = TRUE;
-//    }
-//    else if (saveHotelData.count == 0){
-//        editHotel.hidden =true;
-//
-//    }
-//    else{
-//        editBtn.hidden = FALSE;
-//        editHotel.hidden = FALSE;
-//    }
+    NSMutableArray* getData = [[NSMutableArray alloc]initWithArray:[modelManager getMyDestData]];
+    
+    NSLog(@"Count Data : %lu",(unsigned long)getData.count);
+    for (int i = 0 ; i < getData.count; i++) {
+        if ( [[getData[i] objectForKey:@"provider_type_keyname"] isEqual:@"hotel"]) {
+            
+            [saveHotelData addObject:getData[i]];
+            
+        }
+        else{
+            [saveLocationData addObject:getData[i]];
+        }
+        //    NSLog(@"saveHotelData hotel : %@",saveHotelData);
+        //    NSLog(@"saveLocationData Destination : %@",saveLocationData);
+        
+        groupLocation =[[NSDictionary alloc]initWithObjectsAndKeys:saveHotelData,@"Hotel",saveLocationData,@"Destination",nil];
+    }
+    
+    
+    groupKey = [[NSArray alloc] init];
+    groupKey = [groupLocation allKeys];
+    NSLog(@"groupLocation %@",groupLocation);
+    NSLog(@"groupKey %@",groupKey);
+
+    
+    
+    
+    NSLog(@"saveLocationDataGEttt : %@",saveLocationData);
     [destinationListTbl reloadData];
 }
 - (void)didReceiveMemoryWarning {
