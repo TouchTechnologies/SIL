@@ -124,7 +124,8 @@
     [super viewDidLoad];
     
     groupName = [NSArray arrayWithObjects:@"Hotel List",@"Destination List", nil];
-    
+    groupLocation = [[NSDictionary alloc] init];
+    groupKey = [[NSArray alloc] init];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
                                    action:@selector(dismissKeyboard)];
@@ -153,7 +154,7 @@
     saveHotelData = [[NSMutableArray alloc] init];
     searchDisplayTbl.hidden = TRUE;
     destinationListTbl.hidden = FALSE;
-    
+    destinationListTbl.separatorStyle = UITableViewStyleGrouped;
 //hotelListTbl.separatorStyle = UITableViewStyleGrouped;
     
   
@@ -166,9 +167,6 @@
     appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     
 }
-
-
-
 -(void)initial{
     
     UINib *nib = [UINib nibWithNibName:@"Destinationcell" bundle:nil];
@@ -353,16 +351,12 @@
 //        [modelManager deleteAllData];
 //    if (saveLocation.count == 0) {
 //        editBtn.hidden = TRUE;
-//        
 //    }
 //    else if (saveHotelData.count == 0){
-//    
-//        
 //        editHotel.hidden =true;
 //
 //    }
 //    else{
-//    
 //        editBtn.hidden = FALSE;
 //        editHotel.hidden = FALSE;
 //    }
@@ -399,7 +393,7 @@
             NSLog(@"saveHotelData  %@",poi);
             [modelManager insertMyDestData:poi];
             
-        
+            destinationListTbl.hidden = false;
             editBtn.hidden = false;
             editHotel.hidden = FALSE;
             previewView.hidden = TRUE;
@@ -450,6 +444,7 @@
 //    NSLog(@"saveLocationData Destination : %@",saveLocationData);
     
     groupLocation =[[NSDictionary alloc]initWithObjectsAndKeys:saveHotelData,@"Hotel",saveLocationData,@"Destination",nil];
+    groupKey = [[NSArray alloc] init];
     groupKey = [groupLocation allKeys];
     NSLog(@"groupLocation %@",groupLocation);
     NSLog(@"groupKey %@",groupKey);
@@ -705,7 +700,8 @@
         return 1;
     }
     else{
-        return 2;
+        return [groupKey count];
+        NSLog(@"Group Key count %lu",(unsigned long)[groupKey count]);
     }
 }
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
@@ -713,8 +709,8 @@
         return UITableViewStylePlain;
     }
     else{
-        NSLog(@"Group name %@",[groupLocation objectForKey:@"Hotel"]);
-    return [groupName objectAtIndex:section];
+        NSLog(@"Group name %@",[groupLocation objectForKey:@"Destination"]);
+    return [groupKey objectAtIndex:section];
     }
     
 }
@@ -743,7 +739,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-     //NSLog(@"TABLE HEIGHT %.2f",destinationListTbl.sectionHeaderHeight);
+    //NSLog(@"TABLE HEIGHT %.2f",destinationListTbl.sectionHeaderHeight);
     if(isEdit)
     {
         Cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
@@ -811,10 +807,7 @@
     else{
         
         NSArray *listData =[groupLocation objectForKey:[groupKey objectAtIndex:[indexPath section]]];
-        NSLog(@"Listttttttttt %@",listData);
-        
-        
-        
+        NSLog(@"Listttttttttt %@",[listData valueForKey:@"cover_image"]);
         
         Cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
         
@@ -822,43 +815,47 @@
             Cell = [[DestinationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
         }
         
-        Cell.placeLbl.text = [saveLocationData objectAtIndex:indexPath.row][@"name_en"];
         
-        Cell.placeLbl.lineBreakMode = NSLineBreakByWordWrapping;
-        //    Cell.placeLbl.numberOfLines = 3;
-        Cell.placeLbl.textAlignment = NSTextAlignmentJustified;
-        //    [ Cell.placeLbl sizeToFit];
+//        NSUInteger row = [indexPath row];
+//        Cell.placeLbl.text = [listData objectAtIndex:row];
         
-        Cell.addressLbl.text = [saveLocationData objectAtIndex:indexPath.row][@"address_en"];
-        Cell.addressLbl.lineBreakMode = NSLineBreakByWordWrapping;
-        Cell.addressLbl.numberOfLines = 3;
-        Cell.addressLbl.textAlignment = NSTextAlignmentJustified;
-        [Cell.addressLbl sizeToFit];
-        
-        
-        //getDistance
-        CLLocation *currentLoc = [[CLLocation alloc] initWithLatitude:appDelegate.latitude longitude:appDelegate.longitude];
-        CLLocation *poiLocation = [[CLLocation alloc] initWithLatitude:[[saveLocationData objectAtIndex:indexPath.row][@"latitude"] floatValue] longitude:[[saveLocationData objectAtIndex:indexPath.row][@"longitude"] floatValue]];
-        CLLocationDistance meters = [poiLocation distanceFromLocation:currentLoc];
-        
-        Cell.distanceLbl.text = [NSString stringWithFormat:@"%.02f",meters/1000];;
-        
-        [Cell.routeBtn setTitle:@"Route" forState:UIControlStateNormal];
-        Cell.routeBtn.backgroundColor = [UIColor colorWithRed:0.15 green:0.39 blue:0.64 alpha:1.00];
-        
-        [Cell.routeBtn setFrame:CGRectMake(Cell.contentView.bounds.size.width - (Cell.routeBtn.bounds.size.width + 5), Cell.contentView.bounds.size.height - (Cell.routeBtn.bounds.size.height + 5) , Cell.routeBtn.bounds.size.width, Cell.routeBtn.bounds.size.height)];
-        MYTapGestureRecognizer* TapCall = [[MYTapGestureRecognizer alloc]
-                                           initWithTarget:self action:@selector(routeDirection:)];
-        //Here should be actionViewTap:
-        [TapCall setNumberOfTouchesRequired:1];
-        [TapCall setDelegate:self];
-        Cell.routeBtn .userInteractionEnabled = YES;
-        [Cell.routeBtn  addGestureRecognizer:TapCall];
-        TapCall.enabled = YES;
-        TapCall.dataArr = [[NSMutableArray alloc]initWithObjects:[saveLocationData objectAtIndex:indexPath.row], nil];
-            
-       
-        
+//        Cell.placeLbl.text = [saveLocationData objectAtIndex:indexPath.row][@"name_en"];
+//        
+//        Cell.placeLbl.lineBreakMode = NSLineBreakByWordWrapping;
+//        //    Cell.placeLbl.numberOfLines = 3;
+//        Cell.placeLbl.textAlignment = NSTextAlignmentJustified;
+//        //    [ Cell.placeLbl sizeToFit];
+//        
+//        Cell.addressLbl.text = [saveLocationData objectAtIndex:indexPath.row][@"address_en"];
+//        Cell.addressLbl.lineBreakMode = NSLineBreakByWordWrapping;
+//        Cell.addressLbl.numberOfLines = 3;
+//        Cell.addressLbl.textAlignment = NSTextAlignmentJustified;
+//        [Cell.addressLbl sizeToFit];
+//        
+//        
+//        //getDistance
+//        CLLocation *currentLoc = [[CLLocation alloc] initWithLatitude:appDelegate.latitude longitude:appDelegate.longitude];
+//        CLLocation *poiLocation = [[CLLocation alloc] initWithLatitude:[[saveLocationData objectAtIndex:indexPath.row][@"latitude"] floatValue] longitude:[[saveLocationData objectAtIndex:indexPath.row][@"longitude"] floatValue]];
+//        CLLocationDistance meters = [poiLocation distanceFromLocation:currentLoc];
+//        
+//        Cell.distanceLbl.text = [NSString stringWithFormat:@"%.02f",meters/1000];;
+//        
+//        [Cell.routeBtn setTitle:@"Route" forState:UIControlStateNormal];
+//        Cell.routeBtn.backgroundColor = [UIColor colorWithRed:0.15 green:0.39 blue:0.64 alpha:1.00];
+//        
+//        [Cell.routeBtn setFrame:CGRectMake(Cell.contentView.bounds.size.width - (Cell.routeBtn.bounds.size.width + 5), Cell.contentView.bounds.size.height - (Cell.routeBtn.bounds.size.height + 5) , Cell.routeBtn.bounds.size.width, Cell.routeBtn.bounds.size.height)];
+//        MYTapGestureRecognizer* TapCall = [[MYTapGestureRecognizer alloc]
+//                                           initWithTarget:self action:@selector(routeDirection:)];
+//        //Here should be actionViewTap:
+//        [TapCall setNumberOfTouchesRequired:1];
+//        [TapCall setDelegate:self];
+//        Cell.routeBtn .userInteractionEnabled = YES;
+//        [Cell.routeBtn  addGestureRecognizer:TapCall];
+//        TapCall.enabled = YES;
+//        TapCall.dataArr = [[NSMutableArray alloc]initWithObjects:[saveLocationData objectAtIndex:indexPath.row], nil];
+//            
+//       
+//        
         return Cell;
     }
 }
