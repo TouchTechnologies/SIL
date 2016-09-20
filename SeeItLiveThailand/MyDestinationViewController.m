@@ -755,10 +755,11 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     //NSLog(@"TABLE HEIGHT %.2f",destinationListTbl.sectionHeaderHeight);
-    NSArray *listData =[groupLocation objectForKey:[groupKey objectAtIndex:[indexPath section]]];
+
     NSUInteger row = [indexPath row];
     if(isEdit)
     {
+        NSArray *listData =[groupLocation objectForKey:[groupKey objectAtIndex:[indexPath section]]];
         Cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
         
         if (Cell == nil)
@@ -823,7 +824,7 @@
     }
    
     else{
-        
+        NSArray *listData =[groupLocation objectForKey:[groupKey objectAtIndex:[indexPath section]]];
         NSLog(@"Listttttttttt %@",listData);
          NSLog(@"Name Dataaaaaaaaaaaaaa %@",[listData valueForKey:@"name_en"]);
         Cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
