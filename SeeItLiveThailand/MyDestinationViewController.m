@@ -413,7 +413,7 @@
             previewView.hidden = TRUE;
             [previewView setFrame:previewViewRect];
             [destinationListTbl setFrame:destinationListTblRect];
-            [destinationListTbl reloadData];
+//            [destinationListTbl reloadData];
             
 //            NSLog(@"saveHotelData hotel : %@",saveHotelData);
 //            groupLocation =[[NSDictionary alloc]initWithObjectsAndKeys:saveHotelData,@"Hotel",nil];
@@ -447,7 +447,7 @@
         previewView.hidden = TRUE;
         [previewView setFrame:previewViewRect];
         [destinationListTbl setFrame:destinationListTblRect];
-        [destinationListTbl reloadData];
+//        [destinationListTbl reloadData];
 //        NSLog(@"saveLocationData Destination : %@",saveLocationData);
         
 //        groupLocation =[[NSDictionary alloc]initWithObjectsAndKeys:saveLocationData,@"Destination", nil];
@@ -462,6 +462,8 @@
     groupKey = [groupLocation allKeys];
     NSLog(@"groupLocation %@",groupLocation);
     NSLog(@"groupKey %@",groupKey);
+    [destinationListTbl reloadData];
+    
 }
 -(void)edit:(id)sender{
     isEdit = true;
