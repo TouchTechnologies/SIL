@@ -238,9 +238,9 @@
     DestLbl.font = [UIFont fontWithName:@"Helvetica" size:font];
     
   //  [notDestinationView setFrame:notDestinationViewRect];
-    [editBtn setFrame:editBtnRect];
-    [editBtn addTarget:self action:@selector(edit:) forControlEvents:UIControlEventTouchUpInside];
-    editBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:font];
+//[editBtn setFrame:editBtnRect];
+//    [editBtn addTarget:self action:@selector(edit:) forControlEvents:UIControlEventTouchUpInside];
+//    editBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:font];
     
     [barRight setFrame:barRightRect];
     barRight.backgroundColor = [UIColor redColor];
@@ -467,7 +467,6 @@
     
 }
 -(void)edit:(id)sender{
-    isEdit = true;
     
     claerAllView = [[UIView alloc] initWithFrame:hotelHeaderViewRect];
     claerAllView.backgroundColor = destinationHeaderView.backgroundColor;
@@ -506,6 +505,9 @@
     
     [claerAllView addSubview:clrBtn];
     
+    NSLog(@"IS EDIT");
+    isEdit = true;
+    [destinationListTbl reloadData];
     
 }
 -(void)close:(id)sender{
@@ -728,20 +730,35 @@
     }
     }
 }
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-//    if(tableView == searchDisplayTbl){
-//        return UITableViewStylePlain;
-//    }
-//    else{
-//    UIView *hdView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 0)];
-//    hdView.backgroundColor = [UIColor redColor];
-//    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 200, 50)];
-//    title.text = [groupName objectAtIndex:section];
-//    [hdView addSubview:title];
-//    return hdView;
-//    }
-//}
-
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    if(tableView == searchDisplayTbl){
+        return UITableViewStylePlain;
+    }
+    else{
+    UIView *hdView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 0)];
+    hdView.backgroundColor = [UIColor colorWithRed:0.27 green:0.47 blue:0.67 alpha:1];
+    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 200, 50)];
+    title.text = [groupName objectAtIndex:section];
+    title.textColor = [UIColor whiteColor];
+    title.font= [UIFont fontWithName:@"Helvetica" size:16];
+        
+    editBtn = [[UIButton alloc] initWithFrame:CGRectMake(tableView.bounds.size.width - 60, 5, 60, 40)];
+    [editBtn setTitle:@"Edit" forState:UIControlStateNormal];
+    [editBtn addTarget:self action:@selector(edit:) forControlEvents:UIControlEventTouchUpInside];
+    editBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:font];
+        [hdView addSubview:editBtn];
+    [hdView addSubview:title];
+    return hdView;
+    }
+}
+- (CGFloat )tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    if (tableView == searchDisplayTbl) {
+        return 0;
+    }
+    else{
+    return 50;
+    }
+}
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     if(tableView == searchDisplayTbl){
         return UITableViewStylePlain;
@@ -777,13 +794,11 @@
             return 1 ;
         }
        else{
-           
            NSArray *HData =[groupLocation objectForKey:[groupKey objectAtIndex:0]];
            NSArray *DData =[groupLocation objectForKey:[groupKey objectAtIndex:1]];
-           NSLog(@"HOTEL COUNT :::%lu",HData.count );
-           NSLog(@"DEST COUNT :::%lu",DData.count );
+           NSLog(@"HOTEL COUNT :::%lu",HData.count);
+           NSLog(@"DEST COUNT :::%lu",DData.count);
 
-           
            listData = [groupLocation objectForKey:[groupKey objectAtIndex:section]];
             return listData.count;
         }
@@ -837,6 +852,8 @@
         [Cell.routeBtn  addGestureRecognizer:TapCall];
         TapCall.enabled = YES;
         TapCall.dataArr = [[NSMutableArray alloc]initWithObjects:listData, nil];
+        isEdit = false;
+      //  [destinationListTbl reloadData];
         return Cell;
         
     }
@@ -876,7 +893,7 @@
             Cell.routeBtn.hidden = true;
             Cell.pinIcon.hidden = true;
             Cell.kmLbl.hidden = true;
-            Cell.contentView.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1];
+            Cell.contentView.backgroundColor = [UIColor colorWithRed:0.92 green:0.92 blue:0.95 alpha:1];
             UILabel *emty = [[UILabel alloc] initWithFrame:CGRectMake(0 , Cell.contentView.bounds.size.height/2 - 20 , Cell.contentView.bounds.size.width, 40)];
             emty.text = @"Emty";
             emty.textAlignment = NSTextAlignmentCenter;
@@ -903,12 +920,23 @@
             Cell.kmLbl.hidden = false;
 
         Cell.placeLbl.text = [listData valueForKey:@"name_en"][row];
-        
         Cell.placeLbl.lineBreakMode = NSLineBreakByWordWrapping;
-        //    Cell.placeLbl.numberOfLines = 3;
         Cell.placeLbl.textAlignment = NSTextAlignmentJustified;
-        //    [ Cell.placeLbl sizeToFit];
-        
+      
+       
+            if ([[listData valueForKey:@"provider_type_keyname"][row]  isEqual: @"hotel"]) {
+                Cell.pinIcon.image = [UIImage imageNamed:@"pin_hotel_2.png"];
+                
+            }
+            else if ([[listData valueForKey:@"provider_type_keyname"][row]  isEqual: @"restaurant"]){
+                Cell.pinIcon.image = [UIImage imageNamed:@"pin_res_2.png"];
+
+            }
+            else{
+                Cell.pinIcon.image = [UIImage imageNamed:@"pin_att_2.png"];
+
+            }
+        Cell.pinIcon.contentMode = UIViewContentModeScaleAspectFit;
         Cell.addressLbl.text = [listData valueForKey:@"address_en"][row];
         Cell.addressLbl.lineBreakMode = NSLineBreakByWordWrapping;
         Cell.addressLbl.numberOfLines = 3;
