@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="emtycell" rowHeight="100" id="8hz-yr-zie" customClass="DestinationEmtyTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="298" height="100"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8hz-yr-zie" id="0j4-dh-AyI">
+                <rect key="frame" x="0.0" y="0.0" width="298" height="99"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ic_more_checkin.png" translatesAutoresizingMaskIntoConstraints="NO" id="z5z-TR-s5C">
+                        <rect key="frame" x="119" y="8" width="60" height="60"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Emty" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kdp-8N-FwY">
+                        <rect key="frame" x="0.0" y="69" width="298" height="30"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.66666666669999997" alpha="0.13946659480000001" colorSpace="calibratedWhite"/>
+            <connections>
+                <outlet property="emtyLabel" destination="Kdp-8N-FwY" id="5sb-yj-zm6"/>
+                <outlet property="icon" destination="z5z-TR-s5C" id="8OG-nZ-Fz3"/>
+                <outlet property="pinIcon" destination="z5z-TR-s5C" id="ryC-pb-blQ"/>
+                <outlet property="placeLbl" destination="Kdp-8N-FwY" id="gcI-p2-geA"/>
+            </connections>
+            <point key="canvasLocation" x="157" y="233"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="ic_more_checkin.png" width="153" height="164"/>
+    </resources>
+</document>

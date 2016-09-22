@@ -109,7 +109,7 @@
     
     NSArray *groupKey;
     NSArray *groupName;
-    
+    NSArray *listData;
     
 }
 - (IBAction)Back:(id)sender;
@@ -122,14 +122,16 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    NSLog(@"LIST DATA COUNT :: %lu",(unsigned long)listData.count);
+    NSLog(@"GROUP DATA COUNT :: %lu",(unsigned long)groupLocation.count);
+
     groupName = [NSArray arrayWithObjects:@"Hotel List",@"Destination List", nil];
     groupLocation = [[NSDictionary alloc] init];
     groupKey = [[NSArray alloc] init];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
                                    action:@selector(dismissKeyboard)];
-//    [self.view addGestureRecognizer:tap];
+
     // Register notification when the keyboard will be show
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -145,16 +147,14 @@
     
     searchActive = false;
     isEdit = false;
-    //    __weak MyDestinationViewController *weakSelf = self;
-    //    searchDisplayList  = [[NSMutableArray alloc] initWithObjects:@"rama 9",@"dindang",@"huaykwang",@"sathorn" , @"rca",nil];
-    // searchDisplayList  = [[NSMutableArray alloc] initWithObjects:weakSelf.poiData,nil];
-    //    NSLog(@"POI::: %@",weakSelf.poiData[0][@"name_en"]);
+ 
     resultSearch = [[NSMutableArray alloc] init];
     saveLocationData = [[NSMutableArray alloc] init];
     saveHotelData = [[NSMutableArray alloc] init];
+    listData = [[NSArray alloc] init];
+  
     searchDisplayTbl.hidden = TRUE;
-    destinationListTbl.hidden = FALSE;
-    destinationListTbl.separatorStyle = UITableViewStyleGrouped;
+// destinationListTbl.separatorStyle = UITableViewStyleGrouped;
 //hotelListTbl.separatorStyle = UITableViewStyleGrouped;
     
   
@@ -171,21 +171,21 @@
     
     UINib *nib = [UINib nibWithNibName:@"Destinationcell" bundle:nil];
     [destinationListTbl registerNib:nib forCellReuseIdentifier:@"cell"];
-    
-    if (saveLocationData.count == 0) {
-        NSLog(@"saveLocationData == nil");
-        editBtn.hidden = true ;
-    }
-    else if (saveHotelData.count == 0)
-    {
-        NSLog(@"saveHotelData == nil");
-        editHotel.hidden = true;
-    }
-    else{
-        NSLog(@"saveLocationData != nil");
-        editBtn.hidden = false;
-        editHotel.hidden = FALSE;
-    }
+//    
+//    if (saveLocationData.count == 0) {
+//        NSLog(@"saveLocationData == nil");
+//        editBtn.hidden = true ;
+//    }
+//    else if (saveHotelData.count == 0)
+//    {
+//        NSLog(@"saveHotelData == nil");
+//        editHotel.hidden = true;
+//    }
+//    else{
+//        NSLog(@"saveLocationData != nil");
+//        editBtn.hidden = false;
+//        editHotel.hidden = FALSE;
+//    }
  
     //Check Search Result
     
@@ -346,7 +346,8 @@
 {
     ModelManager *modelManager = [ModelManager getInstance];
 
-    NSMutableArray* getData = [[NSMutableArray alloc]initWithArray:[modelManager getMyDestData]];
+    NSMutableArray* getData = [[NSMutableArray alloc]initWithArray:
+                               [modelManager getMyDestData]];
     
     NSLog(@"Count Data : %lu",(unsigned long)getData.count);
     for (int i = 0 ; i < getData.count; i++) {
@@ -457,7 +458,7 @@
 //    NSLog(@"saveHotelData hotel : %@",saveHotelData);
 //    NSLog(@"saveLocationData Destination : %@",saveLocationData);
     
-    groupLocation =[[NSDictionary alloc]initWithObjectsAndKeys:saveHotelData,@"Hotel",saveLocationData,@"Destination",nil];
+    groupLocation =[[NSDictionary alloc]initWithObjectsAndKeys:saveHotelData,@"Hotel List",saveLocationData,@"Destination List",nil];
     groupKey = [[NSArray alloc] init];
     groupKey = [groupLocation allKeys];
     NSLog(@"groupLocation %@",groupLocation);
@@ -716,19 +717,45 @@
         return 1;
     }
     else{
+        if (groupLocation.count == 0) {
+           return 2;
+       }
+        else
+        {
+         
         return [groupKey count];
         NSLog(@"Group Key count %lu",(unsigned long)[groupKey count]);
     }
+    }
 }
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+//    if(tableView == searchDisplayTbl){
+//        return UITableViewStylePlain;
+//    }
+//    else{
+//    UIView *hdView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 0)];
+//    hdView.backgroundColor = [UIColor redColor];
+//    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 200, 50)];
+//    title.text = [groupName objectAtIndex:section];
+//    [hdView addSubview:title];
+//    return hdView;
+//    }
+//}
+
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     if(tableView == searchDisplayTbl){
         return UITableViewStylePlain;
     }
     else{
-        NSLog(@"Group name %@",[groupKey objectAtIndex:section]);
+        NSLog(@"LIST DATA COUNT :: %lu",(unsigned long)listData.count);
+        if (groupLocation.count == 0) {
+        return [groupName objectAtIndex:section];
+        }
+        else{
+    NSLog(@"Group name %@",[groupKey objectAtIndex:section]);
     return [groupKey objectAtIndex:section];
+}
     }
-    
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 //#warning Incomplete implementation, return the number of rows
@@ -744,13 +771,22 @@
         
     }
     else{
-//        if (saveLocationData.count == 0) {
-//            return 1 ;
-//        }
-//        else{
-        NSArray *listData =[groupLocation objectForKey:[groupKey objectAtIndex:section]];
-        return listData.count;
- //       }
+          NSLog(@"COUNT :::%lu",groupLocation.count );
+        
+       if (groupLocation.count== 0) {
+            return 1 ;
+        }
+       else{
+           
+           NSArray *HData =[groupLocation objectForKey:[groupKey objectAtIndex:0]];
+           NSArray *DData =[groupLocation objectForKey:[groupKey objectAtIndex:1]];
+           NSLog(@"HOTEL COUNT :::%lu",HData.count );
+           NSLog(@"DEST COUNT :::%lu",DData.count );
+
+           
+           listData = [groupLocation objectForKey:[groupKey objectAtIndex:section]];
+            return listData.count;
+        }
     }
 
 }
@@ -826,17 +862,46 @@
     }
    
     else{
-        NSArray *listData =[groupLocation objectForKey:[groupKey objectAtIndex:[indexPath section]]];
-        NSLog(@"Listttttttttt %@",listData);
-         NSLog(@"Name Dataaaaaaaaaaaaaa %@",[listData valueForKey:@"name_en"]);
         Cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
         
         if (Cell == nil) {
             Cell = [[DestinationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
         }
+
         
-        ;
-        
+        if (groupLocation.count == 0) {
+            Cell.placeLbl.hidden = true;
+            Cell.addressLbl.hidden = true;
+            Cell.distanceLbl.hidden = true;
+            Cell.routeBtn.hidden = true;
+            Cell.pinIcon.hidden = true;
+            Cell.kmLbl.hidden = true;
+            Cell.contentView.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1];
+            UILabel *emty = [[UILabel alloc] initWithFrame:CGRectMake(0 , Cell.contentView.bounds.size.height/2 - 20 , Cell.contentView.bounds.size.width, 40)];
+            emty.text = @"Emty";
+            emty.textAlignment = NSTextAlignmentCenter;
+            [Cell.contentView addSubview:emty];
+            
+ //            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
+
+//[Cell.contentView addSubview:vc];
+//
+//      //     cell.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.91 alpha:1];
+            return Cell;
+        }
+        else{
+         
+         NSArray *listData =[groupLocation objectForKey:[groupKey objectAtIndex:[indexPath section]]];
+         NSLog(@"Listttttttttt %@",listData);
+         NSLog(@"Name Dataaaaaaaaaaaaaa %@",[listData valueForKey:@"name_en"]);
+            
+            Cell.placeLbl.hidden = false;
+            Cell.addressLbl.hidden = false;
+            Cell.distanceLbl.hidden = false;
+            Cell.routeBtn.hidden = false;
+            Cell.pinIcon.hidden = false;
+            Cell.kmLbl.hidden = false;
+
         Cell.placeLbl.text = [listData valueForKey:@"name_en"][row];
         
         Cell.placeLbl.lineBreakMode = NSLineBreakByWordWrapping;
@@ -873,6 +938,7 @@
         TapCall.dataArr = [[NSMutableArray alloc]initWithObjects:listData, nil];
         
         return Cell;
+        }
     }
 }
 
@@ -1000,9 +1066,13 @@
     else {
         if([indexPath row] == ((NSIndexPath*)[[tableView indexPathsForVisibleRows] lastObject]).row){
             
+            if (listData.count <= 2) {
+                [destinationListTbl setFrame:destinationListTblRect];
+            }
+            else{
             [destinationListTbl setFrame:CGRectMake(destinationListTblRect.origin.x,destinationListTblRect.origin.y, destinationListTblRect.size.width,(cellH*(saveLocationData.count*2)+180))];
             NSLog(@"LOCATION COUNT %lu:::",(unsigned long)saveLocationData.count);
-            
+            }
             
             destinationListTbl.layer.cornerRadius = 5;
             destinationListTbl.clipsToBounds = YES;

@@ -205,6 +205,8 @@
 		F318B88B1CD3480E00FCC0BF /* anonymous.png in Resources */ = {isa = PBXBuildFile; fileRef = F318B88A1CD3480E00FCC0BF /* anonymous.png */; };
 		F318B8911CD36BA300FCC0BF /* CategoryLiveCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F318B8901CD36BA300FCC0BF /* CategoryLiveCell.m */; };
 		F318B8941CD3716500FCC0BF /* CategoryTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F318B8931CD3716500FCC0BF /* CategoryTypeViewController.m */; };
+		F31B73341D92727D00A8F521 /* DestinationEmty.xib in Resources */ = {isa = PBXBuildFile; fileRef = F31B73331D92727D00A8F521 /* DestinationEmty.xib */; };
+		F31B733A1D9273ED00A8F521 /* DestinationEmtyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F31B73391D9273ED00A8F521 /* DestinationEmtyTableViewCell.m */; };
 		F31B865A1CB7520700505958 /* LivestreamRealtimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F31B86591CB7520700505958 /* LivestreamRealtimeViewController.m */; };
 		F32985C11CD88FCF00C72901 /* event.png in Resources */ = {isa = PBXBuildFile; fileRef = F32985BA1CD88FCF00C72901 /* event.png */; };
 		F32985C21CD88FCF00C72901 /* lifestyle.png in Resources */ = {isa = PBXBuildFile; fileRef = F32985BB1CD88FCF00C72901 /* lifestyle.png */; };
@@ -640,6 +642,9 @@
 		F318B8901CD36BA300FCC0BF /* CategoryLiveCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryLiveCell.m; sourceTree = "<group>"; };
 		F318B8921CD3716500FCC0BF /* CategoryTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryTypeViewController.h; sourceTree = "<group>"; };
 		F318B8931CD3716500FCC0BF /* CategoryTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryTypeViewController.m; sourceTree = "<group>"; };
+		F31B73331D92727D00A8F521 /* DestinationEmty.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DestinationEmty.xib; sourceTree = "<group>"; };
+		F31B73381D9273ED00A8F521 /* DestinationEmtyTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationEmtyTableViewCell.h; sourceTree = "<group>"; };
+		F31B73391D9273ED00A8F521 /* DestinationEmtyTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinationEmtyTableViewCell.m; sourceTree = "<group>"; };
 		F31B86581CB7520700505958 /* LivestreamRealtimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LivestreamRealtimeViewController.h; sourceTree = "<group>"; };
 		F31B86591CB7520700505958 /* LivestreamRealtimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LivestreamRealtimeViewController.m; sourceTree = "<group>"; };
 		F32985BA1CD88FCF00C72901 /* event.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = event.png; path = Image/event.png; sourceTree = "<group>"; };
@@ -1080,6 +1085,9 @@
 				F317128F1D583CA300252124 /* GoogleMapView.xib */,
 				F31712941D58410400252124 /* googleMapView.h */,
 				F31712951D58410400252124 /* googleMapView.m */,
+				F31B73331D92727D00A8F521 /* DestinationEmty.xib */,
+				F31B73381D9273ED00A8F521 /* DestinationEmtyTableViewCell.h */,
+				F31B73391D9273ED00A8F521 /* DestinationEmtyTableViewCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1675,6 +1683,7 @@
 				F3F4DD381D7E788F0098885C /* pin_hotel_2.png in Resources */,
 				F3AC52541C981FC800E8D06E /* ic_flash.png in Resources */,
 				36785B7D1C29260C004E77BE /* icon_I1.png in Resources */,
+				F31B73341D92727D00A8F521 /* DestinationEmty.xib in Resources */,
 				F3145F0B1C4645AB00BDCACA /* ic_action_cancel.png in Resources */,
 				36785B791C29260C004E77BE /* icon_F.png in Resources */,
 				F39BC39C1CB63320001F3020 /* close.png in Resources */,
@@ -1949,6 +1958,7 @@
 				36785BF21C293461004E77BE /* ADPageModel.m in Sources */,
 				F32A67C31C47948800882756 /* SettingTableViewCell.m in Sources */,
 				F3BC55D11C92D4D1009A882C /* commentTableViewCell.m in Sources */,
+				F31B733A1D9273ED00A8F521 /* DestinationEmtyTableViewCell.m in Sources */,
 				36785B1C1C291471004E77BE /* StreamingCell.m in Sources */,
 				36785B981C292984004E77BE /* RegisterVC.m in Sources */,
 				36785B9C1C292A2C004E77BE /* UnderConViewController.m in Sources */,
