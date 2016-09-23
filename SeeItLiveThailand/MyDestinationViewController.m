@@ -480,12 +480,10 @@
             if (editBtn.tag == 0)
             {
                 [saveHotelData removeAllObjects];
-            
             }
             else
             {
                [saveLocationData removeAllObjects];
-                
             }
             claerAllView.hidden = YES;
             [destinationListTbl reloadData];
