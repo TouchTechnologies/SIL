@@ -44,6 +44,7 @@
 -(void) getJoinTB;
 -(void) deleteAllData;
 -(BOOL) deleteMyDestData;
+-(BOOL) deleteMyDestDataByType:(NSString*)type;
 -(BOOL) deleteMyDestDataByID:(NSString*)name_en;
 
 
