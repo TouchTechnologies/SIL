@@ -111,6 +111,9 @@
     NSArray *groupName;
     NSArray *listData;
     
+    UIView *hdView;
+    
+    
 }
 - (IBAction)Back:(id)sender;
 
@@ -171,21 +174,10 @@
     
     UINib *nib = [UINib nibWithNibName:@"Destinationcell" bundle:nil];
     [destinationListTbl registerNib:nib forCellReuseIdentifier:@"cell"];
-//    
-//    if (saveLocationData.count == 0) {
-//        NSLog(@"saveLocationData == nil");
-//        editBtn.hidden = true ;
-//    }
-//    else if (saveHotelData.count == 0)
-//    {
-//        NSLog(@"saveHotelData == nil");
-//        editHotel.hidden = true;
-//    }
-//    else{
-//        NSLog(@"saveLocationData != nil");
-//        editBtn.hidden = false;
-//        editHotel.hidden = FALSE;
-//    }
+    if (groupLocation == 0) {
+        editBtn.hidden = true;
+    }
+     editBtn.hidden = false;
  
     //Check Search Result
     
@@ -236,11 +228,6 @@
     [DestLbl setFrame:DestLblRect];
     DestLbl.text = @"Destination List";
     DestLbl.font = [UIFont fontWithName:@"Helvetica" size:font];
-    
-  //  [notDestinationView setFrame:notDestinationViewRect];
-//[editBtn setFrame:editBtnRect];
-//    [editBtn addTarget:self action:@selector(edit:) forControlEvents:UIControlEventTouchUpInside];
-//    editBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:font];
     
     [barRight setFrame:barRightRect];
     barRight.backgroundColor = [UIColor redColor];
@@ -359,19 +346,16 @@
         else{
             [saveLocationData addObject:getData[i]];
         }
-        //    NSLog(@"saveHotelData hotel : %@",saveHotelData);
-        //    NSLog(@"saveLocationData Destination : %@",saveLocationData);
         
-        groupLocation =[[NSDictionary alloc]initWithObjectsAndKeys:saveHotelData,@"Hotel",saveLocationData,@"Destination",nil];
+        groupLocation =[[NSDictionary alloc]initWithObjectsAndKeys:saveHotelData,@"Hotel List",saveLocationData,@"Destination List",nil];
+
     }
-    
-    
+
     groupKey = [[NSArray alloc] init];
     groupKey = [groupLocation allKeys];
-    NSLog(@"groupLocation %@",groupLocation);
-    NSLog(@"groupKey %@",groupKey);
-
     
+    NSLog(@"groupLocation %@",groupLocation);
+    NSLog(@"groupKey GET %@",groupKey);
     
     
     NSLog(@"saveLocationDataGEttt : %@",saveLocationData);
@@ -409,16 +393,11 @@
             [modelManager insertMyDestData:poi];
             
             destinationListTbl.hidden = false;
-            editBtn.hidden = false;
-            editHotel.hidden = FALSE;
+
             previewView.hidden = TRUE;
             [previewView setFrame:previewViewRect];
             [destinationListTbl setFrame:destinationListTblRect];
-//            [destinationListTbl reloadData];
-            
-//            NSLog(@"saveHotelData hotel : %@",saveHotelData);
-//            groupLocation =[[NSDictionary alloc]initWithObjectsAndKeys:saveHotelData,@"Hotel",nil];
-            //[saveLocation objectForKey:@"provider_type_keyname"]
+            [destinationListTbl reloadData];
         }
 
     }
@@ -443,8 +422,7 @@
         [modelManager insertMyDestData:poi];
         
         destinationListTbl.hidden = false;
-        editBtn.hidden = false;
-        editHotel.hidden = FALSE;
+       
         previewView.hidden = TRUE;
         [previewView setFrame:previewViewRect];
         [destinationListTbl setFrame:destinationListTblRect];
@@ -467,61 +445,27 @@
     
 }
 -(void)edit:(id)sender{
-    
-    claerAllView = [[UIView alloc] initWithFrame:hotelHeaderViewRect];
-    claerAllView.backgroundColor = destinationHeaderView.backgroundColor;
-    claerAllView.layer.cornerRadius = 5;
-    claerAllView.clipsToBounds = YES;
-   
-    
-    closeBtn = [[UIButton alloc] initWithFrame:closeBtnRect];
-    closeBtn.backgroundColor = [UIColor grayColor];
-    closeBtn.layer.cornerRadius = 5;
-    closeBtn.clipsToBounds = YES;
-    [closeBtn addTarget:self action:@selector(close:) forControlEvents:UIControlEventTouchUpInside];
-    
-    UIImageView *imgClose = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, closeBtn.bounds.size.width - 20, closeBtn.bounds.size.height - 20)];
-    imgClose.image = [UIImage imageNamed:@"close.png"];
-  
-    [closeBtn addSubview:imgClose];
-    [claerAllView addSubview:closeBtn];
-    
-    UIButton *clrBtn = [[UIButton alloc] initWithFrame:clrBtnRect];
-    clrBtn.backgroundColor =[UIColor redColor];
-    clrBtn.layer.cornerRadius = 5;
-    clrBtn.clipsToBounds = YES;
-    
-    UIImageView *imgclear = [[UIImageView alloc] initWithFrame:imgclearRect];
-    imgclear.image = [UIImage imageNamed:@"ic_clear_all.png"];
-    [clrBtn addSubview:imgclear];
-    
-    UILabel *lblClear = [[UILabel alloc] initWithFrame:lblClearRect ];
-    lblClear.text = @"Clear All";
-    lblClear.font = [UIFont fontWithName:@"Helvetica" size:font];
-    lblClear.textColor = [UIColor whiteColor];
-    [clrBtn addSubview:lblClear];
-    [clrBtn addTarget:self action:@selector(deleteAll:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    [claerAllView addSubview:clrBtn];
-    
+     isEdit = true;
+    claerAllView.hidden = false;
+    [hdView addSubview:claerAllView];
     NSLog(@"IS EDIT");
-    isEdit = true;
-    [destinationListTbl reloadData];
+   
+//    [destinationListTbl reloadData];
     
 }
 -(void)close:(id)sender{
     isEdit = false;
-      hotelHeaderView.hidden = NO;
     claerAllView.hidden = YES;
 }
 -(void)deleteSaveLocationByID:(id)sender{
     NSLog(@"deleteSaveLocationByID");
     MYTapGestureRecognizer *tapRecognizer = (MYTapGestureRecognizer *)sender;
     NSLog (@"routeDirection %@",tapRecognizer.dataArr[0]);
-    //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"You sure delete?" message:@"" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"OK", nil];
+  
     
-    MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"Are you sure to delete?" message:tapRecognizer.dataArr[0][@"name_en"] delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
+    //  MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"Are you sure clear all?" message:@"" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
+    
+    MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"Are you sure to delete?" message: tapRecognizer.dataArr[0][@"name_en"] delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
     alert.dataArr = tapRecognizer.dataArr;
     alert.tag = 1;
     [alert show];
@@ -543,8 +487,9 @@
             ModelManager *modelManager = [ModelManager getInstance];
             [modelManager deleteMyDestData];
             [saveLocationData removeAllObjects];
-            hotelHeaderView.hidden = NO;
-            claerAllView.hidden = YES;
+            [saveHotelData removeAllObjects];
+             claerAllView.hidden = YES;
+            [destinationListTbl reloadData];
        
         }
     }else if(alertView.tag == 1)
@@ -555,13 +500,12 @@
             ModelManager *modelManager = [ModelManager getInstance];
             [modelManager deleteMyDestDataByID:alertView.dataArr[0][@"name_en"]];
             [self getMyDestinationData];
-            if(saveLocationData.count == 0)
-            {
-              
-                destinationHeaderView.hidden = NO;
-                hotelHeaderView.hidden = NO;
-                claerAllView.hidden = YES;
-            }
+            
+            
+//            if(saveLocationData.count == 0)
+//            {
+//                claerAllView.hidden = YES;
+//            }
             //            else
             //            {
             //                int index;
@@ -735,7 +679,7 @@
         return UITableViewStylePlain;
     }
     else{
-    UIView *hdView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 0)];
+    hdView = [[UIView alloc] init];
     hdView.backgroundColor = [UIColor colorWithRed:0.27 green:0.47 blue:0.67 alpha:1];
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 200, 50)];
     title.text = [groupName objectAtIndex:section];
@@ -746,7 +690,34 @@
     [editBtn setTitle:@"Edit" forState:UIControlStateNormal];
     [editBtn addTarget:self action:@selector(edit:) forControlEvents:UIControlEventTouchUpInside];
     editBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:font];
-        [hdView addSubview:editBtn];
+        
+    claerAllView = [[UIView alloc] initWithFrame:CGRectMake(tableView.bounds.size.width - 150, 0 ,150 ,50)];
+    claerAllView.backgroundColor = hdView.backgroundColor;
+    claerAllView.layer.cornerRadius = 5;
+    claerAllView.clipsToBounds = YES;
+        
+        
+        closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(claerAllView.bounds.size.width - 45, 5, 40, 40)];
+        closeBtn.backgroundColor = hdView.backgroundColor;
+        closeBtn.layer.cornerRadius = 5;
+        closeBtn.clipsToBounds = YES;
+        [closeBtn addTarget:self action:@selector(close:) forControlEvents:UIControlEventTouchUpInside];
+        [closeBtn setImage: [UIImage imageNamed:@"close.png"] forState:UIControlStateNormal];
+        [claerAllView addSubview:closeBtn];
+        
+        
+        UIButton *clrBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 5, 100, 40)];
+        clrBtn.backgroundColor =[UIColor redColor];
+        clrBtn.layer.cornerRadius = 5;
+        clrBtn.clipsToBounds = YES;
+        [clrBtn setTitle:@"Clear All" forState:UIControlStateNormal];
+        [clrBtn addTarget:self action:@selector(deleteAll:) forControlEvents:UIControlEventTouchUpInside];
+        [claerAllView addSubview:clrBtn];
+        [hdView addSubview:claerAllView];
+        claerAllView.hidden = TRUE;
+        
+        
+    [hdView addSubview:editBtn];
     [hdView addSubview:title];
     return hdView;
     }
@@ -1094,14 +1065,14 @@
     else {
         if([indexPath row] == ((NSIndexPath*)[[tableView indexPathsForVisibleRows] lastObject]).row){
             
-            if (listData.count <= 2) {
+//            if (listData.count <= 2) {
                 [destinationListTbl setFrame:destinationListTblRect];
-            }
-            else{
-            [destinationListTbl setFrame:CGRectMake(destinationListTblRect.origin.x,destinationListTblRect.origin.y, destinationListTblRect.size.width,(cellH*(saveLocationData.count*2)+180))];
-            NSLog(@"LOCATION COUNT %lu:::",(unsigned long)saveLocationData.count);
-            }
-            
+//            }
+//            else{
+//            [destinationListTbl setFrame:CGRectMake(destinationListTblRect.origin.x,destinationListTblRect.origin.y, destinationListTblRect.size.width,(cellH*(saveLocationData.count*2)+180))];
+//            NSLog(@"LOCATION COUNT %lu:::",(unsigned long)saveLocationData.count);
+//            }
+//            
             destinationListTbl.layer.cornerRadius = 5;
             destinationListTbl.clipsToBounds = YES;
         }
