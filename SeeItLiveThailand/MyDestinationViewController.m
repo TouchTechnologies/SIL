@@ -437,10 +437,11 @@
 -(void)edit:(id)sender{
     isEdit = true;
     claerAllView.hidden = false;
+//    [destinationListTbl reloadData];
     [hdView addSubview:claerAllView];
     NSLog(@"IS EDIT");
    
-//    [destinationListTbl reloadData];
+
     
 }
 -(void)close:(id)sender{
@@ -464,6 +465,7 @@
 
 -(void)deleteAll:(id)sender{
     //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"You sure delete all?" message:@"" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"OK", nil];
+    NSLog(@"Delete All");
     MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"Are you sure clear all?" message:@"" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
     alert.tag = 0;
    
@@ -475,16 +477,20 @@
     {
         if (buttonIndex != [alertView cancelButtonIndex]) {
             ModelManager *modelManager = [ModelManager getInstance];
-            [modelManager deleteAllData];
+            
 
+            NSLog(@"editBtn Tag %ld",(long)editBtn.tag);
             if (editBtn.tag == 0)
             {
+                
                 [saveHotelData removeAllObjects];
+                [modelManager deleteMyDestDataByType:@"hotel"];
             
             }
             else
             {
                [saveLocationData removeAllObjects];
+                [modelManager deleteMyDestDataByType:@"restaurant"];
                 
             }
             claerAllView.hidden = YES;
@@ -500,6 +506,7 @@
             ModelManager *modelManager = [ModelManager getInstance];
             [modelManager deleteMyDestDataByID:alertView.dataArr[0][@"name_en"]];
             [self getMyDestinationData];
+            
             
             
 //            if(saveLocationData.count == 0)
@@ -783,6 +790,7 @@
     NSUInteger row = [indexPath row];
     if(isEdit)
     {
+        NSLog(@"Edit Tableview");
         NSArray *listData =[groupLocation objectForKey:[groupKey objectAtIndex:[indexPath section]]];
         Cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
         

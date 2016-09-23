@@ -670,6 +670,24 @@ static ModelManager *instance=nil;
         return false;
     }
 }
+-(BOOL)deleteMyDestDataByType:(NSString*)type
+{
+    [instance.database open];
+//    BOOL isDeleted=[instance.database executeUpdate:@"DELETE FROM myDestinationTB"];
+        BOOL isDeleted=[instance.database executeUpdate:[NSString stringWithFormat:@"DELETE FROM myDestinationTB WHERE provider_type_keyname = '%@'",type]];
+    [instance.database close];
+    
+    if(isDeleted)
+    {
+        NSLog(@"Deleted Successfully");
+        return true;
+    }
+    else
+    {
+        NSLog(@"Error occured while Deleting");
+        return false;
+    }
+}
 -(BOOL)deleteMyDestDataByID:(NSString*)name_en
 {
     NSLog(@"name_en:%@ and %@",name_en,[NSString stringWithFormat:@"DELETE FROM myDestinationTB WHERE name_en = '%@'",name_en]);
