@@ -356,9 +356,8 @@
     
     NSLog(@"groupLocation %@",groupLocation);
     NSLog(@"groupKey GET %@",groupKey);
-    
-    
     NSLog(@"saveLocationDataGEttt : %@",saveLocationData);
+    
     [destinationListTbl reloadData];
 }
 - (void)didReceiveMemoryWarning {
@@ -391,13 +390,11 @@
             
             NSLog(@"saveHotelData  %@",poi);
             [modelManager insertMyDestData:poi];
-            
-            destinationListTbl.hidden = false;
-
-            previewView.hidden = TRUE;
+                previewView.hidden = TRUE;
             [previewView setFrame:previewViewRect];
-            [destinationListTbl setFrame:destinationListTblRect];
-            [destinationListTbl reloadData];
+//            [destinationListTbl setFrame:destinationListTblRect];
+//            [destinationListTbl reloadData];
+   
         }
 
     }
@@ -421,31 +418,24 @@
         NSLog(@"saveLocationData %@",poi);
         [modelManager insertMyDestData:poi];
         
-        destinationListTbl.hidden = false;
-       
         previewView.hidden = TRUE;
         [previewView setFrame:previewViewRect];
-        [destinationListTbl setFrame:destinationListTblRect];
-//        [destinationListTbl reloadData];
-//        NSLog(@"saveLocationData Destination : %@",saveLocationData);
-        
-//        groupLocation =[[NSDictionary alloc]initWithObjectsAndKeys:saveLocationData,@"Destination", nil];
-//[saveLocation objectForKey:@"provider_type_keyname"]
-    }
+            }
   }
-//    NSLog(@"saveHotelData hotel : %@",saveHotelData);
-//    NSLog(@"saveLocationData Destination : %@",saveLocationData);
+
     
     groupLocation =[[NSDictionary alloc]initWithObjectsAndKeys:saveHotelData,@"Hotel List",saveLocationData,@"Destination List",nil];
     groupKey = [[NSArray alloc] init];
     groupKey = [groupLocation allKeys];
     NSLog(@"groupLocation %@",groupLocation);
     NSLog(@"groupKey %@",groupKey);
+    [destinationListTbl setFrame:destinationListTblRect];
     [destinationListTbl reloadData];
+
     
 }
 -(void)edit:(id)sender{
-     isEdit = true;
+    isEdit = true;
     claerAllView.hidden = false;
     [hdView addSubview:claerAllView];
     NSLog(@"IS EDIT");
@@ -485,11 +475,21 @@
     {
         if (buttonIndex != [alertView cancelButtonIndex]) {
             ModelManager *modelManager = [ModelManager getInstance];
-            [modelManager deleteMyDestData];
-            [saveLocationData removeAllObjects];
-            [saveHotelData removeAllObjects];
-             claerAllView.hidden = YES;
+            [modelManager deleteAllData];
+
+            if (editBtn.tag == 0)
+            {
+                [saveHotelData removeAllObjects];
+            
+            }
+            else
+            {
+               [saveLocationData removeAllObjects];
+                
+            }
+            claerAllView.hidden = YES;
             [destinationListTbl reloadData];
+          
        
         }
     }else if(alertView.tag == 1)
@@ -690,7 +690,7 @@
     [editBtn setTitle:@"Edit" forState:UIControlStateNormal];
     [editBtn addTarget:self action:@selector(edit:) forControlEvents:UIControlEventTouchUpInside];
     editBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:font];
-        
+    editBtn.tag = section;
     claerAllView = [[UIView alloc] initWithFrame:CGRectMake(tableView.bounds.size.width - 150, 0 ,150 ,50)];
     claerAllView.backgroundColor = hdView.backgroundColor;
     claerAllView.layer.cornerRadius = 5;
@@ -759,7 +759,7 @@
         
     }
     else{
-          NSLog(@"COUNT :::%lu",groupLocation.count );
+          NSLog(@"COUNT :::%lu",(unsigned long)groupLocation.count );
         
        if (groupLocation.count== 0) {
             return 1 ;
