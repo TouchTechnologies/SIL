@@ -437,8 +437,11 @@
 -(void)edit:(id)sender{
     isEdit = true;
     claerAllView.hidden = false;
-//    [destinationListTbl reloadData];
+    
     [hdView addSubview:claerAllView];
+    [destinationListTbl reloadData];
+    
+    
     NSLog(@"IS EDIT");
    
 
@@ -790,7 +793,7 @@
     NSUInteger row = [indexPath row];
     if(isEdit)
     {
-        NSLog(@"Edit Tableview");
+        NSLog(@"Edit Tableview section : %ld",(long)indexPath.section);
         NSArray *listData =[groupLocation objectForKey:[groupKey objectAtIndex:[indexPath section]]];
         Cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
         
@@ -831,7 +834,10 @@
         [Cell.routeBtn  addGestureRecognizer:TapCall];
         TapCall.enabled = YES;
         TapCall.dataArr = [[NSMutableArray alloc]initWithObjects:listData, nil];
-        isEdit = false;
+        if (groupKey.count == indexPath.section) {
+            isEdit = false;
+        }
+        
       //  [destinationListTbl reloadData];
         return Cell;
         
@@ -886,7 +892,7 @@
             return Cell;
         }
         else{
-         
+            NSLog(@"NotEdit");
          NSArray *listData =[groupLocation objectForKey:[groupKey objectAtIndex:[indexPath section]]];
          NSLog(@"Listttttttttt %@",listData);
          NSLog(@"Name Dataaaaaaaaaaaaaa %@",[listData valueForKey:@"name_en"]);
