@@ -112,7 +112,10 @@
     NSArray *listData;
     
     UIView *hdView;
-    
+    NSInteger *mySection;
+    NSUInteger row;
+    NSInteger item;
+    NSInteger editTag;
     
 }
 - (IBAction)Back:(id)sender;
@@ -125,6 +128,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    mySection = 0;
     NSLog(@"LIST DATA COUNT :: %lu",(unsigned long)listData.count);
     NSLog(@"GROUP DATA COUNT :: %lu",(unsigned long)groupLocation.count);
 
@@ -332,9 +336,10 @@
 - (void)getMyDestinationData
 {
     ModelManager *modelManager = [ModelManager getInstance];
-
-    NSMutableArray* getData = [[NSMutableArray alloc]initWithArray:
+ //   [modelManager deleteMyDestData];
+        NSMutableArray* getData = [[NSMutableArray alloc]initWithArray:
                                [modelManager getMyDestData]];
+    
     
     NSLog(@"Count Data : %lu",(unsigned long)getData.count);
     for (int i = 0 ; i < getData.count; i++) {
@@ -392,9 +397,7 @@
             [modelManager insertMyDestData:poi];
                 previewView.hidden = TRUE;
             [previewView setFrame:previewViewRect];
-//            [destinationListTbl setFrame:destinationListTblRect];
-//            [destinationListTbl reloadData];
-   
+
         }
 
     }
@@ -422,48 +425,56 @@
         [previewView setFrame:previewViewRect];
             }
   }
-
     
     groupLocation =[[NSDictionary alloc]initWithObjectsAndKeys:saveHotelData,@"Hotel List",saveLocationData,@"Destination List",nil];
     groupKey = [[NSArray alloc] init];
     groupKey = [groupLocation allKeys];
     NSLog(@"groupLocation %@",groupLocation);
     NSLog(@"groupKey %@",groupKey);
-    [destinationListTbl setFrame:destinationListTblRect];
+    //[self getMyDestinationData];
+    //[destinationListTbl setFrame:destinationListTblRect];
     [destinationListTbl reloadData];
 
-    
 }
--(void)edit:(id)sender{
-    isEdit = true;
-    claerAllView.hidden = false;
-    
-    [hdView addSubview:claerAllView];
-    [destinationListTbl reloadData];
-    
-    
-    NSLog(@"IS EDIT");
-   
 
+-(void)edit:(id)sender{
+    MYTapGestureRecognizer *tapRecognizer = (MYTapGestureRecognizer *)sender;
+    NSLog (@"Tag Edit %ld",[tapRecognizer.view tag]);
+    editTag = [tapRecognizer.view tag];
+
+    isEdit = true;
     
+    [destinationListTbl reloadData];
+
+    NSLog(@"IS EDIT");
+}
+- (void)setSection:(NSInteger)Section{
+
 }
 -(void)close:(id)sender{
     isEdit = false;
+    [destinationListTbl reloadData];
     claerAllView.hidden = YES;
 }
 -(void)deleteSaveLocationByID:(id)sender{
     NSLog(@"deleteSaveLocationByID");
     MYTapGestureRecognizer *tapRecognizer = (MYTapGestureRecognizer *)sender;
-    NSLog (@"routeDirection %@",tapRecognizer.dataArr[0]);
-  
+//    NSLog (@"routeDirection %@",tapRecognizer.dataArr[0]);
+//    NSLog(@"NAME ::: %@",tapRecognizer.dataArr[0][@"name_en"]);
+    NSLog(@"List DATA %@",tapRecognizer.dataArr);
+    
+   item = [tapRecognizer.view tag];
+    NSLog (@"Tag DALETE %ld",item);
+    NSLog(@"tag edit ::: %ld",editTag);
+   NSLog(@"Delete %@",tapRecognizer.dataArr[1]);
     
     //  MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"Are you sure clear all?" message:@"" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
     
-    MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"Are you sure to delete?" message: tapRecognizer.dataArr[0][@"name_en"] delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
-    alert.dataArr = tapRecognizer.dataArr;
-    alert.tag = 1;
-    [alert show];
-    
+//    MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"Are you sure to delete?" message:tapRecognizer.dataArr[editTag][item][@"name_en"]delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
+//    alert.dataArr = tapRecognizer.dataArr;
+//    alert.tag = 1;
+//    [alert show];
+//    
 }
 
 -(void)deleteAll:(id)sender{
@@ -501,10 +512,13 @@
     {
         if (buttonIndex != [alertView cancelButtonIndex]) {
             
-            NSLog(@"Aleart Delate Data %@",alertView.dataArr[0][@"name_en"]);
+            NSLog(@"Aleart Delate Data %@",alertView.dataArr[editTag][item][@"name_en"]);
             ModelManager *modelManager = [ModelManager getInstance];
-            [modelManager deleteMyDestDataByID:alertView.dataArr[0][@"name_en"]];
-            [self getMyDestinationData];
+            [modelManager deleteMyDestDataByID:alertView.dataArr[editTag][item][@"name_en"]];
+            isEdit = false;
+            //[destinationListTbl reloadData];
+         
+             [self getMyDestinationData];
             
             
             
@@ -687,6 +701,7 @@
     else{
     hdView = [[UIView alloc] init];
     hdView.backgroundColor = [UIColor colorWithRed:0.27 green:0.47 blue:0.67 alpha:1];
+    hdView.tag = section;
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 200, 50)];
     title.text = [groupName objectAtIndex:section];
     title.textColor = [UIColor whiteColor];
@@ -694,19 +709,27 @@
         
     editBtn = [[UIButton alloc] initWithFrame:CGRectMake(tableView.bounds.size.width - 60, 5, 60, 40)];
     [editBtn setTitle:@"Edit" forState:UIControlStateNormal];
-    [editBtn addTarget:self action:@selector(edit:) forControlEvents:UIControlEventTouchUpInside];
     editBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:font];
     editBtn.tag = section;
+    MYTapGestureRecognizer* TapEdit = [[MYTapGestureRecognizer alloc]
+                                           initWithTarget:self action:@selector(edit:)];//Here should be actionViewTap:
+        [TapEdit setNumberOfTouchesRequired:1];
+        [TapEdit setDelegate:self];
+         editBtn.userInteractionEnabled = YES;
+        [editBtn  addGestureRecognizer:TapEdit];
+        TapEdit.enabled = YES;
+  
+    
     claerAllView = [[UIView alloc] initWithFrame:CGRectMake(tableView.bounds.size.width - 150, 0 ,150 ,50)];
     claerAllView.backgroundColor = hdView.backgroundColor;
     claerAllView.layer.cornerRadius = 5;
     claerAllView.clipsToBounds = YES;
-        
-        
+        claerAllView.tag = section;
         closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(claerAllView.bounds.size.width - 45, 5, 40, 40)];
         closeBtn.backgroundColor = hdView.backgroundColor;
         closeBtn.layer.cornerRadius = 5;
         closeBtn.clipsToBounds = YES;
+        closeBtn.tag = section;
         [closeBtn addTarget:self action:@selector(close:) forControlEvents:UIControlEventTouchUpInside];
         [closeBtn setImage: [UIImage imageNamed:@"close.png"] forState:UIControlStateNormal];
         [claerAllView addSubview:closeBtn];
@@ -717,14 +740,22 @@
         clrBtn.layer.cornerRadius = 5;
         clrBtn.clipsToBounds = YES;
         [clrBtn setTitle:@"Clear All" forState:UIControlStateNormal];
+        clrBtn.tag = section;
         [clrBtn addTarget:self action:@selector(deleteAll:) forControlEvents:UIControlEventTouchUpInside];
+        
         [claerAllView addSubview:clrBtn];
         [hdView addSubview:claerAllView];
         claerAllView.hidden = TRUE;
+        if (isEdit) {
+            claerAllView.hidden = false;
+        }
         
-        
+   
     [hdView addSubview:editBtn];
     [hdView addSubview:title];
+    [hdView addSubview:claerAllView];
+        
+
     return hdView;
     }
 }
@@ -786,18 +817,22 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     //NSLog(@"TABLE HEIGHT %.2f",destinationListTbl.sectionHeaderHeight);
 
-    NSUInteger row = [indexPath row];
+    row = [indexPath row];
     if(isEdit)
     {
         NSLog(@"Edit Tableview section : %ld",(long)indexPath.section);
-        NSArray *listData =[groupLocation objectForKey:[groupKey objectAtIndex:[indexPath section]]];
+        [tableView headerViewForSection:indexPath.section];
+
+       listData =[groupLocation objectForKey:[groupKey objectAtIndex:[indexPath section]]];
+        NSArray *listSection = [groupKey objectAtIndex:[indexPath section]];
+        
         Cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
         
-        if (Cell == nil)
-        {
-            Cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        if (Cell == nil) {
+            Cell = [[DestinationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
         }
-        Cell.placeLbl.text = [listData valueForKey:@"name_en"][0];
+        
+        Cell.placeLbl.text = [listData valueForKey:@"name_en"][row];
 //        NSLog(@"NAME EN %@",listData[@"name_en"]);
         
         Cell.placeLbl.lineBreakMode = NSLineBreakByWordWrapping;
@@ -805,7 +840,7 @@
         Cell.placeLbl.textAlignment = NSTextAlignmentJustified;
         // [ Cell.placeLbl sizeToFit];
         
-        Cell.addressLbl.text = [listData valueForKey:@"address_en"][0];
+        Cell.addressLbl.text = [listData valueForKey:@"address_en"][row];
         Cell.addressLbl.lineBreakMode = NSLineBreakByWordWrapping;
         Cell.addressLbl.numberOfLines = 3;
         Cell.addressLbl.textAlignment = NSTextAlignmentJustified;
@@ -814,7 +849,7 @@
         
         //getDistance
         CLLocation *currentLoc = [[CLLocation alloc] initWithLatitude:appDelegate.latitude longitude:appDelegate.longitude];
-        CLLocation *poiLocation = [[CLLocation alloc] initWithLatitude:[[listData valueForKey:@"latitude"][0] floatValue] longitude:[[listData valueForKey:@"longitude"][0] floatValue]];
+        CLLocation *poiLocation = [[CLLocation alloc] initWithLatitude:[[listData valueForKey:@"latitude"][row] floatValue] longitude:[[listData valueForKey:@"longitude"][row] floatValue]];
         CLLocationDistance meters = [poiLocation distanceFromLocation:currentLoc];
         
         Cell.distanceLbl.text = [NSString stringWithFormat:@"%.02f",meters/1000];;
@@ -825,15 +860,18 @@
         MYTapGestureRecognizer* TapCall = [[MYTapGestureRecognizer alloc]
                                            initWithTarget:self action:@selector(deleteSaveLocationByID:)];//Here should be actionViewTap:
         [TapCall setNumberOfTouchesRequired:1];
+        Cell.routeBtn.tag = row;
+        
         [TapCall setDelegate:self];
         Cell.routeBtn .userInteractionEnabled = YES;
         [Cell.routeBtn  addGestureRecognizer:TapCall];
         TapCall.enabled = YES;
-        TapCall.dataArr = [[NSMutableArray alloc]initWithObjects:listData, nil];
+        TapCall.dataArr = [[NSMutableArray alloc]initWithObjects:listData , nil];
         if (groupKey.count == indexPath.section) {
             isEdit = false;
+            [tableView headerViewForSection:indexPath.section];
         }
-        
+        NSLog(@"DATAAAA %@",TapCall.dataArr);
       //  [destinationListTbl reloadData];
         return Cell;
         
@@ -860,6 +898,7 @@
     }
    
     else{
+        
         Cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
         
         if (Cell == nil) {
@@ -887,8 +926,9 @@
 //      //     cell.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.91 alpha:1];
             return Cell;
         }
-        else{
-            NSLog(@"NotEdit");
+        else {
+            
+         NSLog(@"NotEdit");
          NSArray *listData =[groupLocation objectForKey:[groupKey objectAtIndex:[indexPath section]]];
          NSLog(@"Listttttttttt %@",listData);
          NSLog(@"Name Dataaaaaaaaaaaaaa %@",[listData valueForKey:@"name_en"]);
