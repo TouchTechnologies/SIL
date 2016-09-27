@@ -31,8 +31,9 @@
     IBOutlet UIButton *closePreviewBtn;
     CGRect closePreviewBtnRect;
     
-    
-    
+    CGFloat headerH;
+    CGRect HeaderTitleLblRect;
+    UILabel *emty;
     
     IBOutlet UIView *destinationHeaderView;
     
@@ -60,6 +61,7 @@
     
     IBOutlet UIScrollView *scrollView;
     IBOutlet UIButton *addLoctaionBtn;
+    CGRect addLoctaionBtnRect;
 
     
     
@@ -116,6 +118,8 @@
     NSUInteger row;
     NSInteger item;
     NSInteger editTag;
+    
+    CGRect clearAllViewRect;
     
 }
 - (IBAction)Back:(id)sender;
@@ -254,40 +258,64 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         font = 14*scy;
         cellH = 130*scy;
-        searchCellH = 50*scy;
-        iconDestinationRect = CGRectMake(10*scx, [UIApplication sharedApplication].statusBarFrame.size.height, width - (20*scx), 180*scy);
-        descripLblRect = CGRectMake(0*scx, iconDestinationRect.origin.y + iconDestinationRect.size.height, width, 30*scy);
-        searchViewRect = CGRectMake(10*scx, descripLblRect.origin.y + descripLblRect.size.height + (5*scy), width - (20*scx), 60*scy);
+        searchCellH = 50;
+        headerH = 50*scy;
+
+        searchViewRect =  CGRectMake(10*scx,10*scy, width - (20*scx), 40*scy);
         searchtableViewRect = CGRectMake(10*scx, searchViewRect.origin.y + searchViewRect.size.height , width - (20*scx), 150*scy);
+        scrollViewRect = CGRectMake(0, 0, width, height - navBarWithStatusH);
+        previewViewRect = CGRectMake(10*scx, searchViewRect.origin.y + searchViewRect.size.height + (5*scy), width-(20*scx), 200*scy);
+        pinTypepreviewImgRect = CGRectMake(10*scx, 10*scy, 45*scx, 45*scy);
+        locationNamepreViewLblRect = CGRectMake(pinTypepreviewImgRect.origin.x + pinTypepreviewImgRect.size.width + (20*scx) , 10*scy , previewViewRect.size.width - (100*scx) , 30*scy);
+        addressPreviewLblRect = CGRectMake(pinTypepreviewImgRect .origin.x + pinTypepreviewImgRect.size.width + (20*scx),  locationNamepreViewLblRect.origin.y +  locationNamepreViewLblRect.size.height + (20*scy) , previewViewRect.size.width - (100*scx), 60*scy);
+        distancePreviewLblRect = CGRectMake(pinTypepreviewImgRect.origin.x + pinTypepreviewImgRect.size.width + (20*scx), previewViewRect.size.height/2 + (20*scy) , 170*scx , 20*scy);
+        closeBtnRect = CGRectMake(previewViewRect.size.width - (35*scx), 10*scy, 25*scx, 25*scy);
+        addLoctaionBtnRect = CGRectMake(60*scx, previewViewRect.size.height - (50*scy) , previewViewRect.size.width - (120*scx), 40*scy);
         
-        scrollViewRect = CGRectMake(0, navBarWithStatusH, width, height - navBarWithStatusH);
-        saveLoctaionBtnRect = CGRectMake(60*scx, searchViewRect.origin.y + searchViewRect.size.height + (10*scy), width - (120*scx), 50*scy);
-        destinationHeaderViewRect = CGRectMake(10*scx, saveLoctaionBtnRect.origin.y + saveLoctaionBtnRect.size.height + (10*scy), width - (20*scx), 60*scy);
+        previewViewRect = CGRectMake(10*scx, searchViewRect.origin.y + searchViewRect.size.height + (5*scy), width-(20*scx), 200*scy);
+        pinTypepreviewImgRect = CGRectMake(10*scx, 10*scy, 45*scx, 45*scy);
         
-        DestLblRect = CGRectMake(5*scx, 15*scy, destinationHeaderViewRect.size.width - (50*scx), 30*scy);
-        editBtnRect = CGRectMake(destinationHeaderViewRect.size.width - (45*scx), 10*scy , 45*scx, 45*scy);
         
-        notDestinationViewRect = CGRectMake(10*scx, destinationHeaderViewRect.origin.y + destinationHeaderViewRect.size.height + (5*scy), width - (20*scx), 160*scy);
+        hotelListLblRect = CGRectMake(5*scx,hotelHeaderViewRect.size.height/2 - (15*scy), hotelHeaderViewRect.size.width - (50*scx), 30*scy);
+        editHotelRect = CGRectMake(hotelHeaderViewRect.size.width - (30*scx), 10*scy , 30*scx, 30*scy) ;
         
-        notLocationIconRect = CGRectMake(notDestinationViewRect.size.width/2 - (40*scx), notDestinationViewRect.size.height/2 - (60*scy), 80*scx, 80*scy);
-        notLocationLblRect = CGRectMake(0*scx, notLocationIconRect.origin.y + notLocationIconRect.size.height + (5*scy), notDestinationViewRect.size.width, 30*scy);
-        tableViewRect = CGRectMake(10*scx, destinationHeaderViewRect.origin.y + destinationHeaderViewRect.size.height + (5*scy), width - (20*scx), 160*scy);
-        closeBtnRect = CGRectMake(destinationHeaderView.bounds.size.width - (55*scx) ,5*scy, 50*scx, 50*scy);
-        clrBtnRect = CGRectMake(closeBtnRect.origin.x - (110*scx), closeBtnRect.origin.y, 100*scx, closeBtnRect.size.height);
-        imgclearRect = CGRectMake(5*scx, clrBtnRect.size.height/4,clrBtnRect.size.height/2, clrBtnRect.size.height/2);
-        lblClearRect = CGRectMake(imgclearRect.size.width + (5*scx), clrBtnRect.size.height/2 - (15*scy), clrBtnRect.size.width - (imgclearRect.origin.x + imgclearRect.size.width + (5*scx)), 30*scy);
+        
+        DestLblRect = CGRectMake(5*scx,destinationHeaderViewRect.size.height/2 - (15*scy), destinationHeaderViewRect.size.width - (50*scx), 30*scy);
+       
+        destinationListTblRect =CGRectMake(10*scx, searchViewRect.origin.y + searchViewRect.size.height + (10*scy) ,previewViewRect.size.width , height - (destinationListTblRect.origin.y + (150*scy)));
+        editBtnRect = CGRectMake(destinationListTblRect.size.width - 60, 0, 60, 50);
+        
+        clearAllViewRect = CGRectMake(destinationListTblRect.size.width - 150, 0 ,150,50);
+        
+        closeBtnRect = CGRectMake(clearAllViewRect.size.width - 45, 5, 40, 40);
+        barRightRect = CGRectMake(width - (60*scx), navBarWithStatusH/2 - 25*scy, 50*scx, 50*scy);
+        clrBtnRect = CGRectMake(0, 5, 100, 40);
+        HeaderTitleLblRect = CGRectMake(10, 0, 200*scx, 50);
+
     }
     else{
         font = 14 ;
         cellH =130;
         searchCellH = 50;
+        headerH = 50;
         searchViewRect = CGRectMake(10,10, width - 20, 40);
         searchtableViewRect = CGRectMake(10, searchViewRect.origin.y + searchViewRect.size.height, width - 20, 50 );
         
         scrollViewRect = CGRectMake(0, 0, width, height - navBarWithStatusH);
-     //   containnerViewRect = CGRectMake(10 , searchViewRect.origin.y + searchViewRect.size.height +10 , width-20, height - 100);
-        
+    
+         HeaderTitleLblRect = CGRectMake(10, 0, 200, 50);
         previewViewRect = CGRectMake(10, searchViewRect.origin.y + searchViewRect.size.height + 5, width-20, 200);
+        pinTypepreviewImgRect = CGRectMake(10, 10, 45, 45);
+        locationNamepreViewLblRect = CGRectMake(pinTypepreviewImgRect.origin.x + pinTypepreviewImgRect.size.width + 20 , 10 , previewViewRect.size.width - 100 , 30);
+        addressPreviewLblRect = CGRectMake(pinTypepreviewImgRect .origin.x + pinTypepreviewImgRect.size.width + 20,  locationNamepreViewLblRect.origin.y +  locationNamepreViewLblRect.size.height + 20 , previewViewRect.size.width - 100 , 60);
+        distancePreviewLblRect = CGRectMake(pinTypepreviewImgRect.origin.x + pinTypepreviewImgRect.size.width + 20, previewViewRect.size.height/2 +20 , 170 , 20);
+
+        
+        closeBtnRect = CGRectMake(previewViewRect.size.width - 35, 10, 25, 25);
+        addLoctaionBtnRect = CGRectMake(60, previewViewRect.size.height - 50 , previewViewRect.size.width - 120, 40);
+        
+        
+
         
        
          hotelListLblRect = CGRectMake(5,hotelHeaderViewRect.size.height/2 - 15, hotelHeaderViewRect.size.width - 50, 30);
@@ -295,16 +323,19 @@
         
         
         DestLblRect = CGRectMake(5,destinationHeaderViewRect.size.height/2 - 15, destinationHeaderViewRect.size.width - 50, 30);
-        editBtnRect = CGRectMake(destinationHeaderViewRect.size.width - 30, 10 , 30, 30) ;
+        
         destinationListTblRect =CGRectMake(10, searchViewRect.origin.y + searchViewRect.size.height + 10 ,previewViewRect.size.width , height - (destinationListTblRect.origin.y + 150));
+        editBtnRect = CGRectMake(destinationListTblRect.size.width - 60, 0, 60, 50);
         
+//        tableViewRect = CGRectMake(10, destinationHeaderViewRect.origin.y + destinationHeaderViewRect.size.height + 5, width - 20, 160);
         
-        tableViewRect = CGRectMake(10, destinationHeaderViewRect.origin.y + destinationHeaderViewRect.size.height + 5, width - 20, 160);
-        closeBtnRect = CGRectMake(destinationHeaderView.bounds.size.width - 45 ,5, 40, 40);
+        clearAllViewRect = CGRectMake(destinationListTblRect.size.width - 150, 0 ,150 ,50);
+        
+        closeBtnRect = CGRectMake(clearAllViewRect.size.width - 45, 5, 40, 40);
         barRightRect = CGRectMake(width - 60, navBarWithStatusH/2 - 25, 50, 50);
-        clrBtnRect = CGRectMake(closeBtnRect.origin.x - 100 , closeBtnRect.origin.y, 100, closeBtnRect.size.height);
-        imgclearRect = CGRectMake(5, clrBtnRect.size.height/4,clrBtnRect.size.height/2, clrBtnRect.size.height/2);
-        lblClearRect = CGRectMake(imgclearRect.size.width + 5, clrBtnRect.size.height/2 - 15, clrBtnRect.size.width - (imgclearRect.origin.x + imgclearRect.size.width + 5), 30);
+        clrBtnRect = CGRectMake(0, 5, 100, 40);
+//imgclearRect = CGRectMake(5, clrBtnRect.size.height/4,clrBtnRect.size.height/2, clrBtnRect.size.height/2);
+//      lblClearRect = CGRectMake(imgclearRect.size.width + 5, clrBtnRect.size.height/2 - 15, clrBtnRect.size.width - (imgclearRect.origin.x + imgclearRect.size.width + 5), 30);
     }
     
 }
@@ -464,8 +495,8 @@
     NSLog(@"List DATA %@",tapRecognizer.dataArr);
     
    item = [tapRecognizer.view tag];
-    NSLog (@"Tag DALETE %ld",item);
-    NSLog(@"tag edit ::: %ld",editTag);
+    NSLog (@"Tag DALETE %ld",(long)item);
+    NSLog(@"tag edit ::: %ld",(long)editTag);
    NSLog(@"Delete %@",tapRecognizer.dataArr[1]);
     
     //  MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"Are you sure clear all?" message:@"" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
@@ -702,12 +733,12 @@
     hdView = [[UIView alloc] init];
     hdView.backgroundColor = [UIColor colorWithRed:0.27 green:0.47 blue:0.67 alpha:1];
     hdView.tag = section;
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 200, 50)];
+    UILabel *title = [[UILabel alloc] initWithFrame:HeaderTitleLblRect];
     title.text = [groupName objectAtIndex:section];
     title.textColor = [UIColor whiteColor];
-    title.font= [UIFont fontWithName:@"Helvetica" size:16];
+    title.font= [UIFont fontWithName:@"Helvetica" size:font];
         
-    editBtn = [[UIButton alloc] initWithFrame:CGRectMake(tableView.bounds.size.width - 60, 5, 60, 40)];
+    editBtn = [[UIButton alloc] initWithFrame:editBtnRect];
     [editBtn setTitle:@"Edit" forState:UIControlStateNormal];
     editBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:font];
     editBtn.tag = section;
@@ -720,12 +751,12 @@
         TapEdit.enabled = YES;
   
     
-    claerAllView = [[UIView alloc] initWithFrame:CGRectMake(tableView.bounds.size.width - 150, 0 ,150 ,50)];
+    claerAllView = [[UIView alloc] initWithFrame:clearAllViewRect];
     claerAllView.backgroundColor = hdView.backgroundColor;
     claerAllView.layer.cornerRadius = 5;
     claerAllView.clipsToBounds = YES;
         claerAllView.tag = section;
-        closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(claerAllView.bounds.size.width - 45, 5, 40, 40)];
+        closeBtn = [[UIButton alloc] initWithFrame:closeBtnRect];
         closeBtn.backgroundColor = hdView.backgroundColor;
         closeBtn.layer.cornerRadius = 5;
         closeBtn.clipsToBounds = YES;
@@ -735,7 +766,7 @@
         [claerAllView addSubview:closeBtn];
         
         
-        UIButton *clrBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 5, 100, 40)];
+        UIButton *clrBtn = [[UIButton alloc] initWithFrame:clrBtnRect];
         clrBtn.backgroundColor =[UIColor redColor];
         clrBtn.layer.cornerRadius = 5;
         clrBtn.clipsToBounds = YES;
@@ -764,7 +795,7 @@
         return 0;
     }
     else{
-    return 50;
+        return 50;
     }
 }
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
@@ -914,7 +945,7 @@
             Cell.pinIcon.hidden = true;
             Cell.kmLbl.hidden = true;
             Cell.contentView.backgroundColor = [UIColor colorWithRed:0.92 green:0.92 blue:0.95 alpha:1];
-            UILabel *emty = [[UILabel alloc] initWithFrame:CGRectMake(0 , Cell.contentView.bounds.size.height/2 - 20 , Cell.contentView.bounds.size.width, 40)];
+            emty = [[UILabel alloc] initWithFrame:CGRectMake(0 , Cell.contentView.bounds.size.height/2 - 20 , Cell.contentView.bounds.size.width, 40)];
             emty.text = @"Emty";
             emty.textAlignment = NSTextAlignmentCenter;
             [Cell.contentView addSubview:emty];
@@ -1022,10 +1053,11 @@
         
         
         
-        [pinTypepreviewImg setFrame:CGRectMake(10, 10, 45, 45)];
+        [pinTypepreviewImg setFrame:pinTypepreviewImgRect];
         
-        [locationNamepreViewLbl setFrame:CGRectMake(pinTypepreviewImg.bounds.origin.x + pinTypepreviewImg.bounds.size.width + 20 , 10 , previewView.bounds.size.width - 100 , 30)];
+        [locationNamepreViewLbl setFrame:locationNamepreViewLblRect];
         locationNamepreViewLbl.text = [resultSearch objectAtIndex:indexPath.row][@"name_en"];
+        locationNamepreViewLbl.font = [UIFont fontWithName:@"Helvetica" size:font];
         locationNamepreViewLbl.lineBreakMode = NSLineBreakByWordWrapping;
         locationNamepreViewLbl.numberOfLines = 2;
         locationNamepreViewLbl.textAlignment = NSTextAlignmentJustified;
@@ -1033,16 +1065,18 @@
         
         NSLog(@"Provider Type ::: %@",[resultSearch objectAtIndex:indexPath.row][@"provider_type_keyname"]);
         
-        [addressPreviewLbl setFrame:CGRectMake(pinTypepreviewImg.bounds.origin.x + pinTypepreviewImg.bounds.size.width + 20, locationNamepreViewLbl.bounds.origin.y + locationNamepreViewLbl.bounds.size.height + 20 , previewView.bounds.size.width - 100 , 60)];
+        [addressPreviewLbl setFrame:addressPreviewLblRect];
         addressPreviewLbl.text = [resultSearch objectAtIndex:indexPath.row][@"address_en"];
+        addressPreviewLbl.font = [UIFont fontWithName:@"Helvetica" size:font];
         addressPreviewLbl.lineBreakMode = NSLineBreakByWordWrapping;
         addressPreviewLbl.numberOfLines = 3;
         addressPreviewLbl.textAlignment = NSTextAlignmentJustified;
         [addressPreviewLbl sizeToFit];
 
         
-        [distancePreviewLbl setFrame:CGRectMake(pinTypepreviewImg.bounds.origin.x + pinTypepreviewImg.bounds.size.width + 20, previewView.bounds.size.height/2 +20 , 170 , 20)];
-        [closePreviewBtn setFrame:CGRectMake(previewView.bounds.size.width - 35, 10, 25, 25)];
+        [distancePreviewLbl setFrame:distancePreviewLblRect];
+        distancePreviewLbl.font = [UIFont fontWithName:@"Helvetica" size:font];
+        [closePreviewBtn setFrame:closeBtnRect];
         [closePreviewBtn addTarget:self action:@selector(closePreView:) forControlEvents:UIControlEventTouchUpInside];
         
         if ([[resultSearch objectAtIndex:indexPath.row][@"provider_type_keyname"] isEqualToString:@"hotel"]) {
@@ -1059,8 +1093,8 @@
             }
             [addLoctaionBtn setTitle:@"Add Destination" forState:UIControlStateNormal];
         }
-        
-        [addLoctaionBtn setFrame:CGRectMake(60, previewView.bounds.size.height - 50 , previewView.bounds.size.width - 120, 40)];
+        addLoctaionBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:font];
+        [addLoctaionBtn setFrame:addLoctaionBtnRect];
         [addLoctaionBtn addTarget:self action:@selector(saveLocation:) forControlEvents:UIControlEventTouchUpInside];
         addLoctaionBtn.enabled = TRUE;
         addLoctaionBtn.layer.cornerRadius = 5;
