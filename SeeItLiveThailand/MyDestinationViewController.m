@@ -367,8 +367,7 @@
 - (void)getMyDestinationData
 {
     ModelManager *modelManager = [ModelManager getInstance];
- //   [modelManager deleteMyDestData];
-        NSMutableArray* getData = [[NSMutableArray alloc]initWithArray:
+    NSMutableArray* getData = [[NSMutableArray alloc]initWithArray:
                                [modelManager getMyDestData]];
     
     
@@ -490,27 +489,27 @@
 -(void)deleteSaveLocationByID:(id)sender{
     NSLog(@"deleteSaveLocationByID");
     MYTapGestureRecognizer *tapRecognizer = (MYTapGestureRecognizer *)sender;
-//    NSLog (@"routeDirection %@",tapRecognizer.dataArr[0]);
-//    NSLog(@"NAME ::: %@",tapRecognizer.dataArr[0][@"name_en"]);
-    NSLog(@"List DATA %@",tapRecognizer.dataArr);
-    
-   item = [tapRecognizer.view tag];
+    item = [tapRecognizer.view tag];
     NSLog (@"Tag DALETE %ld",(long)item);
     NSLog(@"tag edit ::: %ld",(long)editTag);
-   NSLog(@"Delete %@",tapRecognizer.dataArr[1]);
+//    NSMutableArray *Data = tapRecognizer.dataArr;
+//    NSLog(@"ALLDATA : %@",tapRecognizer.dataArr);
+    NSDictionary *DeleteData = tapRecognizer.dataArr[0];
+//    NSLog (@"routeDirection %@",DeleteData);
+    NSLog(@"NAME ::: %@",[DeleteData objectForKey:@"name_en"]);
+//    NSLog(@"List DATA %@",tapRecognizer.dataArr);
     
-    //  MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"Are you sure clear all?" message:@"" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
     
-//    MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"Are you sure to delete?" message:tapRecognizer.dataArr[editTag][item][@"name_en"]delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
-//    alert.dataArr = tapRecognizer.dataArr;
-//    alert.tag = 1;
-//    [alert show];
-//    
+    MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"Are you sure to delete?" message:[DeleteData objectForKey:@"name_en"] delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
+    alert.dataArr = tapRecognizer.dataArr;
+    alert.tag = 1;
+    [alert show];
+    
 }
 
 -(void)deleteAll:(id)sender{
     //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"You sure delete all?" message:@"" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"OK", nil];
-    NSLog(@"Delete All");
+    NSLog(@"Delete All Tag : %ld",(long)editTag);
     MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"Are you sure clear all?" message:@"" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
     alert.tag = 0;
    
@@ -525,15 +524,18 @@
             
 
             NSLog(@"editBtn Tag %ld",(long)editBtn.tag);
-            if (editBtn.tag == 0)
+            if (editTag == 0)
             {
                 
                 [saveHotelData removeAllObjects];
+                [modelManager deleteMyDestDataByType:@"hotel"];
             }
             else
             {
                [saveLocationData removeAllObjects];
+               [modelManager deleteMyDestDataByType:@"restaurant"];
             }
+            isEdit = false;
             claerAllView.hidden = YES;
             [destinationListTbl reloadData];
           
@@ -542,37 +544,50 @@
     }else if(alertView.tag == 1)
     {
         if (buttonIndex != [alertView cancelButtonIndex]) {
+            NSDictionary *DeleteData = alertView.dataArr[0];
+            //    NSLog (@"routeDirection %@",DeleteData);
+            NSLog(@"NAME ::: %@",[DeleteData objectForKey:@"name_en"]);
             
-            NSLog(@"Aleart Delate Data %@",alertView.dataArr[editTag][item][@"name_en"]);
             ModelManager *modelManager = [ModelManager getInstance];
-            [modelManager deleteMyDestDataByID:alertView.dataArr[editTag][item][@"name_en"]];
+            [modelManager deleteMyDestDataByID:[DeleteData objectForKey:@"name_en"]];
             isEdit = false;
             //[destinationListTbl reloadData];
          
-             [self getMyDestinationData];
+//             [self getMyDestinationData];
             
-            
-            
-//            if(saveLocationData.count == 0)
-//            {
-//                claerAllView.hidden = YES;
-//            }
-            //            else
-            //            {
-            //                int index;
-            //                for(index = 0; index < saveLocationData.count; index++)
-            //                {
-            ////                    if([alertView.dataArr[0][@"name_en"] isEqualToString:saveLocationData[index][@"name_en"]])
-            //                    if(alertView.dataArr[0][@"name_en"] == saveLocationData[index][@"name_en"])
-            //                    {
-            //                        NSLog(@"removeObjectAtIndex %@ == %@",saveLocationData[index][@"name_en"],alertView.dataArr[0][@"name_en"]);
-            //                        [saveLocationData removeObjectAtIndex:index];
-            //                        isEdit = false;
-            //                        [tableView reloadData];
-            //                        NSLog(@"New saveLocationData %@",saveLocationData);
-            //                    }
-            //                }
-            //            }
+            if(saveLocationData.count == 0 && saveHotelData.count == 0)
+            {
+                claerAllView.hidden = YES;
+
+            }else if([[DeleteData objectForKey:@"provider_type_keyname"]  isEqual: @"hotel"])
+            {
+                    int index;
+                    for(index = 0; index < saveHotelData.count; index++)
+                    {
+                        if([DeleteData objectForKey:@"name_en"] == saveHotelData[index][@"name_en"])
+                        {
+                            NSLog(@"removeObjectAtIndex %@ == %@",saveHotelData[index][@"name_en"],[DeleteData objectForKey:@"name_en"]);
+                            [saveHotelData removeObjectAtIndex:index];
+                            isEdit = false;
+                            [destinationListTbl reloadData];
+                            NSLog(@"New saveHotelData %@",saveHotelData);
+                        }
+                    }
+            }else if([[DeleteData objectForKey:@"provider_type_keyname"]  isEqual: @"restaurant"])
+            {
+                int index;
+                for(index = 0; index < saveLocationData.count; index++)
+                {
+                    if([DeleteData objectForKey:@"name_en"] == saveLocationData[index][@"name_en"])
+                    {
+                        NSLog(@"removeObjectAtIndex %@ == %@",saveLocationData[index][@"name_en"],[DeleteData objectForKey:@"name_en"]);
+                        [saveLocationData removeObjectAtIndex:index];
+                        isEdit = false;
+                        [destinationListTbl reloadData];
+                        NSLog(@"New saveLocationData %@",saveLocationData);
+                    }
+                }
+            }
             
         }
         
@@ -777,7 +792,7 @@
         [claerAllView addSubview:clrBtn];
         [hdView addSubview:claerAllView];
         claerAllView.hidden = TRUE;
-        if (isEdit) {
+        if (isEdit && (editTag == section)) {
             claerAllView.hidden = false;
         }
         
@@ -884,9 +899,12 @@
         CLLocationDistance meters = [poiLocation distanceFromLocation:currentLoc];
         
         Cell.distanceLbl.text = [NSString stringWithFormat:@"%.02f",meters/1000];;
+        if(editTag == indexPath.section)
+        {
+            [Cell.routeBtn setTitle:@"Delete" forState:UIControlStateNormal];
+            Cell.routeBtn.backgroundColor = [UIColor redColor];
+        }
         
-        [Cell.routeBtn setTitle:@"Delete" forState:UIControlStateNormal];
-        Cell.routeBtn.backgroundColor = [UIColor redColor];
         [Cell.routeBtn setFrame:CGRectMake(Cell.contentView.bounds.size.width - (Cell.routeBtn.bounds.size.width + 5), Cell.contentView.bounds.size.height - (Cell.routeBtn.bounds.size.height + 5) , Cell.routeBtn.bounds.size.width, Cell.routeBtn.bounds.size.height)];
         MYTapGestureRecognizer* TapCall = [[MYTapGestureRecognizer alloc]
                                            initWithTarget:self action:@selector(deleteSaveLocationByID:)];//Here should be actionViewTap:
@@ -897,12 +915,12 @@
         Cell.routeBtn .userInteractionEnabled = YES;
         [Cell.routeBtn  addGestureRecognizer:TapCall];
         TapCall.enabled = YES;
-        TapCall.dataArr = [[NSMutableArray alloc]initWithObjects:listData , nil];
+        TapCall.dataArr = [[NSMutableArray alloc]initWithObjects:listData[indexPath.row] , nil];
         if (groupKey.count == indexPath.section) {
             isEdit = false;
             [tableView headerViewForSection:indexPath.section];
         }
-        NSLog(@"DATAAAA %@",TapCall.dataArr);
+//        NSLog(@"DATAAAA %@",TapCall.dataArr);
       //  [destinationListTbl reloadData];
         return Cell;
         
@@ -1015,7 +1033,7 @@
         Cell.routeBtn .userInteractionEnabled = YES;
         [Cell.routeBtn  addGestureRecognizer:TapCall];
         TapCall.enabled = YES;
-        TapCall.dataArr = [[NSMutableArray alloc]initWithObjects:listData, nil];
+        TapCall.dataArr = [[NSMutableArray alloc]initWithObjects:listData[row], nil];
         
         return Cell;
         }
@@ -1165,14 +1183,18 @@
 - (void)routeDirection:(id)sender
 {
     MYTapGestureRecognizer *tapRecognizer = (MYTapGestureRecognizer *)sender;
-    NSLog (@"routeDirection %@",tapRecognizer.dataArr[0][@"name_en"]);
+    NSDictionary *Data = tapRecognizer.dataArr[0];
+    //    NSLog (@"routeDirection %@",DeleteData);
+    NSLog(@"NAME ::: %@",[Data objectForKey:@"name_en"]);
+    
+    NSLog (@"routeDirection %@",[Data objectForKey:@"name_en"]);
     //first create latitude longitude object
-    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([tapRecognizer.dataArr[0][@"latitude"] doubleValue],[tapRecognizer.dataArr[0][@"longitude"] doubleValue]);
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([[Data objectForKey:@"latitude"] doubleValue],[[Data objectForKey:@"longitude"] doubleValue]);
     
     //create MKMapItem out of coordinates
     MKPlacemark* placeMark = [[MKPlacemark alloc] initWithCoordinate:coordinate addressDictionary:nil];
     MKMapItem* destination =  [[MKMapItem alloc] initWithPlacemark:placeMark];
-    [destination setName:tapRecognizer.dataArr[0][@"name_en"]];
+    [destination setName:[Data objectForKey:@"name_en"]];
     if([destination respondsToSelector:@selector(openInMapsWithLaunchOptions:)])
     {
         //using iOS6 native maps app
@@ -1181,7 +1203,7 @@
     else
     {
         //using iOS 5 which has the Google Maps application
-        NSString* url = [NSString stringWithFormat: @"http://maps.google.com/maps?saddr=Current+Location&daddr=%f,%f", [tapRecognizer.dataArr[0][@"latitude"] doubleValue],[tapRecognizer.dataArr[0][@"longitude"] doubleValue]];
+        NSString* url = [NSString stringWithFormat: @"http://maps.google.com/maps?saddr=Current+Location&daddr=%f,%f", [[Data objectForKey:@"latitude"] doubleValue],[[Data objectForKey:@"longitude"] doubleValue]];
         [[UIApplication sharedApplication] openURL: [NSURL URLWithString: url]];
     }
 }
