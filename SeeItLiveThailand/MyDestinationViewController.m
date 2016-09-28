@@ -287,7 +287,7 @@
         
         clearAllViewRect = CGRectMake(destinationListTblRect.size.width - 150, 0 ,150,50);
         
-        closeBtnRect = CGRectMake(clearAllViewRect.size.width - 45, 5, 40, 40);
+
         barRightRect = CGRectMake(width - (60*scx), navBarWithStatusH/2 - 25*scy, 50*scx, 50*scy);
         clrBtnRect = CGRectMake(0, 5, 100, 40);
         HeaderTitleLblRect = CGRectMake(10, 0, 200*scx, 50);
@@ -331,7 +331,6 @@
         
         clearAllViewRect = CGRectMake(destinationListTblRect.size.width - 150, 0 ,150 ,50);
         
-        closeBtnRect = CGRectMake(clearAllViewRect.size.width - 45, 5, 40, 40);
         barRightRect = CGRectMake(width - 60, navBarWithStatusH/2 - 25, 50, 50);
         clrBtnRect = CGRectMake(0, 5, 100, 40);
 //imgclearRect = CGRectMake(5, clrBtnRect.size.height/4,clrBtnRect.size.height/2, clrBtnRect.size.height/2);
