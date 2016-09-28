@@ -739,11 +739,13 @@
     title.font= [UIFont fontWithName:@"Helvetica" size:font];
         
     editBtn = [[UIButton alloc] initWithFrame:editBtnRect];
+    NSLog(@"GROUP :: %@",groupLocation);
+        
     [editBtn setTitle:@"Edit" forState:UIControlStateNormal];
     editBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:font];
     editBtn.tag = section;
     MYTapGestureRecognizer* TapEdit = [[MYTapGestureRecognizer alloc]
-                                           initWithTarget:self action:@selector(edit:)];//Here should be actionViewTap:
+                                           initWithTarget:self action:@selector(edit:)];
         [TapEdit setNumberOfTouchesRequired:1];
         [TapEdit setDelegate:self];
          editBtn.userInteractionEnabled = YES;
@@ -783,10 +785,9 @@
         
    
     [hdView addSubview:editBtn];
+        
     [hdView addSubview:title];
     [hdView addSubview:claerAllView];
-        
-
     return hdView;
     }
 }
@@ -945,22 +946,18 @@
             Cell.pinIcon.hidden = true;
             Cell.kmLbl.hidden = true;
             Cell.contentView.backgroundColor = [UIColor colorWithRed:0.92 green:0.92 blue:0.95 alpha:1];
-            emty = [[UILabel alloc] initWithFrame:CGRectMake(0 , Cell.contentView.bounds.size.height/2 - 20 , Cell.contentView.bounds.size.width, 40)];
-            emty.text = @"Emty";
-            emty.textAlignment = NSTextAlignmentCenter;
-            [Cell.contentView addSubview:emty];
+//            emty = [[UILabel alloc] initWithFrame:CGRectMake(0 , Cell.contentView.bounds.size.height/2 - 20 , Cell.contentView.bounds.size.width, 40)];
+//            emty.text = @"Emty";
+//            emty.textAlignment = NSTextAlignmentCenter;
+//            [Cell.contentView addSubview:emty];
             
- //            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
-
-//[Cell.contentView addSubview:vc];
-//
-//      //     cell.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.91 alpha:1];
+;
             return Cell;
         }
         else {
             
          NSLog(@"NotEdit");
-         NSArray *listData =[groupLocation objectForKey:[groupKey objectAtIndex:[indexPath section]]];
+        listData =[groupLocation objectForKey:[groupKey objectAtIndex:[indexPath section]]];
          NSLog(@"Listttttttttt %@",listData);
          NSLog(@"Name Dataaaaaaaaaaaaaa %@",[listData valueForKey:@"name_en"]);
             
@@ -970,11 +967,11 @@
             Cell.routeBtn.hidden = false;
             Cell.pinIcon.hidden = false;
             Cell.kmLbl.hidden = false;
-
+//            [emty removeFromSuperview];
         Cell.placeLbl.text = [listData valueForKey:@"name_en"][row];
         Cell.placeLbl.lineBreakMode = NSLineBreakByWordWrapping;
         Cell.placeLbl.textAlignment = NSTextAlignmentJustified;
-      
+           
        
             if ([[listData valueForKey:@"provider_type_keyname"][row]  isEqual: @"hotel"]) {
                 Cell.pinIcon.image = [UIImage imageNamed:@"pin_hotel_2.png"];
