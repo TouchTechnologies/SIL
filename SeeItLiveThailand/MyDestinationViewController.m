@@ -391,6 +391,9 @@
 
     }
 
+    if (getData.count ==0) {
+        groupLocation =[[NSDictionary alloc]initWithObjectsAndKeys:saveHotelData,@"Hotel List",saveLocationData,@"Destination List",nil];
+    }
     groupKey = [[NSArray alloc] init];
     groupKey = [groupLocation allKeys];
     
@@ -842,7 +845,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 //#warning Incomplete implementation, return the number of rows
-    
+    NSLog(@"numberOfRowsInSection :%lu",section);
     if(tableView == searchDisplayTbl){
         if (searchActive) {
             
@@ -866,7 +869,13 @@
            NSLog(@"DEST COUNT :::%lu",DData.count);
 
            listData = [groupLocation objectForKey:[groupKey objectAtIndex:section]];
-            return listData.count;
+           if (listData.count == 0) {
+               return 1;
+           }else
+           {
+               return listData.count;
+           }
+           
         }
     }
 
@@ -878,10 +887,13 @@
     row = [indexPath row];
     if(isEdit)
     {
+        
         NSLog(@"Edit Tableview section : %ld",(long)indexPath.section);
         [tableView headerViewForSection:indexPath.section];
-
        listData =[groupLocation objectForKey:[groupKey objectAtIndex:[indexPath section]]];
+        if (listData.count != 0) {
+            
+        
         NSArray *listSection = [groupKey objectAtIndex:[indexPath section]];
         
         Cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
@@ -934,6 +946,14 @@
         }
 //        NSLog(@"DATAAAA %@",TapCall.dataArr);
       //  [destinationListTbl reloadData];
+        }else
+        {
+            Cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
+            
+            if (Cell == nil) {
+                Cell = [[DestinationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+            }
+        }
         return Cell;
         
     }
@@ -959,6 +979,8 @@
     }
    
     else{
+        listData =[groupLocation objectForKey:[groupKey objectAtIndex:[indexPath section]]];
+        NSLog(@"Nodataaaaaaaa %@",listData);
         
         Cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
         
@@ -967,7 +989,7 @@
         }
 
         
-        if (groupLocation.count == 0) {
+        if (listData.count == 0) {
             Cell.placeLbl.hidden = true;
             Cell.addressLbl.hidden = true;
             Cell.distanceLbl.hidden = true;
@@ -980,8 +1002,6 @@
         }
         else {
             
-         NSLog(@"NotEdit");
-        listData =[groupLocation objectForKey:[groupKey objectAtIndex:[indexPath section]]];
          NSLog(@"Listttttttttt %@",listData);
          NSLog(@"Name Dataaaaaaaaaaaaaa %@",[listData valueForKey:@"name_en"]);
             
