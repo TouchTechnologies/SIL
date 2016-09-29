@@ -269,7 +269,9 @@
         locationNamepreViewLblRect = CGRectMake(pinTypepreviewImgRect.origin.x + pinTypepreviewImgRect.size.width + (20*scx) , 10*scy , previewViewRect.size.width - (100*scx) , 30*scy);
         addressPreviewLblRect = CGRectMake(pinTypepreviewImgRect .origin.x + pinTypepreviewImgRect.size.width + (20*scx),  locationNamepreViewLblRect.origin.y +  locationNamepreViewLblRect.size.height + (20*scy) , previewViewRect.size.width - (100*scx), 60*scy);
         distancePreviewLblRect = CGRectMake(pinTypepreviewImgRect.origin.x + pinTypepreviewImgRect.size.width + (20*scx), previewViewRect.size.height/2 + (20*scy) , 170*scx , 20*scy);
-        closeBtnRect = CGRectMake(previewViewRect.size.width - (35*scx), 10*scy, 25*scx, 25*scy);
+        closeBtnRect =
+        closePreviewBtnRect = CGRectMake(previewViewRect.size.width - (35*scx), 10*scy, 25*scx, 25*scy);
+        
         addLoctaionBtnRect = CGRectMake(60*scx, previewViewRect.size.height - (50*scy) , previewViewRect.size.width - (120*scx), 40*scy);
         
         previewViewRect = CGRectMake(10*scx, searchViewRect.origin.y + searchViewRect.size.height + (5*scy), width-(20*scx), 200*scy);
@@ -286,7 +288,8 @@
         editBtnRect = CGRectMake(destinationListTblRect.size.width - 60, 0, 60, 50);
         
         clearAllViewRect = CGRectMake(destinationListTblRect.size.width - 150, 0 ,150,50);
-        
+        closeBtnRect = CGRectMake(clearAllViewRect.size.width - 40, 10, 30, 30);
+
 
         barRightRect = CGRectMake(width - (60*scx), navBarWithStatusH/2 - 25*scy, 50*scx, 50*scy);
         clrBtnRect = CGRectMake(0, 5, 100, 40);
@@ -310,9 +313,9 @@
         addressPreviewLblRect = CGRectMake(pinTypepreviewImgRect .origin.x + pinTypepreviewImgRect.size.width + 20,  locationNamepreViewLblRect.origin.y +  locationNamepreViewLblRect.size.height + 20 , previewViewRect.size.width - 100 , 60);
         distancePreviewLblRect = CGRectMake(pinTypepreviewImgRect.origin.x + pinTypepreviewImgRect.size.width + 20, previewViewRect.size.height/2 +20 , 170 , 20);
 
-        
-        closeBtnRect = CGRectMake(previewViewRect.size.width - 35, 10, 25, 25);
-        addLoctaionBtnRect = CGRectMake(60, previewViewRect.size.height - 50 , previewViewRect.size.width - 120, 40);
+        closePreviewBtnRect = CGRectMake(previewViewRect.size.width - 35, 10, 25, 25);
+
+                addLoctaionBtnRect = CGRectMake(60, previewViewRect.size.height - 50 , previewViewRect.size.width - 120, 40);
         
         
 
@@ -330,7 +333,8 @@
 //        tableViewRect = CGRectMake(10, destinationHeaderViewRect.origin.y + destinationHeaderViewRect.size.height + 5, width - 20, 160);
         
         clearAllViewRect = CGRectMake(destinationListTblRect.size.width - 150, 0 ,150 ,50);
-        
+        closeBtnRect = CGRectMake(clearAllViewRect.size.width - 40, 10, 30, 30);
+
         barRightRect = CGRectMake(width - 60, navBarWithStatusH/2 - 25, 50, 50);
         clrBtnRect = CGRectMake(0, 5, 100, 40);
 //imgclearRect = CGRectMake(5, clrBtnRect.size.height/4,clrBtnRect.size.height/2, clrBtnRect.size.height/2);
@@ -1085,7 +1089,7 @@
         
         [distancePreviewLbl setFrame:distancePreviewLblRect];
         distancePreviewLbl.font = [UIFont fontWithName:@"Helvetica" size:font];
-        [closePreviewBtn setFrame:closeBtnRect];
+        [closePreviewBtn setFrame:closePreviewBtnRect];
         [closePreviewBtn addTarget:self action:@selector(closePreView:) forControlEvents:UIControlEventTouchUpInside];
         
         if ([[resultSearch objectAtIndex:indexPath.row][@"provider_type_keyname"] isEqualToString:@"hotel"]) {
