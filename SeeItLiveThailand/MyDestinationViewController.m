@@ -963,12 +963,7 @@
             Cell.pinIcon.hidden = true;
             Cell.kmLbl.hidden = true;
             Cell.contentView.backgroundColor = [UIColor colorWithRed:0.92 green:0.92 blue:0.95 alpha:1];
-//            emty = [[UILabel alloc] initWithFrame:CGRectMake(0 , Cell.contentView.bounds.size.height/2 - 20 , Cell.contentView.bounds.size.width, 40)];
-//            emty.text = @"Emty";
-//            emty.textAlignment = NSTextAlignmentCenter;
-//            [Cell.contentView addSubview:emty];
-            
-;
+
             return Cell;
         }
         else {
