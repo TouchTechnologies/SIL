@@ -182,10 +182,12 @@
     
     UINib *nib = [UINib nibWithNibName:@"Destinationcell" bundle:nil];
     [destinationListTbl registerNib:nib forCellReuseIdentifier:@"cell"];
-    if (groupLocation == 0) {
-        editBtn.hidden = true;
-    }
-     editBtn.hidden = false;
+//    if (groupLocation.count == 0) {
+//        editBtn.hidden = true;
+//    }else
+//    {
+//        editBtn.hidden = false;
+//    }
  
     //Check Search Result
     
@@ -802,7 +804,13 @@
         }
         
    
-    [hdView addSubview:editBtn];
+        if (saveHotelData.count != 0 && section == 0) {
+            [hdView addSubview:editBtn];
+        }else if(saveLocationData.count != 0 && section == 1)
+        {
+            [hdView addSubview:editBtn];
+        }
+    
         
     [hdView addSubview:title];
     [hdView addSubview:claerAllView];
