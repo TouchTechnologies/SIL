@@ -128,7 +128,17 @@
 
 @implementation MyDestinationViewController
 - (void)viewWillAppear:(BOOL)animated{
-
+    
+    //    for (UIView *subView in searchBar.subviews) {
+//        //Find the button
+//        if([subView isKindOfClass:[UIButton class]])
+//        {
+//            
+//            //Change its properties
+//            UIButton *cancelButton = (UIButton *)[searchBar.subviews lastObject];
+//            cancelButton.titleLabel.textColor = [UIColor darkGrayColor];
+//        }
+//    }
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -620,9 +630,10 @@
 {
     // called twice every time
     NSLog(@"SEARCH BAR ACTIVE1");
+ //   searchBar.showsCancelButton = false;
     searchActive = true;
-    searchDisplayTbl.hidden = false;
-    [searchBar setShowsCancelButton:YES animated:YES];
+    searchDisplayTbl.hidden = true;
+    [searchBar setShowsCancelButton:NO animated:YES];
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
@@ -664,7 +675,7 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *) searchText{
     NSLog(@"GO FILTER");
-    
+    searchBar.showsCancelButton = false;
     if(isEdit)
     {
         isEdit = false;
@@ -675,6 +686,7 @@
     if(searchText.length == 0)
     {
         searchActive = false;
+        searchDisplayTbl.hidden = true;
     }
     else if(searchText.length >= 2)
     {
@@ -687,37 +699,7 @@
         NSLog(@"PoiDataSearch : %@",[_poiData filteredArrayUsingPredicate:resultPredicate]);
         [resultSearch addObjectsFromArray:[_poiData filteredArrayUsingPredicate:resultPredicate]];
         
-        //        BOOL success = results.count > 0;
-        //        if(resultSearch.count > 0)
-        //        {
-        //            NSLog(@"success success success success : %lu",(unsigned long)resultSearch.count);
-        //        }
-        
-        
-        
-        //        resultSearch = [[NSMutableArray alloc] init];
-        //
-        //        NSString *search;
-        //        for (search in searchDisplayList)
-        //        {
-        //
-        //            NSRange nameRange = [search rangeOfString:searchText options:NSCaseInsensitiveSearch];
-        ////            NSRange descriptionRange = [food.description rangeOfString:text options:NSCaseInsensitiveSearch];
-        //
-        //
-        //            if(nameRange.location != NSNotFound)
-        //            {
-        //
-        //                [resultSearch addObject:search];
-        //            }
-        //
-        //        }
-        //        if (resultSearch ==nil) {
-        //            searchActive = false ;
-        //            [searchDisplayTbl reloadData];
-        //        }
-        
-    }
+          }
     
     [searchDisplayTbl reloadData];
     
@@ -1161,17 +1143,8 @@
     }
     else {
         if([indexPath row] == ((NSIndexPath*)[[tableView indexPathsForVisibleRows] lastObject]).row){
-            
-//            if (listData.count <= 2) {
-                [destinationListTbl setFrame:destinationListTblRect];
-//            }
-//            else{
-//            [destinationListTbl setFrame:CGRectMake(destinationListTblRect.origin.x,destinationListTblRect.origin.y, destinationListTblRect.size.width,(cellH*(saveLocationData.count*2)+180))];
-//            NSLog(@"LOCATION COUNT %lu:::",(unsigned long)saveLocationData.count);
-//            }
-//            
-            destinationListTbl.layer.cornerRadius = 5;
-            destinationListTbl.clipsToBounds = YES;
+            [destinationListTbl setFrame:destinationListTblRect];
+
         }
     }
 }
