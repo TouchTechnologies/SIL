@@ -365,15 +365,25 @@
     {
         weakSelf.poiData = [modelManager getPOIDataDB];
         NSLog(@"weakSelf.poiData %@",weakSelf.poiData );
-        if(weakSelf.poiData != nil)
+        if(weakSelf.poiData.count != 0)
         {
-            NSLog(@"poiData = nil");
-            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            NSLog(@"poiData != 0");
+//            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             [[PoiManager shareIntance]getPOIData:@"" Completion:^(NSError *error, NSMutableArray *result, NSString *message) {
-                 [MBProgressHUD hideHUDForView:self.view animated:YES];
+//                 [MBProgressHUD hideHUDForView:self.view animated:YES];
                 _searchData = [[NSMutableArray alloc]init];
                 weakSelf.poiData = result;
             }];
+        }else
+        {
+            NSLog(@"poiData = 0");
+            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            [[PoiManager shareIntance]getPOIData:@"" Completion:^(NSError *error, NSMutableArray *result, NSString *message) {
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+                _searchData = [[NSMutableArray alloc]init];
+                weakSelf.poiData = result;
+            }];
+            
         }
 
     }
@@ -702,7 +712,7 @@
         NSPredicate *resultPredicate = [NSPredicate
                                         predicateWithFormat:@"name_en contains[c]%@",
                                         searchText];
-        NSLog(@"PoiDataSearch : %@",[_poiData filteredArrayUsingPredicate:resultPredicate]);
+//        NSLog(@"PoiDataSearch : %@",[_poiData filteredArrayUsingPredicate:resultPredicate]);
         [resultSearch addObjectsFromArray:[_poiData filteredArrayUsingPredicate:resultPredicate]];
         
           }

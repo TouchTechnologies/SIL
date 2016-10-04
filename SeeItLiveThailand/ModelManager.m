@@ -550,6 +550,7 @@ static ModelManager *instance=nil;
 }
 - (NSMutableArray *)getPOIDataDB
 {
+    NSLog(@"getPOIDataDB");
     AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     CLLocation *currentLoc = [[CLLocation alloc] initWithLatitude:appDelegate.latitude longitude:appDelegate.longitude];
     int count = 0;
