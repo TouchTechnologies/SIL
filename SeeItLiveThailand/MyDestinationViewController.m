@@ -301,11 +301,11 @@
         editBtnRect = CGRectMake(destinationListTblRect.size.width - 60, 0, 60, 50);
         
         clearAllViewRect = CGRectMake(destinationListTblRect.size.width - 150, 0 ,150,50);
-        closeBtnRect = CGRectMake(clearAllViewRect.size.width - 40, 10, 30, 30);
-
+        closeBtnRect = CGRectMake(clearAllViewRect.size.width - 70, 10, 70, 30);
+        clrBtnRect = CGRectMake(0,10, 70, 30);
 
         barRightRect = CGRectMake(width - (60*scx), navBarWithStatusH/2 - 25*scy, 50*scx, 50*scy);
-        clrBtnRect = CGRectMake(0, 5, 100, 40);
+        
         HeaderTitleLblRect = CGRectMake(10, 0, 200*scx, 50);
 
     }
@@ -343,11 +343,11 @@
         destinationListTblRect =CGRectMake(10, searchViewRect.origin.y + searchViewRect.size.height + 10 ,previewViewRect.size.width , height - (destinationListTblRect.origin.y + 150));
         editBtnRect = CGRectMake(destinationListTblRect.size.width - 60, 0, 60, 50);
         
-//        tableViewRect = CGRectMake(10, destinationHeaderViewRect.origin.y + destinationHeaderViewRect.size.height + 5, width - 20, 160);
+//      tableViewRect = CGRectMake(10, destinationHeaderViewRect.origin.y + destinationHeaderViewRect.size.height + 5, width - 20, 160);
         
         clearAllViewRect = CGRectMake(destinationListTblRect.size.width - 150, 0 ,150 ,50);
-        closeBtnRect = CGRectMake(clearAllViewRect.size.width - 40, 10, 30, 30);
-
+        closeBtnRect = CGRectMake(clearAllViewRect.size.width - 70, 10, 70, 30);
+        clrBtnRect = CGRectMake(0,10, 70, 30);
         barRightRect = CGRectMake(width - 60, navBarWithStatusH/2 - 25, 50, 50);
         clrBtnRect = CGRectMake(0, 5, 100, 40);
 //imgclearRect = CGRectMake(5, clrBtnRect.size.height/4,clrBtnRect.size.height/2, clrBtnRect.size.height/2);
@@ -780,17 +780,20 @@
         closeBtn.clipsToBounds = YES;
         closeBtn.tag = section;
         [closeBtn addTarget:self action:@selector(close:) forControlEvents:UIControlEventTouchUpInside];
-        [closeBtn setImage: [UIImage imageNamed:@"close.png"] forState:UIControlStateNormal];
+        [closeBtn setTitle:@"Cancel" forState:UIControlStateNormal];
+        closeBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:font];
+       // [closeBtn setImage: [UIImage imageNamed:@"close.png"] forState:UIControlStateNormal];
         [claerAllView addSubview:closeBtn];
         
         
         UIButton *clrBtn = [[UIButton alloc] initWithFrame:clrBtnRect];
-        clrBtn.backgroundColor =[UIColor redColor];
+        clrBtn.backgroundColor =[UIColor clearColor];
         clrBtn.layer.cornerRadius = 5;
         clrBtn.clipsToBounds = YES;
         [clrBtn setTitle:@"Clear All" forState:UIControlStateNormal];
         clrBtn.tag = section;
         [clrBtn addTarget:self action:@selector(deleteAll:) forControlEvents:UIControlEventTouchUpInside];
+        clrBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:font];
         
         [claerAllView addSubview:clrBtn];
         [hdView addSubview:claerAllView];
