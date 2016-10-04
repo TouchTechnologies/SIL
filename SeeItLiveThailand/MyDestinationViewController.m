@@ -207,7 +207,8 @@
     searchView.layer.cornerRadius = 5 ;
     searchView.clipsToBounds = YES;
     searchView.backgroundColor = [UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1];
-    [searchBar setTintColor: [UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1]];
+    [searchBar setTintColor: [UIColor darkGrayColor]];
+     //[UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1]];
     [searchBar setFrame:searchView.bounds];
     
     
@@ -530,7 +531,6 @@
     NSLog(@"Delete All Tag : %ld",(long)editTag);
     MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"Are you sure clear all?" message:@"" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
     alert.tag = 0;
-   
     [alert show];
     
 }
@@ -633,12 +633,12 @@
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
-    // called twice every time
     NSLog(@"SEARCH BAR ACTIVE1");
- //   searchBar.showsCancelButton = false;
     searchActive = true;
     searchDisplayTbl.hidden = true;
-    [searchBar setShowsCancelButton:NO animated:YES];
+    
+    [searchBar setShowsCancelButton:YES animated:YES];
+    
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
@@ -665,11 +665,12 @@
     searchBar.text = nil;
     
     [searchBar resignFirstResponder];
-    searchActive = false;
+     searchActive = false;
     [searchDisplayTbl reloadData];
     
      [previewView setFrame:CGRectMake(10, searchView.bounds.origin.y + searchView.bounds.size.height + 5, self.view.bounds.size.width-20, 0)];
     [destinationListTbl setFrame:destinationListTblRect];
+    searchBar.showsCancelButton = NO;
 
 }
 - (void)didPresentSearchController:(UISearchController *)searchController
@@ -680,7 +681,7 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *) searchText{
     NSLog(@"GO FILTER");
-    searchBar.showsCancelButton = false;
+    searchBar.showsCancelButton = YES;
     if(isEdit)
     {
         isEdit = false;
@@ -1245,6 +1246,7 @@
     CGRect keyboardBounds;
     
     [[notification.userInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] getValue:&keyboardBounds];
+ 
     //    scrollView.contentOffset = CGPointMake(0, - keyboardBounds.origin.y);
     
     //    UIScrollView* v = (UIScrollView*) self.view ;

@@ -644,11 +644,14 @@ static ModelManager *instance=nil;
             
             count++;
             [myDestObjects addObject:result];
-            
+            NSLog(@"Result ::: %@",result);
         }
+        
+        
+
     }
-    NSLog(@"myDestObjectsCount : %d",count);
-    NSLog(@"myDestObjects::: %@",myDestObjects);
+     NSLog(@"myDestObjectsCount : %d",count);
+     NSLog(@"myDestObjects::: %@",myDestObjects);
     [instance.database close];
     return myDestObjects;
     
