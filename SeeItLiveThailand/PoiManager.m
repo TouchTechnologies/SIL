@@ -69,7 +69,6 @@ static PoiManager * shareObject;
         completion(nil,responseObject,@"Success");
 //                NSLog(@"Data responseObject: %@",responseObject);
         
-        
     } failure:^(AFHTTPRequestOperation *  operation, NSError *  error) {
         completion(error,nil,@"Failed");
     }];
