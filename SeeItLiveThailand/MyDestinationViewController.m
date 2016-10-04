@@ -128,7 +128,17 @@
 
 @implementation MyDestinationViewController
 - (void)viewWillAppear:(BOOL)animated{
-
+    
+    //    for (UIView *subView in searchBar.subviews) {
+//        //Find the button
+//        if([subView isKindOfClass:[UIButton class]])
+//        {
+//            
+//            //Change its properties
+//            UIButton *cancelButton = (UIButton *)[searchBar.subviews lastObject];
+//            cancelButton.titleLabel.textColor = [UIColor darkGrayColor];
+//        }
+//    }
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -182,10 +192,12 @@
     
     UINib *nib = [UINib nibWithNibName:@"Destinationcell" bundle:nil];
     [destinationListTbl registerNib:nib forCellReuseIdentifier:@"cell"];
-    if (groupLocation == 0) {
-        editBtn.hidden = true;
-    }
-     editBtn.hidden = false;
+//    if (groupLocation.count == 0) {
+//        editBtn.hidden = true;
+//    }else
+//    {
+//        editBtn.hidden = false;
+//    }
  
     //Check Search Result
     
@@ -195,7 +207,8 @@
     searchView.layer.cornerRadius = 5 ;
     searchView.clipsToBounds = YES;
     searchView.backgroundColor = [UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1];
-    [searchBar setTintColor: [UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1]];
+    [searchBar setTintColor: [UIColor darkGrayColor]];
+     //[UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1]];
     [searchBar setFrame:searchView.bounds];
     
     
@@ -269,7 +282,9 @@
         locationNamepreViewLblRect = CGRectMake(pinTypepreviewImgRect.origin.x + pinTypepreviewImgRect.size.width + (20*scx) , 10*scy , previewViewRect.size.width - (100*scx) , 30*scy);
         addressPreviewLblRect = CGRectMake(pinTypepreviewImgRect .origin.x + pinTypepreviewImgRect.size.width + (20*scx),  locationNamepreViewLblRect.origin.y +  locationNamepreViewLblRect.size.height + (20*scy) , previewViewRect.size.width - (100*scx), 60*scy);
         distancePreviewLblRect = CGRectMake(pinTypepreviewImgRect.origin.x + pinTypepreviewImgRect.size.width + (20*scx), previewViewRect.size.height/2 + (20*scy) , 170*scx , 20*scy);
-        closeBtnRect = CGRectMake(previewViewRect.size.width - (35*scx), 10*scy, 25*scx, 25*scy);
+        closeBtnRect =
+        closePreviewBtnRect = CGRectMake(previewViewRect.size.width - (35*scx), 10*scy, 25*scx, 25*scy);
+        
         addLoctaionBtnRect = CGRectMake(60*scx, previewViewRect.size.height - (50*scy) , previewViewRect.size.width - (120*scx), 40*scy);
         
         previewViewRect = CGRectMake(10*scx, searchViewRect.origin.y + searchViewRect.size.height + (5*scy), width-(20*scx), 200*scy);
@@ -286,8 +301,9 @@
         editBtnRect = CGRectMake(destinationListTblRect.size.width - 60, 0, 60, 50);
         
         clearAllViewRect = CGRectMake(destinationListTblRect.size.width - 150, 0 ,150,50);
-        
-        closeBtnRect = CGRectMake(clearAllViewRect.size.width - 45, 5, 40, 40);
+        closeBtnRect = CGRectMake(clearAllViewRect.size.width - 40, 10, 30, 30);
+
+
         barRightRect = CGRectMake(width - (60*scx), navBarWithStatusH/2 - 25*scy, 50*scx, 50*scy);
         clrBtnRect = CGRectMake(0, 5, 100, 40);
         HeaderTitleLblRect = CGRectMake(10, 0, 200*scx, 50);
@@ -310,9 +326,9 @@
         addressPreviewLblRect = CGRectMake(pinTypepreviewImgRect .origin.x + pinTypepreviewImgRect.size.width + 20,  locationNamepreViewLblRect.origin.y +  locationNamepreViewLblRect.size.height + 20 , previewViewRect.size.width - 100 , 60);
         distancePreviewLblRect = CGRectMake(pinTypepreviewImgRect.origin.x + pinTypepreviewImgRect.size.width + 20, previewViewRect.size.height/2 +20 , 170 , 20);
 
-        
-        closeBtnRect = CGRectMake(previewViewRect.size.width - 35, 10, 25, 25);
-        addLoctaionBtnRect = CGRectMake(60, previewViewRect.size.height - 50 , previewViewRect.size.width - 120, 40);
+        closePreviewBtnRect = CGRectMake(previewViewRect.size.width - 35, 10, 25, 25);
+
+                addLoctaionBtnRect = CGRectMake(60, previewViewRect.size.height - 50 , previewViewRect.size.width - 120, 40);
         
         
 
@@ -330,8 +346,8 @@
 //        tableViewRect = CGRectMake(10, destinationHeaderViewRect.origin.y + destinationHeaderViewRect.size.height + 5, width - 20, 160);
         
         clearAllViewRect = CGRectMake(destinationListTblRect.size.width - 150, 0 ,150 ,50);
-        
-        closeBtnRect = CGRectMake(clearAllViewRect.size.width - 45, 5, 40, 40);
+        closeBtnRect = CGRectMake(clearAllViewRect.size.width - 40, 10, 30, 30);
+
         barRightRect = CGRectMake(width - 60, navBarWithStatusH/2 - 25, 50, 50);
         clrBtnRect = CGRectMake(0, 5, 100, 40);
 //imgclearRect = CGRectMake(5, clrBtnRect.size.height/4,clrBtnRect.size.height/2, clrBtnRect.size.height/2);
@@ -349,15 +365,25 @@
     {
         weakSelf.poiData = [modelManager getPOIDataDB];
         NSLog(@"weakSelf.poiData %@",weakSelf.poiData );
-        if(weakSelf.poiData != nil)
+        if(weakSelf.poiData.count != 0)
         {
-            NSLog(@"poiData = nil");
-            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            NSLog(@"poiData != 0");
+//            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             [[PoiManager shareIntance]getPOIData:@"" Completion:^(NSError *error, NSMutableArray *result, NSString *message) {
-                 [MBProgressHUD hideHUDForView:self.view animated:YES];
+//                 [MBProgressHUD hideHUDForView:self.view animated:YES];
                 _searchData = [[NSMutableArray alloc]init];
                 weakSelf.poiData = result;
             }];
+        }else
+        {
+            NSLog(@"poiData = 0");
+            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            [[PoiManager shareIntance]getPOIData:@"" Completion:^(NSError *error, NSMutableArray *result, NSString *message) {
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+                _searchData = [[NSMutableArray alloc]init];
+                weakSelf.poiData = result;
+            }];
+            
         }
 
     }
@@ -367,8 +393,7 @@
 - (void)getMyDestinationData
 {
     ModelManager *modelManager = [ModelManager getInstance];
- //   [modelManager deleteMyDestData];
-        NSMutableArray* getData = [[NSMutableArray alloc]initWithArray:
+    NSMutableArray* getData = [[NSMutableArray alloc]initWithArray:
                                [modelManager getMyDestData]];
     
     
@@ -387,6 +412,9 @@
 
     }
 
+    if (getData.count ==0) {
+        groupLocation =[[NSDictionary alloc]initWithObjectsAndKeys:saveHotelData,@"Hotel List",saveLocationData,@"Destination List",nil];
+    }
     groupKey = [[NSArray alloc] init];
     groupKey = [groupLocation allKeys];
     
@@ -490,30 +518,29 @@
 -(void)deleteSaveLocationByID:(id)sender{
     NSLog(@"deleteSaveLocationByID");
     MYTapGestureRecognizer *tapRecognizer = (MYTapGestureRecognizer *)sender;
-//    NSLog (@"routeDirection %@",tapRecognizer.dataArr[0]);
-//    NSLog(@"NAME ::: %@",tapRecognizer.dataArr[0][@"name_en"]);
-    NSLog(@"List DATA %@",tapRecognizer.dataArr);
-    
-   item = [tapRecognizer.view tag];
+    item = [tapRecognizer.view tag];
     NSLog (@"Tag DALETE %ld",(long)item);
     NSLog(@"tag edit ::: %ld",(long)editTag);
-   NSLog(@"Delete %@",tapRecognizer.dataArr[1]);
+//    NSMutableArray *Data = tapRecognizer.dataArr;
+//    NSLog(@"ALLDATA : %@",tapRecognizer.dataArr);
+    NSDictionary *DeleteData = tapRecognizer.dataArr[0];
+//    NSLog (@"routeDirection %@",DeleteData);
+    NSLog(@"NAME ::: %@",[DeleteData objectForKey:@"name_en"]);
+//    NSLog(@"List DATA %@",tapRecognizer.dataArr);
     
-    //  MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"Are you sure clear all?" message:@"" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
     
-//    MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"Are you sure to delete?" message:tapRecognizer.dataArr[editTag][item][@"name_en"]delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
-//    alert.dataArr = tapRecognizer.dataArr;
-//    alert.tag = 1;
-//    [alert show];
-//    
+    MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"Are you sure to delete?" message:[DeleteData objectForKey:@"name_en"] delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
+    alert.dataArr = tapRecognizer.dataArr;
+    alert.tag = 1;
+    [alert show];
+    
 }
 
 -(void)deleteAll:(id)sender{
     //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"You sure delete all?" message:@"" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"OK", nil];
-    NSLog(@"Delete All");
+    NSLog(@"Delete All Tag : %ld",(long)editTag);
     MYAlertView *alert = [[MYAlertView alloc]initWithTitle:@"Are you sure clear all?" message:@"" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
     alert.tag = 0;
-   
     [alert show];
     
 }
@@ -525,15 +552,18 @@
             
 
             NSLog(@"editBtn Tag %ld",(long)editBtn.tag);
-            if (editBtn.tag == 0)
+            if (editTag == 0)
             {
                 
                 [saveHotelData removeAllObjects];
+                [modelManager deleteMyDestDataByType:@"hotel"];
             }
             else
             {
                [saveLocationData removeAllObjects];
+               [modelManager deleteMyDestDataByType:@"restaurant"];
             }
+            isEdit = false;
             claerAllView.hidden = YES;
             [destinationListTbl reloadData];
           
@@ -542,37 +572,50 @@
     }else if(alertView.tag == 1)
     {
         if (buttonIndex != [alertView cancelButtonIndex]) {
+            NSDictionary *DeleteData = alertView.dataArr[0];
+            //    NSLog (@"routeDirection %@",DeleteData);
+            NSLog(@"NAME ::: %@",[DeleteData objectForKey:@"name_en"]);
             
-            NSLog(@"Aleart Delate Data %@",alertView.dataArr[editTag][item][@"name_en"]);
             ModelManager *modelManager = [ModelManager getInstance];
-            [modelManager deleteMyDestDataByID:alertView.dataArr[editTag][item][@"name_en"]];
+            [modelManager deleteMyDestDataByID:[DeleteData objectForKey:@"name_en"]];
             isEdit = false;
             //[destinationListTbl reloadData];
          
-             [self getMyDestinationData];
+//             [self getMyDestinationData];
             
-            
-            
-//            if(saveLocationData.count == 0)
-//            {
-//                claerAllView.hidden = YES;
-//            }
-            //            else
-            //            {
-            //                int index;
-            //                for(index = 0; index < saveLocationData.count; index++)
-            //                {
-            ////                    if([alertView.dataArr[0][@"name_en"] isEqualToString:saveLocationData[index][@"name_en"]])
-            //                    if(alertView.dataArr[0][@"name_en"] == saveLocationData[index][@"name_en"])
-            //                    {
-            //                        NSLog(@"removeObjectAtIndex %@ == %@",saveLocationData[index][@"name_en"],alertView.dataArr[0][@"name_en"]);
-            //                        [saveLocationData removeObjectAtIndex:index];
-            //                        isEdit = false;
-            //                        [tableView reloadData];
-            //                        NSLog(@"New saveLocationData %@",saveLocationData);
-            //                    }
-            //                }
-            //            }
+            if(saveLocationData.count == 0 && saveHotelData.count == 0)
+            {
+                claerAllView.hidden = YES;
+
+            }else if([[DeleteData objectForKey:@"provider_type_keyname"]  isEqual: @"hotel"])
+            {
+                    int index;
+                    for(index = 0; index < saveHotelData.count; index++)
+                    {
+                        if([DeleteData objectForKey:@"name_en"] == saveHotelData[index][@"name_en"])
+                        {
+                            NSLog(@"removeObjectAtIndex %@ == %@",saveHotelData[index][@"name_en"],[DeleteData objectForKey:@"name_en"]);
+                            [saveHotelData removeObjectAtIndex:index];
+                            isEdit = false;
+                            [destinationListTbl reloadData];
+                            NSLog(@"New saveHotelData %@",saveHotelData);
+                        }
+                    }
+            }else if([[DeleteData objectForKey:@"provider_type_keyname"]  isEqual: @"restaurant"])
+            {
+                int index;
+                for(index = 0; index < saveLocationData.count; index++)
+                {
+                    if([DeleteData objectForKey:@"name_en"] == saveLocationData[index][@"name_en"])
+                    {
+                        NSLog(@"removeObjectAtIndex %@ == %@",saveLocationData[index][@"name_en"],[DeleteData objectForKey:@"name_en"]);
+                        [saveLocationData removeObjectAtIndex:index];
+                        isEdit = false;
+                        [destinationListTbl reloadData];
+                        NSLog(@"New saveLocationData %@",saveLocationData);
+                    }
+                }
+            }
             
         }
         
@@ -600,11 +643,12 @@
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
-    // called twice every time
     NSLog(@"SEARCH BAR ACTIVE1");
     searchActive = true;
-    searchDisplayTbl.hidden = false;
+    searchDisplayTbl.hidden = true;
+    
     [searchBar setShowsCancelButton:YES animated:YES];
+    
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
@@ -631,11 +675,12 @@
     searchBar.text = nil;
     
     [searchBar resignFirstResponder];
-    searchActive = false;
+     searchActive = false;
     [searchDisplayTbl reloadData];
     
      [previewView setFrame:CGRectMake(10, searchView.bounds.origin.y + searchView.bounds.size.height + 5, self.view.bounds.size.width-20, 0)];
     [destinationListTbl setFrame:destinationListTblRect];
+    searchBar.showsCancelButton = NO;
 
 }
 - (void)didPresentSearchController:(UISearchController *)searchController
@@ -646,7 +691,7 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *) searchText{
     NSLog(@"GO FILTER");
-    
+    searchBar.showsCancelButton = YES;
     if(isEdit)
     {
         isEdit = false;
@@ -657,6 +702,7 @@
     if(searchText.length == 0)
     {
         searchActive = false;
+        searchDisplayTbl.hidden = true;
     }
     else if(searchText.length >= 2)
     {
@@ -666,40 +712,10 @@
         NSPredicate *resultPredicate = [NSPredicate
                                         predicateWithFormat:@"name_en contains[c]%@",
                                         searchText];
-        NSLog(@"PoiDataSearch : %@",[_poiData filteredArrayUsingPredicate:resultPredicate]);
+//        NSLog(@"PoiDataSearch : %@",[_poiData filteredArrayUsingPredicate:resultPredicate]);
         [resultSearch addObjectsFromArray:[_poiData filteredArrayUsingPredicate:resultPredicate]];
         
-        //        BOOL success = results.count > 0;
-        //        if(resultSearch.count > 0)
-        //        {
-        //            NSLog(@"success success success success : %lu",(unsigned long)resultSearch.count);
-        //        }
-        
-        
-        
-        //        resultSearch = [[NSMutableArray alloc] init];
-        //
-        //        NSString *search;
-        //        for (search in searchDisplayList)
-        //        {
-        //
-        //            NSRange nameRange = [search rangeOfString:searchText options:NSCaseInsensitiveSearch];
-        ////            NSRange descriptionRange = [food.description rangeOfString:text options:NSCaseInsensitiveSearch];
-        //
-        //
-        //            if(nameRange.location != NSNotFound)
-        //            {
-        //
-        //                [resultSearch addObject:search];
-        //            }
-        //
-        //        }
-        //        if (resultSearch ==nil) {
-        //            searchActive = false ;
-        //            [searchDisplayTbl reloadData];
-        //        }
-        
-    }
+          }
     
     [searchDisplayTbl reloadData];
     
@@ -739,11 +755,13 @@
     title.font= [UIFont fontWithName:@"Helvetica" size:font];
         
     editBtn = [[UIButton alloc] initWithFrame:editBtnRect];
+    NSLog(@"GROUP :: %@",groupLocation);
+        
     [editBtn setTitle:@"Edit" forState:UIControlStateNormal];
     editBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:font];
     editBtn.tag = section;
     MYTapGestureRecognizer* TapEdit = [[MYTapGestureRecognizer alloc]
-                                           initWithTarget:self action:@selector(edit:)];//Here should be actionViewTap:
+                                           initWithTarget:self action:@selector(edit:)];
         [TapEdit setNumberOfTouchesRequired:1];
         [TapEdit setDelegate:self];
          editBtn.userInteractionEnabled = YES;
@@ -777,16 +795,21 @@
         [claerAllView addSubview:clrBtn];
         [hdView addSubview:claerAllView];
         claerAllView.hidden = TRUE;
-        if (isEdit) {
+        if (isEdit && (editTag == section)) {
             claerAllView.hidden = false;
         }
         
    
-    [hdView addSubview:editBtn];
+        if (saveHotelData.count != 0 && section == 0) {
+            [hdView addSubview:editBtn];
+        }else if(saveLocationData.count != 0 && section == 1)
+        {
+            [hdView addSubview:editBtn];
+        }
+    
+        
     [hdView addSubview:title];
     [hdView addSubview:claerAllView];
-        
-
     return hdView;
     }
 }
@@ -815,7 +838,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 //#warning Incomplete implementation, return the number of rows
-    
+    NSLog(@"numberOfRowsInSection :%lu",section);
     if(tableView == searchDisplayTbl){
         if (searchActive) {
             
@@ -839,7 +862,13 @@
            NSLog(@"DEST COUNT :::%lu",DData.count);
 
            listData = [groupLocation objectForKey:[groupKey objectAtIndex:section]];
-            return listData.count;
+           if (listData.count == 0) {
+               return 1;
+           }else
+           {
+               return listData.count;
+           }
+           
         }
     }
 
@@ -851,10 +880,13 @@
     row = [indexPath row];
     if(isEdit)
     {
+        
         NSLog(@"Edit Tableview section : %ld",(long)indexPath.section);
         [tableView headerViewForSection:indexPath.section];
-
        listData =[groupLocation objectForKey:[groupKey objectAtIndex:[indexPath section]]];
+        if (listData.count != 0) {
+            
+        
         NSArray *listSection = [groupKey objectAtIndex:[indexPath section]];
         
         Cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
@@ -884,9 +916,12 @@
         CLLocationDistance meters = [poiLocation distanceFromLocation:currentLoc];
         
         Cell.distanceLbl.text = [NSString stringWithFormat:@"%.02f",meters/1000];;
+        if(editTag == indexPath.section)
+        {
+            [Cell.routeBtn setTitle:@"Delete" forState:UIControlStateNormal];
+            Cell.routeBtn.backgroundColor = [UIColor redColor];
+        }
         
-        [Cell.routeBtn setTitle:@"Delete" forState:UIControlStateNormal];
-        Cell.routeBtn.backgroundColor = [UIColor redColor];
         [Cell.routeBtn setFrame:CGRectMake(Cell.contentView.bounds.size.width - (Cell.routeBtn.bounds.size.width + 5), Cell.contentView.bounds.size.height - (Cell.routeBtn.bounds.size.height + 5) , Cell.routeBtn.bounds.size.width, Cell.routeBtn.bounds.size.height)];
         MYTapGestureRecognizer* TapCall = [[MYTapGestureRecognizer alloc]
                                            initWithTarget:self action:@selector(deleteSaveLocationByID:)];//Here should be actionViewTap:
@@ -897,13 +932,21 @@
         Cell.routeBtn .userInteractionEnabled = YES;
         [Cell.routeBtn  addGestureRecognizer:TapCall];
         TapCall.enabled = YES;
-        TapCall.dataArr = [[NSMutableArray alloc]initWithObjects:listData , nil];
+        TapCall.dataArr = [[NSMutableArray alloc]initWithObjects:listData[indexPath.row] , nil];
         if (groupKey.count == indexPath.section) {
             isEdit = false;
             [tableView headerViewForSection:indexPath.section];
         }
-        NSLog(@"DATAAAA %@",TapCall.dataArr);
+//        NSLog(@"DATAAAA %@",TapCall.dataArr);
       //  [destinationListTbl reloadData];
+        }else
+        {
+            Cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
+            
+            if (Cell == nil) {
+                Cell = [[DestinationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+            }
+        }
         return Cell;
         
     }
@@ -929,6 +972,8 @@
     }
    
     else{
+        listData =[groupLocation objectForKey:[groupKey objectAtIndex:[indexPath section]]];
+        NSLog(@"Nodataaaaaaaa %@",listData);
         
         Cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
         
@@ -937,7 +982,7 @@
         }
 
         
-        if (groupLocation.count == 0) {
+        if (listData.count == 0) {
             Cell.placeLbl.hidden = true;
             Cell.addressLbl.hidden = true;
             Cell.distanceLbl.hidden = true;
@@ -945,22 +990,11 @@
             Cell.pinIcon.hidden = true;
             Cell.kmLbl.hidden = true;
             Cell.contentView.backgroundColor = [UIColor colorWithRed:0.92 green:0.92 blue:0.95 alpha:1];
-            emty = [[UILabel alloc] initWithFrame:CGRectMake(0 , Cell.contentView.bounds.size.height/2 - 20 , Cell.contentView.bounds.size.width, 40)];
-            emty.text = @"Emty";
-            emty.textAlignment = NSTextAlignmentCenter;
-            [Cell.contentView addSubview:emty];
-            
- //            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
 
-//[Cell.contentView addSubview:vc];
-//
-//      //     cell.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.91 alpha:1];
             return Cell;
         }
         else {
             
-         NSLog(@"NotEdit");
-         NSArray *listData =[groupLocation objectForKey:[groupKey objectAtIndex:[indexPath section]]];
          NSLog(@"Listttttttttt %@",listData);
          NSLog(@"Name Dataaaaaaaaaaaaaa %@",[listData valueForKey:@"name_en"]);
             
@@ -970,11 +1004,11 @@
             Cell.routeBtn.hidden = false;
             Cell.pinIcon.hidden = false;
             Cell.kmLbl.hidden = false;
-
+//            [emty removeFromSuperview];
         Cell.placeLbl.text = [listData valueForKey:@"name_en"][row];
         Cell.placeLbl.lineBreakMode = NSLineBreakByWordWrapping;
         Cell.placeLbl.textAlignment = NSTextAlignmentJustified;
-      
+           
        
             if ([[listData valueForKey:@"provider_type_keyname"][row]  isEqual: @"hotel"]) {
                 Cell.pinIcon.image = [UIImage imageNamed:@"pin_hotel_2.png"];
@@ -1015,7 +1049,7 @@
         Cell.routeBtn .userInteractionEnabled = YES;
         [Cell.routeBtn  addGestureRecognizer:TapCall];
         TapCall.enabled = YES;
-        TapCall.dataArr = [[NSMutableArray alloc]initWithObjects:listData, nil];
+        TapCall.dataArr = [[NSMutableArray alloc]initWithObjects:listData[row], nil];
         
         return Cell;
         }
@@ -1076,7 +1110,7 @@
         
         [distancePreviewLbl setFrame:distancePreviewLblRect];
         distancePreviewLbl.font = [UIFont fontWithName:@"Helvetica" size:font];
-        [closePreviewBtn setFrame:closeBtnRect];
+        [closePreviewBtn setFrame:closePreviewBtnRect];
         [closePreviewBtn addTarget:self action:@selector(closePreView:) forControlEvents:UIControlEventTouchUpInside];
         
         if ([[resultSearch objectAtIndex:indexPath.row][@"provider_type_keyname"] isEqualToString:@"hotel"]) {
@@ -1148,31 +1182,26 @@
     }
     else {
         if([indexPath row] == ((NSIndexPath*)[[tableView indexPathsForVisibleRows] lastObject]).row){
-            
-//            if (listData.count <= 2) {
-                [destinationListTbl setFrame:destinationListTblRect];
-//            }
-//            else{
-//            [destinationListTbl setFrame:CGRectMake(destinationListTblRect.origin.x,destinationListTblRect.origin.y, destinationListTblRect.size.width,(cellH*(saveLocationData.count*2)+180))];
-//            NSLog(@"LOCATION COUNT %lu:::",(unsigned long)saveLocationData.count);
-//            }
-//            
-            destinationListTbl.layer.cornerRadius = 5;
-            destinationListTbl.clipsToBounds = YES;
+            [destinationListTbl setFrame:destinationListTblRect];
+
         }
     }
 }
 - (void)routeDirection:(id)sender
 {
     MYTapGestureRecognizer *tapRecognizer = (MYTapGestureRecognizer *)sender;
-    NSLog (@"routeDirection %@",tapRecognizer.dataArr[0][@"name_en"]);
+    NSDictionary *Data = tapRecognizer.dataArr[0];
+    //    NSLog (@"routeDirection %@",DeleteData);
+    NSLog(@"NAME ::: %@",[Data objectForKey:@"name_en"]);
+    
+    NSLog (@"routeDirection %@",[Data objectForKey:@"name_en"]);
     //first create latitude longitude object
-    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([tapRecognizer.dataArr[0][@"latitude"] doubleValue],[tapRecognizer.dataArr[0][@"longitude"] doubleValue]);
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([[Data objectForKey:@"latitude"] doubleValue],[[Data objectForKey:@"longitude"] doubleValue]);
     
     //create MKMapItem out of coordinates
     MKPlacemark* placeMark = [[MKPlacemark alloc] initWithCoordinate:coordinate addressDictionary:nil];
     MKMapItem* destination =  [[MKMapItem alloc] initWithPlacemark:placeMark];
-    [destination setName:tapRecognizer.dataArr[0][@"name_en"]];
+    [destination setName:[Data objectForKey:@"name_en"]];
     if([destination respondsToSelector:@selector(openInMapsWithLaunchOptions:)])
     {
         //using iOS6 native maps app
@@ -1181,7 +1210,7 @@
     else
     {
         //using iOS 5 which has the Google Maps application
-        NSString* url = [NSString stringWithFormat: @"http://maps.google.com/maps?saddr=Current+Location&daddr=%f,%f", [tapRecognizer.dataArr[0][@"latitude"] doubleValue],[tapRecognizer.dataArr[0][@"longitude"] doubleValue]];
+        NSString* url = [NSString stringWithFormat: @"http://maps.google.com/maps?saddr=Current+Location&daddr=%f,%f", [[Data objectForKey:@"latitude"] doubleValue],[[Data objectForKey:@"longitude"] doubleValue]];
         [[UIApplication sharedApplication] openURL: [NSURL URLWithString: url]];
     }
 }
@@ -1227,6 +1256,7 @@
     CGRect keyboardBounds;
     
     [[notification.userInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] getValue:&keyboardBounds];
+ 
     //    scrollView.contentOffset = CGPointMake(0, - keyboardBounds.origin.y);
     
     //    UIScrollView* v = (UIScrollView*) self.view ;

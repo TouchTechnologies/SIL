@@ -947,7 +947,7 @@
                         <color key="separatorColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" rowHeight="79" id="FBz-qY-Z58">
-                                <rect key="frame" x="0.0" y="72" width="320" height="79"/>
+                                <rect key="frame" x="0.0" y="28" width="320" height="79"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FBz-qY-Z58" id="csz-7j-ZqJ">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="79"/>
@@ -2426,7 +2426,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dfR-Re-jWL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1285" y="3154"/>
+            <point key="canvasLocation" x="1249" y="3154"/>
         </scene>
         <!--Destination Map View Controller-->
         <scene sceneID="Esj-67-Zlb">

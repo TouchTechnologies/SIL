@@ -113,7 +113,7 @@
     AppDelegate *appDelegate = (AppDelegate* )[[UIApplication sharedApplication] delegate];
     // Do any additional setup after loading the view.
     _menuImageName = [NSArray arrayWithObjects:@"call_icon.png",@"ic_new_mylivestream_newmore.png" ,@"ic_new_goto_newmore.png" ,@"ic_facebook_share.png",@"unnamed.png",@"ic_more_setting.png", nil];
-    _menuLabelName = [NSArray arrayWithObjects:@"Helpful Contact",@"My Live Stream" ,@"My Destination" ,@"Share See it Live",@"Fanpage",@"Setting", nil];
+    _menuLabelName = [NSArray arrayWithObjects:@"Helpful Contact",@"My Live Stream" ,@"Back To Hotel" ,@"Share See it Live",@"Fanpage",@"Setting", nil];
     
     
     
